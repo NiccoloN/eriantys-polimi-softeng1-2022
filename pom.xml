@@ -9,7 +9,7 @@
     <artifactId>PSP9</artifactId>
 
     <version>1.0-SNAPSHOT</version>
-    <name>Eryantis</name>
+    <name>Eriantys</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,6 +22,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>18</version>
         </dependency>
     </dependencies>
 
