@@ -34,7 +34,7 @@ public class IslandTile {
     }
 
     /**
-     * @param color the color of the students to count
+     * @param color the color of students to count
      * @return the number of students of the given color currently placed on this tile
      */
     public int countStudents(PawnColor color) {
@@ -56,6 +56,7 @@ public class IslandTile {
     /**
      * Removes the last placed student from this tile
      * @return the removed student
+     * @throws IndexOutOfBoundsException if no students are placed on this tile
      */
     ColoredPawn removeStudent() {
 
@@ -63,7 +64,7 @@ public class IslandTile {
     }
 
     /**
-     * @return whether a tower is placed on this tile
+     * @return whether a tower has been placed on this tile
      */
     public boolean hasTower() {
 
