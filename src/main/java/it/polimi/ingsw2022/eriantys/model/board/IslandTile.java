@@ -26,6 +26,14 @@ public class IslandTile {
     }
 
     /**
+     * @return the number of students placed on this tile
+     */
+    public int countStudents() {
+
+        return students.size();
+    }
+
+    /**
      * @param color the color of the students to count
      * @return the number of students of the given color currently placed on this tile
      */
