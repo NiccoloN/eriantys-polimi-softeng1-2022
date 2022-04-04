@@ -3,11 +3,12 @@ package it.polimi.ingsw2022.eriantys.model.board;
 import it.polimi.ingsw2022.eriantys.model.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.model.PawnColor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Niccolò Nicolosi
- * This class represents an island tile: the smallest piece of an island.
+ * This class represents an island tile: the smallest piece that forms an island.
  * Island tiles can be aggregated to form a bigger island.
  * @see CompoundIslandTile
  * Colored pawns can be placed on an island tile. However, only pawns that represent students should be placed on it.
@@ -16,8 +17,13 @@ import java.util.List;
  */
 public class IslandTile {
 
-    private List<ColoredPawn> students;
+    private final List<ColoredPawn> students;
     private boolean tower;
+
+    public IslandTile() {
+
+        students = new ArrayList<>();
+    }
 
     /**
      * @param color the color of the students to count
@@ -37,6 +43,15 @@ public class IslandTile {
     public void addStudent(ColoredPawn student) {
 
         students.add(student);
+    }
+
+    /**
+     * Removes the last placed student from this tile
+     * @return the removed student
+     */
+    ColoredPawn removeStudent() {
+
+        return students.remove(0);
     }
 
     /**
