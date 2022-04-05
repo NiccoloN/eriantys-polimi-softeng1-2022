@@ -31,12 +31,12 @@ public class CompoundIslandTile {
 
     /**
      * Merges this island with the given one, making it bigger.
-     * @param tile the tile to add
-     * @throws RuntimeException if the given tile is already part of this island
+     * @param island the island to merge with
+     * @throws RuntimeException if the given island contains any tile that is already part of this island
      */
-    public void mergeWithIsland(CompoundIslandTile tile) {
+    public void mergeWithIsland(CompoundIslandTile island) {
 
-        tiles.addAll(tile.tiles);
+        tiles.addAll(island.tiles);
         if (tiles.stream().anyMatch(i -> Collections.frequency(tiles, i) > 1)) throw new RuntimeException("No duplicates allowed");
     }
 
