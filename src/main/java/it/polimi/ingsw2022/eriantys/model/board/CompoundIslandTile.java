@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.model.PawnColor;
 import it.polimi.ingsw2022.eriantys.model.Team;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +42,12 @@ public class CompoundIslandTile {
     /**
      * Adds a tile to this island, making it bigger.
      * @param tile the tile to add
+     * @throws RuntimeException if the given tile is already part of this island
      */
     public void addTile(CompoundIslandTile tile) {
 
         tiles.addAll(tile.tiles);
+        if (tiles.stream().anyMatch(i -> Collections.frequency(tiles, i) > 1)) throw new RuntimeException("No duplicates allowed");
     }
 
     /**
@@ -71,9 +74,11 @@ public class CompoundIslandTile {
     /**
      * Places a colored pawn onto this island. Only pawns that represent students should be placed on an island
      * @param student the student to place
+     * @throws RuntimeException if the given student is already on this island
      */
     public void addStudent(ColoredPawn student) {
 
+        for (IslandTile tile : tiles) if (tile.containsStudent(student)) throw new RuntimeException("No duplicates allowed");
         tiles.get(tiles.size() - 1).addStudent(student);
         distributeStudents();
     }
