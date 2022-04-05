@@ -114,9 +114,11 @@ public class CompoundIslandTile {
     /**
      * Sets the given team as the controller of this island
      * @param team the new team that controls this island
+     * @throws RuntimeException if this island is denied
      */
     public void setTeam(Team team) {
 
+        if (denied) throw new RuntimeException("Cannot set a new controller team on a denied island");
         this.team = team;
     }
 
