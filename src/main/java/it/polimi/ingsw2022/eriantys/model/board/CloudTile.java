@@ -15,9 +15,11 @@ public class CloudTile {
     /**
      * Places a colored pawn onto this cloud. Only pawns that represent students should be placed on a cloud
      * @param student the student to place
+     * @throws RuntimeException if this island already contains 3 or more students
      */
     public void addStudent(ColoredPawn student) {
 
+        if (students.size() >= 3) throw new RuntimeException("Maximum number of placed students already reached on this island");
         students.add(student);
     }
 
