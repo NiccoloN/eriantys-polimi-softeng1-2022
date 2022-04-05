@@ -44,9 +44,11 @@ public class IslandTile {
     /**
      * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
      * @param student the student to place
+     * @throws RuntimeException if the given student is already in this tile
      */
     public void addStudent(ColoredPawn student) {
 
+        if (students.contains(student)) throw new RuntimeException("No duplicates allowed");
         students.add(student);
     }
 
@@ -57,7 +59,7 @@ public class IslandTile {
      */
     ColoredPawn removeStudent() {
 
-        return students.remove(0);
+        return students.remove(students.size() - 1);
     }
 
     /**
