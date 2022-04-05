@@ -30,21 +30,11 @@ public class CompoundIslandTile {
     }
 
     /**
-     * @return an array containing the individual tiles that form this island
-     */
-    public IslandTile[] getTiles() {
-
-        IslandTile[] tiles = new IslandTile[this.tiles.size()];
-        this.tiles.toArray(tiles);
-        return tiles;
-    }
-
-    /**
-     * Adds a tile to this island, making it bigger.
+     * Merges this island with the given one, making it bigger.
      * @param tile the tile to add
      * @throws RuntimeException if the given tile is already part of this island
      */
-    public void addTile(CompoundIslandTile tile) {
+    public void mergeWithIsland(CompoundIslandTile tile) {
 
         tiles.addAll(tile.tiles);
         if (tiles.stream().anyMatch(i -> Collections.frequency(tiles, i) > 1)) throw new RuntimeException("No duplicates allowed");
