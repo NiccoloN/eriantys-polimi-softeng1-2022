@@ -2,26 +2,57 @@ package it.polimi.ingsw2022.eriantys.model;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the student bag. This makes possible to store, add, and extract randomly
+ * the students contained
+ * @author Emanuele Musto
+ */
+
 public class StudentsBag {
 
-    private final ArrayList<ColoredPawn> Students;
+    private final ArrayList<ColoredPawn> students;
+
+    /**
+     * This method initializes the bag as an ArrayList.
+     */
 
     public StudentsBag(){
-        Students = new ArrayList<>();
+        students = new ArrayList<>();
     }
+
+    /**
+     * This method checks whether the StudentsBag is empty.
+     * @return True if empty, false otherwise.
+     */
 
     public boolean isEmpty(){
-        return(Students.isEmpty());
+        return(students.isEmpty());
     }
 
-    public void addStudent(ColoredPawn student){
+    /**
+     * This method adds a student to the StudentsBag.
+     * @param studentToAdd the student to add to the bag.
+     * @throws RuntimeException if the student is already in the StudentsBag.
+     */
 
-        Students.add(student);
+    public void addStudent(ColoredPawn studentToAdd){
+
+        if(students.contains(studentToAdd)){ throw new RuntimeException("Student already in StudentBag"); }
+
+        students.add(studentToAdd);
     }
 
-    public ColoredPawn extractRandomStudent(){
+    /**
+     * This method generates randomly ad index, used to extract a student from the bag.
+     * @return the student extracted randomly.
+     * @throws RuntimeException if the StudentsBag is empty.
+     */
 
-        int ExtractionIndex = (int)(Math.random() * (Students.size()) );
-        return(Students.remove(ExtractionIndex));
-        }
+    public ColoredPawn extractRandomStudent() {
+
+        if (students.isEmpty()) { throw new RuntimeException("StudentBag is empty."); }
+        int ExtractionIndex = (int) (Math.random() * (students.size()));
+        return (students.remove(ExtractionIndex));
+
+    }
 }
