@@ -42,6 +42,15 @@ public class IslandTile {
     }
 
     /**
+     * @param student the student to check for
+     * @return whether the given student is placed on this island
+     */
+    public boolean containsStudent(ColoredPawn student) {
+
+        return students.contains(student);
+    }
+
+    /**
      * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
      * @param student the student to place
      * @throws RuntimeException if the given student is already in this tile
