@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.model;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class StudentsBag {
 
-    private final ArrayList<ColoredPawn> students;
+    private final List<ColoredPawn> students;
 
     /**
      * This method initializes the bag as an ArrayList.
