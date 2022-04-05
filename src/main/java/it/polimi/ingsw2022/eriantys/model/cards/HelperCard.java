@@ -1,6 +1,6 @@
 package it.polimi.ingsw2022.eriantys.model.cards;
 
-import it.polimi.ingsw2022.eriantys.model.enums.Mage;
+import it.polimi.ingsw2022.eriantys.model.players.Mage;
 
 public class HelperCard extends Card {
     public final int priority;

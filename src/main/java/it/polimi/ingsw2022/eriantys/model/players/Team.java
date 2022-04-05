@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.model;
+package it.polimi.ingsw2022.eriantys.model.players;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ public enum Team {
 
     private final List<Player> players;
 
-
     /**
      * This method initializes the list of player with initial size equal to 2.
      */
@@ -25,7 +24,6 @@ public enum Team {
 
         players = new ArrayList<>(2);
     }
-
 
     /**
      *This method adds a player to the team.

@@ -1,6 +1,6 @@
 package it.polimi.ingsw2022.eriantys.model.board;
 
-import it.polimi.ingsw2022.eriantys.model.ColoredPawn;
+import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
 
 import java.util.List;
 

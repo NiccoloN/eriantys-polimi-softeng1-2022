@@ -1,6 +1,10 @@
-package it.polimi.ingsw2022.eriantys.model;
+package it.polimi.ingsw2022.eriantys.model.players;
+
+import it.polimi.ingsw2022.eriantys.model.board.SchoolDashboard;
+import it.polimi.ingsw2022.eriantys.model.cards.HelperCard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a player of the game, and has methods to manage cards and coins.
@@ -30,8 +34,7 @@ public class Player {
         this.team = team;
         team.addPlayer(this);
         playerHelperCards = new ArrayList<>(10);
-        if(team.getSize() == 0) isTeamLeader = true;
-        else { isTeamLeader = false; }
+        isTeamLeader = team.getSize() == 0;
     }
 
     /**
@@ -74,7 +77,7 @@ public class Player {
      * @return the number of HelperCards left for the player.
      */
     public int getNumberOfHelpers(){
-        return(playerHelperCards.size);
+        return(playerHelperCards.size());
     }
 
     /**

@@ -1,6 +1,6 @@
 package it.polimi.ingsw2022.eriantys.model.board;
 
-import it.polimi.ingsw2022.eriantys.model.Player;
+import it.polimi.ingsw2022.eriantys.model.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;

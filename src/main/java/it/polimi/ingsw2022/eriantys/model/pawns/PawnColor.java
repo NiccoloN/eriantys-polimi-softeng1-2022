@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.model;
+package it.polimi.ingsw2022.eriantys.model.pawns;
 
 /**
  * This class represents the five possible colors of the pawns used in the game.
@@ -6,6 +6,7 @@ package it.polimi.ingsw2022.eriantys.model;
  */
 
 public enum PawnColor {
+
     YELLOW("Gnome", "yellow"),
     BLUE("Unicorn", "blue"),
     GREEN("Frog", "green"),

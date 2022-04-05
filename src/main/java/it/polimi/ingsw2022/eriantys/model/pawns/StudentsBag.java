@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.model;
+package it.polimi.ingsw2022.eriantys.model.pawns;
 
 import java.util.List;
 import java.util.ArrayList;

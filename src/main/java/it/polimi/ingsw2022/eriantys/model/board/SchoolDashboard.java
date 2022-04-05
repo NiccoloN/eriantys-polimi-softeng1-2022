@@ -1,8 +1,8 @@
 package it.polimi.ingsw2022.eriantys.model.board;
 
-import it.polimi.ingsw2022.eriantys.model.ColoredPawn;
-import it.polimi.ingsw2022.eriantys.model.PawnColor;
-import it.polimi.ingsw2022.eriantys.model.Player;
+import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
+import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.model.players.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
