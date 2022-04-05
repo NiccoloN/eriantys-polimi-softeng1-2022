@@ -9,13 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author Niccolò Nicolosi
  * This class represents an island. Every island is composed of different island tiles (at least one).
+ * @author Niccolò Nicolosi
  * @see IslandTile
- * Colored pawns can be placed on an island. However, only pawns that represent students should be placed on it.
- * @see ColoredPawn
- * An island can be controlled by a team.
- * @see Team
  */
 public class CompoundIslandTile {
 
@@ -23,6 +19,9 @@ public class CompoundIslandTile {
     private Team team;
     private boolean denied;
 
+    /**
+     * Constructs an island made of a single island tile
+     */
     public CompoundIslandTile() {
 
         tiles = new ArrayList<>();
@@ -70,7 +69,7 @@ public class CompoundIslandTile {
     }
 
     /**
-     * Places a student onto this island
+     * Places a colored pawn onto this island. Only pawns that represent students should be placed on an island
      * @param student the student to place
      */
     public void addStudent(ColoredPawn student) {
@@ -87,18 +86,24 @@ public class CompoundIslandTile {
         int studentsNum = countStudents();
         int studentsPerTile = studentsNum / tiles.size();
         int carry = studentsNum - studentsPerTile;
+
+        int n = 0;
         
         for (IslandTile overcrowdedTile : tiles) {
             
             if (carry > 0 && overcrowdedTile.countStudents() == studentsPerTile + 1) carry--;
             else while (overcrowdedTile.countStudents() > studentsPerTile) {
                 
-                for (IslandTile needingTile : tiles)
+                while (n < tiles.size()) {
+
+                    IslandTile needingTile = tiles.get(n);
                     if (needingTile.countStudents() < studentsPerTile) {
 
                         needingTile.addStudent(overcrowdedTile.removeStudent());
                         break;
                     }
+                    n++;
+                }
             }
         }
     }

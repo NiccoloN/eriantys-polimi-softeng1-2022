@@ -7,13 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Niccolò Nicolosi
  * This class represents an island tile: the smallest piece that forms an island.
  * Island tiles can be aggregated to form a bigger island.
+ * @author Niccolò Nicolosi
  * @see CompoundIslandTile
- * Colored pawns can be placed on an island tile. However, only pawns that represent students should be placed on it.
- * @see ColoredPawn
- * A tower can be placed on an island tile. Once a tower is placed, it cannot be removed.
  */
 public class IslandTile {
 
@@ -45,7 +42,7 @@ public class IslandTile {
     }
 
     /**
-     * Places a student onto this tile
+     * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
      * @param student the student to place
      */
     public void addStudent(ColoredPawn student) {
@@ -72,7 +69,7 @@ public class IslandTile {
     }
 
     /**
-     * Places a tower onto this tile
+     * Places a tower onto this tile. Once a tower is placed, it cannot be removed.
      */
     public void addTower() {
 
