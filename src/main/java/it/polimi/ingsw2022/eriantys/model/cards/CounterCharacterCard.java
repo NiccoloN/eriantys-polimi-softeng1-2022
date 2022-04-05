@@ -3,8 +3,8 @@ package it.polimi.ingsw2022.eriantys.model.cards;
 public class CounterCharacterCard extends CharacterCard{
     private int counter;
 
-    public CounterCharacterCard(Skill skill, int counter) {
-        super(skill);
+    public CounterCharacterCard(int index, Skill skill, int counter) {
+        super(index, skill);
         this.counter = counter;
     }
 
@@ -12,13 +12,9 @@ public class CounterCharacterCard extends CharacterCard{
         return counter;
     }
 
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
-
     public void decrementCounter() {
-        if (counter > 0) {
-            this.counter = this.counter - 1;
-        }
+        if (counter == 0) throw new RuntimeException("Counter has a negative value");
+        this.counter--;
+
     }
 }

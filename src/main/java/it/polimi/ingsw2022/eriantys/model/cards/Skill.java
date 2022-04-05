@@ -6,25 +6,25 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Skill {
-    private BiConsumer<CharacterCard, Game> effect;
+    public final BiConsumer<CharacterCard, Game> effect;
+    public final CharacterCard characterCard;
     private int cost;
 
-    public Skill(Consumer<Game> effect) {
+    public Skill(CharacterCard characterCard, BiConsumer<CharacterCard, Game> effect, int cost) {
+        this.characterCard = characterCard;
+        this.effect = effect;
+        this.cost = cost;
     }
 
     public int getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void incrementCost() {
+        this.cost = this.cost + 1;
     }
 
     public void apply(Game game) {
-
-    }
-
-    public void incrementCost() {
-        this.cost = this.cost + 1;
+        effect.accept(this.characterCard, game);
     }
 }
