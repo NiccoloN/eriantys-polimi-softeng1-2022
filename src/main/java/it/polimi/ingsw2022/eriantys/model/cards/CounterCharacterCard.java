@@ -1,5 +1,10 @@
 package it.polimi.ingsw2022.eriantys.model.cards;
 
+
+/**
+ * Extension of CharacterCard with a counter (used for counting the deny cards)
+ * @author Francesco Melegati Maccari
+ */
 public class CounterCharacterCard extends CharacterCard{
     private int counter;
 
