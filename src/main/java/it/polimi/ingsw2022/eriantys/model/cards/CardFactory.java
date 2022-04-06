@@ -7,6 +7,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * This class is used to easily build Card instances, reading data from files
+ * @author Niccolò Nicolosi
+ * @see Card
+ * @see HelperCard
+ * @see CharacterCard
+ */
 public class CardFactory {
 
     private static final Gson gson = new Gson();
