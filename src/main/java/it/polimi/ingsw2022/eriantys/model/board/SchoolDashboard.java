@@ -4,10 +4,7 @@ import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.model.players.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents a school. Every school is associated to a player
@@ -56,13 +53,13 @@ public class SchoolDashboard {
     }
 
     /**
-     * Removes the given student from the entrance of this school, if present
+     * Removes the given student from the entrance of this school
      * @param student the student to remove
-     * @return the removed student
+     * @throws NoSuchElementException if the given student is not at the entrance of this school
      */
-    public ColoredPawn removeFromEntrance(ColoredPawn student) {
+    public void removeFromEntrance(ColoredPawn student) {
 
-        return entranceStudents.stream().filter((x) -> x == student).findAny().orElseThrow();
+        entranceStudents.remove(student);
     }
 
     /**
@@ -84,7 +81,8 @@ public class SchoolDashboard {
 
     /**
      * Removes the last placed student from the table of the given color
-     * @param color the color of the table from which to remove the student
+     * @param color the color of the table from which to remove a student
+     * @return the last placed student on the table of the given color
      * @throws RuntimeException if the table of the given color is empty
      */
     public ColoredPawn removeFromTable(PawnColor color) {
@@ -118,10 +116,23 @@ public class SchoolDashboard {
      * Removes the professor of the given color from this school
      * @param color the color of the professor to remove
      * @return the removed professor
+     * @throws NoSuchElementException if the professor of the given color is not in this school
      */
     public ColoredPawn removeProfessor(PawnColor color) {
 
-        return professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+        ColoredPawn professor = professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+        professors.remove(professor);
+        return professor;
+    }
+
+    /**
+     * Removes the given professor from this school
+     * @param professor the professor to remove
+     * @throws NoSuchElementException if the given professor is not in this school
+     */
+    public void removeProfessor(ColoredPawn professor) {
+
+        if (!professors.remove(professor)) throw new NoSuchElementException();
     }
 
     /**
