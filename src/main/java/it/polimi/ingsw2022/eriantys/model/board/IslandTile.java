@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * This class represents an island tile: the smallest piece that forms an island.
@@ -17,6 +18,9 @@ public class IslandTile {
     private final List<ColoredPawn> students;
     private boolean tower;
 
+    /**
+     * Constructs an empty tile
+     */
     public IslandTile() {
 
         students = new ArrayList<>();
@@ -36,9 +40,7 @@ public class IslandTile {
      */
     public int countStudents(PawnColor color) {
 
-        int count = 0;
-        for (ColoredPawn student : students) if (student.color == color) count++;
-        return count;
+        return (int) students.stream().filter((x) -> x.color == color).count();
     }
 
     /**
@@ -69,6 +71,16 @@ public class IslandTile {
     ColoredPawn removeStudent() {
 
         return students.remove(students.size() - 1);
+    }
+
+    /**
+     * Removes the given student from this tile
+     * @param student the student to remove
+     * @throws NoSuchElementException if the given student is not placed on this tile
+     */
+    void removeStudent(ColoredPawn student) {
+
+        if(!students.remove(student)) throw new NoSuchElementException();
     }
 
     /**
