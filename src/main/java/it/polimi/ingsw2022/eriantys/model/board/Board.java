@@ -2,8 +2,7 @@ package it.polimi.ingsw2022.eriantys.model.board;
 
 import it.polimi.ingsw2022.eriantys.model.players.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class represents the game board: the set of islands, clouds and schools used to play the game
@@ -16,7 +15,7 @@ public class Board {
 
     private final List<CompoundIslandTile> islands;
     private final List<CloudTile> clouds;
-    private final List<SchoolDashboard> schools;
+    private final Map<Player, SchoolDashboard> schools;
     private int motherNatureIsland;
 
     /**
@@ -33,14 +32,14 @@ public class Board {
         for (int n = 0; n < 12; n ++) islands.add(new CompoundIslandTile());
         clouds = new ArrayList<>(4);
         for (int n = 0; n < players.size(); n++) clouds.add(new CloudTile());
-        schools = new ArrayList<>(4);
+        schools = new HashMap<>(4);
         for (int n = 0; n < players.size(); n++) {
 
             Player player = players.get(n);
 
-            if (players.size() == 2) schools.add(new SchoolDashboard(player, 8));
-            else if (players.size() == 3) schools.add(new SchoolDashboard(player, 6));
-            else if (players.size() == 4) schools.add(new SchoolDashboard(player, player.isTeamLeader ? 8 : 0));
+            if (players.size() == 2) schools.put(player, new SchoolDashboard(player, 8));
+            else if (players.size() == 3) schools.put(player, new SchoolDashboard(player, 6));
+            else if (players.size() == 4) schools.put(player, new SchoolDashboard(player, player.isTeamLeader ? 8 : 0));
         }
     }
 
@@ -99,8 +98,16 @@ public class Board {
         return clouds.get(index);
     }
 
-    public SchoolDashboard getSchool(int index) {
+    /**
+     * @param player the player to get the school of
+     * @return the school associated to the given player
+     * @throws NoSuchElementException if this board does not contain a school associated to the given player
+     */
+    public SchoolDashboard getSchool(Player player) {
 
-        return schools.get(index);
+        assert player != null;
+        SchoolDashboard school = schools.get(player);
+        if (school == null) throw new NoSuchElementException();
+        return school;
     }
 }
