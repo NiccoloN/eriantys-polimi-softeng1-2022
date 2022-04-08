@@ -16,7 +16,7 @@ public class Player {
     private int coins;
     private HelperCard currentHelper;
     private final List<HelperCard> playerHelperCards;
-    private SchoolDashboard schooldashboard;
+    private SchoolDashboard school;
     public final Team team;
     public final Mage mage;
     public final boolean isTeamLeader;
@@ -95,5 +95,21 @@ public class Player {
     public void payCoins(int fee) {
         if ((coins - fee) < 0) { throw new RuntimeException("Player has not enough coins."); }
         coins = coins - fee;
+    }
+
+    public SchoolDashboard getSchool() {
+
+        return school;
+    }
+
+    /**
+     * Sets the school associated to the player
+     * @param school the school to associate to the player
+     * @throws RuntimeException if the player is already associated to a school
+     */
+    public void setSchool(SchoolDashboard school) {
+
+        if (this.school != null) throw new RuntimeException("player already associated to a school");
+        this.school = school;
     }
 }

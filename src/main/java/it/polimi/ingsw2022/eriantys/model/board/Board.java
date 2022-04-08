@@ -15,7 +15,7 @@ public class Board {
 
     private final List<CompoundIslandTile> islands;
     private final List<CloudTile> clouds;
-    private final Map<Player, SchoolDashboard> schools;
+    private final List<SchoolDashboard> schools;
     private int motherNatureIsland;
 
     /**
@@ -25,21 +25,36 @@ public class Board {
      */
     public Board(List<Player> players) {
 
-        if (players.size() <= 1) throw new RuntimeException("Not enough players");
+        if (players.size() < 2) throw new RuntimeException("Not enough players");
         if (players.size() > 4) throw new RuntimeException("Too many players");
 
         islands = new ArrayList<>(12);
         for (int n = 0; n < 12; n ++) islands.add(new CompoundIslandTile());
         clouds = new ArrayList<>(4);
         for (int n = 0; n < players.size(); n++) clouds.add(new CloudTile());
-        schools = new HashMap<>(4);
+        schools = new ArrayList<>(4);
         for (int n = 0; n < players.size(); n++) {
 
             Player player = players.get(n);
 
-            if (players.size() == 2) schools.put(player, new SchoolDashboard(player, 8));
-            else if (players.size() == 3) schools.put(player, new SchoolDashboard(player, 6));
-            else if (players.size() == 4) schools.put(player, new SchoolDashboard(player, player.isTeamLeader ? 8 : 0));
+            int maxTowers = 0;
+
+            switch(players.size()) {
+
+                case 2:
+                    maxTowers =  8;
+                    break;
+                case 3:
+                    maxTowers = 6;
+                    break;
+                case 4:
+                    maxTowers = player.isTeamLeader ? 8 : 0;
+                    break;
+            }
+
+            SchoolDashboard school = new SchoolDashboard(player, maxTowers);
+            player.setSchool(school);
+            schools.add(school);
         }
     }
 
@@ -98,16 +113,8 @@ public class Board {
         return clouds.get(index);
     }
 
-    /**
-     * @param player the player to get the school of
-     * @return the school associated to the given player
-     * @throws NoSuchElementException if this board does not contain a school associated to the given player
-     */
-    public SchoolDashboard getSchool(Player player) {
+    public SchoolDashboard getSchool(int index) {
 
-        assert player != null;
-        SchoolDashboard school = schools.get(player);
-        if (school == null) throw new NoSuchElementException();
-        return school;
+        return schools.get(index);
     }
 }
