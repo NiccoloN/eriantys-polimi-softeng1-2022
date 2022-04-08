@@ -4,56 +4,51 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * This class represents the student bag. This makes possible to store, add, and extract randomly
- * the students contained
+ * This class represents a bag of student pawns. It can be used to store, add, and randomly extract students
  * @author Emanuele Musto
  */
-
 public class StudentsBag {
 
     private final List<ColoredPawn> students;
 
     /**
-     * This method initializes the bag as an ArrayList.
+     * Initializes the bag with an empty ArrayList
      */
+    public StudentsBag() {
 
-    public StudentsBag(){
         students = new ArrayList<>();
     }
 
     /**
-     * This method checks whether the StudentsBag is empty.
-     * @return True if empty, false otherwise.
+     * Checks whether the bag is empty
+     * @return True if empty, false otherwise
      */
+    public boolean isEmpty() {
 
-    public boolean isEmpty(){
         return(students.isEmpty());
     }
 
     /**
-     * This method adds a student to the StudentsBag.
-     * @param studentToAdd the student to add to the bag.
-     * @throws RuntimeException if the student is already in the StudentsBag.
+     * Adds a student to the bag
+     * @param student the student to add
+     * @throws RuntimeException if the student is already in the bag
      */
+    public void addStudent(ColoredPawn student) {
 
-    public void addStudent(ColoredPawn studentToAdd){
-
-        if(students.contains(studentToAdd)){ throw new RuntimeException("Student already in StudentBag"); }
-
-        students.add(studentToAdd);
+        assert student != null;
+        if(students.contains(student)) throw new RuntimeException("Student is already in the bag");
+        students.add(student);
     }
 
     /**
-     * This method generates randomly ad index, used to extract a student from the bag.
-     * @return the student extracted randomly.
-     * @throws RuntimeException if the StudentsBag is empty.
+     * Extracts a random student from the bag
+     * @return the student extracted
+     * @throws RuntimeException if the bag is empty
      */
-
     public ColoredPawn extractRandomStudent() {
 
-        if (students.isEmpty()) { throw new RuntimeException("StudentBag is empty."); }
-        int ExtractionIndex = (int) (Math.random() * (students.size()));
-        return (students.remove(ExtractionIndex));
-
+        if (students.isEmpty()) throw new RuntimeException("Bag is empty");
+        int extractionIndex = (int) (Math.random() * (students.size()));
+        return (students.remove(extractionIndex));
     }
 }

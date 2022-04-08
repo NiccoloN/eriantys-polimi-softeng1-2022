@@ -1,10 +1,9 @@
 package it.polimi.ingsw2022.eriantys.model.pawns;
 
 /**
- * This class represents a pawn and his color.
+ * This class represents a colored pawn
  * @author Emanuele Musto
  */
-
 public class ColoredPawn {
 
     public final PawnColor color;

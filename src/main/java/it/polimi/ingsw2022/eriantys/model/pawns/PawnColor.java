@@ -1,30 +1,28 @@
 package it.polimi.ingsw2022.eriantys.model.pawns;
 
 /**
- * This class represents the five possible colors of the pawns used in the game.
+ * This class represents the five possible colors of the pawns used in the game and the associated names
  * @author Emanuele Musto
  */
-
 public enum PawnColor {
 
-    YELLOW("Gnome", "yellow"),
-    BLUE("Unicorn", "blue"),
-    GREEN("Frog", "green"),
-    RED("Dragon", "red"),
-    PINK("Fairy", "pink");
+    YELLOW("gnome", "yellow"),
+    BLUE("unicorn", "blue"),
+    GREEN("frog", "green"),
+    RED("dragon", "red"),
+    PINK("fairy", "pink");
 
     public final String name;
     public final String colorName;
 
     /**
-     * This method initializes the possible names.
-     * @param name name of the species associated to the colors.
-     * @param colorName string associated to the color.
+     * Initializes a color
+     * @param name name of the species associated to the color
+     * @param colorName string associated to the color
      */
+    PawnColor(String name, String colorName) {
 
-    PawnColor(String name, String colorName){
         this.name = name;
         this.colorName = colorName;
     }
-
 }
