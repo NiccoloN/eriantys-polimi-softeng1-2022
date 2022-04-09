@@ -16,7 +16,7 @@ public class ColorCharacterCard extends CharacterCard{
      * @param index index of the CharacterCard
      * @param skill skill associated with the Card
      */
-    public ColorCharacterCard(int index, Skill skill) {
+    ColorCharacterCard(int index, Skill skill) {
         super(index, skill);
     }
 

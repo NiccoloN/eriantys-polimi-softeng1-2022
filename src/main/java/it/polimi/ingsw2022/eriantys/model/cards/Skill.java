@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 
 /**
- * Skill to be associated to a CharacterCard and an effect that can affect the game
+ * Skill associated to a CharacterCard and an effect that modifies the game and the associated character card.
  * @author Francesco Melegati Maccari
  */
 public class Skill {
@@ -20,7 +20,7 @@ public class Skill {
      * @param effect effect to be applied when the card is played
      * @param cost cost of the effect
      */
-    public Skill(CharacterCard characterCard, BiConsumer<CharacterCard, Game> effect, int cost) {
+    Skill(CharacterCard characterCard, BiConsumer<CharacterCard, Game> effect, int cost) {
         this.characterCard = characterCard;
         this.effect = effect;
         this.cost = cost;
