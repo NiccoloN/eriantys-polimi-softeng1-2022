@@ -5,98 +5,126 @@ import it.polimi.ingsw2022.eriantys.model.cards.HelperCard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
- * This class represents a player of the game, and has methods to manage cards and coins.
+ * This class represents a player of the game. Every player is part of a team
  * @author Emanuele Musto
+ * @see Team
  */
 
 public class Player {
 
-    private int coins;
-    private HelperCard currentHelper;
-    private final List<HelperCard> playerHelperCards;
-    private SchoolDashboard school;
-    public final Team team;
+    /**
+     * The mage associated to the player
+     */
     public final Mage mage;
+
+    /**
+     * The team of the player
+     */
+    public final Team team;
+
+    /**
+     * True if the player is the leader of his team
+     */
     public final boolean isTeamLeader;
 
+    private int coins;
+    private HelperCard currentHelper;
+    private final List<HelperCard> helperCards;
+    private SchoolDashboard school;
+
     /**
-     * This methods initializes the player giving him a team, a mage, one coins, and the isTeamLeader attribute.
+     * Initializes the player adding it to a team and associating it to a mage
      * @param team the team of the player
-     * @param mage the mage chosen by the player
+     * @param mage the mage associated with this player
      */
+    public Player(Team team, Mage mage) {
 
-    public Player(Team team, Mage mage){
-
-        coins = 1;
-        this.mage = mage;
         this.team = team;
         team.addPlayer(this);
-        playerHelperCards = new ArrayList<>(10);
-        isTeamLeader = team.getSize() == 0;
+        isTeamLeader = team.getSize() == 1;
+
+        this.mage = mage;
+
+        helperCards = new ArrayList<>(10);
+        coins = 1;
     }
 
     /**
-     * This method adds one HelperCard to the list of helper cards owned by the player,
-     * ordered by the index of the card.
-     * @param cardToAdd the HelperCard to add.
-     * @throws RuntimeException when the HelperCard is already assigned to the player.
+     * Adds a helper card to the hand of the player. Cards are ordered by index
+     * @param card the card to add
+     * @throws RuntimeException if the player already has a card of the same index in his hand
      */
+    public void addHelperCard(HelperCard card) {
 
-    public void addHelperCard(HelperCard cardToAdd){
-
-        if(playerHelperCards.contains(cardToAdd)){ throw new RuntimeException("HelperCard already assigned to player."); }
-        playerHelperCards.add(cardToAdd.index, cardToAdd);
+        if (helperCards.stream().anyMatch((x) -> x.index == card.index))
+            throw new RuntimeException("Helper card of the same index already assigned to player");
+        helperCards.add(card);
     }
 
     /**
-     * This method moves a HelperCard in currentHelper, in order to represent the card chosen by the player.
-     * @param index the index of the card, and his position on the list of HelperCards.
-     * @throws IndexOutOfBoundsException when index is out of bound.
+     * Plays a helper card. The played card will be removed from the hand of the player and stored in currentHelper
+     * @param index the index of the card to play
+     * @throws NoSuchElementException if player's hand does not contain a card of the given index
      */
+    public void playHelperCard(int index) {
 
-    public void playHelper(int index){
-        currentHelper = playerHelperCards.remove(index);
+        currentHelper = getHelperCard(index);
+        helperCards.remove(currentHelper);
+    }
+
+    /**
+     * @return the helper card of the given index
+     * @param index the index of the card to play
+     * @throws NoSuchElementException if player's hand does not contain a card of the given index
+     */
+    public HelperCard getHelperCard(int index){
+
+        return helperCards.stream().filter((x) -> x.index == index).findAny().orElseThrow();
+    }
+
+    /**
+     * @return the number of HelperCards left in player's hand
+     */
+    public int getNumberOfHelpers() {
+
+        return helperCards.size();
     }
 
     public HelperCard getCurrentHelper() {
+
         return currentHelper;
     }
 
-    /**
-     * @return the helper card with the wanted index.
-     * @throws IndexOutOfBoundsException when index is out of bound.
-     */
+    public int getCoins() {
 
-    public HelperCard getHelperCard(int index){
-        return(playerHelperCards.get(index));
+        return coins;
     }
 
     /**
-     * @return the number of HelperCards left for the player.
+     * Adds a coin to the player.
      */
-    public int getNumberOfHelpers(){
-        return(playerHelperCards.size());
-    }
+    public void addCoin() {
 
-    /**
-     * This method adds a coin to the player.
-     */
-    public void addCoin(){
         coins++;
     }
 
     /**
-     * This method updates the amount of coin when the player uses a CharacterCard.
-     * @param fee the amount of coins needed to play a CharacterCard.
-     * @throws RuntimeException when the player has not enough coins.
+     * Updates the amount of coins when the player pays a given fee
+     * @param fee the amount of coins to pay
+     * @throws RuntimeException if the player has not enough coins
      */
     public void payCoins(int fee) {
-        if ((coins - fee) < 0) { throw new RuntimeException("Player has not enough coins."); }
+
+        if ((coins - fee) < 0) throw new RuntimeException("Player has not enough coins");
         coins = coins - fee;
     }
 
+    /**
+     * @return the school associated to the player
+     */
     public SchoolDashboard getSchool() {
 
         return school;
@@ -109,7 +137,7 @@ public class Player {
      */
     public void setSchool(SchoolDashboard school) {
 
-        if (this.school != null) throw new RuntimeException("player already associated to a school");
+        if (this.school != null) throw new RuntimeException("Player already associated to a school");
         this.school = school;
     }
 }
