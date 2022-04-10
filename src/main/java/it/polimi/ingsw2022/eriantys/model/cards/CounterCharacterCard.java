@@ -1,9 +1,14 @@
 package it.polimi.ingsw2022.eriantys.model.cards;
 
+
+/**
+ * Extension of CharacterCard with a counter
+ * @author Francesco Melegati Maccari
+ */
 public class CounterCharacterCard extends CharacterCard{
     private int counter;
 
-    public CounterCharacterCard(int index, Skill skill, int counter) {
+    CounterCharacterCard(int index, Skill skill, int counter) {
         super(index, skill);
         this.counter = counter;
     }
