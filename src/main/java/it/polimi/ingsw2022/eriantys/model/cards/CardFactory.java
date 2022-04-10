@@ -56,7 +56,7 @@ public class CardFactory {
 
         if (helperCardSamples == null) readHelpersFile();
         if (index < 1 || index > helperCardSamples.length)
-            throw new RuntimeException("Invalid index: helper cars' indices go from 1 to " + helperCardSamples.length);
+            throw new RuntimeException("Invalid index: helper cards' indices go from 1 to " + helperCardSamples.length);
 
         HelperCard sample = helperCardSamples[index - 1];
         return new HelperCard(sample.index, sample.priority, sample.movement, mage);
@@ -72,7 +72,7 @@ public class CardFactory {
 
         if (characterCardSamples == null) readCharacterFile();
         if (index < 1 || index > characterCardSamples.length)
-            throw new RuntimeException("Invalid index: helper cars' indices go from 1 to " + characterCardSamples.length);
+            throw new RuntimeException("Invalid index: helper cards' indices go from 1 to " + characterCardSamples.length);
 
         CharacterCard sample = characterCardSamples[index - 1];
         return new CharacterCard(sample.index, null); //TODO skill factory
