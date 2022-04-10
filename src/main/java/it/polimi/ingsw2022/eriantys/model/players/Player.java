@@ -53,7 +53,7 @@ public class Player {
     }
 
     /**
-     * Adds a helper card to the hand of the player. Cards are ordered by index
+     * Adds a helper card to the hand of the player
      * @param card the card to add
      * @throws RuntimeException if the player already has a card of the same index in his hand
      */
