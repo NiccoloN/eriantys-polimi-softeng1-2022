@@ -1,29 +1,51 @@
 package it.polimi.ingsw2022.eriantys.view;
 
-import org.jline.builtins.Completers;
-import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.MaskingCallback;
+import org.jline.reader.impl.LineReaderImpl;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.AttributedString;
+import org.jline.utils.InfoCmp;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class EriantysCLI {
 
-    Terminal terminal;
-    LineReader lineReader;
+    private final Terminal terminal;
+    private final LineReader lineReader;
+    private AttributedString prompt;
 
     public EriantysCLI() throws IOException {
 
-        TerminalBuilder terminalBuilder = TerminalBuilder.builder();
-        terminal = terminalBuilder.build();
+        terminal = TerminalBuilder
+                .builder()
+                .dumb(true)
+                .build();
 
-        terminal.writer().println("Hello world!");
-        terminal.
+        lineReader = LineReaderBuilder
+                .builder()
+                .terminal(terminal)
+                .build();
+
+        prompt = new AttributedString("\u001B[33m>\u001B[0m");
     }
 
     public void start() {
+
+        while (true) {
+
+            terminal.puts(InfoCmp.Capability.clear_screen);
+            terminal.flush();
+
+            String line = lineReader.readLine(prompt.toAnsi());
+
+            terminal.writer().println(AttributedString
+                    .fromAnsi("\u001B[33m" + line + "\u001B[0m" + " ciao")
+                    .toAnsi(terminal));
+
+            terminal.flush();
+        }
     }
 }
