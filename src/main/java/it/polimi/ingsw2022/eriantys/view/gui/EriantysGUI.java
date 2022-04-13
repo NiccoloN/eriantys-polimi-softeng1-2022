@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.view;
+package it.polimi.ingsw2022.eriantys.view.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw2022.eriantys;
 
-import it.polimi.ingsw2022.eriantys.view.EriantysCLI;
-import it.polimi.ingsw2022.eriantys.view.EriantysGUI;
+import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
+import it.polimi.ingsw2022.eriantys.view.gui.EriantysGUI;
 import javafx.application.Application;
 
 import java.io.IOException;
