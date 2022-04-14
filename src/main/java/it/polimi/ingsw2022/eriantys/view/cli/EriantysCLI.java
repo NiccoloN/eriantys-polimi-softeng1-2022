@@ -13,6 +13,8 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiColorCodes.*;
 
 public class EriantysCLI {
 
+    private static final int TERMINAL_WIDTH = 150, TERMINAL_HEIGHT = 50; 
+    
     private static final String TEAM_WHITE_COLOR = WHITE_UNDERLINED_BRIGHT;
     private static final String TEAM_BLACK_COLOR = BLACK_UNDERLINED_BRIGHT;
     private static final String TEAM_GREY_COLOR = WHITE_UNDERLINED;
@@ -54,35 +56,41 @@ public class EriantysCLI {
 
         while (true) {
 
-            setComponentsPositions();
-
-            clear();
-            printComponent(title);
-            printSeparator();
-            for(IslandCLIComponent island : islands) printComponent(island);
+            terminal.writer().print("\u001B[8;50;150t");
             terminal.flush();
 
-            String line = lineReader.readLine(prompt.toAnsi());
+            if (terminal.getWidth() == TERMINAL_WIDTH && terminal.getHeight() == TERMINAL_HEIGHT) {
+
+                setComponentsPositions();
+
+                clear();
+                printComponent(title);
+                printSeparator();
+                for(IslandCLIComponent island : islands) printComponent(island);
+                terminal.flush();
+
+                String line = lineReader.readLine(prompt.toAnsi());
+            }
         }
     }
 
     private void setComponentsPositions() {
 
-        title.setPosition(terminal.getWidth() / 2 - title.getWidth() / 2, 0);
+        title.setPosition(TERMINAL_WIDTH / 2 - title.getWidth() / 2, 0);
 
         int offsetY = title.getHeight() + 2;
-        islands[0].setPosition(1 + terminal.getWidth() / 2, offsetY);
-        islands[1].setPosition(1 + terminal.getWidth() / 2 + islands[0].getWidth(), offsetY+ islands[0].getHeight() / 2);
-        islands[2].setPosition(1 + terminal.getWidth() / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight());
-        islands[3].setPosition(1 + terminal.getWidth() / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2);
-        islands[4].setPosition(1 + terminal.getWidth() / 2 + islands[0].getWidth(), offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2);
-        islands[5].setPosition(1 + terminal.getWidth() / 2, offsetY + islands[0].getHeight() * 3);
-        islands[6].setPosition(-1 + terminal.getWidth() / 2 - islands[0].getWidth(), offsetY + islands[0].getHeight() * 3);
-        islands[7].setPosition(-1 + terminal.getWidth() / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2);
-        islands[8].setPosition(-1 + terminal.getWidth() / 2 - islands[0].getWidth() * 3, offsetY + islands[0].getHeight() * 2);
-        islands[9].setPosition(-1 + terminal.getWidth() / 2 - islands[0].getWidth() * 3, offsetY + islands[0].getHeight());
-        islands[10].setPosition(-1 + terminal.getWidth() / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() / 2);
-        islands[11].setPosition(-1 + terminal.getWidth() / 2 - islands[0].getWidth(), offsetY);
+        islands[0].setPosition(1 + TERMINAL_WIDTH / 2, offsetY);
+        islands[1].setPosition(1 + TERMINAL_WIDTH / 2 + islands[0].getWidth(), offsetY+ islands[0].getHeight() / 2);
+        islands[2].setPosition(1 + TERMINAL_WIDTH / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight());
+        islands[3].setPosition(1 + TERMINAL_WIDTH / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2);
+        islands[4].setPosition(1 + TERMINAL_WIDTH / 2 + islands[0].getWidth(), offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2);
+        islands[5].setPosition(1 + TERMINAL_WIDTH / 2, offsetY + islands[0].getHeight() * 3);
+        islands[6].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth(), offsetY + islands[0].getHeight() * 3);
+        islands[7].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2);
+        islands[8].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 3, offsetY + islands[0].getHeight() * 2);
+        islands[9].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 3, offsetY + islands[0].getHeight());
+        islands[10].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() / 2);
+        islands[11].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth(), offsetY);
 
         islands[0].setTower(true);
         islands[0].setMother(true);
@@ -105,7 +113,7 @@ public class EriantysCLI {
     private void printSeparator() {
         
         setCursorPos(0, title.getHeight());
-        terminal.writer().print("_".repeat(terminal.getWidth()));
+        terminal.writer().print("_".repeat(TERMINAL_WIDTH));
     }
     
     private void clear() {
@@ -117,8 +125,7 @@ public class EriantysCLI {
 
     private void setCursorPos(int x, int y) {
 
-        setCursorY(y);
-        setCursorX(x);
+        terminal.writer().print("\u001B[" + y + ";" + x + "f");
     }
 
     public void setCursorX(int x) {
