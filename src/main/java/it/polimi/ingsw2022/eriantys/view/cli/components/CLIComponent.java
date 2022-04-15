@@ -1,8 +1,8 @@
-package it.polimi.ingsw2022.eriantys.view.cli;
+package it.polimi.ingsw2022.eriantys.view.cli.components;
 
 import java.util.Arrays;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.AnsiColorCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
 
 public class CLIComponent {
 
@@ -65,11 +65,6 @@ public class CLIComponent {
         return Arrays.copyOf(rows, rows.length);
     }
 
-    protected String getRow(int index) {
-
-        return rows[index];
-    }
-
     protected void setRow(int index, String row) {
 
         rows[index] = row;
@@ -77,7 +72,7 @@ public class CLIComponent {
 
     public void setColor(String ansiColor) {
 
-        if (rows[0].startsWith(ESCAPE)) rows[0] = ansiColor + rows[0].substring(rows[0].indexOf('m') + 1);
+        if (rows[0].startsWith(ESCAPE_CHAR)) rows[0] = ansiColor + rows[0].substring(rows[0].indexOf('m') + 1);
         else rows[0] = ansiColor + rows[0];
 
         if (!rows[rows.length - 1].endsWith(RESET)) rows[rows.length - 1] = rows[rows.length - 1] + RESET;

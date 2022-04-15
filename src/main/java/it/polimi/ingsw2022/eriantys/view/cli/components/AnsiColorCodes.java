@@ -1,8 +1,8 @@
-package it.polimi.ingsw2022.eriantys.view.cli;
+package it.polimi.ingsw2022.eriantys.view.cli.components;
 
 public class AnsiColorCodes {
 
-    public static final String ESCAPE = "\u001B";
+    public static final String ESCAPE_CHAR = "\u001B";
 
     //Reset
     public static final String RESET ="\u001B[0m";
@@ -18,6 +18,7 @@ public class AnsiColorCodes {
     public static final String WHITE = "\u001B[0;37m";   
 
     //Bold
+    public static final String RESET_BOLD ="\u001B[1m";
     public static final String BLACK_BOLD = "\u001B[1;30m";  
     public static final String RED_BOLD = "\u001B[1;31m";    
     public static final String GREEN_BOLD = "\u001B[1;32m";  
@@ -28,6 +29,7 @@ public class AnsiColorCodes {
     public static final String WHITE_BOLD = "\u001B[1;37m";  
 
     //Underline
+    public static final String RESET_UNDERLINED ="\u001B[4m";
     public static final String BLACK_UNDERLINED = "\u001B[4;30m";  
     public static final String RED_UNDERLINED = "\u001B[4;31m";    
     public static final String GREEN_UNDERLINED = "\u001B[4;32m";  
