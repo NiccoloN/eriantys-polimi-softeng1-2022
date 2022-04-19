@@ -42,7 +42,7 @@ public class CloudCLIComponent extends CLIComponent {
                  PURPLE_BRIGHT + pink +
                  color + " )");
         setRow(3, " (_____) ");
-        setRow(4, "    " + String.format("%01d", index) + "    ");
+        setRow(4, RESET + "    " + String.format("%01d", index) + "    ");
     }
 
     @Override
@@ -56,6 +56,11 @@ public class CloudCLIComponent extends CLIComponent {
     public void setColor(String ansiColor) {
 
         color = ansiColor;
+    }
+
+    public int getIndex() {
+
+        return index;
     }
 
     public void setRed(int red) {

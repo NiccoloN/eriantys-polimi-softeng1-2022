@@ -40,4 +40,96 @@ public class PlayerStatusCLIComponent extends CLIComponent {
         buildRows();
         return super.getRows();
     }
+
+    @Override
+    public void setColor(String ansiColor) {
+
+        tablesCLIComponent.setColor(ansiColor);
+        statsCLIComponent.setColor(ansiColor);
+    }
+
+    public int getIndex() {
+
+        return index;
+    }
+
+    public void setNickname(String nickname) {
+
+        tablesCLIComponent.setNickname(nickname);
+    }
+
+    public void setRedEntrance(int red) {
+
+        statsCLIComponent.setRed(red);
+    }
+
+    public void setGreenEntrance(int green) {
+
+        statsCLIComponent.setGreen(green);
+    }
+
+    public void setYellowEntrance(int yellow) {
+
+        statsCLIComponent.setYellow(yellow);
+    }
+
+    public void setBlueEntrance(int blue) {
+
+        statsCLIComponent.setBlue(blue);
+    }
+
+    public void setPinkEntrance(int pink) {
+
+        statsCLIComponent.setPink(pink);
+    }
+
+    public void setRed(int red) {
+
+        tablesCLIComponent.setRed(red);
+    }
+
+    public void setGreen(int green) {
+
+        tablesCLIComponent.setGreen(green);
+    }
+
+    public void setYellow(int yellow) {
+
+        tablesCLIComponent.setYellow(yellow);
+    }
+
+    public void setBlue(int blue) {
+
+        tablesCLIComponent.setBlue(blue);
+    }
+
+    public void setPink(int pink) {
+
+        tablesCLIComponent.setPink(pink);
+    }
+
+    public void setRedProf(boolean redProf) {
+
+        tablesCLIComponent.setRedProf(redProf);
+    }
+
+    public void setGreenProf(boolean greenProf) {
+
+        tablesCLIComponent.setGreenProf(greenProf);
+    }
+
+    public void setYellowProf(boolean yellowProf) {
+
+        tablesCLIComponent.setYellowProf(yellowProf);
+    }
+
+    public void setBlueProf(boolean blueProf) {
+
+        tablesCLIComponent.setBlueProf(blueProf);
+    }
+    
+    public void setPinkProf(boolean pinkProf) {
+
+        tablesCLIComponent.setPinkProf(pinkProf);
+    }
 }

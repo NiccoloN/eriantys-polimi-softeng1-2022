@@ -7,7 +7,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
 public class IslandCLIComponent extends CLIComponent {
 
     private static final String ISLAND_DEFAULT_COLOR = RESET;
-    private static final String MOTHER_NATURE_COLOR = RESET_UNDERLINED;
+    private static final String MOTHER_NATURE_COLOR = RESET + UNDERLINED;
 
     private String color;
     private String teamColor;
@@ -41,13 +41,13 @@ public class IslandCLIComponent extends CLIComponent {
         setRow(1, "  /   " + teamColor + (tower ? "II" : "  ") + color + "   \\  ");
         setRow(2, " / " +
                   RED + String.format("%02d", red) + "    " +
-                  GREEN_BRIGHT + String.format("%02d", green) + color + " \\");
+                  GREEN_BRIGHT + String.format("%02d", green) + color + " \\ ");
         setRow(3,"|     " +
                  YELLOW + String.format("%02d", yellow) + color + "     |");
         setRow(4, " \\ " +
                   BLUE_BRIGHT + String.format("%02d", blue) + "    " +
                   PURPLE_BRIGHT + String.format("%02d", pink) + color + " / ");
-        setRow(5, "  \\___" + MOTHER_NATURE_COLOR + (mother ? "MM" : "  ") + color + "___/ " + RESET);
+        setRow(5, "  \\___" + MOTHER_NATURE_COLOR + (mother ? "MM" : "  ") + color + "___/  " + RESET);
         setRow(6, "      " + String.format("%02d", index) + "      ");
     }
 
@@ -87,31 +87,31 @@ public class IslandCLIComponent extends CLIComponent {
 
     public void setRed(int red) {
 
-        if (red < 0) throw new InvalidParameterException("Red must be >= 0");
+        if (red < 0 || red > 99) throw new InvalidParameterException("Red must be >= 0 and <= 99");
         this.red = red;
     }
 
     public void setGreen(int green) {
 
-        if (green < 0) throw new InvalidParameterException("Green must be >= 0");
+        if (green < 0 || green > 99) throw new InvalidParameterException("Green must be >= 0 and <= 99");
         this.green = green;
     }
 
     public void setYellow(int yellow) {
 
-        if (yellow < 0) throw new InvalidParameterException("Yellow must be >= 0");
+        if (yellow < 0 || yellow > 99) throw new InvalidParameterException("Yellow must be >= 0 and <= 99");
         this.yellow = yellow;
     }
 
     public void setBlue(int blue) {
 
-        if (blue < 0) throw new InvalidParameterException("Blue must be >= 0");
+        if (blue < 0 || blue > 99) throw new InvalidParameterException("Blue must be >= 0 and <= 99");
         this.blue = blue;
     }
 
     public void setPink(int pink) {
 
-        if (pink < 0) throw new InvalidParameterException("Pink must be >= 0");
+        if (pink < 0 || pink > 99) throw new InvalidParameterException("Pink must be >= 0 and <= 99");
         this.pink = pink;
     }
 }
