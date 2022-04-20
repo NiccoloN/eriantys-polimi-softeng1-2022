@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.view.gui.EriantysGUI;
 import javafx.application.Application;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class Eriantys {
 
@@ -17,7 +18,7 @@ public class Eriantys {
                 EriantysCLI cli = new EriantysCLI();
                 cli.start();
             }
-            catch(IOException e) {
+            catch(IOException | TimeoutException e) {
 
                 e.printStackTrace();
             }

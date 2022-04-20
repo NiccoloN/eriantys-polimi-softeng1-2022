@@ -33,7 +33,7 @@ public class EriantysCLI {
     private static final String TEAM_GRAY_COLOR = WHITE;
 
     private CLIState state;
-    private boolean changed;
+    private boolean changed, inputProcessed;
 
     private final Terminal terminal;
     private final LineReader lineReader;
@@ -111,6 +111,7 @@ public class EriantysCLI {
         setComponentsPositions();
 
         setState(new HelperSelection(this));
+        inputProcessed = false;
     }
 
     private void setComponentsPositions() {
@@ -149,8 +150,9 @@ public class EriantysCLI {
     /**
      * Starts the CLI. Once the CLI is started, the current state of the game is visualized in the terminal window and
      * inputs are passed to the controller to evolve the game state
+     * @throws TimeoutException if the terminal window could not be correctly resized
      */
-    public void start() {
+    public void start() throws TimeoutException {
 
         Thread inputThread = new Thread(() -> {
 
@@ -160,17 +162,20 @@ public class EriantysCLI {
 
                 try {
 
-                    char input = (char) terminal.reader().read();
-                    //String line = lineReader.readLine(prompt);
-                    state.manageInput(input);
-
                     synchronized(this) {
 
+                        if (inputProcessed) wait();
+
+                        terminal.reader().skip(terminal.reader().available());
+                        char input = (char) terminal.reader().read();
+                        state.manageInput(input);
+                        inputProcessed = true;
                         changed = true;
+
                         notify();
                     }
                 }
-                catch(IOException e) {
+                catch(IOException | InterruptedException e) {
 
                     clear();
                     e.printStackTrace();
@@ -187,12 +192,15 @@ public class EriantysCLI {
                 synchronized(this) {
 
                     while(!changed) wait();
-                    changed = false;
-                }
 
-                update();
+                    update();
+                    changed = false;
+                    inputProcessed = false;
+
+                    notify();
+                }
             }
-            catch(InterruptedException | TimeoutException e) {
+            catch(InterruptedException e) {
 
                 clear();
                 e.printStackTrace();
@@ -268,7 +276,7 @@ public class EriantysCLI {
             }
         }
 
-        terminal.writer().print(TERMINAL_RESET);
+        frameBuilder.insert(0, TERMINAL_RESET);
         terminal.writer().print(frameBuilder);
         terminal.flush();
     }
