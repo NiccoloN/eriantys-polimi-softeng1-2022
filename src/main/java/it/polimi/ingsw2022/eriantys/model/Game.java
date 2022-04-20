@@ -1,5 +1,4 @@
 package it.polimi.ingsw2022.eriantys.model;
-import it.polimi.ingsw2022.eriantys.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.model.board.Board;
 import it.polimi.ingsw2022.eriantys.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
@@ -20,8 +19,10 @@ public class Game {
     final int NUMBER_OF_STUDENTS_PER_COLOR = 26;
     final int NUMBER_OF_PROFESSORS_PER_COLOR = 1;
     final int MAX_NUMBER_OF_PLAYERS = 4;
+    final int MIN_NUMBER_OF_PLAYERS = 2;
 
-    private GameMode gameMode;
+    // TODO: import Mode
+    private Mode gameMode;
     private final Board board;
     private final List<ColoredPawn> students;
     private final StudentsBag studentsBag;
@@ -33,7 +34,7 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(int numberOfPlayers, GameMode mode) {
+    public Game(int numberOfPlayers, Mode mode) {
         gameEnding = false;
         students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         players = generatePlayers(numberOfPlayers);
@@ -44,15 +45,17 @@ public class Game {
     }
 
     /**
-     * Given a number of students to be created for each color it creates a List of pawns with the same amount of pawn
-     * for each color.
-     * @param numberForColor number of pawns per color to be generated
-     * @return list of students
+     * Generates a list of pawns containing the given number of pawns per color
+     * @param numberPerColor the number of pawns per color to be generated
+     * @return the generated list of pawns
      */
-    private List<ColoredPawn> generatePawns(int numberForColor) {
+    private List<ColoredPawn> generatePawns(int numberPerColor) {
+        if (numberPerColor <= 0) {
+            throw new RuntimeException("Invalid number of pawns");
+        }
         List<ColoredPawn> studentsList = new ArrayList<>();
         for (PawnColor color : PawnColor.values()) {
-            for (int numberOfPawns = 0; numberOfPawns < numberForColor; numberOfPawns++) {
+            for (int numberOfPawns = 0; numberOfPawns < numberPerColor; numberOfPawns++) {
                 studentsList.add(new ColoredPawn(color));
             }
         }
@@ -60,13 +63,16 @@ public class Game {
     }
 
     /**
-     * Given number of players it creates a List of players divided in teams based on number of players
-     * @param numberOfPlayers number of players to be generated
-     * @return list of players divided by team based on number of players
+     * Generates a list of players containing the given number of players, dividing them in teams
+     * @param numberOfPlayers the number of players to be generated
+     * @return the generated list
      */
     private List<Player> generatePlayers(int numberOfPlayers) {
-        if (numberOfPlayers > MAX_NUMBER_OF_PLAYERS || numberOfPlayers < 0) {
-            throw new RuntimeException("Wrong players number");
+        final String errorMsg = String.format("Invalid number of players: must be >= %s and <= %s",
+                MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS);
+
+        if (numberOfPlayers > MAX_NUMBER_OF_PLAYERS || numberOfPlayers < MIN_NUMBER_OF_PLAYERS) {
+            throw new RuntimeException(errorMsg);
         }
         List<Player> players = new ArrayList<>();
         Mage[] mageNames = Mage.values();
@@ -86,7 +92,7 @@ public class Game {
                         team = Team.GRAY;
                         break;
                     default:
-                        throw new RuntimeException("Wrong players number");
+                        throw new RuntimeException(errorMsg);
                 }
             }
             players.add(new Player(team, mageNames[playerNumber]));
@@ -110,7 +116,7 @@ public class Game {
         return studentsBag;
     }
 
-    public CharacterCard getCharacterCard(int index) {
+    public CharacterCard getCharacter(int index) {
         return characters.get(index);
     }
 
