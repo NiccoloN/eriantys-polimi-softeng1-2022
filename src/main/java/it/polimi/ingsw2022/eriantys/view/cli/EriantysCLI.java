@@ -12,9 +12,9 @@ import org.jline.terminal.TerminalBuilder;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
 
@@ -25,7 +25,8 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
 public class EriantysCLI {
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 50;
-    private static final String TERMINAL_RESET = "\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t" + "\u001Bc" + RESET;
+    private static final String TERMINAL_RESIZE = "\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
+    private static final String TERMINAL_RESET = "\u001Bc" + "\u001B[3J" + RESET;
     
     private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
     private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT;
@@ -45,7 +46,7 @@ public class EriantysCLI {
     private final List<PlayerStatusCLIComponent> players;
     private final List<HelperCardCLIComponent> helpers;
 
-    private String[][] frame;
+    private final String[][] frame;
 
     /**
      * Constructs the CLI
@@ -57,7 +58,6 @@ public class EriantysCLI {
                 .builder()
                 .jansi(true)
                 .build();
-        terminal.writer().print(TERMINAL_RESET);
 
         lineReader = LineReaderBuilder
                 .builder()
@@ -192,7 +192,7 @@ public class EriantysCLI {
 
                 update();
             }
-            catch(InterruptedException e) {
+            catch(InterruptedException | TimeoutException e) {
 
                 clear();
                 e.printStackTrace();
@@ -218,10 +218,9 @@ public class EriantysCLI {
 
     /**
      * Updates the terminal window with the current state of the game
+     * @throws TimeoutException if the terminal window could not be correctly resized
      */
-    private void update() {
-
-        //long start = System.nanoTime();
+    private void update() throws TimeoutException {
 
         clearFrame();
 
@@ -241,14 +240,37 @@ public class EriantysCLI {
             if(i != frame.length - 1) frameBuilder.append("\n");
         }
 
-        if (!frame[0][0].startsWith(TERMINAL_RESET)) frame[0][0] = TERMINAL_RESET + frame[0][0];
+        if (!rightWindowSize()) {
 
-        setCursorPos(0, 0);
+            terminal.writer().print(TERMINAL_RESIZE);
+            terminal.flush();
+
+            long start;
+            long time = 0;
+            long timeout = 1000000000;
+
+            while (!rightWindowSize()) {
+
+                start = System.nanoTime();
+
+                try {
+
+                    Thread.sleep(1);
+                }
+                catch (InterruptedException e) {
+
+                    e.printStackTrace();
+                }
+
+                time += System.nanoTime() - start;
+                if (time >= timeout)
+                    throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)");
+            }
+        }
+
+        terminal.writer().print(TERMINAL_RESET);
         terminal.writer().print(frameBuilder);
         terminal.flush();
-
-        //long time = System.nanoTime() - start;
-        //terminal.writer().print(" " + time / 1000000 + "ms");
     }
 
     private void clearFrame() {
@@ -263,6 +285,11 @@ public class EriantysCLI {
 
         terminal.writer().print(TERMINAL_RESET);
         terminal.flush();
+    }
+
+    private boolean rightWindowSize() {
+
+        return terminal.getWidth() == TERMINAL_WIDTH && terminal.getHeight() == TERMINAL_HEIGHT;
     }
 
     public void setPrompt(CLIComponent prompt) {
