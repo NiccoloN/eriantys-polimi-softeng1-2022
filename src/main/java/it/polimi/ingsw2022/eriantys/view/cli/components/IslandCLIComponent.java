@@ -7,7 +7,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
 public class IslandCLIComponent extends CLIComponent {
 
     private static final String ISLAND_DEFAULT_COLOR = RESET;
-    private static final String MOTHER_NATURE_COLOR = RESET + UNDERLINED;
+    private static final String MOTHER_NATURE_COLOR = RESET;
 
     private String color;
     private String teamColor;
@@ -37,31 +37,36 @@ public class IslandCLIComponent extends CLIComponent {
     
     private void buildRows() {
         
-        setRow(0, color + "   ________   ");
-        setRow(1, "  /   " + teamColor + (tower ? "II" : "  ") + color + "   \\  ");
-        setRow(2, " / " +
-                  RED + String.format("%02d", red) + "    " +
-                  GREEN_BRIGHT + String.format("%02d", green) + color + " \\ ");
-        setRow(3,"|     " +
-                 YELLOW + String.format("%02d", yellow) + color + "     |");
-        setRow(4, " \\ " +
-                  BLUE_BRIGHT + String.format("%02d", blue) + "    " +
-                  PURPLE_BRIGHT + String.format("%02d", pink) + color + " / ");
-        setRow(5, "  \\___" + MOTHER_NATURE_COLOR + (mother ? "MM" : "  ") + color + "___/  " + RESET);
-        setRow(6, "      " + String.format("%02d", index) + "      ");
+        setRow(0, color + "   ________   " + RESET);
+        setRow(1, color + "  /   " + teamColor + (tower ? UNDERLINED + "II" : "  ") + color + "   \\  " + RESET);
+        setRow(2, color + " / " +
+                  RED + (red < 10 ? "0" : "") + red + "    " +
+                  GREEN_BRIGHT + (green < 10 ? "0" : "") + green + color + " \\ " + RESET);
+        setRow(3,color + "|     " +
+                 YELLOW + (yellow < 10 ? "0" : "") + yellow + color + "     |" + RESET);
+        setRow(4, color + " \\ " +
+                  BLUE_BRIGHT + (blue < 10 ? "0" : "") + blue + "    " +
+                  PURPLE_BRIGHT + (pink < 10 ? "0" : "") + pink + color + " / " + RESET);
+        setRow(5, color + "  \\___" + MOTHER_NATURE_COLOR + UNDERLINED + (mother ? "MM" : "  ") + color + "___/  " + RESET);
+        setRow(6, color + "      " + (index < 10 ? "0" : "") + index + "      " + RESET);
     }
 
     @Override
-    public String[] getRows() {
+    public void printToFrame(String[][] frame) {
 
         buildRows();
-        return super.getRows();
+        super.printToFrame(frame);
     }
 
     @Override
     public void setColor(String ansiColor) {
 
         color = ansiColor;
+    }
+
+    public int getIndex() {
+
+        return index;
     }
 
     public void setIndex(int index) {

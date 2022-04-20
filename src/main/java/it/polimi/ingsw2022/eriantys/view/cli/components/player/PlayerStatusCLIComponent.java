@@ -23,22 +23,13 @@ public class PlayerStatusCLIComponent extends CLIComponent {
 
         tablesCLIComponent = new SchoolTablesCLIComponent(nickname);
         statsCLIComponent = new PlayerStatsCLIComponent(teamAnsiColor);
-
-        buildRows();
-    }
-
-    private void buildRows() {
-
-        String[] tablesRows = tablesCLIComponent.getRows();
-        String[] statsRows = statsCLIComponent.getRows();
-        for(int n = 0; n < getHeight(); n++) setRow(n, tablesRows[n] + statsRows[n]);
     }
 
     @Override
-    public String[] getRows() {
+    public void printToFrame(String[][] frame) {
 
-        buildRows();
-        return super.getRows();
+        tablesCLIComponent.printToFrame(frame);
+        statsCLIComponent.printToFrame(frame);
     }
 
     @Override
@@ -46,6 +37,20 @@ public class PlayerStatusCLIComponent extends CLIComponent {
 
         tablesCLIComponent.setColor(ansiColor);
         statsCLIComponent.setColor(ansiColor);
+    }
+
+    @Override
+    public void setX(int x) {
+
+        tablesCLIComponent.setX(x);
+        statsCLIComponent.setX(x + tablesCLIComponent.getWidth());
+    }
+
+    @Override
+    public void setY(int y) {
+
+        tablesCLIComponent.setY(y);
+        statsCLIComponent.setY(y);
     }
 
     public int getIndex() {

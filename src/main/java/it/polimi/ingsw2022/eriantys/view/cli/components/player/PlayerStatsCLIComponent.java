@@ -33,28 +33,28 @@ class PlayerStatsCLIComponent extends CLIComponent {
 
     private void buildRows() {
 
-        setRow(0, "_______ ");
-        setRow(1, "       |");
-        setRow(2, " " + YELLOW + "C" + color + "x" + String.format("%02d", coins) + "  |");
-        setRow(3, "       |");
-        setRow(4, " " + teamColor + "II" + color + "x" + towers + "  |");
-        setRow(5, "       |");
-        setRow(6, " " +
+        setRow(0, color + "_______ " + RESET);
+        setRow(1, color + "       |" + RESET);
+        setRow(2, color + " " + YELLOW + "C" + color + "x" + (coins < 10 ? "0" : "") + coins + "  |" + RESET);
+        setRow(3, color + "       |" + RESET);
+        setRow(4, color + " " + teamColor + "II" + color + "x" + towers + "  |" + RESET);
+        setRow(5, color + "       |" + RESET);
+        setRow(6, color + " " +
                   RED + red +
                   GREEN_BRIGHT + green +
                   YELLOW + yellow +
                   BLUE_BRIGHT + blue +
                   PURPLE_BRIGHT + pink +
-                  RESET + " |");
-        setRow(7, "       |");
-        setRow(8, "_______|");
+                  color + " |" + RESET);
+        setRow(7, color + "       |" + RESET);
+        setRow(8, color + "_______|" + RESET);
     }
 
     @Override
-    public String[] getRows() {
+    public void printToFrame(String[][] frame) {
 
         buildRows();
-        return super.getRows();
+        super.printToFrame(frame);
     }
 
     @Override

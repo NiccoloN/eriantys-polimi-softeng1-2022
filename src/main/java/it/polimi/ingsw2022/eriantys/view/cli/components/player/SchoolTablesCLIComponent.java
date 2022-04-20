@@ -40,31 +40,32 @@ class SchoolTablesCLIComponent extends CLIComponent {
 
     private void buildRows() {
 
-        setRow(0, color + " _" + nickname + "_".repeat(getWidth() - nickname.length() - 3) + " ");
-        setRow(1, "|  " + "_".repeat(TABLE_LENGTH) + "   ___  |");
+        setRow(0, color + " _" + nickname + "_".repeat(getWidth() - nickname.length() - 3) + " " + RESET);
+        setRow(1, color + "|  " + "_".repeat(TABLE_LENGTH) + "   ___  |" + RESET);
         setRow(2, buildTableRow(GREEN_BACKGROUND_BRIGHT, green, greenProf));
         setRow(3, buildTableRow(RED_BACKGROUND, red, redProf));
         setRow(4, buildTableRow(YELLOW_BACKGROUND, yellow, yellowProf));
         setRow(5, buildTableRow(PURPLE_BACKGROUND_BRIGHT, pink, pinkProf));
         setRow(6, buildTableRow(BLUE_BACKGROUND_BRIGHT, blue, blueProf));
-        setRow(7, "|  " + (" ".repeat(5) + YELLOW + "C" + color).repeat(3) + "           |");
-        setRow(8, "|" + "_".repeat(getWidth() - 2) + "|");
+        setRow(7, color + "|  " + (" ".repeat(5) + YELLOW + "C" + color).repeat(3) + "           |" + RESET);
+        setRow(8, color + "|" + "_".repeat(getWidth() - 2) + "|" + RESET);
     }
     
     private String buildTableRow(String ansiColor, int students, boolean prof) {
         
-        StringBuilder row = new StringBuilder("| |_");
+        StringBuilder row = new StringBuilder(color);
+        row.append("| |_");
         for (int n = 0; n < students; n++) row.append(ansiColor).append("_").append(color).append("_");
         row.append("__".repeat(Math.max(0, 10 - students)));
-        row.append("| |_").append(prof ? ansiColor : color).append("_").append(color).append("_| |");
+        row.append("| |_").append(prof ? ansiColor : color).append("_").append(color).append("_| |").append(RESET);
         return row.toString();
     }
 
     @Override
-    public String[] getRows() {
+    public void printToFrame(String[][] frame) {
 
         buildRows();
-        return super.getRows();
+        super.printToFrame(frame);
     }
 
     @Override

@@ -9,36 +9,43 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
-import org.jline.utils.AttributedString;
-import org.jline.utils.InfoCmp;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
 
 /**
  * This class represents the command line interface (CLI) of the game
+ * @author Niccolò Nicolosi
  */
 public class EriantysCLI {
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 50;
+    private static final String TERMINAL_RESET = "\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t" + "\u001Bc" + RESET;
     
-    private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT + UNDERLINED;
-    private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT + UNDERLINED;
-    private static final String TEAM_GRAY_COLOR = WHITE + UNDERLINED;
+    private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
+    private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT;
+    private static final String TEAM_GRAY_COLOR = WHITE;
+
+    private CLIState state;
+    private boolean changed;
 
     private final Terminal terminal;
     private final LineReader lineReader;
-    private final AttributedString prompt;
 
+    private CLIComponent prompt;
     private final CLIComponent title;
+    private final CLIComponent line;
     private final IslandCLIComponent[] islands;
     private final List<CloudCLIComponent> clouds;
     private final List<PlayerStatusCLIComponent> players;
     private final List<HelperCardCLIComponent> helpers;
+
+    private String[][] frame;
 
     /**
      * Constructs the CLI
@@ -48,18 +55,20 @@ public class EriantysCLI {
 
         terminal = TerminalBuilder
                 .builder()
+                .jansi(true)
                 .build();
+        terminal.writer().print(TERMINAL_RESET);
 
         lineReader = LineReaderBuilder
                 .builder()
                 .terminal(terminal)
                 .build();
 
-        prompt = new AttributedString(GREEN + ">" + RESET);
-
         title = new CLIComponent(73, (" ________            __                       __                         \n" + "|        \\          |  \\                     |  \\                        \n" + "| $$$$$$$$  ______   \\$$  ______   _______  _| $$_    __    __   _______ \n" + "| $$__     /      \\ |  \\ |      \\ |       \\|   $$ \\  |  \\  |  \\ /       \\\n" + "| $$  \\   |  $$$$$$\\| $$  \\$$$$$$\\| $$$$$$$\\\\$$$$$$  | $$  | $$|  $$$$$$$\n" + "| $$$$$   | $$   \\$$| $$ /      $$| $$  | $$ | $$ __ | $$  | $$ \\$$    \\ \n" + "| $$_____ | $$      | $$|  $$$$$$$| $$  | $$ | $$|  \\| $$__/ $$ _\\$$$$$$\\\n" + "| $$     \\| $$      | $$ \\$$    $$| $$  | $$  \\$$  $$ \\$$    $$|       $$\n" + " \\$$$$$$$$ \\$$       \\$$  \\$$$$$$$ \\$$   \\$$   \\$$$$  _\\$$$$$$$ \\$$$$$$$ \n" + "                                                     |  \\__| $$          \n" + "                                                      \\$$    $$          \n" + "                                                       \\$$$$$$           \n")
                 .split("\n"));
         title.setColor(YELLOW);
+
+        line = new CLIComponent(TERMINAL_WIDTH, new String[] { "_".repeat(TERMINAL_WIDTH) });
 
         islands = new IslandCLIComponent[12];
         for(int n = 0; n < islands.length; n++) islands[n] = new IslandCLIComponent(n + 1);
@@ -85,6 +94,7 @@ public class EriantysCLI {
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
 
+        //TODO remove block
         islands[0].setTeamColor(TEAM_WHITE_COLOR);
         islands[0].setTower(true);
         islands[0].setMother(true);
@@ -94,13 +104,19 @@ public class EriantysCLI {
         players.get(0).setBlueEntrance(5);
         players.get(0).setRedProf(true);
         players.get(0).setGreen(4);
+        //-------------------------
+
+        frame = new String[TERMINAL_HEIGHT][TERMINAL_WIDTH];
 
         setComponentsPositions();
+
+        setState(new HelperSelection(this));
     }
 
     private void setComponentsPositions() {
 
         title.setPosition(TERMINAL_WIDTH / 2 - title.getWidth() / 2, 0);
+        line.setPosition(0, title.getHeight() + 1);
 
         int offsetY = title.getHeight() + 2;
         islands[0].setPosition(2 + TERMINAL_WIDTH / 2, offsetY);
@@ -132,70 +148,126 @@ public class EriantysCLI {
 
     /**
      * Starts the CLI. Once the CLI is started, the current state of the game is visualized in the terminal window and
-     * inputs are managed to evolve the game state
+     * inputs are passed to the controller to evolve the game state
      */
     public void start() {
 
-        while (true) {
+        Thread inputThread = new Thread(() -> {
 
-            terminal.writer().print("\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t");
-            terminal.flush();
+            terminal.enterRawMode();
 
-            if (terminal.getWidth() == TERMINAL_WIDTH && terminal.getHeight() == TERMINAL_HEIGHT) {
+            while(true) {
+
+                try {
+
+                    char input = (char) terminal.reader().read();
+                    //String line = lineReader.readLine(prompt);
+                    state.manageInput(input);
+
+                    synchronized(this) {
+
+                        changed = true;
+                        notify();
+                    }
+                }
+                catch(IOException e) {
+
+                    clear();
+                    e.printStackTrace();
+                }
+            }
+        });
+        inputThread.start();
+
+        //update loop
+        while(true) {
+
+            try {
+
+                synchronized(this) {
+
+                    while(!changed) wait();
+                    changed = false;
+                }
+
+                update();
+            }
+            catch(InterruptedException e) {
 
                 clear();
-
-                printComponent(title);
-                lineDown(1);
-                printLine(TERMINAL_WIDTH);
-                for (IslandCLIComponent island : islands) printComponent(island);
-                for (CloudCLIComponent cloud : clouds) printComponent(cloud);
-                for (PlayerStatusCLIComponent player : players) printComponent(player);
-                for (HelperCardCLIComponent helper : helpers) printComponent(helper);
-                terminal.flush();
-
-                String line = lineReader.readLine(prompt.toAnsi());
+                e.printStackTrace();
             }
         }
     }
 
     /**
-     * Prints a component at its position on the terminal window
-     * @param component the component to print
+     * Sets the current state of the cli and notifies the thread in which the cli is running of the changes
+     * @param state the new state of the cli
      */
-    private void printComponent(CLIComponent component) {
+    public void setState(CLIState state) {
 
-        int rowNum = 0;
-        for (String row : component.getRows()) {
+        this.state = state;
+        state.apply();
 
-            setCursorPos(component.getX(), component.getY() + rowNum);
-            terminal.writer().print(row);
-            rowNum++;
+        synchronized(this) {
+
+            changed = true;
+            notify();
         }
     }
 
     /**
-     * Prints a horizontal line at the current cursor position on the terminal window
-     * @param length the length of the line to print
+     * Updates the terminal window with the current state of the game
      */
-    private void printLine(int length) {
+    private void update() {
 
-        if (length < 0) {
+        //long start = System.nanoTime();
 
-            clear();
-            throw new InvalidParameterException("Length must be >= 0");
+        clearFrame();
+
+        title.printToFrame(frame);
+        line.printToFrame(frame);
+        for (int n = 0; n < islands.length; n++) islands[n].printToFrame(frame);
+        for (int n = 0; n < clouds.size(); n++) clouds.get(n).printToFrame(frame);
+        for (int n = 0; n < players.size(); n++) players.get(n).printToFrame(frame);
+        for (int n = 0; n < helpers.size(); n++) helpers.get(n).printToFrame(frame);
+        prompt.printToFrame(frame);
+
+        StringBuilder frameBuilder = new StringBuilder();
+
+        for(int i = 0; i < frame.length; i++) {
+
+            for(int j = 0; j < frame[i].length; j++) frameBuilder.append(frame[i][j]);
+            if(i != frame.length - 1) frameBuilder.append("\n");
         }
-        terminal.writer().print("_".repeat(length));
+
+        if (!frame[0][0].startsWith(TERMINAL_RESET)) frame[0][0] = TERMINAL_RESET + frame[0][0];
+
+        setCursorPos(0, 0);
+        terminal.writer().print(frameBuilder);
+        terminal.flush();
+
+        //long time = System.nanoTime() - start;
+        //terminal.writer().print(" " + time / 1000000 + "ms");
+    }
+
+    private void clearFrame() {
+
+        for (int n = 0; n < frame.length; n++) Arrays.fill(frame[n], " ");
     }
 
     /**
-     * Clears and resets the terminal window
+     * Forces clear and reset of the terminal window. Slow method: it is strongly recommended not to use it in loops
      */
     private void clear() {
 
-        terminal.writer().print("\u001Bc" + RESET);
-        for (int n = 0; n < terminal.getHeight(); n++) terminal.writer().println(" ".repeat(terminal.getWidth()));
+        terminal.writer().print(TERMINAL_RESET);
         terminal.flush();
+    }
+
+    public void setPrompt(CLIComponent prompt) {
+
+        this.prompt = prompt;
     }
 
     /**
@@ -219,63 +291,23 @@ public class EriantysCLI {
         terminal.writer().print("\u001B[" + (y + 1) + ";" + (x + 1) + "f");
     }
 
-    /**
-     * Moves the cursor up the given number of lines
-     * @param lines the number of lines to move up
-     * @throws InvalidParameterException if lines < 0
-     */
-    private void lineUp(int lines) {
+    public IslandCLIComponent getIsland(int index) {
 
-        if (lines < 0) {
-
-            clear();
-            throw new InvalidParameterException("Lines must be >= 0");
-        }
-        for (int n = 0; n < lines; n++) terminal.puts(InfoCmp.Capability.cursor_up);
+        return Arrays.stream(islands).filter((x) -> x.getIndex() == index).findAny().orElseThrow();
     }
 
-    /**
-     * Moves the cursor down the given number of lines and to the most-left
-     * @param lines the number of lines to move down
-     * @throws InvalidParameterException if lines < 0
-     */
-    private void lineDown(int lines) {
+    public CloudCLIComponent getCloud(int index) {
 
-        if (lines < 0) {
-
-            clear();
-            throw new InvalidParameterException("Lines must be >= 0");
-        }
-        for (int n = 0; n < lines; n++) terminal.puts(InfoCmp.Capability.cursor_down);
+        return clouds.stream().filter((x) -> x.getIndex() == index).findAny().orElseThrow();
     }
 
-    /**
-     * Moves the cursor right the given number of chars
-     * @param chars the number of chars to move right
-     * @throws InvalidParameterException if chars < 0
-     */
-    private void charRight(int chars) {
+    public HelperCardCLIComponent getHelper(int index) {
 
-        if (chars < 0) {
-
-            clear();
-            throw new InvalidParameterException("Chars must be >= 0");
-        }
-        for (int n = 0; n < chars; n++) terminal.puts(InfoCmp.Capability.cursor_right);
+        return helpers.get(index);
     }
 
-    /**
-     * Moves the cursor left the given number of chars
-     * @param chars the number of chars to move left
-     * @throws InvalidParameterException if chars < 0
-     */
-    private void charLeft(int chars) {
+    public int getNumberOfHelpers() {
 
-        if (chars < 0) {
-
-            clear();
-            throw new InvalidParameterException("Chars must be >= 0");
-        }
-        for (int n = 0; n < chars; n++) terminal.puts(InfoCmp.Capability.cursor_left);
+        return helpers.size();
     }
 }

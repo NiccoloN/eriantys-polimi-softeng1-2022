@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.view.cli.components;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
+import java.util.Observable;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -15,7 +16,7 @@ public class CLIComponent {
 
     private int x, y;
     private final int width, height;
-    private final String[] rows;
+    private final String[][] chars;
 
     /**
      * Constructs a cli component from the given rows
@@ -36,14 +37,15 @@ public class CLIComponent {
      */
     public CLIComponent(int width, int height) {
 
+        if (width < 1) throw new InvalidParameterException("Width must be >= 1");
+        this.width = width;
+        if (height < 1) throw new InvalidParameterException("Height must be >= 1");
+        this.height = height;
         x = 0;
         y = 0;
-        this.width = width;
-        this.height = height;
 
-        String[] rows = new String[height];
-        Arrays.fill(rows, " ".repeat(width));
-        this.rows = rows;
+        chars = new String[height][width];
+        for (int n = 0; n < chars.length; n++) Arrays.fill(chars[n], " ");
     }
 
     public int getX() {
@@ -82,9 +84,9 @@ public class CLIComponent {
         return height;
     }
 
-    public String[] getRows() {
+    public void printToFrame(String[][] frame) {
 
-        return Arrays.copyOf(rows, rows.length);
+        for (int i = 0; i < height; i++) System.arraycopy(chars[i], 0, frame[y + i], x, width);
     }
 
     /**
@@ -98,26 +100,36 @@ public class CLIComponent {
 
         int length = 0;
 
+        String currentChar = "";
         boolean toConsider = true;
         char[] chars = row.toCharArray();
         for (int n = 0; n < chars.length; n++) {
 
+            currentChar += chars[n];
+
             if (chars[n] == 27) toConsider = false;
-            if (toConsider) length++;
+            if (toConsider) {
+
+                this.chars[index][length] = currentChar;
+                currentChar = "";
+                length++;
+            }
             if (chars[n] == 'm') toConsider = true;
         }
 
         if (length != width)
             throw new InvalidParameterException("Row must be of length " + width +
                     ", like declared (actual length: " + length + ")");
-        rows[index] = row;
     }
 
     public void setColor(String ansiColor) {
 
-        if (rows[0].startsWith(String.valueOf(ESCAPE_CHAR))) rows[0] = ansiColor + rows[0].substring(rows[0].indexOf('m') + 1);
-        else rows[0] = ansiColor + rows[0];
+        for (int n = 0; n < chars.length; n++) {
 
-        if (!rows[rows.length - 1].endsWith(RESET)) rows[rows.length - 1] = rows[rows.length - 1] + RESET;
+            if (chars[n][0].startsWith(String.valueOf(ESCAPE_CHAR))) chars[n][0] = ansiColor + chars[n][0].substring(chars[n][0].indexOf('m') + 1);
+            else chars[n][0] = ansiColor + chars[n][0];
+
+            if (!chars[n][width - 1].endsWith(RESET)) chars[n][width - 1] = chars[n][width - 1] + RESET;
+        }
     }
 }

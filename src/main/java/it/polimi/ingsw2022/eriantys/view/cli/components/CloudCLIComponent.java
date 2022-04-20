@@ -32,24 +32,24 @@ public class CloudCLIComponent extends CLIComponent {
 
     private void buildRows() {
 
-        setRow(0, color + "  _____  ");
-        setRow(1, " (     ) ");
-        setRow(2,"( " +
+        setRow(0, color + "  _____  " + RESET);
+        setRow(1, color + " (     ) " + RESET);
+        setRow(2,color + "( " +
                  RED + red +
                  GREEN_BRIGHT + green +
                  YELLOW + yellow +
                  BLUE_BRIGHT + blue +
                  PURPLE_BRIGHT + pink +
-                 color + " )");
-        setRow(3, " (_____) ");
+                 color + " )" + RESET);
+        setRow(3, color + " (_____) " + RESET);
         setRow(4, RESET + "    " + String.format("%01d", index) + "    ");
     }
 
     @Override
-    public String[] getRows() {
+    public void printToFrame(String[][] frame) {
 
         buildRows();
-        return super.getRows();
+        super.printToFrame(frame);
     }
 
     @Override
