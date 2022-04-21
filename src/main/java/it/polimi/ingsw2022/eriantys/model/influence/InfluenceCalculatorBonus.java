@@ -5,8 +5,10 @@ import it.polimi.ingsw2022.eriantys.model.players.Player;
 import java.util.ArrayList;
 
 /**
- * This class represents the skill that gives an additional two influence points.
+ * This class represents an influence calculator that calculates influences just like the basic,
+ * except for adding 2 more points to the current player
  * @author Emanuele Musto
+ * @see InfluenceCalculatorBasic
  */
 public class InfluenceCalculatorBonus extends InfluenceCalculatorBasic{
 

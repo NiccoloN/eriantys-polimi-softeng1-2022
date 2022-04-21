@@ -4,7 +4,8 @@ import it.polimi.ingsw2022.eriantys.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.model.players.Player;
 
 /**
- * This class is used when the towers must not be included in the influence because of one character's skill
+ * This class represents an influence calculator that calculates influences like a BasicInfluenceCalculator,
+ * though without considering the contribution of towers
  * @author Emanuele Musto
  */
 public class InfluenceCalculatorNoTowers extends InfluenceCalculatorBasic{

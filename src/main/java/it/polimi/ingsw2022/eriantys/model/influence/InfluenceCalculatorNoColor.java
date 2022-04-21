@@ -6,13 +6,13 @@ import it.polimi.ingsw2022.eriantys.model.players.Player;
 
 
 /**
- * This class calculates the dominance without considering one color
+ * This class is an influence calculator that calculates the dominance
+ * without considering the contribution of students of a specific color
  * @author Emanuele Musto
  */
 public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic{
 
-
-    PawnColor ignoredColor;
+    private final PawnColor ignoredColor;
 
     /**
      * Initializes color as the color to ignore
@@ -28,12 +28,11 @@ public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic{
      * @param player one of the players
      * @param island the given compound island
      */
-
     @Override
     protected void studentsInfluence(Player player, CompoundIslandTile island, Player currentPlayer){
 
         for( PawnColor colors : PawnColor.values()){
-            if( (!ignoredColor.equals(colors)) && (player.getSchool().containsProfessor(colors)) ){
+            if( (ignoredColor != colors) && (player.getSchool().containsProfessor(colors)) ){
                 playersInfluence.put(player, playersInfluence.get(player) + island.countStudents(colors) );
             }
         }

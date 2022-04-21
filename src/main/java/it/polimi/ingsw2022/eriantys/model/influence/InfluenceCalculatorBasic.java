@@ -5,38 +5,30 @@ import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.model.players.Player;
 import it.polimi.ingsw2022.eriantys.model.players.Team;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * This class calculates the dominance for a compound island
- * without considering skills from characters
+ * This class represents an influence calculator that makes use of a basic strategy: every player has an influence
+ * equal to the number of students on the given island that match the color of the professors they control,
+ * plus the number of towers on the same island if controlled by the same team as the player
  * @author Emanuele Musto
  */
 public class InfluenceCalculatorBasic implements InfluenceCalculator{
 
     protected final Map<Player, Integer> playersInfluence;
-    /**
-     * Initializes the HashMap
-     */
+
     public InfluenceCalculatorBasic(){
         playersInfluence = new HashMap<>();
     }
 
-    /**
-     * Calculates influence for all players on a given compound island
-     * @param players the list of players in the game
-     * @param island the compound island for which computing domination
-     * @param currentPlayer the active player in this turn
-     * @return the dominating team if present, an empty optional otherwise
-     * @throws RuntimeException when the array of players is empty
-     */
     @Override
     public Optional<Team> calculateInfluence(ArrayList<Player> players, CompoundIslandTile island, Player currentPlayer){
 
-        if(players.isEmpty()) throw new RuntimeException("Not enough players for computing domination");
+        if(players.isEmpty()) throw new InvalidParameterException("Not enough players for computing domination");
         fillMap(players, currentPlayer);
 
         for(Player player : players){
@@ -55,7 +47,7 @@ public class InfluenceCalculatorBasic implements InfluenceCalculator{
      */
     protected void towerInfluence(Player player, CompoundIslandTile island) {
 
-        if (island.getTeam().isPresent() && player.team.equals(island.getTeam().get())){
+        if (island.getTeam().isPresent() && player.team == island.getTeam().get()){
             playersInfluence.put(player, playersInfluence.get(player) + island.countTowers() );
         }
     }
@@ -96,10 +88,10 @@ public class InfluenceCalculatorBasic implements InfluenceCalculator{
         Optional<Team> dominator = Optional.empty();
         boolean tie = false;
 
-        for( Player player : playersInfluence.keySet() ){
-            if(playersInfluence.get(player).equals(max)) tie = true;
+        for( Player player : playersInfluence.keySet() ) {
+            if (playersInfluence.get(player).equals(max)) tie = true;
 
-            if(playersInfluence.get(player) > max){
+            if (playersInfluence.get(player) > max) {
                 max = playersInfluence.get(player);
                 dominator = Optional.of(player.team);
                 tie = false;
