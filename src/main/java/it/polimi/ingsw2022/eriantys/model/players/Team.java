@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a Team, with the associated color, and contains the player (or players) of the team
+ * This enumeration represents the teams of the game. Every team should contain from 0 to 2 players
  * @author Emanuele Musto
  */
-
 public enum Team {
 
     WHITE,
@@ -17,31 +16,39 @@ public enum Team {
     private final List<Player> players;
 
     /**
-     * This method initializes the list of player with initial size equal to 2.
+     * Initializes the list of player with initial capacity equal to 2
      */
-
     Team() {
 
         players = new ArrayList<>(2);
     }
 
     /**
-     *This method adds a player to the team.
-     * @param playerToAdd the player to add to the team.
-     * @throws RuntimeException when the player is already part of the team.
+     * Adds a player to the team
+     * @param player the player to add to the team
+     * @throws RuntimeException if the team already contains 2 players
+     * @throws RuntimeException if the player is already part of the team
      */
+    public void addPlayer(Player player) {
 
-    public void addPlayer(Player playerToAdd) {
-
-        if(players.contains(playerToAdd)) { throw new RuntimeException("Player already on this team."); }
-        players.add(playerToAdd);
+        if (players.size() >= 2) throw new RuntimeException("Team already reached its max size: max 2 players per team");
+        if (players.contains(player)) throw new RuntimeException("Player already part of this team");
+        players.add(player);
     }
 
     /**
-     * @return the number of players of the team.
+     * @return the number of players of the team
      */
     public int getSize() {
 
         return players.size();
+    }
+
+    /**
+     * Resets this team to an empty team (only for test purposes)
+     */
+    void reset() {
+
+        players.clear();
     }
 }

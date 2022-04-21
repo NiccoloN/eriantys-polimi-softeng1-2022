@@ -1,0 +1,50 @@
+[
+  {
+    "index": 1,
+    "cost": 1
+  },
+  {
+    "index": 2,
+    "cost": 2
+  },
+  {
+    "index": 3,
+    "cost": 3
+  },
+  {
+    "index": 4,
+    "cost": 1
+  },
+  {
+    "index": 5,
+    "cost": 2
+  },
+  {
+    "index": 6,
+    "cost": 3
+  },
+  {
+    "index": 7,
+    "cost": 1
+  },
+  {
+    "index": 8,
+    "cost": 2
+  },
+  {
+    "index": 9,
+    "cost": 3
+  },
+  {
+    "index": 10,
+    "cost": 1
+  },
+  {
+    "index": 11,
+    "cost": 2
+  },
+  {
+    "index": 12,
+    "cost": 3
+  }
+]
