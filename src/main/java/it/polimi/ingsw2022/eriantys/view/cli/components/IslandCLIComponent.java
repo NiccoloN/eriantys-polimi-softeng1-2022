@@ -38,7 +38,7 @@ public class IslandCLIComponent extends CLIComponent {
     private void buildRows() {
         
         setRow(0, color + "   ________   " + RESET);
-        setRow(1, color + "  /   " + teamColor + (tower ? UNDERLINED + "II" : "  ") + color + "   \\  " + RESET);
+        setRow(1, color + "  /   " + teamColor + (tower ? UNDERLINED + "II" : "  ") + RESET + color + "   \\  " + RESET);
         setRow(2, color + " / " +
                   RED + (red < 10 ? "0" : "") + red + "    " +
                   GREEN_BRIGHT + (green < 10 ? "0" : "") + green + color + " \\ " + RESET);
@@ -47,7 +47,7 @@ public class IslandCLIComponent extends CLIComponent {
         setRow(4, color + " \\ " +
                   BLUE_BRIGHT + (blue < 10 ? "0" : "") + blue + "    " +
                   PURPLE_BRIGHT + (pink < 10 ? "0" : "") + pink + color + " / " + RESET);
-        setRow(5, color + "  \\___" + MOTHER_NATURE_COLOR + UNDERLINED + (mother ? "MM" : "  ") + color + "___/  " + RESET);
+        setRow(5, color + "  \\___" + MOTHER_NATURE_COLOR + UNDERLINED + (mother ? "MM" : "  ") + RESET + color + "___/  " + RESET);
         setRow(6, color + "      " + (index < 10 ? "0" : "") + index + "      " + RESET);
     }
 

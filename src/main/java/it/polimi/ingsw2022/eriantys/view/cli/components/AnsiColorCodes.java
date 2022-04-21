@@ -7,8 +7,9 @@ public class AnsiColorCodes {
     //Reset
     public static final String RESET ="\u001B[0;40;97m";
 
-    public static final String BOLD ="\u001B[1m";
-    public static final String UNDERLINED ="\u001B[4m";
+    public static final String BOLD = "\u001B[1m";
+    public static final String UNDERLINED = "\u001B[4m";
+    public static final String BLINKING = "\u001B[6m";
 
     // Regular colors
     public static final String BLACK = "\u001B[30m";   

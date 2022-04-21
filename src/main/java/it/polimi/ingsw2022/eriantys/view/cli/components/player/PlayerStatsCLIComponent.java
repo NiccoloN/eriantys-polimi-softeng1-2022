@@ -37,7 +37,7 @@ class PlayerStatsCLIComponent extends CLIComponent {
         setRow(1, color + "       |" + RESET);
         setRow(2, color + " " + YELLOW + "C" + color + "x" + (coins < 10 ? "0" : "") + coins + "  |" + RESET);
         setRow(3, color + "       |" + RESET);
-        setRow(4, color + " " + teamColor + "II" + color + "x" + towers + "  |" + RESET);
+        setRow(4, color + " " + teamColor + UNDERLINED + "II" + RESET + color + "x" + towers + "  |" + RESET);
         setRow(5, color + "       |" + RESET);
         setRow(6, color + " " +
                   RED + red +

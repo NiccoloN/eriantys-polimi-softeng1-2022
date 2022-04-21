@@ -5,6 +5,8 @@ import it.polimi.ingsw2022.eriantys.view.cli.components.CloudCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.HelperCardCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.player.PlayerStatusCLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.states.CLIState;
+import it.polimi.ingsw2022.eriantys.view.cli.states.HelperSelection;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
@@ -13,7 +15,6 @@ import org.jline.terminal.TerminalBuilder;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
@@ -214,8 +215,10 @@ public class EriantysCLI {
      */
     public void setState(CLIState state) {
 
+        if(this.state != null) this.state.exit();
+
         this.state = state;
-        state.apply();
+        state.enter();
 
         synchronized(this) {
 

@@ -116,6 +116,7 @@ public class CLIComponent {
             }
             if (chars[n] == 'm') toConsider = true;
         }
+        this.chars[index][length - 1] += currentChar;
 
         if (length != width)
             throw new InvalidParameterException("Row must be of length " + width +
