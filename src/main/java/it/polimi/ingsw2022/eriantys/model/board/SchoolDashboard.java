@@ -40,6 +40,13 @@ public class SchoolDashboard {
     }
 
     /**
+     * @return students contained in entrance
+     */
+    public List<ColoredPawn> getEntranceStudents() {
+        return new ArrayList<>(entranceStudents);
+    }
+
+    /**
      * Place a colored pawn at the entrance of this school. Only pawns that represent students should be placed at the entrance
      * @param student the student to place
      * @throws RuntimeException if the entrance of this school already contains 7 or more students
@@ -58,8 +65,7 @@ public class SchoolDashboard {
      * @throws NoSuchElementException if the given student is not at the entrance of this school
      */
     public void removeFromEntrance(ColoredPawn student) {
-
-        entranceStudents.remove(student);
+        if (!entranceStudents.remove(student)) throw new NoSuchElementException();
     }
 
     /**
