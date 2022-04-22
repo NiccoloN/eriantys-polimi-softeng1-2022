@@ -1,9 +1,6 @@
 package it.polimi.ingsw2022.eriantys.view.cli;
 
-import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
-import it.polimi.ingsw2022.eriantys.view.cli.components.CloudCLIComponent;
-import it.polimi.ingsw2022.eriantys.view.cli.components.HelperCardCLIComponent;
-import it.polimi.ingsw2022.eriantys.view.cli.components.IslandCLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.components.*;
 import it.polimi.ingsw2022.eriantys.view.cli.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.states.CLIState;
 import it.polimi.ingsw2022.eriantys.view.cli.states.HelperSelection;
@@ -11,6 +8,7 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -25,7 +23,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
  */
 public class EriantysCLI {
 
-    private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 50;
+    private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
     private static final String TERMINAL_RESIZE = "\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
     private static final String TERMINAL_RESET = "\u001Bc" + "\u001B[3J" + RESET;
     
@@ -42,10 +40,13 @@ public class EriantysCLI {
     private CLIComponent prompt;
     private final CLIComponent title;
     private final CLIComponent line;
+    private final TextAreaCLIComponent hintTextArea;
+    private final TextAreaCLIComponent effectTextArea;
     private final IslandCLIComponent[] islands;
     private final List<CloudCLIComponent> clouds;
     private final List<PlayerStatusCLIComponent> players;
     private final List<HelperCardCLIComponent> helpers;
+    private final CharacterCardCLIComponent[] characters;
 
     private final String[][] frame;
 
@@ -83,6 +84,13 @@ public class EriantysCLI {
         players.add(new PlayerStatusCLIComponent(3, "player_3", TEAM_BLACK_COLOR));
         players.add(new PlayerStatusCLIComponent(4, "player_4", TEAM_GRAY_COLOR));
 
+        hintTextArea = new TextAreaCLIComponent(players.get(0).getWidth(), 15, "Hints");
+        hintTextArea.setText("Ciao");
+        effectTextArea = new TextAreaCLIComponent(hintTextArea.getWidth(), hintTextArea.getHeight(), "Effect");
+        effectTextArea.setText("Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
+                               "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
+                               "many Students as they have");
+
         helpers = new ArrayList<>(10);
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
@@ -94,6 +102,11 @@ public class EriantysCLI {
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
         helpers.add(new HelperCardCLIComponent(1, 3, 7));
+
+        characters = new CharacterCardCLIComponent[3];
+        characters[0] = new CharacterCardCLIComponent(1);
+        characters[1] = new CharacterCardCLIComponent(2);
+        characters[2] = new CharacterCardCLIComponent(3);
 
         //TODO remove block
         islands[0].setTeamColor(TEAM_WHITE_COLOR);
@@ -118,9 +131,15 @@ public class EriantysCLI {
     private void setComponentsPositions() {
 
         title.setPosition(TERMINAL_WIDTH / 2 - title.getWidth() / 2, 0);
-        line.setPosition(0, title.getHeight() + 1);
+        line.setPosition(0, title.getHeight());
 
         int offsetY = title.getHeight() + 2;
+
+        players.get(0).setPosition(0, offsetY);
+        players.get(1).setPosition(TERMINAL_WIDTH - players.get(0).getWidth(), offsetY);
+        players.get(2).setPosition(0, offsetY + players.get(0).getHeight() + 1);
+        players.get(3).setPosition(TERMINAL_WIDTH - players.get(0).getWidth(), offsetY + players.get(0).getHeight() + 1);
+
         islands[0].setPosition(2 + TERMINAL_WIDTH / 2, offsetY);
         islands[1].setPosition(2 + TERMINAL_WIDTH / 2 + islands[0].getWidth(), offsetY + islands[0].getHeight() / 2);
         islands[2].setPosition(2 + TERMINAL_WIDTH / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight());
@@ -134,18 +153,21 @@ public class EriantysCLI {
         islands[10].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() / 2);
         islands[11].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth(), offsetY);
 
+        int cloudsY = islands[2].getY() + islands[2].getHeight() - clouds.get(0).getHeight() / 2;
         for(int n = 0; n < clouds.size(); n++) clouds.get(n).setPosition(
-                TERMINAL_WIDTH / 2 - (clouds.get(0).getWidth() * clouds.size() + clouds.size() - 2) / 2 + (clouds.get(0).getWidth() + 1) * n,
-                islands[2].getY() + islands[2].getHeight() - clouds.get(0).getHeight() / 2);
+                TERMINAL_WIDTH / 2 - (clouds.get(0).getWidth() * clouds.size() + clouds.size() - 2) / 2 + (clouds.get(0).getWidth() + 1) * n, cloudsY);
 
-        players.get(0).setPosition(0, 0);
-        players.get(1).setPosition(TERMINAL_WIDTH - players.get(0).getWidth(), 0);
-        players.get(2).setPosition(0, players.get(0).getHeight());
-        players.get(3).setPosition(TERMINAL_WIDTH - players.get(0).getWidth(), players.get(0).getHeight());
+        int charactersY = islands[5].getY() + islands[5].getHeight() + 2;
+        for(int n = 0; n < characters.length; n++) characters[n].setPosition(
+                TERMINAL_WIDTH / 2 - (characters[0].getWidth() * characters.length + characters.length - 2) / 2 + (characters[0].getWidth() + 1) * n, charactersY);
 
         for(int n = 0; n < helpers.size(); n++) helpers.get(n).setPosition(
                 TERMINAL_WIDTH / 2 - (helpers.get(0).getWidth() * helpers.size() + helpers.size() - 2) / 2 + (helpers.get(0).getWidth() + 1) * n,
                 TERMINAL_HEIGHT - helpers.get(0).getHeight() - 1);
+
+        int textAreasY = players.get(players.size() - 1).getY() + players.get(0).getHeight() + 1;
+        hintTextArea.setPosition(TERMINAL_WIDTH - hintTextArea.getWidth(), textAreasY);
+        effectTextArea.setPosition(0, textAreasY);
     }
 
     /**
@@ -210,24 +232,6 @@ public class EriantysCLI {
     }
 
     /**
-     * Sets the current state of the cli and notifies the thread in which the cli is running of the changes
-     * @param state the new state of the cli
-     */
-    public void setState(CLIState state) {
-
-        if(this.state != null) this.state.exit();
-
-        this.state = state;
-        state.enter();
-
-        synchronized(this) {
-
-            changed = true;
-            notify();
-        }
-    }
-
-    /**
      * Updates the terminal window with the current state of the game
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
@@ -241,6 +245,9 @@ public class EriantysCLI {
         for (int n = 0; n < clouds.size(); n++) clouds.get(n).printToFrame(frame);
         for (int n = 0; n < players.size(); n++) players.get(n).printToFrame(frame);
         for (int n = 0; n < helpers.size(); n++) helpers.get(n).printToFrame(frame);
+        for (int n = 0; n < characters.length; n++) characters[n].printToFrame(frame);
+        hintTextArea.printToFrame(frame);
+        effectTextArea.printToFrame(frame);
         prompt.printToFrame(frame);
 
         StringBuilder frameBuilder = new StringBuilder();
@@ -282,6 +289,24 @@ public class EriantysCLI {
         frameBuilder.insert(0, TERMINAL_RESET);
         terminal.writer().print(frameBuilder);
         terminal.flush();
+    }
+
+    /**
+     * Sets the current state of the cli and notifies the thread in which the cli is running of the changes
+     * @param state the new state of the cli
+     */
+    public void setState(CLIState state) {
+
+        if(this.state != null) this.state.exit();
+
+        this.state = state;
+        state.enter();
+
+        synchronized(this) {
+
+            changed = true;
+            notify();
+        }
     }
 
     private void clearFrame() {

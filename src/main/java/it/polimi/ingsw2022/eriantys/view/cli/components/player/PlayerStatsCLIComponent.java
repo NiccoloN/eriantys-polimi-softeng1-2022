@@ -15,7 +15,7 @@ class PlayerStatsCLIComponent extends CLIComponent {
 
     PlayerStatsCLIComponent(String teamColor) {
 
-        super(8, 9);
+        super(8, 8);
 
         color = PlayerStatusCLIComponent.PLAYER_STATUS_DEFAULT_COLOR;
         this.teamColor = teamColor;
@@ -46,8 +46,7 @@ class PlayerStatsCLIComponent extends CLIComponent {
                   BLUE_BRIGHT + blue +
                   PURPLE_BRIGHT + pink +
                   color + " |" + RESET);
-        setRow(7, color + "       |" + RESET);
-        setRow(8, color + "_______|" + RESET);
+        setRow(7, color + "_______|" + RESET);
     }
 
     @Override

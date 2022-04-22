@@ -18,7 +18,7 @@ class SchoolTablesCLIComponent extends CLIComponent {
 
     SchoolTablesCLIComponent(String nickname) {
 
-        super(33, 9);
+        super(33, 8);
 
         color = PlayerStatusCLIComponent.PLAYER_STATUS_DEFAULT_COLOR;
 
@@ -41,23 +41,34 @@ class SchoolTablesCLIComponent extends CLIComponent {
     private void buildRows() {
 
         setRow(0, color + " _" + nickname + "_".repeat(getWidth() - nickname.length() - 3) + " " + RESET);
-        setRow(1, color + "|  " + "_".repeat(TABLE_LENGTH) + "   ___  |" + RESET);
+        setRow(1, color + "|  " + ("_____" + YELLOW + "_" + RESET + color).repeat(3) + "___   ___  |" + RESET);
         setRow(2, buildTableRow(GREEN_BACKGROUND_BRIGHT, green, greenProf));
         setRow(3, buildTableRow(RED_BACKGROUND, red, redProf));
         setRow(4, buildTableRow(YELLOW_BACKGROUND, yellow, yellowProf));
         setRow(5, buildTableRow(PURPLE_BACKGROUND_BRIGHT, pink, pinkProf));
         setRow(6, buildTableRow(BLUE_BACKGROUND_BRIGHT, blue, blueProf));
-        setRow(7, color + "|  " + (" ".repeat(5) + YELLOW + "C" + color).repeat(3) + "           |" + RESET);
-        setRow(8, color + "|" + "_".repeat(getWidth() - 2) + "|" + RESET);
+        setRow(7, color + "|" + "_".repeat(getWidth() - 2) + "|" + RESET);
     }
     
     private String buildTableRow(String ansiColor, int students, boolean prof) {
         
         StringBuilder row = new StringBuilder(color);
-        row.append("| |_");
-        for (int n = 0; n < students; n++) row.append(ansiColor).append("_").append(color).append("_");
-        row.append("__".repeat(Math.max(0, 10 - students)));
-        row.append("| |_").append(prof ? ansiColor : color).append("_").append(color).append("_| |").append(RESET);
+        row.append("| |");
+        for (int n = 0; n < 10; n++) {
+
+            row.append("_");
+            if (n < students) row.append(ansiColor);
+            if ((n + 1) % 3 == 0) {
+
+                row.append(YELLOW).append(UNDERLINED);
+                if (n >= students) row.append("C");
+                else row.append("_");
+            }
+            else row.append("_");
+
+            row.append(RESET).append(color);
+        }
+        row.append("_| |_").append(prof ? ansiColor : RESET + color).append("_").append(RESET).append(color).append("_| |").append(RESET);
         return row.toString();
     }
 

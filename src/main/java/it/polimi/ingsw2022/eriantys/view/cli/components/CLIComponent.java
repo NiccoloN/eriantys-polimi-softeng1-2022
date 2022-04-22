@@ -98,11 +98,12 @@ public class CLIComponent {
      */
     protected void setRow(int index, String row) {
 
-        int length = 0;
+        char[] chars = row.toCharArray();
 
+        int length = 0;
         String currentChar = "";
         boolean toConsider = true;
-        char[] chars = row.toCharArray();
+
         for (int n = 0; n < chars.length; n++) {
 
             currentChar += chars[n];

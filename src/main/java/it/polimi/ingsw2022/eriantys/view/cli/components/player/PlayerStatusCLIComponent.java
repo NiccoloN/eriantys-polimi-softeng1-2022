@@ -16,7 +16,7 @@ public class PlayerStatusCLIComponent extends CLIComponent {
 
     public PlayerStatusCLIComponent(int index, String nickname, String teamAnsiColor) {
 
-        super(41, 9);
+        super(41, 8);
 
         if (index < 0 || index > 9) throw new InvalidParameterException("Index must be a positive single digit integer");
         this.index = index;
@@ -42,6 +42,7 @@ public class PlayerStatusCLIComponent extends CLIComponent {
     @Override
     public void setX(int x) {
 
+        super.setX(x);
         tablesCLIComponent.setX(x);
         statsCLIComponent.setX(x + tablesCLIComponent.getWidth());
     }
@@ -49,6 +50,7 @@ public class PlayerStatusCLIComponent extends CLIComponent {
     @Override
     public void setY(int y) {
 
+        super.setY(y);
         tablesCLIComponent.setY(y);
         statsCLIComponent.setY(y);
     }
