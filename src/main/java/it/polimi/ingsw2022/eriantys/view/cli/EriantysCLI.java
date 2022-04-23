@@ -21,7 +21,7 @@ public class EriantysCLI {
     private static final float FRAME_TIME = 1 / 60f;
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
-    private static final String TERMINAL_RESIZE = "\u001Bc\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
+    private static final String TERMINAL_RESIZE = "\u001Bc\u001B[3J\u001Bc\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
     private static final String TERMINAL_RESET = "\u001B[H" + RESET;
 
     private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
@@ -69,17 +69,17 @@ public class EriantysCLI {
 
         //build title component
         title = new CLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
-        title.setColor(YELLOW + WHITE_BACKGROUND);
+        title.setColor(YELLOW + WHITE_BACKGROUND_BRIGHT);
 
         //build sky background component
         String[] backgroundRows = new String[title.getHeight() + 1];
         Arrays.fill(backgroundRows, " ".repeat(TERMINAL_WIDTH));
         skyBackground = new CLIComponent(TERMINAL_WIDTH, backgroundRows);
-        skyBackground.setColor(WHITE_BACKGROUND);
+        skyBackground.setColor(WHITE_BACKGROUND_BRIGHT);
 
         //build sky separator line
         line = new CLIComponent(TERMINAL_WIDTH, new String[] { "_".repeat(TERMINAL_WIDTH) });
-        line.setColor(CYAN + WHITE_BACKGROUND);
+        line.setColor(CYAN + WHITE_BACKGROUND_BRIGHT);
 
         //build decorative cloud components
         String cloud1 = "\0\0\0\0._\0\0\0\0\0\n" + "\0.-(`  )\0\0\0\n" + ":(      ))\0\n" + "`(    )  ))\n" + "\0\0` __.:'\0\0\n";
@@ -108,7 +108,7 @@ public class EriantysCLI {
             }
 
             AnimatedCLIComponent decorativeCloud = new AnimatedCLIComponent(rows[0].length(), rows);
-            decorativeCloud.setColor(CYAN + WHITE_BACKGROUND);
+            decorativeCloud.setColor(CYAN + WHITE_BACKGROUND_BRIGHT);
             decorativeCloud.setSpeedX((float) (Math.random() * (maxSpeed - minSpeed) * (Math.random() >= 0.5 ? 1 : -1) + minSpeed));
             decorativeClouds[n] = decorativeCloud;
         }
@@ -341,6 +341,31 @@ public class EriantysCLI {
      */
     private void update() throws TimeoutException {
 
+        //resize terminal window to the correct size
+        long start = System.nanoTime();
+        long time;
+        long timeout = 5000000000L;
+        while (!rightWindowSize()) {
+
+            terminal.writer().print(TERMINAL_RESIZE);
+            terminal.flush();
+
+            try {
+
+                Thread.sleep(1);
+            }
+            catch (InterruptedException e) {
+
+                e.printStackTrace();
+            }
+
+            time = System.nanoTime() - start;
+            if (time >= timeout)
+                throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)\n"
+                        + "This application needs a terminal window of at least " + TERMINAL_WIDTH + " columns and " + TERMINAL_HEIGHT + " rows to run\n"
+                        + "Try to manually resize your terminal window or to reduce the font size of your terminal");
+        }
+
         clearFrame();
 
         updateDecorativeCloudsPositions();
@@ -365,29 +390,6 @@ public class EriantysCLI {
 
             for(int j = 0; j < frame[i].length; j++) frameBuilder.append(frame[i][j]);
             if(i != frame.length - 1) frameBuilder.append("\n");
-        }
-
-        //resize terminal window to the correct size
-        long start = System.nanoTime();
-        long time;
-        long timeout = 1000000000;
-        while (!rightWindowSize()) {
-
-            terminal.writer().print(TERMINAL_RESIZE);
-            terminal.flush();
-
-            try {
-
-                Thread.sleep(1);
-            }
-            catch (InterruptedException e) {
-
-                e.printStackTrace();
-            }
-
-            time = System.nanoTime() - start;
-            if (time >= timeout)
-                throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)");
         }
 
         //insert a clear screen ansi code at the start of the frame string
@@ -445,7 +447,7 @@ public class EriantysCLI {
      */
     private boolean rightWindowSize() {
 
-        return terminal.getWidth() == TERMINAL_WIDTH && terminal.getHeight() == TERMINAL_HEIGHT;
+        return terminal.getWidth() >= TERMINAL_WIDTH && terminal.getHeight() >= TERMINAL_HEIGHT;
     }
 
     /**
