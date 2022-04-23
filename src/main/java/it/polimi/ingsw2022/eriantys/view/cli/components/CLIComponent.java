@@ -6,8 +6,9 @@ import java.util.Arrays;
 import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
 /**
- * This class represents a cli component. A cli component is an array of strings of the same length to be printed at
- * its position on the terminal window
+ * This class represents a cli component. A cli component is a bi-dimensional graphic element built of ascii characters. A CLI component
+ * can be printed to a frame (a bi-dimensional array of ascii characters) in a specific position
+ * @author Niccolò Nicolosi
  */
 public class CLIComponent {
 
@@ -31,6 +32,7 @@ public class CLIComponent {
      * Constructs an empty cli component of the given size
      * @param width the width of the component
      * @param height the height of the component
+     * @throws InvalidParameterException if width or height are < 1
      */
     public CLIComponent(int width, int height) {
 
@@ -45,6 +47,9 @@ public class CLIComponent {
         for (int n = 0; n < chars.length; n++) Arrays.fill(chars[n], " ");
     }
 
+    /**
+     * @return the x position of this component on the frame (integer value)
+     */
     public int getFrameX() {
 
         return (int) x;
@@ -60,6 +65,9 @@ public class CLIComponent {
         this.x = x;
     }
 
+    /**
+     * @return the y position of this component on the frame (integer value)
+     */
     public int getFrameY() {
 
         return (int) y;
@@ -91,6 +99,10 @@ public class CLIComponent {
         return height;
     }
 
+    /**
+     * Prints this component to the given frame at its position
+     * @param frame the frame to print to
+     */
     public void printToFrame(String[][] frame) {
 
         for (int i = 0; i < height; i++) {

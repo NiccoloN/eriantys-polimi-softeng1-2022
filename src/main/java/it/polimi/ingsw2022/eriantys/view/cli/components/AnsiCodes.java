@@ -1,5 +1,9 @@
 package it.polimi.ingsw2022.eriantys.view.cli.components;
 
+/**
+ * This class provides different ansi codes and ansi-related utility methods
+ * @author Niccolò Nicolosi
+ */
 public class AnsiCodes {
 
     public static final char ESCAPE_CHAR = '\u001B';
@@ -51,6 +55,10 @@ public class AnsiCodes {
     public static final String CYAN_BACKGROUND_BRIGHT = "\u001B[106m";
     public static final String WHITE_BACKGROUND_BRIGHT = "\u001B[107m";
 
+    /**
+     * @param ansiString a string containing ansi codes
+     * @return a string identical to the given one, but stripped of any ansi code
+     */
     public static String noAnsiString(String ansiString) {
 
         char[] chars = ansiString.toCharArray();
@@ -68,6 +76,12 @@ public class AnsiCodes {
         return stringBuilder.toString();
     }
 
+    /**
+     * @param ansiString a string containing ansi codes
+     * @param textStartIndex the index of the character to consider as the start of the substring (without considering ansi codes)
+     * @param textEndIndex the index of the character to consider as the end of the substring (without considering ansi codes)
+     * @return a substring (including ansi codes from the start index to right after the end index) of the given string
+     */
     public static String ansiTextSubstring(String ansiString, int textStartIndex, int textEndIndex) {
 
         char[] chars = ansiString.toCharArray();

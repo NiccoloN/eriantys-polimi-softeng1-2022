@@ -113,6 +113,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
             textRows.set(n, row.toString().stripTrailing());
         }
 
-        resetAnimation();
+        reset();
     }
 }
