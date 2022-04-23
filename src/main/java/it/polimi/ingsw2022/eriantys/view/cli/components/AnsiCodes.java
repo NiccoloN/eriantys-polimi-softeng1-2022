@@ -1,6 +1,6 @@
 package it.polimi.ingsw2022.eriantys.view.cli.components;
 
-public class AnsiColorCodes {
+public class AnsiCodes {
 
     public static final char ESCAPE_CHAR = '\u001B';
 
@@ -50,4 +50,49 @@ public class AnsiColorCodes {
     public static final String PURPLE_BACKGROUND_BRIGHT = "\u001B[105m";
     public static final String CYAN_BACKGROUND_BRIGHT = "\u001B[106m";
     public static final String WHITE_BACKGROUND_BRIGHT = "\u001B[107m";
+
+    public static String noAnsiString(String ansiString) {
+
+        char[] chars = ansiString.toCharArray();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean toConsider = true;
+
+        for (int n = 0; n < chars.length; n++) {
+
+            if (chars[n] == 27) toConsider = false;
+            if (toConsider) stringBuilder.append(chars[n]);
+            if (chars[n] == 'm') toConsider = true;
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static String ansiTextSubstring(String ansiString, int textStartIndex, int textEndIndex) {
+
+        char[] chars = ansiString.toCharArray();
+        int textLength = textEndIndex - textStartIndex;
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int length = 0;
+        boolean toConsider = true;
+        boolean finished = false;
+
+        if (textLength > 0) {
+
+            for (int n = 0; n < chars.length && !finished; n++) {
+
+                stringBuilder.append(chars[n]);
+
+                if (chars[n] == 27) toConsider = false;
+                if (toConsider) length++;
+                if (chars[n] == 'm') toConsider = true;
+
+                if (length == textLength) finished = true;
+                if (n + 1 < chars.length && (!toConsider || chars[n + 1] == 27)) finished = false;
+            }
+        }
+
+        return stringBuilder.toString();
+    }
 }

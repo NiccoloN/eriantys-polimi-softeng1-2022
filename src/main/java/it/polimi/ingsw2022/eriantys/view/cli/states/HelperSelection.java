@@ -4,7 +4,7 @@ import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.HelperCardCLIComponent;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
 public class HelperSelection extends CLIState {
 
@@ -23,7 +23,7 @@ public class HelperSelection extends CLIState {
         super.enter();
         currentSelected = cli.getHelper(currentSelectedIndex);
         currentSelected.setColor(GREEN);
-        prompt.setPosition(currentSelected.getX() + currentSelected.getWidth() / 2, currentSelected.getY() - 1);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2, currentSelected.getFrameY() - 1);
     }
 
     @Override

@@ -4,7 +4,7 @@ import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 
 import java.security.InvalidParameterException;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.RESET;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.RESET;
 
 public class PlayerStatusCLIComponent extends CLIComponent {
 
@@ -40,7 +40,7 @@ public class PlayerStatusCLIComponent extends CLIComponent {
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(float x) {
 
         super.setX(x);
         tablesCLIComponent.setX(x);
@@ -48,7 +48,7 @@ public class PlayerStatusCLIComponent extends CLIComponent {
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(float y) {
 
         super.setY(y);
         tablesCLIComponent.setY(y);

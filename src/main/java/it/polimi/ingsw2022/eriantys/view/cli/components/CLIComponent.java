@@ -2,11 +2,8 @@ package it.polimi.ingsw2022.eriantys.view.cli.components;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
-import java.util.Observable;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
 /**
  * This class represents a cli component. A cli component is an array of strings of the same length to be printed at
@@ -14,7 +11,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
  */
 public class CLIComponent {
 
-    private int x, y;
+    private float x, y;
     private final int width, height;
     private final String[][] chars;
 
@@ -48,22 +45,32 @@ public class CLIComponent {
         for (int n = 0; n < chars.length; n++) Arrays.fill(chars[n], " ");
     }
 
-    public int getX() {
+    public int getFrameX() {
+
+        return (int) x;
+    }
+
+    public float getX() {
 
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
 
         this.x = x;
     }
 
-    public int getY() {
+    public int getFrameY() {
+
+        return (int) y;
+    }
+
+    public float getY() {
 
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
 
         this.y = y;
     }
@@ -86,13 +93,20 @@ public class CLIComponent {
 
     public void printToFrame(String[][] frame) {
 
-        for (int i = 0; i < height; i++) System.arraycopy(chars[i], 0, frame[y + i], x, width);
+        for (int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+
+                if (!chars[i][j].contains("\0") && y + i >= 0 && y + i < frame.length && x + j >= 0 && x + j < frame[getFrameY() + i].length)
+                    frame[getFrameY() + i][getFrameX() + j] = chars[i][j];
+            }
+        }
     }
 
     /**
      * Sets the row of the given index
      * @param index the index of the row to set
-     * @param row the new row
+     * @param row the new row ('\0' chars corresponds to transparent chars)
      * @throws InvalidParameterException if the given row is not of the right length
      * (ansi escape sequences are not considered in part of its length)
      */
@@ -126,12 +140,18 @@ public class CLIComponent {
 
     public void setColor(String ansiColor) {
 
-        for (int n = 0; n < chars.length; n++) {
+        for (int i = 0; i < height; i++) {
 
-            if (chars[n][0].startsWith(String.valueOf(ESCAPE_CHAR))) chars[n][0] = ansiColor + chars[n][0].substring(chars[n][0].indexOf('m') + 1);
-            else chars[n][0] = ansiColor + chars[n][0];
+            for (int j = 0; j < width; j++) {
 
-            if (!chars[n][width - 1].endsWith(RESET)) chars[n][width - 1] = chars[n][width - 1] + RESET;
+                if (!chars[i][j].contains("\0")) {
+
+                    if (chars[i][j].startsWith(String.valueOf(ESCAPE_CHAR))) chars[i][j] = ansiColor + chars[i][j].substring(chars[i][j].indexOf('m') + 1);
+                    else chars[i][j] = ansiColor + chars[i][j];
+
+                    if (!chars[i][j].endsWith(RESET)) chars[i][j] = chars[i][j] + RESET;
+                }
+            }
         }
     }
 }

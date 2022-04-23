@@ -4,7 +4,7 @@ import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 
 import java.security.InvalidParameterException;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
 class SchoolTablesCLIComponent extends CLIComponent {
 

@@ -4,9 +4,9 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
-public class TextAreaCLIComponent extends CLIComponent {
+public class TextAreaCLIComponent extends AnimatedCLIComponent {
 
     private static final String TEXT_AREA_DEFAULT_COLOR = RESET;
     private static final String TEXT_DEFAULT_COLOR = BLACK + WHITE_BACKGROUND_BRIGHT;
@@ -16,6 +16,8 @@ public class TextAreaCLIComponent extends CLIComponent {
     private final String label;
     private final List<String> textRows;
     private final int maxTextWidth, maxTextHeight;
+    private final float textSpeed;
+    private int printedChars;
 
     public TextAreaCLIComponent(int width, int height, String label) {
 
@@ -32,6 +34,8 @@ public class TextAreaCLIComponent extends CLIComponent {
         textRows = new ArrayList<>(maxTextHeight);
         for(int n = 0; n < maxTextHeight; n++) textRows.add("");
 
+        textSpeed = 180;
+
         buildRows();
     }
 
@@ -39,16 +43,33 @@ public class TextAreaCLIComponent extends CLIComponent {
 
         setRow(0, color + " _" + label + "_".repeat(getWidth() - label.length() - 3) + " " + RESET);
         setRow(1, color + "|" + " ".repeat(getWidth() - 2) + "|" + RESET);
-        for(int n = 2; n < getHeight() - 1; n++)
-            setRow(n, color + "|" + textColor + textRows.get(n - 2) + " ".repeat(getWidth() - textRows.get(n - 2).length() - 2) + RESET + color + "|" + RESET);
+
+        printedChars = 0;
+        for(int n = 2; n < getHeight() - 1; n++) setRow(n, buildTextRow(n - 2));
+
         setRow(getHeight() - 1, color + "|" + "_".repeat(getWidth() - 2) + "|" + RESET);
     }
 
-    @Override
-    public void printToFrame(String[][] frame) {
+    private String buildTextRow(int textRowIndex) {
 
+        StringBuilder row = new StringBuilder();
+        row.append(color).append("|").append(textColor);
+
+        String text = textRows.get(textRowIndex);
+        text = ansiTextSubstring(text, 0,
+                Math.min(Math.max((int) (textSpeed * getStateTime()) - printedChars, 0), noAnsiString(text).length()));
+        printedChars += noAnsiString(text).length();
+        row.append(text).append(" ".repeat(getWidth() - noAnsiString(text).length() - 2));
+        row.append(RESET).append(color).append("|").append(RESET);
+
+        return row.toString();
+    }
+
+    @Override
+    protected void update() {
+
+        super.update();
         buildRows();
-        super.printToFrame(frame);
     }
 
     @Override
@@ -68,34 +89,30 @@ public class TextAreaCLIComponent extends CLIComponent {
         String[] words = text.split(" ");
 
         StringBuilder row;
+        int nlIndex;
 
         for (int n = 0; n < textRows.size(); n++) {
 
             row = new StringBuilder();
-            while (i < words.length && noAnsiLength(row + words[i] + " ") - 1 <= maxTextWidth) {
+            while (i < words.length && noAnsiString(row + words[i] + " ").length() - 1 <= maxTextWidth) {
 
-                row.append(words[i]).append(" ");
-                i++;
+                if (words[i].contains("\n")) {
+
+                    nlIndex = words[i].indexOf("\n");
+                    row.append(words[i], 0, nlIndex).append(" ");
+                    words[i] = words[i].substring(nlIndex + 1);
+                    break;
+                }
+                else {
+
+                    row.append(words[i]).append(" ");
+                    i++;
+                }
             }
 
             textRows.set(n, row.toString().stripTrailing());
         }
-    }
 
-    private int noAnsiLength(String ansiString) {
-
-        char[] chars = ansiString.toCharArray();
-
-        int length = 0;
-        boolean toConsider = true;
-
-        for (int n = 0; n < chars.length; n++) {
-
-            if (chars[n] == 27) toConsider = false;
-            if (toConsider) length++;
-            if (chars[n] == 'm') toConsider = true;
-        }
-
-        return length;
+        resetAnimation();
     }
 }

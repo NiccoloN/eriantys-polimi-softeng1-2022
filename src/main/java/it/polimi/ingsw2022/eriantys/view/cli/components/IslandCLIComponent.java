@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.view.cli.components;
 
 import java.security.InvalidParameterException;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiColorCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
 public class IslandCLIComponent extends CLIComponent {
 
