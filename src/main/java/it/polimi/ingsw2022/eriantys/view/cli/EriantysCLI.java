@@ -22,7 +22,7 @@ public class EriantysCLI {
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
     private static final String TERMINAL_RESIZE = "\u001Bc\u001B[3J\u001Bc\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
-    private static final String TERMINAL_RESET = "\u001B[H" + RESET;
+    private static final String TERMINAL_CLEAR = "\u001B[H" + RESET;
 
     private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
     private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT;
@@ -69,17 +69,17 @@ public class EriantysCLI {
 
         //build title component
         title = new CLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
-        title.setColor(YELLOW + WHITE_BACKGROUND_BRIGHT);
+        title.setColor(YELLOW + BLUE_BACKGROUND_BRIGHT);
 
         //build sky background component
         String[] backgroundRows = new String[title.getHeight() + 1];
         Arrays.fill(backgroundRows, " ".repeat(TERMINAL_WIDTH));
         skyBackground = new CLIComponent(TERMINAL_WIDTH, backgroundRows);
-        skyBackground.setColor(WHITE_BACKGROUND_BRIGHT);
+        skyBackground.setColor(BLUE_BACKGROUND_BRIGHT);
 
         //build sky separator line
         line = new CLIComponent(TERMINAL_WIDTH, new String[] { "_".repeat(TERMINAL_WIDTH) });
-        line.setColor(CYAN + WHITE_BACKGROUND_BRIGHT);
+        line.setColor(YELLOW + BLUE_BACKGROUND_BRIGHT);
 
         //build decorative cloud components
         String cloud1 = "\0\0\0\0._\0\0\0\0\0\n" + "\0.-(`  )\0\0\0\n" + ":(      ))\0\n" + "`(    )  ))\n" + "\0\0` __.:'\0\0\n";
@@ -108,7 +108,7 @@ public class EriantysCLI {
             }
 
             AnimatedCLIComponent decorativeCloud = new AnimatedCLIComponent(rows[0].length(), rows);
-            decorativeCloud.setColor(CYAN + WHITE_BACKGROUND_BRIGHT);
+            decorativeCloud.setColor(WHITE + BLUE_BACKGROUND_BRIGHT);
             decorativeCloud.setSpeedX((float) (Math.random() * (maxSpeed - minSpeed) * (Math.random() >= 0.5 ? 1 : -1) + minSpeed));
             decorativeClouds[n] = decorativeCloud;
         }
@@ -348,7 +348,6 @@ public class EriantysCLI {
         while (!rightWindowSize()) {
 
             terminal.writer().print(TERMINAL_RESIZE);
-            terminal.flush();
 
             try {
 
@@ -393,7 +392,7 @@ public class EriantysCLI {
         }
 
         //insert a clear screen ansi code at the start of the frame string
-        frameBuilder.insert(0, TERMINAL_RESET);
+        frameBuilder.insert(0, TERMINAL_CLEAR);
 
         //print the frame string to terminal
         terminal.writer().print(frameBuilder);
@@ -438,7 +437,7 @@ public class EriantysCLI {
      */
     private void clear() {
 
-        terminal.writer().print(TERMINAL_RESET);
+        terminal.writer().print(TERMINAL_CLEAR);
         terminal.flush();
     }
 
@@ -447,7 +446,7 @@ public class EriantysCLI {
      */
     private boolean rightWindowSize() {
 
-        return terminal.getWidth() >= TERMINAL_WIDTH && terminal.getHeight() >= TERMINAL_HEIGHT;
+        return terminal.getWidth() == TERMINAL_WIDTH && terminal.getHeight() == TERMINAL_HEIGHT;
     }
 
     /**
