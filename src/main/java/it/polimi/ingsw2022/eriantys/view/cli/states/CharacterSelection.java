@@ -40,6 +40,8 @@ public class CharacterSelection extends CLIState {
         super.enter();
         currentSelectedIndex = 0;
         prevSelected = null;
+        cli.getHintTextArea().setText("Select a character card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
+                                      "Press ↓ or s to return to your previous selection");
         updateCLI();
     }
 
@@ -47,8 +49,9 @@ public class CharacterSelection extends CLIState {
     public void exit() {
 
         currentSelected.setColor(RESET);
-        cli.setPrompt(null);
+        cli.getHintTextArea().setText("");
         cli.getEffectTextArea().setText("");
+        cli.setPrompt(null);
     }
 
     @Override

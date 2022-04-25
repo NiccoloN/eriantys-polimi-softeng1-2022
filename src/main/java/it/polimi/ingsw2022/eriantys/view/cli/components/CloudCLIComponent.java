@@ -6,7 +6,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 public class CloudCLIComponent extends CLIComponent {
 
-    private static final String CLOUD_DEFAULT_COLOR = CYAN;
+    public static final String DEFAULT_COLOR = CYAN;
 
     private String color;
     private final int index;
@@ -16,7 +16,7 @@ public class CloudCLIComponent extends CLIComponent {
 
         super(9, 5);
 
-        color = CLOUD_DEFAULT_COLOR;
+        color = DEFAULT_COLOR;
 
         if (index < 0 || index > 9) throw new InvalidParameterException("Index must be a positive single digit integer");
         this.index = index;

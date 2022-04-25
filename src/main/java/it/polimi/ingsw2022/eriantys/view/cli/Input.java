@@ -1,7 +1,6 @@
 package it.polimi.ingsw2022.eriantys.view.cli;
 
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 public class Input {
 
@@ -30,6 +29,12 @@ public class Input {
         this(c1, '\0', '\0');
     }
 
+    public boolean ofAction(Action action) {
+
+        for(Input input : action.getInputs()) if(this.equals(input)) return true;
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
 
@@ -43,12 +48,6 @@ public class Input {
     public int hashCode() {
 
         return Arrays.hashCode(inputChars);
-    }
-
-    public boolean ofAction(Action action) {
-
-        for(Input input : action.getInputs()) if(this.equals(input)) return true;
-        return false;
     }
 
     @Override

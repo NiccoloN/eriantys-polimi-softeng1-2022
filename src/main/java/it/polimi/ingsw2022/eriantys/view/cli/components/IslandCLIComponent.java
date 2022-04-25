@@ -6,8 +6,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 public class IslandCLIComponent extends CLIComponent {
 
-    private static final String ISLAND_DEFAULT_COLOR = RESET;
-    private static final String MOTHER_NATURE_COLOR = RESET;
+    public static final String DEFAULT_COLOR = RESET;
 
     private String color;
     private String teamColor;
@@ -19,7 +18,7 @@ public class IslandCLIComponent extends CLIComponent {
 
         super(14, 7);
 
-        color     = ISLAND_DEFAULT_COLOR;
+        color     = DEFAULT_COLOR;
         teamColor = RESET;
         
         setIndex(index);
@@ -47,7 +46,7 @@ public class IslandCLIComponent extends CLIComponent {
         setRow(4, color + " \\ " +
                   BLUE_BRIGHT + (blue < 10 ? "0" : "") + blue + "    " +
                   PURPLE_BRIGHT + (pink < 10 ? "0" : "") + pink + color + " / " + RESET);
-        setRow(5, color + "  \\___" + MOTHER_NATURE_COLOR + UNDERLINED + (mother ? "MM" : "  ") + RESET + color + "___/  " + RESET);
+        setRow(5, color + "  \\___" + UNDERLINED + (mother ? "MM" : "  ") + RESET + color + "___/  " + RESET);
         setRow(6, color + "      " + (index < 10 ? "0" : "") + index + "      " + RESET);
     }
 

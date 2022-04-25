@@ -3,7 +3,9 @@ package it.polimi.ingsw2022.eriantys.view.cli;
 import it.polimi.ingsw2022.eriantys.view.cli.components.*;
 import it.polimi.ingsw2022.eriantys.view.cli.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.states.CLIState;
+import it.polimi.ingsw2022.eriantys.view.cli.states.CloudSelection;
 import it.polimi.ingsw2022.eriantys.view.cli.states.HelperSelection;
+import it.polimi.ingsw2022.eriantys.view.cli.states.IslandSelection;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -32,7 +34,6 @@ public class EriantysCLI {
     private final Terminal terminal;
 
     private boolean running;
-    private boolean goNextFrame;
 
     private final char[] inputChars;
     private boolean inputProcessed;
@@ -137,7 +138,6 @@ public class EriantysCLI {
 
         //build text area components
         hintTextArea = new TextAreaCLIComponent(players.get(0).getWidth(), 15, "Hints");
-        hintTextArea.setText("Ciaooooooooo oooooooo ooooooooo ooooooooooo");
         effectTextArea = new TextAreaCLIComponent(hintTextArea.getWidth(), hintTextArea.getHeight(), "Effect");
 
         //build helper card components
@@ -175,7 +175,6 @@ public class EriantysCLI {
 
         //initialize frame
         frame = new String[TERMINAL_HEIGHT][TERMINAL_WIDTH];
-        goNextFrame    = false;
         inputProcessed = false;
 
         //set first state
@@ -442,12 +441,22 @@ public class EriantysCLI {
 
     public IslandCLIComponent getIsland(int index) {
 
-        return Arrays.stream(islands).filter((x) -> x.getIndex() == index).findAny().orElseThrow();
+        return islands[index];
+    }
+
+    public int getNumberOfIslands() {
+
+        return islands.length;
     }
 
     public CloudCLIComponent getCloud(int index) {
 
-        return clouds.stream().filter((x) -> x.getIndex() == index).findAny().orElseThrow();
+        return clouds.get(index);
+    }
+
+    public int getNumberOfClouds() {
+
+        return clouds.size();
     }
 
     public HelperCardCLIComponent getHelper(int index) {
