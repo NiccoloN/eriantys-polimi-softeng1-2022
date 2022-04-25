@@ -35,8 +35,6 @@ public class HelperSelection extends CLIState {
     @Override
     public void manageInput(Input input) {
 
-        currentSelected.setColor(RESET);
-
         if(input.ofAction(Action.UP)) {
 
             cli.setState(new CharacterSelection(cli, this, Action.DOWN));
@@ -54,6 +52,7 @@ public class HelperSelection extends CLIState {
 
     private void updateCLI() {
 
+        if (currentSelected != null) currentSelected.setColor(RESET);
         currentSelected = cli.getHelper(currentSelectedIndex);
         currentSelected.setColor(GREEN);
         prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2, currentSelected.getFrameY() - 1);

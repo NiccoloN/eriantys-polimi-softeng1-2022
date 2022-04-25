@@ -46,9 +46,7 @@ public class Input {
 
     public boolean ofAction(Action action) {
 
-        for(Input input : action.getInputs()) {
-            if(this.equals(input)) return true;
-        }
+        for(Input input : action.getInputs()) if(this.equals(input)) return true;
         return false;
     }
 }

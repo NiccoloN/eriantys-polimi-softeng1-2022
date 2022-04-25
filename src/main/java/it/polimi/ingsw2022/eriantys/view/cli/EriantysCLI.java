@@ -34,7 +34,7 @@ public class EriantysCLI {
     private boolean running;
     private boolean goNextFrame;
 
-    private char[] inputChars;
+    private final char[] inputChars;
     private boolean inputProcessed;
 
     private CLIState state;

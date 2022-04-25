@@ -54,8 +54,6 @@ public class CharacterSelection extends CLIState {
     @Override
     public void manageInput(Input input) {
 
-        currentSelected.setColor(RESET);
-
         if(input.ofAction(goBackAction)) {
 
             cli.setState(prevState);
@@ -73,6 +71,7 @@ public class CharacterSelection extends CLIState {
 
     private void updateCLI() {
 
+        if (currentSelected != null) currentSelected.setColor(RESET);
         currentSelected = cli.getCharacter(currentSelectedIndex);
         currentSelected.setColor(GREEN);
 

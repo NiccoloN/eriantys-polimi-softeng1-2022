@@ -134,7 +134,7 @@ public class CLIComponent {
 
             currentChar += chars[n];
 
-            if (chars[n] == 27) toConsider = false;
+            if (chars[n] == ESCAPE_CHAR) toConsider = false;
             if (toConsider) {
 
                 this.chars[index][length] = currentChar;
