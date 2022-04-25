@@ -4,7 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 public class TextAreaCLIComponent extends AnimatedCLIComponent {
 

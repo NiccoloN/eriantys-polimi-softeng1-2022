@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
+import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 /**
  * This class represents the command line interface (CLI) of the game
@@ -20,7 +20,6 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 public class EriantysCLI {
 
     private static final float FRAME_TIME = 1 / 60f;
-    private static final float INPUT_TIME = FRAME_TIME / 2;
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
     private static final String TERMINAL_RESIZE = "\u001Bc\u001B[3J\u001Bc\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
@@ -30,11 +29,12 @@ public class EriantysCLI {
     private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT;
     private static final String TEAM_GRAY_COLOR = WHITE;
 
+    private final Terminal terminal;
+
     private boolean running;
     private boolean goNextFrame;
 
-    private final Terminal terminal;
-    private final char[] input;
+    private char[] inputChars;
     private boolean inputProcessed;
 
     private CLIState state;
@@ -72,7 +72,7 @@ public class EriantysCLI {
         terminal.flush();
 
         //build input buffer
-        input = new char[3];
+        inputChars = new char[3];
 
         //build title component
         title = new CLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
@@ -139,9 +139,6 @@ public class EriantysCLI {
         hintTextArea = new TextAreaCLIComponent(players.get(0).getWidth(), 15, "Hints");
         hintTextArea.setText("Ciaooooooooo oooooooo ooooooooo ooooooooooo");
         effectTextArea = new TextAreaCLIComponent(hintTextArea.getWidth(), hintTextArea.getHeight(), "Effect");
-        effectTextArea.setText("Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
-                               "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
-                               "many Students as they have\n\n" + YELLOW + "Cost" + BLACK + ": 03");
 
         //build helper card components
         helpers = new ArrayList<>(10);
@@ -298,20 +295,21 @@ public class EriantysCLI {
                     }
 
                     //waits for new input
-                    Arrays.fill(input, '\0');
-                    input[0] = (char) terminal.reader().read();
+                    Arrays.fill(inputChars, '\0');
+                    inputChars[0] = (char) terminal.reader().read();
 
                     //if the fist character read is an escape character, waits for an ansi escape sequence
-                    if (input[0] == ESCAPE_CHAR) {
+                    if (inputChars[0] == ESCAPE_CHAR) {
 
                         int c;
-                        for (int n = 1; n < input.length; n++) {
+                        for (int n = 1; n < inputChars.length; n++) {
 
                             c = terminal.reader().read(1);
                             if (c < 0) break;
-                            input[n] = (char) c;
+                            inputChars[n] = (char) c;
                         }
                     }
+                    Input input = new Input(inputChars[0], inputChars[1], inputChars[2]);
 
                     synchronized(this) {
 
@@ -397,7 +395,7 @@ public class EriantysCLI {
         for (int n = 0; n < characters.length; n++) characters[n].printToFrame(frame);
         hintTextArea.printToFrame(frame);
         effectTextArea.printToFrame(frame);
-        prompt.printToFrame(frame);
+        if(prompt != null) prompt.printToFrame(frame);
 
         //build new frame string
         StringBuilder frameBuilder = new StringBuilder();
@@ -497,5 +495,25 @@ public class EriantysCLI {
     public int getNumberOfHelpers() {
 
         return helpers.size();
+    }
+
+    public CharacterCardCLIComponent getCharacter(int index) {
+
+        return characters[index];
+    }
+
+    public int getNumberOfCharacters() {
+
+        return characters.length;
+    }
+
+    public TextAreaCLIComponent getHintTextArea() {
+
+        return hintTextArea;
+    }
+
+    public TextAreaCLIComponent getEffectTextArea() {
+
+        return effectTextArea;
     }
 }

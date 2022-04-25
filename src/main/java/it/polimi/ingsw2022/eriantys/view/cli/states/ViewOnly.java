@@ -1,18 +1,18 @@
 package it.polimi.ingsw2022.eriantys.view.cli.states;
 
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
-import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.Input;
 
 public class ViewOnly extends CLIState {
 
     public ViewOnly(EriantysCLI cli) {
 
-        super(cli, new CLIComponent(1, new String[] { " " }));
+        super(cli, null);
     }
 
     @Override
     public void exit() {}
 
     @Override
-    public void manageInput(char[] input) {}
+    public void manageInput(Input input) {}
 }

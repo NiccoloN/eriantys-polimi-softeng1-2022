@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.view.cli.components;
+package it.polimi.ingsw2022.eriantys.view.cli;
 
 /**
  * This class provides different ansi codes and ansi-related utility methods
