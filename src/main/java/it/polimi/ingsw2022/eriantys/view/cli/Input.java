@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.view.cli;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class Input {
 
@@ -48,5 +49,13 @@ public class Input {
 
         for(Input input : action.getInputs()) if(this.equals(input)) return true;
         return false;
+    }
+
+    @Override
+    public String toString() {
+
+        int[] charCodes = new int[inputChars.length];
+        for(int n = 0; n < inputChars.length; n++) charCodes[n] = inputChars[n];
+        return "Input: " + Arrays.toString(charCodes);
     }
 }

@@ -240,44 +240,9 @@ public class EriantysCLI {
      * inputs are passed to the controller to evolve the game state
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
-    public void start() throws TimeoutException {
+    public void start() throws TimeoutException, InterruptedException {
 
         running = true;
-
-        //the time thread will take care of notifying the main cli thread whenever it is time to render a new frame
-        Thread timeThread = new Thread(() -> {
-
-            long start = System.nanoTime();
-            long time = 0;
-
-            while(true) {
-
-                synchronized(this) {
-
-                    time += System.nanoTime() - start;
-                    if (time >= FRAME_TIME * 1000000000) {
-
-                        goNextFrame = true;
-                        time        = 0;
-                        notify();
-                    }
-                    start = System.nanoTime();
-
-                    while (goNextFrame) {
-
-                        try {
-
-                            wait();
-                        }
-                        catch(InterruptedException e) {
-
-                            printException(e);
-                        }
-                    }
-                }
-            }
-        });
-        timeThread.start();
 
         //the input thread will take care of accepting new inputs at the right time and passing them to the controller
         Thread inputThread = new Thread(() -> {
@@ -328,23 +293,21 @@ public class EriantysCLI {
         inputThread.start();
 
         //update loop
+        long lastFrameTime, delta;
         while(running) {
 
-            try {
+            lastFrameTime = System.nanoTime();
+            delta = 0;
+            while(delta < FRAME_TIME * 1000000000) {
 
-                synchronized(this) {
-
-                    while(!goNextFrame) wait();
-
-                    if (running) update();
-                    goNextFrame    = false;
-                    inputProcessed = false;
-                    notify();
-                }
+                Thread.sleep(0, 100);
+                delta = System.nanoTime() - lastFrameTime;
             }
-            catch(InterruptedException e) {
+            synchronized(this) {
 
-                printException(e);
+                if (running) update();
+                inputProcessed = false;
+                notify();
             }
         }
     }
