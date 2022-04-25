@@ -422,10 +422,8 @@ public class EriantysCLI {
 
         for (AnimatedCLIComponent decorativeCloud : decorativeClouds) {
 
-            if (decorativeCloud.getX() < - decorativeCloud.getWidth())
-                decorativeCloud.setX(TERMINAL_WIDTH);
-            if (decorativeCloud.getX() > TERMINAL_WIDTH)
-                decorativeCloud.setX(- decorativeCloud.getWidth());
+            if (decorativeCloud.getX() < - decorativeCloud.getWidth()) decorativeCloud.setX(TERMINAL_WIDTH);
+            else if (decorativeCloud.getX() > TERMINAL_WIDTH) decorativeCloud.setX(- decorativeCloud.getWidth());
         }
     }
 

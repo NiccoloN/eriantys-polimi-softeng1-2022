@@ -39,11 +39,11 @@ public class HelperSelection extends CLIState {
 
         currentSelected.setColor(RESET);
 
-        if (input[0] == 'a' || (input[0] == ESCAPE_CHAR && input[1] == '[' && input[2] == 'D')) currentSelectedIndex--;
-        else if (input[0] == 'd' || (input[0] == ESCAPE_CHAR && input[1] == '[' && input[2] == 'C')) currentSelectedIndex++;
+        if (input[0] == 'd' || isArrowRightChar(input)) currentSelectedIndex++;
+        else if (input[0] == 'a' || isArrowLeftChar(input)) currentSelectedIndex--;
 
         if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfHelpers() - 1;
-        if (currentSelectedIndex > cli.getNumberOfHelpers() - 1) currentSelectedIndex = 0;
+        else if (currentSelectedIndex > cli.getNumberOfHelpers() - 1) currentSelectedIndex = 0;
 
         enter();
     }

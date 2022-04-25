@@ -3,6 +3,8 @@ package it.polimi.ingsw2022.eriantys.view.cli.states;
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 
+import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.ESCAPE_CHAR;
+
 /**
  * This class represents a state of the cli
  * @see EriantysCLI
@@ -42,4 +44,53 @@ public abstract class CLIState {
      * @param input the received input
      */
     public abstract void manageInput(char[] input);
+
+    /**
+     * @param input the input to check
+     * @return whether the given input corresponds to the pressing of an arrow key
+     */
+    private boolean isArrowChar(char[] input) {
+
+        if (input.length < 2) return false;
+        return input[0] == ESCAPE_CHAR && (input[1] == '[' || input[1] == 'O');
+    }
+
+    /**
+     * @param input the input to check
+     * @return whether the given input corresponds to the pressing of an arrow up key
+     */
+    protected boolean isArrowUpChar(char[] input) {
+
+        return isArrowChar(input) && input[2] == 'A';
+    }
+
+
+    /**
+     * @param input the input to check
+     * @return whether the given input corresponds to the pressing of an arrow down key
+     */
+    protected boolean isArrowDownChar(char[] input) {
+
+        return isArrowChar(input) && input[2] == 'B';
+    }
+
+
+    /**
+     * @param input the input to check
+     * @return whether the given input corresponds to the pressing of an arrow right key
+     */
+    protected boolean isArrowRightChar(char[] input) {
+
+        return isArrowChar(input) && input[2] == 'C';
+    }
+
+
+    /**
+     * @param input the input to check
+     * @return whether the given input corresponds to the pressing of an arrow left key
+     */
+    protected boolean isArrowLeftChar(char[] input) {
+
+        return isArrowChar(input) && input[2] == 'D';
+    }
 }
