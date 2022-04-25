@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.view.cli.states.CLIState;
 import it.polimi.ingsw2022.eriantys.view.cli.states.HelperSelection;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
@@ -19,6 +20,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 public class EriantysCLI {
 
     private static final float FRAME_TIME = 1 / 60f;
+    private static final float INPUT_TIME = FRAME_TIME / 2;
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
     private static final String TERMINAL_RESIZE = "\u001Bc\u001B[3J\u001Bc\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
@@ -29,11 +31,13 @@ public class EriantysCLI {
     private static final String TEAM_GRAY_COLOR = WHITE;
 
     private boolean running;
+    private boolean goNextFrame;
 
     private final Terminal terminal;
+    private final char[] input;
+    private boolean inputProcessed;
 
     private CLIState state;
-    private boolean goNextFrame, inputProcessed;
 
     private CLIComponent prompt;
     private final CLIComponent title;
@@ -66,6 +70,9 @@ public class EriantysCLI {
                 .build();
         terminal.writer().print(TERMINAL_RESIZE);
         terminal.flush();
+
+        //build input buffer
+        input = new char[3];
 
         //build title component
         title = new CLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
@@ -240,7 +247,7 @@ public class EriantysCLI {
 
         running = true;
 
-        //a time thread will take care of notifying the main cli thread whenever it is time to render a new frame
+        //the time thread will take care of notifying the main cli thread whenever it is time to render a new frame
         Thread timeThread = new Thread(() -> {
 
             long start = System.nanoTime();
@@ -251,7 +258,7 @@ public class EriantysCLI {
                 synchronized(this) {
 
                     time += System.nanoTime() - start;
-                    if (time / 1000000000f >= FRAME_TIME) {
+                    if (time >= FRAME_TIME * 1000000000) {
 
                         goNextFrame = true;
                         time        = 0;
@@ -275,7 +282,7 @@ public class EriantysCLI {
         });
         timeThread.start();
 
-        //an input thread will take care of accepting new inputs and passing them to the controller
+        //the input thread will take care of accepting new inputs at the right time and passing them to the controller
         Thread inputThread = new Thread(() -> {
 
             synchronized(this) { terminal.enterRawMode(); }
@@ -290,12 +297,21 @@ public class EriantysCLI {
                         notify();
                     }
 
-                    //skip all inputs in buffer to avoid input queues
-                    //this way, holding down a key is actually like pressing the key once per frame
-                    terminal.reader().skip(terminal.reader().available());
-
                     //waits for new input
-                    char input = (char) terminal.reader().read();
+                    Arrays.fill(input, '\0');
+                    input[0] = (char) terminal.reader().read();
+
+                    //if the fist character read is an escape character, waits for an ansi escape sequence
+                    if (input[0] == ESCAPE_CHAR) {
+
+                        int c;
+                        for (int n = 1; n < input.length; n++) {
+
+                            c = terminal.reader().read(1);
+                            if (c < 0) break;
+                            input[n] = (char) c;
+                        }
+                    }
 
                     synchronized(this) {
 
@@ -361,7 +377,7 @@ public class EriantysCLI {
             time = System.nanoTime() - start;
             if (time >= timeout)
                 throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)\n"
-                        + "This application needs a terminal window of at least " + TERMINAL_WIDTH + " columns and " + TERMINAL_HEIGHT + " rows to run\n"
+                        + "This application needs a terminal window of " + TERMINAL_WIDTH + " columns and " + TERMINAL_HEIGHT + " rows to run\n"
                         + "Try to manually resize your terminal window or to reduce the font size of your terminal");
         }
 

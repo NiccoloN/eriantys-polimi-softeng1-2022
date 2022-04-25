@@ -4,6 +4,8 @@ import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.HelperCardCLIComponent;
 
+import java.util.regex.Pattern;
+
 import static it.polimi.ingsw2022.eriantys.view.cli.components.AnsiCodes.*;
 
 public class HelperSelection extends CLIState {
@@ -33,24 +35,16 @@ public class HelperSelection extends CLIState {
     }
 
     @Override
-    public void manageInput(char input) {
+    public void manageInput(char[] input) {
 
         currentSelected.setColor(RESET);
 
-        switch(input) {
+        if (input[0] == 'a' || (input[0] == ESCAPE_CHAR && input[1] == '[' && input[2] == 'D')) currentSelectedIndex--;
+        else if (input[0] == 'd' || (input[0] == ESCAPE_CHAR && input[1] == '[' && input[2] == 'C')) currentSelectedIndex++;
 
-            case 'a':
-                currentSelectedIndex--;
-                if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfHelpers() - 1;
-                break;
-            case 'd':
-                currentSelectedIndex++;
-                break;
-            default:
-                break;
-        }
+        if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfHelpers() - 1;
+        if (currentSelectedIndex > cli.getNumberOfHelpers() - 1) currentSelectedIndex = 0;
 
-        currentSelectedIndex %= cli.getNumberOfHelpers();
         enter();
     }
 }

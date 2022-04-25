@@ -41,5 +41,5 @@ public abstract class CLIState {
      * Makes the cli react to the given input (if the given input is client-side) and notifies the controller of the resulting events if needed
      * @param input the received input
      */
-    public abstract void manageInput(char input);
+    public abstract void manageInput(char[] input);
 }

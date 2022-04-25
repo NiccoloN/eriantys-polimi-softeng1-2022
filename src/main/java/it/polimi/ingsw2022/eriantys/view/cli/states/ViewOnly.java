@@ -14,5 +14,5 @@ public class ViewOnly extends CLIState {
     public void exit() {}
 
     @Override
-    public void manageInput(char input) {}
+    public void manageInput(char[] input) {}
 }
