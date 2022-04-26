@@ -155,9 +155,15 @@ public class EriantysCLI {
 
         //build character card components
         characters = new CharacterCardCLIComponent[3];
-        characters[0] = new CharacterCardCLIComponent(1);
-        characters[1] = new CharacterCardCLIComponent(2);
-        characters[2] = new CharacterCardCLIComponent(3);
+        characters[0] = new CharacterCardCLIComponent(1, "Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
+                                                         "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
+                                                         "many Students as they have", 1);
+        characters[1] = new CharacterCardCLIComponent(1, "Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
+                                                         "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
+                                                         "many Students as they have", 2);
+        characters[2] = new CharacterCardCLIComponent(1, "Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
+                                                         "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
+                                                         "many Students as they have", 3);
 
         //TODO remove template block
         islands[0].setTeamColor(TEAM_WHITE_COLOR);
@@ -239,7 +245,7 @@ public class EriantysCLI {
      * inputs are passed to the controller to evolve the game state
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
-    public void start() throws TimeoutException, InterruptedException {
+    public void start() throws TimeoutException {
 
         running = true;
 
@@ -299,7 +305,14 @@ public class EriantysCLI {
             delta = 0;
             while(delta < FRAME_TIME * 1000000000) {
 
-                Thread.sleep(0, 100);
+                try {
+
+                    Thread.sleep(0, 100);
+                }
+                catch(InterruptedException e) {
+
+                    printException(e);
+                }
                 delta = System.nanoTime() - lastFrameTime;
             }
             synchronized(this) {
@@ -347,14 +360,14 @@ public class EriantysCLI {
 
         //print the components on the frame in the right order
         skyBackground.printToFrame(frame);
-        for (int n = 0; n < decorativeClouds.length; n++) decorativeClouds[n].printToFrame(frame);
+        for(AnimatedCLIComponent decorativeCloud : decorativeClouds) decorativeCloud.printToFrame(frame);
         title.printToFrame(frame);
         line.printToFrame(frame);
-        for (int n = 0; n < islands.length; n++) islands[n].printToFrame(frame);
-        for (int n = 0; n < clouds.size(); n++) clouds.get(n).printToFrame(frame);
-        for (int n = 0; n < players.size(); n++) players.get(n).printToFrame(frame);
-        for (int n = 0; n < helpers.size(); n++) helpers.get(n).printToFrame(frame);
-        for (int n = 0; n < characters.length; n++) characters[n].printToFrame(frame);
+        for(IslandCLIComponent island : islands) island.printToFrame(frame);
+        for(CloudCLIComponent cloud : clouds) cloud.printToFrame(frame);
+        for(PlayerStatusCLIComponent player : players) player.printToFrame(frame);
+        for(HelperCardCLIComponent helper : helpers) helper.printToFrame(frame);
+        for(CharacterCardCLIComponent character : characters) character.printToFrame(frame);
         hintTextArea.printToFrame(frame);
         effectTextArea.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
@@ -403,7 +416,7 @@ public class EriantysCLI {
      */
     private void clearFrame() {
 
-        for (int n = 0; n < frame.length; n++) Arrays.fill(frame[n], " ");
+        for(String[] strings : frame) Arrays.fill(strings, " ");
     }
 
     /**

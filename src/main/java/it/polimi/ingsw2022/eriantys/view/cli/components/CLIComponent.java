@@ -7,7 +7,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a cli component. A cli component is a bi-dimensional graphic element built of ascii characters. A CLI component
- * can be printed to a frame (a bi-dimensional array of ascii characters) in a specific position
+ * can be printed to a frame (a bi-dimensional array of ascii characters) at a specific position
  * @author Niccolò Nicolosi
  */
 public class CLIComponent {
@@ -44,7 +44,7 @@ public class CLIComponent {
         y = 0;
 
         chars = new String[height][width];
-        for (int n = 0; n < chars.length; n++) Arrays.fill(chars[n], " ");
+        for(String[] row : chars) Arrays.fill(row, " ");
     }
 
     /**

@@ -6,25 +6,45 @@ import java.util.List;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a cli component that contains text. Text can be animated to write at a certain speed (and it is by default)
+ * @author Niccolò Nicolosi
+ */
 public class TextAreaCLIComponent extends AnimatedCLIComponent {
 
-    private static final String TEXT_AREA_DEFAULT_COLOR = RESET;
-    private static final String TEXT_DEFAULT_COLOR = BLACK + WHITE_BACKGROUND_BRIGHT;
+    public static final String DEFAULT_COLOR = RESET;
+    public static final String TEXT_DEFAULT_COLOR = BLACK + WHITE_BACKGROUND_BRIGHT;
 
     private String color;
     private String textColor;
     private final String label;
     private final List<String> textRows;
     private final int maxTextWidth, maxTextHeight;
-    private final float textSpeed;
+    private float textSpeed;
     private int printedChars;
 
+    /**
+     * Constructs a text area cli component of the given size with no label
+     * @param width the width of the component
+     * @param height the height of the component
+     */
+    public TextAreaCLIComponent(int width, int height) {
+
+        this(width, height, "");
+    }
+
+    /**
+     * Constructs a text area cli component of the given size and with a given label
+     * @param width the width of the component
+     * @param height the height of the component
+     * @param label the label of the text area
+     */
     public TextAreaCLIComponent(int width, int height, String label) {
 
         super(width, height);
         if (label.length() > width - 4) throw new InvalidParameterException("Label too long for this text area");
 
-        color = TEXT_AREA_DEFAULT_COLOR;
+        color = DEFAULT_COLOR;
         textColor = TEXT_DEFAULT_COLOR;
 
         this.label = label;
@@ -83,6 +103,10 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
         this.textColor = textColor;
     }
 
+    /**
+     * Sets the text to be written in this text area
+     * @param text the text to be written
+     */
     public void setText(String text) {
 
         int i = 0;
@@ -114,5 +138,22 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
         }
 
         reset();
+    }
+
+    /**
+     * @return the writing speed of this text area
+     */
+    public float getTextSpeed() {
+
+        return textSpeed;
+    }
+
+    /**
+     * Sets the writing speed of this text area
+     * @param textSpeed the new writing speed
+     */
+    public void setTextSpeed(float textSpeed) {
+
+        this.textSpeed = textSpeed;
     }
 }

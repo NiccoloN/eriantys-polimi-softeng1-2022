@@ -18,7 +18,7 @@ public class Eriantys {
                 EriantysCLI cli = new EriantysCLI();
                 cli.start();
             }
-            catch(IOException | TimeoutException | InterruptedException e) {
+            catch(IOException | TimeoutException e) {
 
                 e.printStackTrace();
             }

@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.ESCAPE_CHAR;
 
+/**
+ * This enumeration lists all the possible actions the user can perform to interact with the cli. Every action is triggered by specific inputs
+ * @see Input
+ * @author Niccolò Nicolosi
+ */
 public enum Action {
 
     UP(new Input[] { new Input('w'), new Input('W'), new Input(ESCAPE_CHAR, '[', 'A'), new Input(ESCAPE_CHAR, 'O', 'A') }),
@@ -19,7 +24,10 @@ public enum Action {
         this.inputs = inputs;
     }
 
-    public Input[] getInputs() {
+    /**
+     * @return the inputs that trigger this action
+     */
+    public Input[] getTriggerInputs() {
 
         return Arrays.copyOf(inputs, inputs.length);
     }

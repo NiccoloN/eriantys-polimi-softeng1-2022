@@ -2,11 +2,21 @@ package it.polimi.ingsw2022.eriantys.view.cli.components;
 
 import java.security.InvalidParameterException;
 
+/**
+ * This class represents a helper card cli component
+ * @author Niccolò Nicolosi
+ */
 public class HelperCardCLIComponent extends CLIComponent {
 
     private final int index;
     private final int priority, movement;
 
+    /**
+     * Constructs a helper card cli component with the given index, priority value and movement value
+     * @param index the index of this helper card
+     * @param priority the priority value of this helper card
+     * @param movement the movement value of this helper card
+     */
     public HelperCardCLIComponent(int index, int priority, int movement) {
 
         super(7, 5);
@@ -32,6 +42,9 @@ public class HelperCardCLIComponent extends CLIComponent {
         setRow(4, "|_____|");
     }
 
+    /**
+     * @return the index of this helper card
+     */
     public int getIndex() {
 
         return index;

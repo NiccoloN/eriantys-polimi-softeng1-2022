@@ -10,6 +10,11 @@ import java.security.InvalidParameterException;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a cli state in which the user is asked to select a character card. A character selection state is an optional state
+ * of the cli that will only be set by another and can get back to the previous state if a specific action is triggered
+ * @author Niccolò Nicolosi
+ */
 public class CharacterSelection extends CLIState {
 
     private final CLIState prevState;
@@ -18,11 +23,10 @@ public class CharacterSelection extends CLIState {
     private CharacterCardCLIComponent currentSelected, prevSelected;
 
     /**
-     * Constructs a character selection state. A character selection state is an optional state of the game that will only be set by another
-     * and can get back to the previous state if a specific action is triggered
+     * Constructs a character selection state
      * @param cli the cli this state is linked to
      * @param prevState the previous state from which this state was set
-     * @param goBackAction the action that goes back to the previous state if triggered
+     * @param goBackAction the action that makes the cli go back to the previous state if triggered
      */
     CharacterSelection(EriantysCLI cli, CLIState prevState, Action goBackAction) {
 
@@ -57,14 +61,14 @@ public class CharacterSelection extends CLIState {
     @Override
     public void manageInput(Input input) {
 
-        if(input.ofAction(goBackAction)) {
+        if(input.triggersAction(goBackAction)) {
 
             cli.setState(prevState);
             return;
         }
 
-        if (input.ofAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.ofAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
         if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfCharacters() - 1;
         else if (currentSelectedIndex > cli.getNumberOfCharacters() - 1) currentSelectedIndex = 0;
@@ -78,9 +82,8 @@ public class CharacterSelection extends CLIState {
         currentSelected = cli.getCharacter(currentSelectedIndex);
         currentSelected.setColor(GREEN);
 
-        if(currentSelected != prevSelected) cli.getEffectTextArea().setText("Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
-                                        "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
-                                        "many Students as they have\n\n" + YELLOW + "Cost" + BLACK + ": 03");
+        if(currentSelected != prevSelected)
+            cli.getEffectTextArea().setText(currentSelected.getEffect() + "\n\n" + YELLOW + "Cost" + BLACK + ": " + currentSelected.getCost());
         prevSelected = currentSelected;
 
         prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2, currentSelected.getFrameY() - 1);

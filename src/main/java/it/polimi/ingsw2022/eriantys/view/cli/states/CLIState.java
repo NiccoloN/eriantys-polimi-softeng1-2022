@@ -4,8 +4,6 @@ import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 
-import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.ESCAPE_CHAR;
-
 /**
  * This class represents a state of the cli
  * @see EriantysCLI

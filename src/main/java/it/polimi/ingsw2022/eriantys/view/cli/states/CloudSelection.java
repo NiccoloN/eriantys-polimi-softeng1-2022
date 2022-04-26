@@ -8,10 +8,14 @@ import it.polimi.ingsw2022.eriantys.view.cli.components.CloudCLIComponent;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a cli state in which the user is asked to select a cloud
+ * @author Niccolò Nicolosi
+ */
 public class CloudSelection extends CLIState {
 
     private int currentSelectedIndex;
-    private CLIComponent currentSelected;
+    private CloudCLIComponent currentSelected;
 
     public CloudSelection(EriantysCLI cli) {
 
@@ -39,14 +43,14 @@ public class CloudSelection extends CLIState {
     @Override
     public void manageInput(Input input) {
 
-        if(input.ofAction(Action.DOWN)) {
+        if(input.triggersAction(Action.DOWN)) {
 
             cli.setState(new CharacterSelection(cli, this, Action.UP));
             return;
         }
 
-        if (input.ofAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.ofAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
         if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfClouds() - 1;
         else if (currentSelectedIndex > cli.getNumberOfClouds() - 1) currentSelectedIndex = 0;

@@ -4,13 +4,18 @@ import it.polimi.ingsw2022.eriantys.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.components.HelperCardCLIComponent;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a cli state in which the user is asked to select a helper card
+ * @author Niccolò Nicolosi
+ */
 public class HelperSelection extends CLIState {
 
     private int currentSelectedIndex;
-    private CLIComponent currentSelected;
+    private HelperCardCLIComponent currentSelected;
 
     public HelperSelection(EriantysCLI cli) {
 
@@ -38,14 +43,14 @@ public class HelperSelection extends CLIState {
     @Override
     public void manageInput(Input input) {
 
-        if(input.ofAction(Action.UP)) {
+        if(input.triggersAction(Action.UP)) {
 
             cli.setState(new CharacterSelection(cli, this, Action.DOWN));
             return;
         }
 
-        if (input.ofAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.ofAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
         if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfHelpers() - 1;
         else if (currentSelectedIndex > cli.getNumberOfHelpers() - 1) currentSelectedIndex = 0;

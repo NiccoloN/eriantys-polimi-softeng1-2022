@@ -4,6 +4,10 @@ import java.security.InvalidParameterException;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents an island cli component
+ * @author Niccolò Nicolosi
+ */
 public class IslandCLIComponent extends CLIComponent {
 
     public static final String DEFAULT_COLOR = RESET;
@@ -14,6 +18,10 @@ public class IslandCLIComponent extends CLIComponent {
     private boolean tower, mother;
     private int red, green, yellow, blue, pink;
 
+    /**
+     * Constructs an island cli component with the given index
+     * @param index the index of this island
+     */
     public IslandCLIComponent(int index) {
 
         super(14, 7);
@@ -63,56 +71,95 @@ public class IslandCLIComponent extends CLIComponent {
         color = ansiColor;
     }
 
+    /**
+     * @return the index of this island
+     */
     public int getIndex() {
 
         return index;
     }
 
+    /**
+     * Sets the index of this island
+     * @param index the new index
+     */
     public void setIndex(int index) {
 
         if (index < 1 || index > 12) throw new InvalidParameterException("Index must be between 1 and 12");
         this.index = index;
     }
 
+    /**
+     * Sets the color of the tower of this island to the given team color
+     * @param teamAnsiColor the new team color
+     */
     public void setTeamColor(String teamAnsiColor) {
         
         teamColor = teamAnsiColor;
     }
 
+    /**
+     * Sets if the tower of this island is visible
+     * @param tower the visibility of the tower: visible if true, hidden otherwise
+     */
     public void setTower(boolean tower) {
 
         this.tower = tower;
     }
 
+    /**
+     * Sets if mother nature is visible on this island
+     * @param mother the visibility of mother nature: visible if true, hidden otherwise
+     */
     public void setMother(boolean mother) {
 
         this.mother = mother;
     }
 
+    /**
+     * Sets the red students visualized on this island
+     * @param red the number of red students to visualize
+     */
     public void setRed(int red) {
 
         if (red < 0 || red > 99) throw new InvalidParameterException("Red must be >= 0 and <= 99");
         this.red = red;
     }
 
+    /**
+     * Sets the green students visualized on this island
+     * @param green the number of green students to visualize
+     */
     public void setGreen(int green) {
 
         if (green < 0 || green > 99) throw new InvalidParameterException("Green must be >= 0 and <= 99");
         this.green = green;
     }
 
+    /**
+     * Sets the yellow students visualized on this island
+     * @param yellow the number of yellow students to visualize
+     */
     public void setYellow(int yellow) {
 
         if (yellow < 0 || yellow > 99) throw new InvalidParameterException("Yellow must be >= 0 and <= 99");
         this.yellow = yellow;
     }
 
+    /**
+     * Sets the blue students visualized on this island
+     * @param blue the number of blue students to visualize
+     */
     public void setBlue(int blue) {
 
         if (blue < 0 || blue > 99) throw new InvalidParameterException("Blue must be >= 0 and <= 99");
         this.blue = blue;
     }
 
+    /**
+     * Sets the pink students visualized on this island
+     * @param pink the number of pink students to visualize
+     */
     public void setPink(int pink) {
 
         if (pink < 0 || pink > 99) throw new InvalidParameterException("Pink must be >= 0 and <= 99");
