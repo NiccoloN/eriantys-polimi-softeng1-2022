@@ -23,17 +23,19 @@ public class Board {
      * Constructs a board for the given players
      * @param players the list of players in the game
      * @throws RuntimeException if the number of given players is not between 2 and 4
+     * @throws RuntimeException motherNaturePosition is out of bounds
      */
-    public Board(List<Player> players) {
+    public Board(List<Player> players, int motherNaturePosition) {
 
         if (players.size() <= 1) throw new RuntimeException("Not enough players");
         if (players.size() > 4) throw new RuntimeException("Too many players");
 
+
         islands = new ArrayList<>(12);
         for (int n = 0; n < 12; n ++) islands.add(new CompoundIslandTile());
-        clouds = new ArrayList<>(4);
+        clouds = new ArrayList<>(players.size());
         for (int n = 0; n < players.size(); n++) clouds.add(new CloudTile());
-        schools = new ArrayList<>(4);
+        schools = new ArrayList<>(players.size());
         for (int n = 0; n < players.size(); n++) {
 
             Player player = players.get(n);
@@ -42,6 +44,8 @@ public class Board {
             else if (players.size() == 3) schools.add(new SchoolDashboard(player, 6));
             else if (players.size() == 4) schools.add(new SchoolDashboard(player, player.isTeamLeader ? 8 : 0));
         }
+        if (motherNaturePosition < 0 || motherNaturePosition > islands.size() - 1) throw new RuntimeException("Mother island position out of bounds");
+        motherNatureIsland = motherNaturePosition;
     }
 
     /**
@@ -51,11 +55,12 @@ public class Board {
      * @throws RuntimeException if the given islands are the same island
      * @throws RuntimeException if the given islands are not adjacent
      * @throws RuntimeException if any island tile is part of both the islands
+
      */
     public void mergeIslands(int index1, int index2) {
-
+        if (index1 > islands.size() - 1 || index2 > islands.size() - 1) throw new RuntimeException("Index are out of bounds");
         if (index1 == index2) throw new RuntimeException("Cannot merge an island with itself");
-        if (Math.abs(index1 - index2) != 1) throw new RuntimeException("Cannot merge not adjacent islands");
+        if (Math.abs(index1 - index2) != 1 && Math.abs(index1 - index2) != islands.size() - 1) throw new RuntimeException("Cannot merge not adjacent islands");
         CompoundIslandTile island1 = getIsland(Math.min(index1, index2));
         CompoundIslandTile island2 = getIsland(Math.max(index1, index2));
 
@@ -67,10 +72,11 @@ public class Board {
      * Moves mother nature of the given steps. Every step corresponds to moving from an island to its adjacent
      * @param steps the number of steps to perform
      */
-    public void moveMotherNature(int steps) {
+    public int moveMotherNature(int steps) {
 
         motherNatureIsland += steps;
         motherNatureIsland %= islands.size();
+        return motherNatureIsland;
     }
 
     /**

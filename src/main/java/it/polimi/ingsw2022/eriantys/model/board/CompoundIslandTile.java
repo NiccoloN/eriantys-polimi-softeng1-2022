@@ -36,8 +36,10 @@ public class CompoundIslandTile {
      */
     public void mergeWithIsland(CompoundIslandTile island) {
 
+        for (IslandTile tile : island.tiles) {
+            if (tiles.contains(tile)) throw new RuntimeException("No duplicates allowed");
+        }
         tiles.addAll(island.tiles);
-        if (tiles.stream().anyMatch(i -> Collections.frequency(tiles, i) > 1)) throw new RuntimeException("No duplicates allowed");
     }
 
     /**
