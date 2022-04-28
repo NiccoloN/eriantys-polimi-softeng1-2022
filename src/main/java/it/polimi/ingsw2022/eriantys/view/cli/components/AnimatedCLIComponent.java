@@ -8,7 +8,7 @@ import java.security.InvalidParameterException;
  * This class represents an animated cli component
  * @author Niccolò Nicolosi
  */
-public class AnimatedCLIComponent extends CLIComponent {
+public class AnimatedCLIComponent extends BasicCLIComponent {
 
     private float stateTime, deltaTime;
     private long lastUpdateTime;

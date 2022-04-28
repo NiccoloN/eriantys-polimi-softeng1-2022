@@ -3,7 +3,7 @@ package it.polimi.ingsw2022.eriantys.view.cli.states;
 import it.polimi.ingsw2022.eriantys.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.IslandCLIComponent;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
@@ -19,7 +19,7 @@ public class IslandSelection extends CLIState {
 
     public IslandSelection(EriantysCLI cli) {
 
-        super(cli, new CLIComponent(2, new String[] { GREEN + BLINKING + "VV" + RESET }));
+        super(cli, new BasicCLIComponent(2, new String[] {GREEN + BLINKING + "VV" + RESET }));
     }
 
     @Override
@@ -63,6 +63,6 @@ public class IslandSelection extends CLIState {
         if (currentSelected != null) currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
         currentSelected = cli.getIsland(currentSelectedIndex);
         currentSelected.setColor(GREEN);
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2 - 1, currentSelected.getFrameY() - 1);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f - 1, currentSelected.getFrameY() - 1);
     }
 }

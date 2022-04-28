@@ -3,7 +3,7 @@ package it.polimi.ingsw2022.eriantys.view.cli.states;
 import it.polimi.ingsw2022.eriantys.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CharacterCardCLIComponent;
 
 import java.security.InvalidParameterException;
@@ -30,7 +30,7 @@ public class CharacterSelection extends CLIState {
      */
     CharacterSelection(EriantysCLI cli, CLIState prevState, Action goBackAction) {
 
-        super(cli, new CLIComponent(1, new String[] {GREEN + BLINKING + "V" + RESET }));
+        super(cli, new BasicCLIComponent(1, new String[] {GREEN + BLINKING + "V" + RESET }));
         if(goBackAction == Action.RIGHT || goBackAction == Action.LEFT || goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be RIGHT, LEFT or SELECT, " +
                                                 "because they are already associated to a different behaviour in this state");
@@ -86,6 +86,6 @@ public class CharacterSelection extends CLIState {
             cli.getEffectTextArea().setText(currentSelected.getEffect() + "\n\n" + YELLOW + "Cost" + BLACK + ": " + currentSelected.getCost());
         prevSelected = currentSelected;
 
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2, currentSelected.getFrameY() - 1);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }
 }

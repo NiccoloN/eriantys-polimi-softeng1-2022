@@ -57,6 +57,25 @@ public class AnsiCodes {
     public static final String WHITE_BACKGROUND_BRIGHT = "\u001B[107m";
 
     /**
+     * @param string the string to check
+     * @return whether the given string is an ansi sequence
+     */
+    public static boolean isAnsiSequence(String string) {
+
+        char[] chars = string.toCharArray();
+
+        boolean inAnsi = false;
+
+        for(char character : chars) {
+
+            if(character == 27) inAnsi = true;
+            if(!inAnsi) return false;
+            if(character == 'm') inAnsi = false;
+        }
+        return true;
+    }
+
+    /**
      * @param ansiString a string containing ansi codes
      * @return a string identical to the given one, but stripped of any ansi code
      */
@@ -67,11 +86,11 @@ public class AnsiCodes {
         StringBuilder stringBuilder = new StringBuilder();
         boolean toConsider = true;
 
-        for (int n = 0; n < chars.length; n++) {
+        for(char character : chars) {
 
-            if (chars[n] == 27) toConsider = false;
-            if (toConsider) stringBuilder.append(chars[n]);
-            if (chars[n] == 'm') toConsider = true;
+            if(character == 27) toConsider = false;
+            if(toConsider) stringBuilder.append(character);
+            if(character == 'm') toConsider = true;
         }
 
         return stringBuilder.toString();

@@ -10,7 +10,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
  * This class represents an island cli component
  * @author Niccolò Nicolosi
  */
-public class IslandCLIComponent extends CLIComponent {
+public class IslandCLIComponent extends BasicCLIComponent {
 
     public static final String DEFAULT_COLOR = RESET;
 
@@ -121,6 +121,7 @@ public class IslandCLIComponent extends CLIComponent {
     /**
      * Sets the red students visualized on this island
      * @param red the number of red students to visualize
+     * @throws InvalidParameterException if red is not between 0 and 99
      */
     public void setRed(int red) {
 
@@ -131,6 +132,7 @@ public class IslandCLIComponent extends CLIComponent {
     /**
      * Sets the green students visualized on this island
      * @param green the number of green students to visualize
+     * @throws InvalidParameterException if green is not between 0 and 99
      */
     public void setGreen(int green) {
 
@@ -141,6 +143,7 @@ public class IslandCLIComponent extends CLIComponent {
     /**
      * Sets the yellow students visualized on this island
      * @param yellow the number of yellow students to visualize
+     * @throws InvalidParameterException if yellow is not between 0 and 99
      */
     public void setYellow(int yellow) {
 
@@ -151,6 +154,7 @@ public class IslandCLIComponent extends CLIComponent {
     /**
      * Sets the blue students visualized on this island
      * @param blue the number of blue students to visualize
+     * @throws InvalidParameterException if blue is not between 0 and 99
      */
     public void setBlue(int blue) {
 
@@ -161,6 +165,7 @@ public class IslandCLIComponent extends CLIComponent {
     /**
      * Sets the pink students visualized on this island
      * @param pink the number of pink students to visualize
+     * @throws InvalidParameterException if pink is not between 0 and 99
      */
     public void setPink(int pink) {
 

@@ -10,7 +10,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
  * This class represents a cloud cli component
  * @author Niccolò Nicolosi
  */
-public class CloudCLIComponent extends CLIComponent {
+public class CloudCLIComponent extends BasicCLIComponent {
 
     public static final String DEFAULT_COLOR = CYAN;
 
@@ -79,50 +79,55 @@ public class CloudCLIComponent extends CLIComponent {
     /**
      * Sets the red students visualized on this cloud
      * @param red the number of red students to visualize
+     * @throws InvalidParameterException if red is not between 0 and 9
      */
     public void setRed(int red) {
 
-        if (red < 0) throw new InvalidParameterException("Red must be >= 0");
+        if (red < 0 || red > 9) throw new InvalidParameterException("Red must be >= 0 and <= 9");
         this.red = red;
     }
 
     /**
      * Sets the green students visualized on this cloud
      * @param green the number of green students to visualize
+     * @throws InvalidParameterException if green is not between 0 and 9
      */
     public void setGreen(int green) {
 
-        if (green < 0) throw new InvalidParameterException("Green must be >= 0");
+        if (green < 0 || green > 9) throw new InvalidParameterException("Green must be >= 0 and <= 9");
         this.green = green;
     }
 
     /**
      * Sets the yellow students visualized on this cloud
      * @param yellow the number of yellow students to visualize
+     * @throws InvalidParameterException if yellow is not between 0 and 9
      */
     public void setYellow(int yellow) {
 
-        if (yellow < 0) throw new InvalidParameterException("Yellow must be >= 0");
+        if (yellow < 0 || yellow > 9) throw new InvalidParameterException("Yellow must be >= 0 and <= 9");
         this.yellow = yellow;
     }
     
     /**
      * Sets the blue students visualized on this cloud
      * @param blue the number of blue students to visualize
+     * @throws InvalidParameterException if blue is not between 0 and 9
      */
     public void setBlue(int blue) {
 
-        if (blue < 0) throw new InvalidParameterException("Blue must be >= 0");
+        if (blue < 0 || blue > 9) throw new InvalidParameterException("Blue must be >= 0 and <= 9");
         this.blue = blue;
     }
 
     /**
      * Sets the pink students visualized on this cloud
      * @param pink the number of pink students to visualize
+     * @throws InvalidParameterException if pink is not between 0 and 9
      */
     public void setPink(int pink) {
 
-        if (pink < 0) throw new InvalidParameterException("Pink must be >= 0");
+        if (pink < 0 || pink > 9) throw new InvalidParameterException("Pink must be >= 0 and <= 9");
         this.pink = pink;
     }
 }

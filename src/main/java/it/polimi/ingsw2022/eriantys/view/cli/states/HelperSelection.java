@@ -3,7 +3,7 @@ package it.polimi.ingsw2022.eriantys.view.cli.states;
 import it.polimi.ingsw2022.eriantys.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.components.HelperCardCLIComponent;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
@@ -19,7 +19,7 @@ public class HelperSelection extends CLIState {
 
     public HelperSelection(EriantysCLI cli) {
 
-        super(cli, new CLIComponent(1, new String[] { GREEN + BLINKING + "V" + RESET }));
+        super(cli, new BasicCLIComponent(1, new String[] {GREEN + BLINKING + "V" + RESET }));
     }
 
     @Override
@@ -63,6 +63,6 @@ public class HelperSelection extends CLIState {
         if (currentSelected != null) currentSelected.setColor(RESET);
         currentSelected = cli.getHelper(currentSelectedIndex);
         currentSelected.setColor(GREEN);
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2, currentSelected.getFrameY() - 1);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }
 }

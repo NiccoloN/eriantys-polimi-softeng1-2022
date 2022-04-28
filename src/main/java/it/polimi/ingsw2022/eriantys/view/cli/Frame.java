@@ -7,6 +7,7 @@ import java.util.Arrays;
  * This class represents a frame of the cli. A frame is a bi-dimensional array of ascii characters, each of which can have ansi properties.
  * Therefore, a char is represented by an ansi string. A frame can be converted to a string to be printed to the terminal window.
  * To correctly visualize a frame in the terminal, the terminal window must be of the same size of the frame
+ * @author Niccolò Nicolosi
  */
 public class Frame {
 

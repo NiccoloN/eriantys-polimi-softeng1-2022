@@ -20,10 +20,10 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 public class EriantysCLI {
 
     private static final float FRAME_TIME = 1 / 60f;
+    private static final int FRAME_WIDTH = 181, FRAME_HEIGHT = 58;
 
-    private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
     private static final String TERMINAL_RESET = "\u001Bc\u001B[3J\u001Bc\u001B[H";
-    private static final String TERMINAL_RESIZE = "\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
+    private static final String TERMINAL_RESIZE = "\u001B[8;" + FRAME_HEIGHT + ";" + FRAME_WIDTH + "t";
     private static final String TERMINAL_HOME = "\u001B[H" + RESET;
 
     private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
@@ -40,10 +40,10 @@ public class EriantysCLI {
 
     private final Frame frame;
 
-    private CLIComponent prompt;
-    private final CLIComponent title;
-    private final CLIComponent line;
-    private final CLIComponent skyBackground;
+    private BasicCLIComponent prompt;
+    private final BasicCLIComponent title;
+    private final BasicCLIComponent line;
+    private final BasicCLIComponent skyBackground;
     private final AnimatedCLIComponent[] decorativeClouds;
     private final TextAreaCLIComponent hintTextArea;
     private final TextAreaCLIComponent effectTextArea;
@@ -75,20 +75,20 @@ public class EriantysCLI {
         inputProcessed = false;
 
         //initialize frame
-        frame = new Frame(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+        frame = new Frame(FRAME_WIDTH, FRAME_HEIGHT);
 
         //build title component
-        title = new CLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
+        title = new BasicCLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
         title.setColor(YELLOW + BLUE_BACKGROUND_BRIGHT);
 
         //build sky background component
         String[] backgroundRows = new String[title.getHeight() + 1];
-        Arrays.fill(backgroundRows, " ".repeat(TERMINAL_WIDTH));
-        skyBackground = new CLIComponent(TERMINAL_WIDTH, backgroundRows);
+        Arrays.fill(backgroundRows, " ".repeat(FRAME_WIDTH));
+        skyBackground = new BasicCLIComponent(FRAME_WIDTH, backgroundRows);
         skyBackground.setColor(BLUE_BACKGROUND_BRIGHT);
 
         //build sky separator line
-        line = new CLIComponent(TERMINAL_WIDTH, new String[] { "_".repeat(TERMINAL_WIDTH) });
+        line = new BasicCLIComponent(FRAME_WIDTH, new String[] {"_".repeat(FRAME_WIDTH) });
         line.setColor(YELLOW + BLUE_BACKGROUND_BRIGHT);
 
         //build decorative cloud components
@@ -190,52 +190,52 @@ public class EriantysCLI {
      */
     private void setComponentsPositions() {
 
-        title.setPosition(TERMINAL_WIDTH / 2 - title.getWidth() / 2, 0);
+        title.setPosition(FRAME_WIDTH / 2f - title.getWidth() / 2f, 0);
         line.setPosition(0, title.getHeight());
 
         for(AnimatedCLIComponent decorativeCloud : decorativeClouds)
             decorativeCloud.setPosition(
-                    (int) (Math.random() * TERMINAL_WIDTH - decorativeCloud.getWidth()),
+                    (int) (Math.random() * FRAME_WIDTH - decorativeCloud.getWidth()),
                     (int) (Math.random() * skyBackground.getHeight() - decorativeCloud.getHeight() + 1));
 
         int offsetY = title.getHeight() + 2;
 
         players.get(0).setPosition(0, offsetY);
-        players.get(1).setPosition(TERMINAL_WIDTH - players.get(0).getWidth(), offsetY);
+        players.get(1).setPosition(FRAME_WIDTH - players.get(0).getWidth(), offsetY);
         players.get(2).setPosition(0, offsetY + players.get(0).getHeight() + 1);
-        players.get(3).setPosition(TERMINAL_WIDTH - players.get(0).getWidth(), offsetY + players.get(0).getHeight() + 1);
+        players.get(3).setPosition(FRAME_WIDTH - players.get(0).getWidth(), offsetY + players.get(0).getHeight() + 1);
 
         int textAreasY = players.get(players.size() - 1).getFrameY() + players.get(0).getHeight() + 1;
-        hintTextArea.setPosition(TERMINAL_WIDTH - hintTextArea.getWidth(), textAreasY);
+        hintTextArea.setPosition(FRAME_WIDTH - hintTextArea.getWidth(), textAreasY);
         effectTextArea.setPosition(0, textAreasY);
 
-        islands[0].setPosition(2 + TERMINAL_WIDTH / 2, offsetY);
-        islands[1].setPosition(2 + TERMINAL_WIDTH / 2 + islands[0].getWidth(), offsetY + islands[0].getHeight() / 2);
-        islands[2].setPosition(2 + TERMINAL_WIDTH / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight());
-        islands[3].setPosition(2 + TERMINAL_WIDTH / 2 + islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2 + 1);
-        islands[4].setPosition(2 + TERMINAL_WIDTH / 2 + islands[0].getWidth(), offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2 + 1);
-        islands[5].setPosition(2 + TERMINAL_WIDTH / 2, offsetY + islands[0].getHeight() * 3 + 1);
-        islands[6].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth(), offsetY + islands[0].getHeight() * 3 + 1);
-        islands[7].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2 + 1);
-        islands[8].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 3, offsetY + islands[0].getHeight() * 2 + 1);
-        islands[9].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 3, offsetY + islands[0].getHeight());
-        islands[10].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() / 2);
-        islands[11].setPosition(-1 + TERMINAL_WIDTH / 2 - islands[0].getWidth(), offsetY);
+        islands[0].setPosition(2 + FRAME_WIDTH / 2f, offsetY);
+        islands[1].setPosition(2 + FRAME_WIDTH / 2f + islands[0].getWidth(), offsetY + islands[0].getHeight() / 2f);
+        islands[2].setPosition(2 + FRAME_WIDTH / 2f + islands[0].getWidth() * 2, offsetY + islands[0].getHeight());
+        islands[3].setPosition(2 + FRAME_WIDTH / 2f + islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2 + 1);
+        islands[4].setPosition(2 + FRAME_WIDTH / 2f + islands[0].getWidth(), offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2f + 1);
+        islands[5].setPosition(2 + FRAME_WIDTH / 2f, offsetY + islands[0].getHeight() * 3 + 1);
+        islands[6].setPosition(-1 + FRAME_WIDTH / 2f - islands[0].getWidth(), offsetY + islands[0].getHeight() * 3 + 1);
+        islands[7].setPosition(-1 + FRAME_WIDTH / 2f - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() * 2 + islands[0].getHeight() / 2f + 1);
+        islands[8].setPosition(-1 + FRAME_WIDTH / 2f - islands[0].getWidth() * 3, offsetY + islands[0].getHeight() * 2 + 1);
+        islands[9].setPosition(-1 + FRAME_WIDTH / 2f - islands[0].getWidth() * 3, offsetY + islands[0].getHeight());
+        islands[10].setPosition(-1 + FRAME_WIDTH / 2f - islands[0].getWidth() * 2, offsetY + islands[0].getHeight() / 2f);
+        islands[11].setPosition(-1 + FRAME_WIDTH / 2f - islands[0].getWidth(), offsetY);
 
         //arrange clouds in a row in the middle of the islands
         int cloudsY = islands[2].getFrameY() + islands[2].getHeight() - clouds.get(0).getHeight() / 2;
         for(int n = 0; n < clouds.size(); n++) clouds.get(n).setPosition(
-                TERMINAL_WIDTH / 2 - (clouds.get(0).getWidth() * clouds.size() + clouds.size() - 2) / 2 + (clouds.get(0).getWidth() + 1) * n, cloudsY);
+                FRAME_WIDTH / 2f - (clouds.get(0).getWidth() * clouds.size() + clouds.size() - 2) / 2f + (clouds.get(0).getWidth() + 1) * n, cloudsY);
 
         //arrange character cards in a row below the islands
         int charactersY = islands[5].getFrameY() + islands[5].getHeight() + 2;
         for(int n = 0; n < characters.length; n++) characters[n].setPosition(
-                TERMINAL_WIDTH / 2 - (characters[0].getWidth() * characters.length + characters.length - 2) / 2 + (characters[0].getWidth() + 1) * n, charactersY);
+                FRAME_WIDTH / 2f - (characters[0].getWidth() * characters.length + characters.length - 2) / 2f + (characters[0].getWidth() + 1) * n, charactersY);
 
         //arrange helper cards in a row at the bottom of the screen
         for(int n = 0; n < helpers.size(); n++) helpers.get(n).setPosition(
-                TERMINAL_WIDTH / 2 - (helpers.get(0).getWidth() * helpers.size() + helpers.size() - 2) / 2 + (helpers.get(0).getWidth() + 1) * n,
-                TERMINAL_HEIGHT - helpers.get(0).getHeight() - 1);
+                FRAME_WIDTH / 2f - (helpers.get(0).getWidth() * helpers.size() + helpers.size() - 2) / 2f + (helpers.get(0).getWidth() + 1) * n,
+                FRAME_HEIGHT - helpers.get(0).getHeight() - 1);
     }
 
     /**
@@ -348,8 +348,8 @@ public class EriantysCLI {
             time = System.nanoTime() - start;
             if (time >= timeout)
                 throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)\n"
-                        + "This application needs a terminal window of " + TERMINAL_WIDTH + " columns and " + TERMINAL_HEIGHT + " rows to run\n"
-                        + "Try to manually resize your terminal window or to reduce the font size of your terminal");
+                                           + "This application needs a terminal window of at least " + FRAME_WIDTH + " columns and " + FRAME_HEIGHT + " rows to run\n"
+                                           + "Try to manually resize your terminal window or to reduce the font size of your terminal");
         }
 
         //reset terminal if size changed or buffer is too big
@@ -379,7 +379,7 @@ public class EriantysCLI {
         terminal.writer().print(TERMINAL_HOME);
 
         //print the frame string to terminal
-        terminal.writer().print(frame.getAnsiString(Math.max(terminal.getWidth(), TERMINAL_WIDTH), Math.max(terminal.getHeight(), TERMINAL_HEIGHT)));
+        terminal.writer().print(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
         terminal.flush();
     }
 
@@ -390,8 +390,8 @@ public class EriantysCLI {
 
         for (AnimatedCLIComponent decorativeCloud : decorativeClouds) {
 
-            if (decorativeCloud.getX() < - decorativeCloud.getWidth()) decorativeCloud.setX(TERMINAL_WIDTH);
-            else if (decorativeCloud.getX() > TERMINAL_WIDTH) decorativeCloud.setX(- decorativeCloud.getWidth());
+            if (decorativeCloud.getX() < - decorativeCloud.getWidth()) decorativeCloud.setX(FRAME_WIDTH);
+            else if (decorativeCloud.getX() > FRAME_WIDTH) decorativeCloud.setX(- decorativeCloud.getWidth());
         }
     }
 
@@ -420,7 +420,7 @@ public class EriantysCLI {
      */
     private boolean acceptableWindowSize() {
 
-        return terminal.getWidth() >= TERMINAL_WIDTH && terminal.getHeight() >= TERMINAL_HEIGHT;
+        return terminal.getWidth() >= FRAME_WIDTH && terminal.getHeight() >= FRAME_HEIGHT;
     }
 
     /**
@@ -434,7 +434,7 @@ public class EriantysCLI {
         e.printStackTrace();
     }
 
-    public void setPrompt(CLIComponent prompt) {
+    public void setPrompt(BasicCLIComponent prompt) {
 
         this.prompt = prompt;
     }

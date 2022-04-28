@@ -6,7 +6,7 @@ import java.security.InvalidParameterException;
  * This class represents a helper card cli component
  * @author Niccolò Nicolosi
  */
-public class HelperCardCLIComponent extends CLIComponent {
+public class HelperCardCLIComponent extends BasicCLIComponent {
 
     private final int index;
     private final int priority, movement;

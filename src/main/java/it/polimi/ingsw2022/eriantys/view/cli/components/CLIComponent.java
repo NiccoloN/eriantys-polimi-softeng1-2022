@@ -3,170 +3,48 @@ package it.polimi.ingsw2022.eriantys.view.cli.components;
 import it.polimi.ingsw2022.eriantys.view.cli.Frame;
 
 import java.security.InvalidParameterException;
-import java.util.Arrays;
-
-import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 /**
- * This class represents a cli component. A cli component is a bi-dimensional graphic element built of ascii characters. A CLI component
- * can be printed to a frame at a specific position
+ * This class represents a CLI component. A CLI component is a bi-dimensional graphic element that can be printed to a frame at a specific position
  * @see Frame
  * @author Niccolò Nicolosi
  */
-public class CLIComponent {
-
-    private float x, y;
-    private final int width, height;
-    private final String[][] chars;
-
-    /**
-     * Constructs a cli component from the given rows
-     * @param width the width of the component
-     * @param rows the rows from which to construct the component
-     * @throws InvalidParameterException if any of the given rows is not of the given width
-     */
-    public CLIComponent(int width, String[] rows) {
-
-        this(width, rows.length);
-        for (int n = 0; n < rows.length; n++) setRow(n, rows[n]);
-    }
-
-    /**
-     * Constructs an empty cli component of the given size
-     * @param width the width of the component
-     * @param height the height of the component
-     * @throws InvalidParameterException if width or height are < 1
-     */
-    public CLIComponent(int width, int height) {
-
-        if (width < 1) throw new InvalidParameterException("Width must be >= 1");
-        this.width = width;
-        if (height < 1) throw new InvalidParameterException("Height must be >= 1");
-        this.height = height;
-        x = 0;
-        y = 0;
-
-        chars = new String[height][width];
-        for(String[] row : chars) Arrays.fill(row, " ");
-    }
-
-    /**
-     * @return the x position of this component on the frame (integer value)
-     */
-    public int getFrameX() {
-
-        return (int) x;
-    }
-
-    public float getX() {
-
-        return x;
-    }
-
-    public void setX(float x) {
-
-        this.x = x;
-    }
-
-    /**
-     * @return the y position of this component on the frame (integer value)
-     */
-    public int getFrameY() {
-
-        return (int) y;
-    }
-
-    public float getY() {
-
-        return y;
-    }
-
-    public void setY(float y) {
-
-        this.y = y;
-    }
-
-    public void setPosition(int x, int y) {
-
-        setX(x);
-        setY(y);
-    }
-
-    public int getWidth() {
-
-        return width;
-    }
-
-    public int getHeight() {
-
-        return height;
-    }
+public interface CLIComponent {
 
     /**
      * Prints this component to the given frame at its position
      * @param frame the frame to print to
      */
-    public void printToFrame(Frame frame) {
-
-        for (int i = 0; i < height; i++) {
-
-            for (int j = 0; j < width; j++) {
-
-                if (!chars[i][j].contains("\0") && y + i >= 0 && y + i < frame.getHeight() && x + j >= 0 && x + j < frame.getWidth())
-                    frame.setChar(getFrameX() + j, getFrameY() + i, chars[i][j]);
-            }
-        }
-    }
+    void printToFrame(Frame frame);
 
     /**
-     * Sets the row of the given index
-     * @param index the index of the row to set
-     * @param row the new row ('\0' chars corresponds to transparent chars)
-     * @throws InvalidParameterException if the given row is not of the right length
-     * (ansi escape sequences are not considered in part of its length)
+     * @return the x position of this component on the frame (integer value)
      */
-    protected void setRow(int index, String row) {
+    int getFrameX();
 
-        char[] chars = row.toCharArray();
+    float getX();
 
-        int length = 0;
-        String currentChar = "";
-        boolean toConsider = true;
+    void setX(float x);
 
-        for (int n = 0; n < chars.length; n++) {
+    /**
+     * @return the y position of this component on the frame (integer value)
+     */
+    int getFrameY();
 
-            currentChar += chars[n];
+    float getY();
 
-            if (chars[n] == ESCAPE_CHAR) toConsider = false;
-            if (toConsider) {
+    void setY(float y);
 
-                this.chars[index][length] = currentChar;
-                currentChar = "";
-                length++;
-            }
-            if (chars[n] == 'm') toConsider = true;
-        }
-        this.chars[index][length - 1] += currentChar;
+    void setPosition(float x, float y);
 
-        if (length != width)
-            throw new InvalidParameterException("Row must be of length " + width +
-                    ", like declared (actual length: " + length + ")");
-    }
+    int getWidth();
 
-    public void setColor(String ansiColor) {
+    int getHeight();
 
-        for (int i = 0; i < height; i++) {
-
-            for (int j = 0; j < width; j++) {
-
-                if (!chars[i][j].contains("\0")) {
-
-                    if (chars[i][j].startsWith(String.valueOf(ESCAPE_CHAR))) chars[i][j] = ansiColor + chars[i][j].substring(chars[i][j].indexOf('m') + 1);
-                    else chars[i][j] = ansiColor + chars[i][j];
-
-                    if (!chars[i][j].endsWith(RESET)) chars[i][j] = chars[i][j] + RESET;
-                }
-            }
-        }
-    }
+    /**
+     * Sets the color of this component
+     * @param ansiColor the new color
+     * @throws InvalidParameterException if the given color is not an ansi sequence
+     */
+    void setColor(String ansiColor);
 }

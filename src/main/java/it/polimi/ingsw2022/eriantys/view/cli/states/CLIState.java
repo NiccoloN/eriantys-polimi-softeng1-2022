@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.view.cli.states;
 
 import it.polimi.ingsw2022.eriantys.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.view.cli.components.BasicCLIComponent;
 
 /**
  * This class represents a state of the cli
@@ -12,14 +12,14 @@ import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 public abstract class CLIState {
 
     protected EriantysCLI cli;
-    protected final CLIComponent prompt;
+    protected final BasicCLIComponent prompt;
 
     /**
      * Constructs a cli state, setting its prompt component
      * @param cli the cli this state is linked to
      * @param prompt the prompt component of this state
      */
-    protected CLIState(EriantysCLI cli, CLIComponent prompt) {
+    protected CLIState(EriantysCLI cli, BasicCLIComponent prompt) {
 
         this.cli = cli;
         this.prompt = prompt;

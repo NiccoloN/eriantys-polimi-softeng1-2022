@@ -10,7 +10,7 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
  * This class represents a character card cli component
  * @author Niccolò Nicolosi
  */
-public class CharacterCardCLIComponent extends CLIComponent {
+public class CharacterCardCLIComponent extends BasicCLIComponent {
 
     public static final String CHARACTER_DEFAULT_COLOR = RESET;
 
