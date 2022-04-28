@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.view.cli.components.player;
 
+import it.polimi.ingsw2022.eriantys.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.view.cli.components.CLIComponent;
 
 import java.security.InvalidParameterException;
@@ -50,7 +51,7 @@ class PlayerStatsCLIComponent extends CLIComponent {
     }
 
     @Override
-    public void printToFrame(String[][] frame) {
+    public void printToFrame(Frame frame) {
 
         buildRows();
         super.printToFrame(frame);

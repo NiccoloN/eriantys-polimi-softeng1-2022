@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.view.cli.components;
 
+import it.polimi.ingsw2022.eriantys.view.cli.Frame;
+
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 
@@ -7,7 +9,8 @@ import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a cli component. A cli component is a bi-dimensional graphic element built of ascii characters. A CLI component
- * can be printed to a frame (a bi-dimensional array of ascii characters) at a specific position
+ * can be printed to a frame at a specific position
+ * @see Frame
  * @author Niccolò Nicolosi
  */
 public class CLIComponent {
@@ -103,14 +106,14 @@ public class CLIComponent {
      * Prints this component to the given frame at its position
      * @param frame the frame to print to
      */
-    public void printToFrame(String[][] frame) {
+    public void printToFrame(Frame frame) {
 
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
 
-                if (!chars[i][j].contains("\0") && y + i >= 0 && y + i < frame.length && x + j >= 0 && x + j < frame[getFrameY() + i].length)
-                    frame[getFrameY() + i][getFrameX() + j] = chars[i][j];
+                if (!chars[i][j].contains("\0") && y + i >= 0 && y + i < frame.getHeight() && x + j >= 0 && x + j < frame.getWidth())
+                    frame.setChar(getFrameX() + j, getFrameY() + i, chars[i][j]);
             }
         }
     }

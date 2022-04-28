@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.view.cli.components;
 
+import it.polimi.ingsw2022.eriantys.view.cli.Frame;
+
 import java.security.InvalidParameterException;
 
 import static it.polimi.ingsw2022.eriantys.view.cli.AnsiCodes.*;
@@ -43,7 +45,7 @@ public class CharacterCardCLIComponent extends CLIComponent {
     }
 
     @Override
-    public void printToFrame(String[][] frame) {
+    public void printToFrame(Frame frame) {
 
         buildRows();
         super.printToFrame(frame);

@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.view.cli.components;
 
+import it.polimi.ingsw2022.eriantys.view.cli.Frame;
+
 import java.security.InvalidParameterException;
 
 /**
@@ -43,7 +45,7 @@ public class AnimatedCLIComponent extends CLIComponent {
      * @param frame the frame to print to
      */
     @Override
-    public void printToFrame(String[][] frame) {
+    public void printToFrame(Frame frame) {
 
         update();
         super.printToFrame(frame);

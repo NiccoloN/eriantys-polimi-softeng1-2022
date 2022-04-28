@@ -3,9 +3,7 @@ package it.polimi.ingsw2022.eriantys.view.cli;
 import it.polimi.ingsw2022.eriantys.view.cli.components.*;
 import it.polimi.ingsw2022.eriantys.view.cli.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.view.cli.states.CLIState;
-import it.polimi.ingsw2022.eriantys.view.cli.states.CloudSelection;
 import it.polimi.ingsw2022.eriantys.view.cli.states.HelperSelection;
-import it.polimi.ingsw2022.eriantys.view.cli.states.IslandSelection;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -24,21 +22,23 @@ public class EriantysCLI {
     private static final float FRAME_TIME = 1 / 60f;
 
     private static final int TERMINAL_WIDTH = 181, TERMINAL_HEIGHT = 58;
-    private static final String TERMINAL_RESIZE = "\u001Bc\u001B[3J\u001Bc\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
-    private static final String TERMINAL_CLEAR = "\u001B[H" + RESET;
+    private static final String TERMINAL_RESET = "\u001Bc\u001B[3J\u001Bc\u001B[H";
+    private static final String TERMINAL_RESIZE = "\u001B[8;" + TERMINAL_HEIGHT + ";" + TERMINAL_WIDTH + "t";
+    private static final String TERMINAL_HOME = "\u001B[H" + RESET;
 
     private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
     private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT;
     private static final String TEAM_GRAY_COLOR = WHITE;
 
     private final Terminal terminal;
+    private int prevWidth, prevHeight;
 
     private boolean running;
 
     private final char[] inputChars;
     private boolean inputProcessed;
 
-    private CLIState state;
+    private final Frame frame;
 
     private CLIComponent prompt;
     private final CLIComponent title;
@@ -53,7 +53,7 @@ public class EriantysCLI {
     private final List<HelperCardCLIComponent> helpers;
     private final CharacterCardCLIComponent[] characters;
 
-    private final String[][] frame;
+    private CLIState state;
 
     /**
      * Constructs the CLI and all of its components
@@ -61,19 +61,21 @@ public class EriantysCLI {
      */
     public EriantysCLI() throws IOException {
 
-        running = false;
-
         //build terminal instance
         terminal = TerminalBuilder
                 .builder()
                 .system(true)
                 .jna(true)
                 .build();
-        terminal.writer().print(TERMINAL_RESIZE);
-        terminal.flush();
+
+        running = false;
 
         //build input buffer
         inputChars = new char[3];
+        inputProcessed = false;
+
+        //initialize frame
+        frame = new Frame(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
         //build title component
         title = new CLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
@@ -178,10 +180,6 @@ public class EriantysCLI {
         //-------------------------
 
         setComponentsPositions();
-
-        //initialize frame
-        frame = new String[TERMINAL_HEIGHT][TERMINAL_WIDTH];
-        inputProcessed = false;
 
         //set first state
         setState(new HelperSelection(this));
@@ -334,7 +332,7 @@ public class EriantysCLI {
         long start = System.nanoTime();
         long time;
         long timeout = 5000000000L;
-        while (!rightWindowSize()) {
+        while (!acceptableWindowSize()) {
 
             terminal.writer().print(TERMINAL_RESIZE);
 
@@ -354,11 +352,16 @@ public class EriantysCLI {
                         + "Try to manually resize your terminal window or to reduce the font size of your terminal");
         }
 
-        clearFrame();
+        //reset terminal if size changed or buffer is too big
+        if (terminal.getWidth() != prevWidth || terminal.getHeight() != prevHeight) terminal.writer().print(TERMINAL_RESET);
+        prevWidth = terminal.getWidth();
+        prevHeight = terminal.getHeight();
 
         updateDecorativeCloudsPositions();
 
-        //print the components on the frame in the right order
+        frame.clear();
+
+        //print the components to the frame in the right order
         skyBackground.printToFrame(frame);
         for(AnimatedCLIComponent decorativeCloud : decorativeClouds) decorativeCloud.printToFrame(frame);
         title.printToFrame(frame);
@@ -372,19 +375,11 @@ public class EriantysCLI {
         effectTextArea.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
 
-        //build new frame string
-        StringBuilder frameBuilder = new StringBuilder();
-        for(int i = 0; i < frame.length; i++) {
-
-            for(int j = 0; j < frame[i].length; j++) frameBuilder.append(frame[i][j]);
-            if(i != frame.length - 1) frameBuilder.append("\n");
-        }
-
-        //insert a clear screen ansi code at the start of the frame string
-        frameBuilder.insert(0, TERMINAL_CLEAR);
+        //clear the terminal window
+        terminal.writer().print(TERMINAL_HOME);
 
         //print the frame string to terminal
-        terminal.writer().print(frameBuilder);
+        terminal.writer().print(frame.getAnsiString(Math.max(terminal.getWidth(), TERMINAL_WIDTH), Math.max(terminal.getHeight(), TERMINAL_HEIGHT)));
         terminal.flush();
     }
 
@@ -412,28 +407,20 @@ public class EriantysCLI {
     }
 
     /**
-     * Clears the frame, filling every cell with a space
-     */
-    private void clearFrame() {
-
-        for(String[] strings : frame) Arrays.fill(strings, " ");
-    }
-
-    /**
      * Forces clear and reset of the terminal window. Slow method: it is strongly recommended not to use it in loops
      */
     private void clear() {
 
-        terminal.writer().print(TERMINAL_CLEAR);
+        terminal.writer().print(TERMINAL_RESET);
         terminal.flush();
     }
 
     /**
-     * @return whether the terminal window is of the correct size
+     * @return whether the terminal window is of an acceptable size
      */
-    private boolean rightWindowSize() {
+    private boolean acceptableWindowSize() {
 
-        return terminal.getWidth() == TERMINAL_WIDTH && terminal.getHeight() == TERMINAL_HEIGHT;
+        return terminal.getWidth() >= TERMINAL_WIDTH && terminal.getHeight() >= TERMINAL_HEIGHT;
     }
 
     /**
