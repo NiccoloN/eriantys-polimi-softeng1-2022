@@ -67,6 +67,8 @@ public class EriantysCLI {
                 .system(true)
                 .jna(true)
                 .build();
+        terminal.writer().print(TERMINAL_RESET + TERMINAL_RESIZE);
+        terminal.flush();
 
         running = false;
 
