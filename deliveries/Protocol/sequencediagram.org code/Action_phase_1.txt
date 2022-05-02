@@ -1,0 +1,23 @@
+title Action phase: moving students (2 players)
+participant Client1
+participant Server
+
+
+loop   3 times
+Server->Client1: MoveRequestMessage(MoveType)
+loop do while the move is invalid and time has not expired
+  Client1-->Server: PerformedMoveMessage(Move)
+    alt Invalid move
+    Server-->Client1: InvalidMoveMessage(Cause)
+    else Valid move
+    Server-->Client1: AckMessage()
+  end
+end
+opt if time has expired
+	Server->Server: Choose random move \nfor client
+end
+
+Server->Server: Update the game state
+Server->>Client1: UpdateGameMessage(Update)
+Server->>Client2: UpdateGameMessage(Update)
+end
