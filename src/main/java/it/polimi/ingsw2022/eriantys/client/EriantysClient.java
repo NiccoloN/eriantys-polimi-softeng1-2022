@@ -82,7 +82,7 @@ public class EriantysClient {
             if(message.isPresent()) {
 
                 System.out.println("message received: " + message.get().getClass().getSimpleName());
-                message.get().manageAndReply();
+                message.get().manageAndReply(server);
             }
         }
     }

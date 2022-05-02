@@ -20,7 +20,7 @@ public class EriantysServer {
 
     public static final int PORT_NUMBER = 65000;
 
-    public static void launch(String[] args) throws IOException {
+    public static void launch(String[] args) throws IOException, ClassNotFoundException {
 
         createInstance();
         getInstance().start();
@@ -40,7 +40,6 @@ public class EriantysServer {
 
     private final ServerSocket serverSocket;
 
-    private Socket currentlyConnectingClient;
     private final Map<String, Socket> clients;
     private final Map<Socket, ObjectOutputStream> clientOutputStreams;
     private final Map<Socket, ObjectInputStream> clientInputStreams;
@@ -58,56 +57,49 @@ public class EriantysServer {
         clientInputStreams = new HashMap<>(4);
     }
 
-    private void start() {
+    private void start() throws IOException, ClassNotFoundException {
 
         running = true;
         System.out.println("\nServer started\nWaiting for the first player to join...");
 
-        new Thread(() -> {
-
-            while(running) {
-
-                try {
-
-                    //accept a connection
-                    currentlyConnectingClient = serverSocket.accept();
-                    System.out.println("Connection established with client " + currentlyConnectingClient);
-
-                    //initialize object the streams of the accepted client
-                    clientOutputStreams.put(currentlyConnectingClient, new ObjectOutputStream(currentlyConnectingClient.getOutputStream()));
-                    clientInputStreams.put(currentlyConnectingClient, new ObjectInputStream(currentlyConnectingClient.getInputStream()));
-
-                    //notify the client of the successful connection
-                    sendToClient(new ConnectedMessage(), currentlyConnectingClient);
-
-                    //ask the connected client to provide a username
-                    Message sent = new ChooseUsernameMessage();
-                    sendToClient(sent, currentlyConnectingClient);
-
-                    Optional<Message> response = waitForValidResponse(currentlyConnectingClient, sent, 120000);
-
-                    if(response.isPresent()) {
-
-                        System.out.println("Response received: " + response.get().getClass().getSimpleName());
-                        response.get().manageAndReply();
-                    }
-                    else {
-
-                        System.out.println("No valid response received in time: shutting down the server");
-                        running = false;
-                    }
-
-                    currentlyConnectingClient = null;
-                }
-                catch(IOException | ClassNotFoundException e) {
-
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        acceptConnection();
+        setupGame();
     }
 
-    private void sendToClient(Message message, Socket clientSocket) throws IOException {
+    private void acceptConnection() throws IOException, ClassNotFoundException {
+
+        //accept a connection
+        Socket socket = serverSocket.accept();
+        System.out.println("Connection established with client " + socket);
+
+        //initialize object the streams of the accepted client
+        clientOutputStreams.put(socket, new ObjectOutputStream(socket.getOutputStream()));
+        clientInputStreams.put(socket, new ObjectInputStream(socket.getInputStream()));
+
+        //notify the client of the successful connection
+        sendToClient(new ConnectedMessage(), socket);
+
+        //ask the connected client to provide a username
+        Message sent = new ChooseUsernameMessage();
+        sendToClient(sent, socket);
+
+        Optional<Message> response = waitForValidResponse(socket, sent, 120000);
+
+        if(response.isPresent()) {
+
+            System.out.println("Response received: " + response.get().getClass().getSimpleName());
+            response.get().manageAndReply(socket);
+        }
+        else {
+
+            System.out.println("No valid response received in time: shutting down the server");
+            running = false;
+        }
+    }
+
+    private void setupGame() {}
+
+    public void sendToClient(Message message, Socket clientSocket) throws IOException {
 
         clientOutputStreams.get(clientSocket).writeObject(message);
     }
@@ -150,9 +142,14 @@ public class EriantysServer {
         return message;
     }
 
-    public void addCurrentlyConnectingClient(String username) {
+    public boolean isAvailableUsername(String username) {
 
-        if(currentlyConnectingClient == null) throw new RuntimeException("No client is currently connecting");
-        clients.put(username, currentlyConnectingClient);
+        return !clients.containsKey(username);
+    }
+
+    public void addClient(Socket clientSocket, String username) {
+
+        if(clients.containsValue(clientSocket)) throw new RuntimeException("Client already connected");
+        clients.put(username, clientSocket);
     }
 }
