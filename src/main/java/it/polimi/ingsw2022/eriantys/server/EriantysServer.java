@@ -2,7 +2,6 @@ package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseGameSettingsMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ConnectedMessage;
-import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -147,6 +146,7 @@ public class EriantysServer {
     public void addClient(Socket clientSocket, String username) {
 
         if(clients.containsValue(clientSocket)) throw new RuntimeException("Client already connected");
+
         synchronized(clients) {
 
             clients.put(username, clientSocket);
