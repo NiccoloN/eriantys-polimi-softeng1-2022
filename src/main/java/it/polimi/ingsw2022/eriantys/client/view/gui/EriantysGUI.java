@@ -1,6 +1,9 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -32,5 +35,10 @@ public class EriantysGUI extends Application implements View {
     public String getUsername() {
 
         return "Prova";
+    }
+
+    @Override
+    public GameSettings getGameSettings() {
+        return new GameSettings(4, Mode.BASIC);
     }
 }

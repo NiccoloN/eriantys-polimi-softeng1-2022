@@ -5,6 +5,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.states.CLIState;
 import it.polimi.ingsw2022.eriantys.client.view.cli.states.HelperSelection;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -497,5 +499,10 @@ public class EriantysCLI implements View {
     public String getUsername() {
 
         return "Caio";
+    }
+
+    @Override
+    public GameSettings getGameSettings() {
+        return new GameSettings(4, Mode.BASIC);
     }
 }

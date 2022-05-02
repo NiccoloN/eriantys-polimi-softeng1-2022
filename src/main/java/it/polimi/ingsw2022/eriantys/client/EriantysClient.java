@@ -4,7 +4,9 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.server.model.Game;
 import javafx.application.Application;
 
 import java.io.EOFException;
@@ -114,4 +116,10 @@ public class EriantysClient {
 
         return view.getUsername();
     }
+
+    public GameSettings getGameSettings() {
+        return view.getGameSettings();
+    }
+
+
 }

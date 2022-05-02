@@ -1,9 +1,11 @@
 package it.polimi.ingsw2022.eriantys.server;
 
+import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseGameSettingsMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ConnectedMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -43,6 +45,7 @@ public class EriantysServer {
     private final Map<String, Socket> clients;
     private final Map<Socket, ObjectOutputStream> clientOutputStreams;
     private final Map<Socket, ObjectInputStream> clientInputStreams;
+    private GameSettings gameSettings;
 
     private boolean running;
 
@@ -63,32 +66,32 @@ public class EriantysServer {
         System.out.println("\nServer started\nWaiting for the first player to join...");
 
         acceptConnection();
-        setupGame();
+        getGameSettings();
     }
 
     private void acceptConnection() throws IOException, ClassNotFoundException {
 
         //accept a connection
-        Socket socket = serverSocket.accept();
-        System.out.println("Connection established with client " + socket);
+        Socket client = serverSocket.accept();
+        System.out.println("Connection established with client " + client);
 
         //initialize object the streams of the accepted client
-        clientOutputStreams.put(socket, new ObjectOutputStream(socket.getOutputStream()));
-        clientInputStreams.put(socket, new ObjectInputStream(socket.getInputStream()));
+        clientOutputStreams.put(client, new ObjectOutputStream(client.getOutputStream()));
+        clientInputStreams.put(client, new ObjectInputStream(client.getInputStream()));
 
         //notify the client of the successful connection
-        sendToClient(new ConnectedMessage(), socket);
+        sendToClient(new ConnectedMessage(), client);
 
         //ask the connected client to provide a username
         Message sent = new ChooseUsernameMessage();
-        sendToClient(sent, socket);
+        sendToClient(sent, client);
 
-        Optional<Message> response = waitForValidResponse(socket, sent, 120000);
+        Optional<Message> response = waitForValidResponse(client, sent, 120000);
 
         if(response.isPresent()) {
 
             System.out.println("Response received: " + response.get().getClass().getSimpleName());
-            response.get().manageAndReply(socket);
+            response.get().manageAndReply(client);
         }
         else {
 
@@ -97,7 +100,10 @@ public class EriantysServer {
         }
     }
 
-    private void setupGame() {}
+    private void getGameSettings() throws IOException {
+        Socket client = (Socket) clients.values().toArray()[0];
+        sendToClient(new ChooseGameSettingsMessage(), client);
+    }
 
     public void sendToClient(Message message, Socket clientSocket) throws IOException {
 
@@ -151,5 +157,9 @@ public class EriantysServer {
 
         if(clients.containsValue(clientSocket)) throw new RuntimeException("Client already connected");
         clients.put(username, clientSocket);
+    }
+
+    public void addGameSettings(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
     }
 }
