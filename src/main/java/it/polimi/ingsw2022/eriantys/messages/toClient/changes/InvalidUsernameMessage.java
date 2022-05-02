@@ -2,13 +2,13 @@ package it.polimi.ingsw2022.eriantys.messages.toClient.changes;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
 import java.io.IOException;
-import java.net.Socket;
 
-public class InvalidUsernameMessage extends Message {
+public class InvalidUsernameMessage extends ToClientMessage {
 
     static {
 
@@ -26,11 +26,11 @@ public class InvalidUsernameMessage extends Message {
     }
 
     @Override
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    public void manageAndReply() throws IOException {
 
         EriantysClient client = EriantysClient.getInstance();
         String username = client.getUsername();
-        if(username != null) client.sendToServer(new UsernameChoiceMessage(username));
-        else client.sendToServer(new AbortMessage());
+        if(username != null) client.sendToServer(new UsernameChoiceMessage(this, username));
+        else client.sendToServer(new AbortMessage(this));
     }
 }

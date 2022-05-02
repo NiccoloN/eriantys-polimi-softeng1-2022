@@ -2,21 +2,26 @@ package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
-import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
 import java.net.Socket;
 
-public class ChooseGameSettingsMessage extends Message {
+public class ChooseGameSettingsMessage extends ToClientMessage {
+
+    static {
+
+        validResponses.add(GameSettingsMessage.class);
+        validResponses.add(AbortMessage.class);
+    }
 
     @Override
-    public void manageAndReply(Socket serverSocket) throws IOException {
-        EriantysClient client = EriantysClient.getInstance();
-        EriantysServer server = EriantysServer.getInstance();
+    public void manageAndReply() throws IOException {
 
+        EriantysClient client = EriantysClient.getInstance();
         GameSettings gameSettings = client.getGameSettings();
-        client.sendToServer(new GameSettingsMessage(gameSettings));
+        client.sendToServer(new GameSettingsMessage(this, gameSettings));
     }
 }

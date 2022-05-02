@@ -8,17 +8,20 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import java.io.IOException;
 import java.net.Socket;
 
-public class UsernameChoiceMessage extends Message {
+public class UsernameChoiceMessage extends ToServerMessage {
 
     public final String username;
 
-    public UsernameChoiceMessage(String username) {
+    public UsernameChoiceMessage(Message previousMessage, String username) {
 
+        super(previousMessage);
         this.username = username;
     }
 
     @Override
     public void manageAndReply(Socket responseSocket) throws IOException {
+
+        super.manageAndReply(responseSocket);
 
         EriantysServer server = EriantysServer.getInstance();
         if(server.isAvailableUsername(username)) {
@@ -27,6 +30,5 @@ public class UsernameChoiceMessage extends Message {
             server.sendToClient(new AckMessage(), responseSocket);
         }
         else server.sendToClient(new InvalidUsernameMessage(false, true), responseSocket);
-        System.out.println("Added client with username: " + username);
     }
 }

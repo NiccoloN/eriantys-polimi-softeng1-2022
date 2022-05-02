@@ -1,11 +1,9 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
-import it.polimi.ingsw2022.eriantys.messages.Message;
+import java.io.IOException;
 
-import java.net.Socket;
-
-public class AckMessage extends Message {
+public class AckMessage extends ToClientMessage {
 
     @Override
-    public void manageAndReply(Socket responseSocket) {}
+    public void manageAndReply() throws IOException {}
 }

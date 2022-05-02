@@ -4,10 +4,9 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
-import it.polimi.ingsw2022.eriantys.server.model.Game;
-import javafx.application.Application;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
-import java.util.concurrent.TimeoutException;
 
 public class EriantysClient {
 
@@ -80,20 +78,20 @@ public class EriantysClient {
         //update loop
         while(true) {
 
-            Optional<Message> message = readMessage();
+            Optional<ToClientMessage> message = readMessage();
             if(message.isPresent()) {
 
                 System.out.println("message received: " + message.get().getClass().getSimpleName());
-                message.get().manageAndReply(server);
+                message.get().manageAndReply();
             }
         }
     }
 
-    private Optional<Message> readMessage() throws IOException, ClassNotFoundException {
+    private Optional<ToClientMessage> readMessage() throws IOException, ClassNotFoundException {
 
         try {
 
-            Message message = (Message) serverInputStream.readObject();
+            ToClientMessage message = (ToClientMessage) serverInputStream.readObject();
             return Optional.of(message);
         }
         catch(EOFException e) {

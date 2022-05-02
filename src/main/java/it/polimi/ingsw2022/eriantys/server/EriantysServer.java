@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -22,7 +22,7 @@ public class EriantysServer {
 
     public static final int PORT_NUMBER = 65000;
 
-    public static void launch(String[] args) throws IOException, ClassNotFoundException {
+    public static void launch(String[] args) throws IOException, InterruptedException {
 
         createInstance();
         getInstance().start();
@@ -60,16 +60,16 @@ public class EriantysServer {
         clientInputStreams = new HashMap<>(4);
     }
 
-    private void start() throws IOException, ClassNotFoundException {
+    private void start() throws IOException, InterruptedException {
 
         running = true;
         System.out.println("\nServer started\nWaiting for the first player to join...");
 
-        acceptConnection();
-        getGameSettings();
+        Socket firstClient = acceptConnection();
+        requestGameSettings(firstClient);
     }
 
-    private void acceptConnection() throws IOException, ClassNotFoundException {
+    private Socket acceptConnection() throws IOException {
 
         //accept a connection
         Socket client = serverSocket.accept();
@@ -86,66 +86,57 @@ public class EriantysServer {
         Message sent = new ChooseUsernameMessage();
         sendToClient(sent, client);
 
-        Optional<Message> response = waitForValidResponse(client, sent, 120000);
+        listenToClient(client);
 
-        if(response.isPresent()) {
+        return client;
+    }
 
-            System.out.println("Response received: " + response.get().getClass().getSimpleName());
-            response.get().manageAndReply(client);
-        }
-        else {
+    private void requestGameSettings(Socket client) throws InterruptedException, IOException {
 
-            System.out.println("No valid response received in time: shutting down the server");
-            running = false;
+        synchronized(clients) {
+
+            while(clients.size() == 0) clients.wait();
+            sendToClient(new ChooseGameSettingsMessage(), client);
+            clients.notifyAll();
         }
     }
 
-    private void getGameSettings() throws IOException {
-        Socket client = (Socket) clients.values().toArray()[0];
-        sendToClient(new ChooseGameSettingsMessage(), client);
+    private void listenToClient(Socket client) {
+
+        new Thread(() -> {
+
+            while(running) {
+
+                try {
+
+                    Optional<ToServerMessage> message = readMessageFromClient(client);
+                    if(message.isPresent()) message.get().manageAndReply(client);
+                }
+                catch(IOException | ClassNotFoundException e) {
+
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void sendToClient(Message message, Socket clientSocket) throws IOException {
 
-        clientOutputStreams.get(clientSocket).writeObject(message);
+        ObjectOutputStream outputStream = clientOutputStreams.get(clientSocket);
+        synchronized(outputStream) { outputStream.writeObject(message); }
     }
 
-    private Optional<Message> readMessageFromClient(Socket clientSocket, int timeout) throws IOException, ClassNotFoundException {
+    private Optional<ToServerMessage> readMessageFromClient(Socket clientSocket) throws IOException, ClassNotFoundException {
 
         try {
 
-            clientSocket.setSoTimeout(timeout);
-            Message message = (Message) clientInputStreams.get(clientSocket).readObject();
+            ToServerMessage message = (ToServerMessage) clientInputStreams.get(clientSocket).readObject();
             return Optional.of(message);
         }
-        catch(SocketTimeoutException | EOFException e) {
+        catch(EOFException e) {
 
             return Optional.empty();
         }
-    }
-
-    private Optional<Message> waitForValidResponse(Socket clientSocket, Message sentMessage, int maxResponseTime) throws IOException, ClassNotFoundException {
-
-        Optional<Message> message = Optional.empty();
-        int elapsedTime = 0;
-        long start;
-
-        while((message.isEmpty() || !sentMessage.isValidResponse(message.get())) && elapsedTime < maxResponseTime) {
-
-            start = System.nanoTime();
-            message = readMessageFromClient(clientSocket, maxResponseTime - elapsedTime);
-            elapsedTime += (System.nanoTime() - start) / 1000000;
-
-            //if an abort message is received, stop waiting for a response
-            if(message.isPresent() && message.get() instanceof AbortMessage) {
-
-                System.out.println("Operation aborted from client");
-                running = false;
-                break;
-            }
-        }
-
-        return message;
     }
 
     public boolean isAvailableUsername(String username) {
@@ -156,10 +147,16 @@ public class EriantysServer {
     public void addClient(Socket clientSocket, String username) {
 
         if(clients.containsValue(clientSocket)) throw new RuntimeException("Client already connected");
-        clients.put(username, clientSocket);
+        synchronized(clients) {
+
+            clients.put(username, clientSocket);
+            System.out.println("Added client with username: " + username);
+            clients.notifyAll();
+        }
     }
 
     public void addGameSettings(GameSettings gameSettings) {
+
         this.gameSettings = gameSettings;
     }
 }

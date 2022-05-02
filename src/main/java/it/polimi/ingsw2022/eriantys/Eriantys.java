@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Eriantys {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
         if(args.length > 0 && args[0].equals("-server")) EriantysServer.launch(args);
         else EriantysClient.launch(args);

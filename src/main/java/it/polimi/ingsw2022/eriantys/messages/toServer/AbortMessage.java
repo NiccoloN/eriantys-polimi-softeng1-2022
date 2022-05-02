@@ -2,12 +2,10 @@ package it.polimi.ingsw2022.eriantys.messages.toServer;
 
 import it.polimi.ingsw2022.eriantys.messages.Message;
 
-import java.net.Socket;
+public class AbortMessage extends ToServerMessage {
 
-public class AbortMessage extends Message {
+    public AbortMessage(Message previousMessage) {
 
-    @Override
-    public void manageAndReply(Socket responseSocket) {
-
+        super(previousMessage);
     }
 }
