@@ -17,7 +17,7 @@ import java.nio.file.Path;
 public class CardFactory {
 
     private static final Gson gson = new Gson();
-    private static final String RESOURCES_DIR = "resources";
+    private static final String RESOURCES_DIR = "src/main/resources";
     private static final String HELPERS_FILE_NAME = "helpers.json";
     private static final String CHARACTERS_FILE_NAME = "characters.json";
     private static HelperCard[] helperCardSamples;
