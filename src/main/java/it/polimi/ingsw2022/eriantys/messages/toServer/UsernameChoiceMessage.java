@@ -8,6 +8,11 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Francesco Melegati Maccari
+ * @author Emanuele Musto
+ */
 public class UsernameChoiceMessage extends ToServerMessage {
 
     public final String username;

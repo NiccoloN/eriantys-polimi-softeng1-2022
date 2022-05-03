@@ -4,6 +4,10 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import java.io.IOException;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Emanuele Musto
+ */
 public class InvalidResponseMessage extends ToClientMessage {
 
     private final Message response, request;

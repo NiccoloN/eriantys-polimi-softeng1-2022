@@ -7,6 +7,10 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Emanuele Musto
+ */
 public abstract class ToServerMessage extends Message {
 
     public final Message previousMessage;

@@ -1,8 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server;
 
-import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseGameSettingsMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.ConnectedMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
@@ -13,10 +11,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Francesco Melegati Maccari
+ * @author Emanuele Musto
+ */
 public class EriantysServer {
 
     public static final int PORT_NUMBER = 65000;
@@ -54,7 +55,7 @@ public class EriantysServer {
         serverSocket = new ServerSocket(PORT_NUMBER);
 
         //initialize client maps
-        clients = new HashMap<>(4);
+        clients = new LinkedHashMap<>(4);
         clientOutputStreams = new HashMap<>(4);
         clientInputStreams = new HashMap<>(4);
     }
@@ -66,6 +67,32 @@ public class EriantysServer {
 
         Socket firstClient = acceptConnection();
         requestGameSettings(firstClient);
+
+        synchronized (this) {
+
+            while (gameSettings == null) wait();
+            sendToClient(new GameJoinedMessage(clients.keySet().toArray(new String[0]), gameSettings), firstClient);
+            notifyAll();
+        }
+
+        for (int n = 1; n < gameSettings.numberOfPlayers; n++) {
+
+            Socket currentClient = acceptConnection();
+
+            synchronized (clients) {
+
+                while (clients.size() <= n) clients.wait();
+
+                String[] playerUsernames = clients.keySet().toArray(new String[0]);
+                sendToClient(new GameJoinedMessage(playerUsernames, gameSettings), currentClient);
+
+                for (Socket client : clients.values())
+                    if (client != currentClient)
+                        sendToClient(new NewPlayerJoinedMessage(playerUsernames), client);
+
+                clients.notifyAll();
+            }
+        }
     }
 
     private Socket acceptConnection() throws IOException {
@@ -155,8 +182,9 @@ public class EriantysServer {
         }
     }
 
-    public void addGameSettings(GameSettings gameSettings) {
+    public synchronized void addGameSettings(GameSettings gameSettings) {
 
         this.gameSettings = gameSettings;
+        notifyAll();
     }
 }

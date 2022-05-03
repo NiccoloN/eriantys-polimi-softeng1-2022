@@ -498,7 +498,7 @@ public class EriantysCLI implements View {
     @Override
     public String getUsername() {
 
-        return "Caio";
+        return String.valueOf((char) (Math.random() * 50 + 'a'));
     }
 
     @Override

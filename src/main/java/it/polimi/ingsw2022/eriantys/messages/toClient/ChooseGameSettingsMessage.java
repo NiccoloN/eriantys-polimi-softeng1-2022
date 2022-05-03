@@ -9,6 +9,11 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Francesco Melegati Maccari
+ * @author Emanuele Musto
+ */
 public class ChooseGameSettingsMessage extends ToClientMessage {
 
     static {

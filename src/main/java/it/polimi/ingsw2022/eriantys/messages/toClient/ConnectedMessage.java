@@ -1,9 +1,10 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
-import it.polimi.ingsw2022.eriantys.messages.Message;
-
 import java.io.IOException;
 
+/**
+ * @author Niccolò Nicolosi
+ */
 public class ConnectedMessage extends ToClientMessage {
 
     @Override

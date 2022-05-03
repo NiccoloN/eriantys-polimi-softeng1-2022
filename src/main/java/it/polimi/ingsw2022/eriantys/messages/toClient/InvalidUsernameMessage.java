@@ -6,6 +6,11 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
 import java.io.IOException;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Francesco Melegati Maccari
+ * @author Emanuele Musto
+ */
 public class InvalidUsernameMessage extends ToClientMessage {
 
     static {

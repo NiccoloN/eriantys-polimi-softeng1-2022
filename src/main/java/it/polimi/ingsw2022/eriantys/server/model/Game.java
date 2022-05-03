@@ -18,10 +18,10 @@ import java.util.List;
  */
 public class Game {
     // Predefined game values
-    final int NUMBER_OF_STUDENTS_PER_COLOR = 26;
-    final int NUMBER_OF_PROFESSORS_PER_COLOR = 1;
-    final int MAX_NUMBER_OF_PLAYERS = 4;
-    final int MIN_NUMBER_OF_PLAYERS = 2;
+    public static final int NUMBER_OF_STUDENTS_PER_COLOR = 26;
+    public static final int NUMBER_OF_PROFESSORS_PER_COLOR = 1;
+    public static final int MAX_NUMBER_OF_PLAYERS = 4;
+    public static final int MIN_NUMBER_OF_PLAYERS = 2;
 
     // TODO: import Mode
     private Mode gameMode;

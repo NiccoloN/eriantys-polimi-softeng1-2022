@@ -14,7 +14,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.concurrent.TimeoutException;
 
+/**
+ * @author Niccolò Nicolosi
+ * @author Francesco Melegati Maccari
+ * @author Emanuele Musto
+ */
 public class EriantysClient {
 
     public static void launch(String[] args) throws IOException, ClassNotFoundException {
@@ -50,9 +56,9 @@ public class EriantysClient {
 
     private void start() throws IOException, ClassNotFoundException {
 
-        /*
+
         //start the view in a separate thread
-        new Thread(() -> {
+        /*new Thread(() -> {
 
             try {
 
@@ -62,8 +68,7 @@ public class EriantysClient {
 
                 e.printStackTrace();
             }
-        }).start();
-         */
+        }).start();*/
 
         //connect to server
         String host = "localhost";
@@ -116,8 +121,7 @@ public class EriantysClient {
     }
 
     public GameSettings getGameSettings() {
+
         return view.getGameSettings();
     }
-
-
 }

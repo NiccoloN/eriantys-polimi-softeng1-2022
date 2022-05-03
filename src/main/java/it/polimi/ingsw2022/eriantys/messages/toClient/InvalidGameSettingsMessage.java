@@ -2,7 +2,8 @@ package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
-import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
 
 import java.io.IOException;
 
@@ -11,20 +12,14 @@ import java.io.IOException;
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
  */
-public class ChooseUsernameMessage extends ToClientMessage {
-
-    static {
-
-        validResponses.add(UsernameChoiceMessage.class);
-        validResponses.add(AbortMessage.class);
-    }
+public class InvalidGameSettingsMessage extends ToClientMessage {
 
     @Override
     public void manageAndReply() throws IOException {
 
         EriantysClient client = EriantysClient.getInstance();
-        String username = client.getUsername();
-        if(username != null) client.sendToServer(new UsernameChoiceMessage(this, username));
+        GameSettings gameSettings = client.getGameSettings();
+        if(gameSettings != null) client.sendToServer(new GameSettingsMessage(this, gameSettings));
         else client.sendToServer(new AbortMessage(this));
     }
 }
