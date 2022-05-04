@@ -1,4 +1,7 @@
 package it.polimi.ingsw2022.eriantys.server.model;
+import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
+import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -24,7 +27,7 @@ public class Game {
     public static final int MIN_NUMBER_OF_PLAYERS = 2;
 
     // TODO: import Mode
-    private Mode gameMode;
+    private GameMode gameMode;
     private final Board board;
     private final List<ColoredPawn> students;
     private final StudentsBag studentsBag;
@@ -44,6 +47,7 @@ public class Game {
         studentsBag = new StudentsBag();
         board = new Board(players);
         characters = new ArrayList<>();
+        this.gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
     }
 
     /**

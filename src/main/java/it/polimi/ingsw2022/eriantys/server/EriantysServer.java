@@ -2,8 +2,12 @@ package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
+import it.polimi.ingsw2022.eriantys.server.model.Game;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -46,6 +50,7 @@ public class EriantysServer {
     private final Map<Socket, ObjectOutputStream> clientOutputStreams;
     private final Map<Socket, ObjectInputStream> clientInputStreams;
     private GameSettings gameSettings;
+    private Game game;
 
     private boolean running;
 
@@ -186,5 +191,20 @@ public class EriantysServer {
 
         this.gameSettings = gameSettings;
         notifyAll();
+    }
+
+    private Update createInititalUpdate() {
+        Update initUpdate = new Update();
+        for (int n = 0; n < 12; n++ ) {
+        }
+        return initUpdate;
+    }
+
+    private void createGame() throws IOException {
+        this.game = new Game(this.gameSettings.numberOfPlayers, this.gameSettings.gameMode);
+        Update initialUpdate = createInititalUpdate();
+        for (Socket client : clients.values()) {
+            sendToClient(new StartingGameMessage(clients.keySet().toArray(new String[0]), initialUpdate), client);
+        }
     }
 }
