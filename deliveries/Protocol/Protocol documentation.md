@@ -18,9 +18,35 @@ Sent from server to client to confirm a generic message has been acknowledged
 
 - No responses
 
+### InvalidResponseMessage
+
+Sent from server to client to notify the client that the response it sent is not included 
+in the possible responses of the message it is responding to, therefore it will be ignored
+
+#### Arguments
+
+- Request: the request message needing a response
+- Response: the invalid response received
+
+#### Possible responses
+
+- No responses
+
 ### AbortMessage
 
 Sent from client to server to abort the current operation
+
+#### Arguments
+
+- No arguments
+
+#### Possible responses
+
+- No responses
+
+### ConnectedMessage
+
+Sent from server to client to notify the client of the successful connection to the server
 
 #### Arguments
 
@@ -55,6 +81,7 @@ Sent from client to server to communicate the choice of a username
 
 - AckMessage: if the chosen username is valid
 - InvalidUsernameMessage: if the chosen username is invalid
+- InvalidResponseMessage: if the server was not expecting this message as response
 
 ### InvalidUsernameMessage
 
@@ -95,6 +122,7 @@ Sent from client to server to communicate the chosen game settings
 
 - AckMessage: if the chosen game settings are valid
 - InvalidGameSettings: if the chosen game settings are invalid
+- InvalidResponseMessage: if the server was not expecting this message as response
 
 ### InvalidGameSettingsMessage
 
@@ -115,8 +143,8 @@ Sent from server to client if the client successfully joined the game lobby
 
 #### Arguments
 
+- Players: the list of players currently connected to the game lobby
 - GameSettings: the settings of the joined game lobby
-- CurrentNumberOfPlayers: the number of players currently connected to the game lobby
 
 #### Possible responses
 
@@ -128,8 +156,7 @@ Sent from server to all clients (except the one that has just joined) if any new
 
 #### Arguments
 
-- playerUsername: the username of the player that joined
-- CurrentNumberOfPlayers: the number of players currently connected to the game lobby
+- Players: the list of players currently connected to the game lobby
 
 #### Possible responses
 
@@ -165,7 +192,7 @@ Sent from server to all clients whenever the requested amount of player is reach
 
 #### Arguments
 
-- Usernames: a sorted list of the usernames of every player
+- Players: a sorted list of the username of every player
 - Update: an object containing all the changes to apply to the initialized view
 
 #### Possible responses
@@ -208,6 +235,7 @@ Sent from client to server whenever the player chooses his move
 
 - AckMessage: if the performed move is valid
 - InvalidMoveMessage: if the performed move is invalid
+- InvalidResponseMessage: if the server was not expecting this message as response
 
 ### InvalidMoveMessage
 
@@ -239,13 +267,13 @@ Sent from server to all clients when the game ends
 
 ![Joining_game](Joining_game.png)
 
-Client1 is the first client that connects to the Server and it is asked to provide a username. 
-Client1 provides a username that can be either valid or invalid. Client1 continues providing new usernames until 
-one is valid. When a valid username is received, the Sever communicates it is creating the game and waits for 
+Client1 is the first client that connects to the Server. The Server notifies Client1 of the successful connection
+and asks to provide a username. Client1 provides a username that can be either valid or invalid. Client1 continues
+providing new usernames until one is valid. When a valid username is received, the Sever send an ack and asks 
 Client1 to provide the game settings. Client1 continues providing new settings until they are valid.
-Whenever valid settings are received, the Server notifies Client1 that the game was joined.
-After that Client2 and Client3 connect to the Server, they are asked to provide a username and they get notified
-when they join the game. Whenever a client connects, all the other clients get notified.
+Whenever valid settings are received, the Server notifies Client1 that the game was joined. After that Client2
+and Client3 connect to the Server, they are notified of the successful connection and they are asked to provide
+a username. They get notified when they join the game. Whenever a client connects, all the other clients get notified.
 After the required number of player is reached, the game is started and every client is notified of the initial
 game state. Every time a client is asked to provide information, it can provide an abortMessage instead. Whenever
 this happens the Server sends a PlayerDisconnectedMessage to every client and shuts down the game (not
@@ -288,3 +316,9 @@ and the time has not expired yet, the client can submit a new one. Once the time
 invalid or not received by the Server. After the move has been chosen, the Server updates the game and notifies all the
 clients. 
 
+### Game ending
+
+![Game_ending](Game_ending.png)
+
+Whenever the Server updates the game and acknowledges the game ending, the last update is sent to every client and subsequently
+every client is notified of the game ending.
