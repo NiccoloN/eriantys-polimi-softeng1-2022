@@ -1,8 +1,11 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -18,7 +21,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
     private String teamColor;
     private int index;
     private boolean tower, mother;
-    private int red, green, yellow, blue, pink;
+    private final Map<PawnColor, Integer> students;
 
     /**
      * Constructs an island cli component with the given index
@@ -35,11 +38,9 @@ public class IslandCLIComponent extends BasicCLIComponent {
 
         tower = false;
         mother = false;
-        red = 0;
-        green = 0;
-        yellow = 0;
-        blue = 0;
-        pink = 0;
+        
+        students = new HashMap<>(5);
+        for(PawnColor color : PawnColor.values()) students.put(color, 0);
         
         buildRows();
     }
@@ -49,13 +50,13 @@ public class IslandCLIComponent extends BasicCLIComponent {
         setRow(0, color + "   ________   " + RESET);
         setRow(1, color + "  /   " + teamColor + (tower ? UNDERLINED + "II" : "  ") + RESET + color + "   \\  " + RESET);
         setRow(2, color + " / " +
-                  RED + (red < 10 ? "0" : "") + red + "    " +
-                  GREEN_BRIGHT + (green < 10 ? "0" : "") + green + color + " \\ " + RESET);
+                  RED + (students.get(PawnColor.RED) < 10 ? "0" : "") + students.get(PawnColor.RED) + "    " +
+                  GREEN_BRIGHT + (students.get(PawnColor.GREEN) < 10 ? "0" : "") + students.get(PawnColor.GREEN) + color + " \\ " + RESET);
         setRow(3,color + "|     " +
-                 YELLOW + (yellow < 10 ? "0" : "") + yellow + color + "     |" + RESET);
+                 YELLOW + (students.get(PawnColor.YELLOW) < 10 ? "0" : "") + students.get(PawnColor.YELLOW) + color + "     |" + RESET);
         setRow(4, color + " \\ " +
-                  BLUE_BRIGHT + (blue < 10 ? "0" : "") + blue + "    " +
-                  PURPLE_BRIGHT + (pink < 10 ? "0" : "") + pink + color + " / " + RESET);
+                  BLUE_BRIGHT + (students.get(PawnColor.BLUE) < 10 ? "0" : "") + students.get(PawnColor.BLUE) + "    " +
+                  PURPLE_BRIGHT + (students.get(PawnColor.PINK) < 10 ? "0" : "") + students.get(PawnColor.PINK) + color + " / " + RESET);
         setRow(5, color + "  \\___" + UNDERLINED + (mother ? "MM" : "  ") + RESET + color + "___/  " + RESET);
         setRow(6, color + "      " + (index < 10 ? "0" : "") + index + "      " + RESET);
     }
@@ -119,57 +120,14 @@ public class IslandCLIComponent extends BasicCLIComponent {
     }
 
     /**
-     * Sets the red students visualized on this island
-     * @param red the number of red students to visualize
-     * @throws InvalidParameterException if red is not between 0 and 99
+     * Sets the students of the given color to visualize on this island
+     * @param color the color of the students
+     * @param number the number of students to visualize
+     * @throws InvalidParameterException if number is not between 0 and 99
      */
-    public void setRed(int red) {
+    public void setStudents(PawnColor color, int number) {
 
-        if (red < 0 || red > 99) throw new InvalidParameterException("Red must be >= 0 and <= 99");
-        this.red = red;
-    }
-
-    /**
-     * Sets the green students visualized on this island
-     * @param green the number of green students to visualize
-     * @throws InvalidParameterException if green is not between 0 and 99
-     */
-    public void setGreen(int green) {
-
-        if (green < 0 || green > 99) throw new InvalidParameterException("Green must be >= 0 and <= 99");
-        this.green = green;
-    }
-
-    /**
-     * Sets the yellow students visualized on this island
-     * @param yellow the number of yellow students to visualize
-     * @throws InvalidParameterException if yellow is not between 0 and 99
-     */
-    public void setYellow(int yellow) {
-
-        if (yellow < 0 || yellow > 99) throw new InvalidParameterException("Yellow must be >= 0 and <= 99");
-        this.yellow = yellow;
-    }
-
-    /**
-     * Sets the blue students visualized on this island
-     * @param blue the number of blue students to visualize
-     * @throws InvalidParameterException if blue is not between 0 and 99
-     */
-    public void setBlue(int blue) {
-
-        if (blue < 0 || blue > 99) throw new InvalidParameterException("Blue must be >= 0 and <= 99");
-        this.blue = blue;
-    }
-
-    /**
-     * Sets the pink students visualized on this island
-     * @param pink the number of pink students to visualize
-     * @throws InvalidParameterException if pink is not between 0 and 99
-     */
-    public void setPink(int pink) {
-
-        if (pink < 0 || pink > 99) throw new InvalidParameterException("Pink must be >= 0 and <= 99");
-        this.pink = pink;
+        if (number < 0 || number > 99) throw new InvalidParameterException("Number must be >= 0 and <= 99");
+        students.put(color, number);
     }
 }

@@ -148,6 +148,6 @@ public class CompoundIslandTile {
      */
     public int countTowers() {
 
-        return tiles.size();
+        return tiles.size() == 1 ? (tiles.get(0).hasTower() ? 1 : 0) : tiles.size();
     }
 }

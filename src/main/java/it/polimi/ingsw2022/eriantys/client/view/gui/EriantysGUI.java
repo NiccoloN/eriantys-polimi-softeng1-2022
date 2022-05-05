@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
@@ -40,5 +41,11 @@ public class EriantysGUI extends Application implements View {
     @Override
     public GameSettings getGameSettings() {
         return new GameSettings(4, Mode.BASIC);
+    }
+
+    @Override
+    public void applyChange(IslandChange change) {
+
+        //TODO
     }
 }

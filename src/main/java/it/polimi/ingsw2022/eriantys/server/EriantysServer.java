@@ -2,7 +2,6 @@ package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -15,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 /**
@@ -70,6 +70,7 @@ public class EriantysServer {
         running = true;
         System.out.println("\nServer started\nWaiting for the first player to join...");
 
+        //accept first connection
         Socket firstClient = acceptConnection();
         requestGameSettings(firstClient);
 
@@ -80,6 +81,7 @@ public class EriantysServer {
             notifyAll();
         }
 
+        //accept other connections
         for (int n = 1; n < gameSettings.numberOfPlayers; n++) {
 
             Socket currentClient = acceptConnection();
@@ -98,6 +100,9 @@ public class EriantysServer {
                 clients.notifyAll();
             }
         }
+
+        //initialize game
+        createGame();
     }
 
     private Socket acceptConnection() throws IOException {
@@ -145,6 +150,7 @@ public class EriantysServer {
                 }
                 catch(IOException | ClassNotFoundException e) {
 
+                    running = false;
                     e.printStackTrace();
                 }
             }
@@ -193,18 +199,21 @@ public class EriantysServer {
         notifyAll();
     }
 
-    private Update createInititalUpdate() {
+    private Update createInitialUpdate() {
+
         Update initUpdate = new Update();
-        for (int n = 0; n < 12; n++ ) {
-        }
+        for (int n = 0; n < game.getBoard().numberOfIslands(); n++)
+            initUpdate.addChange(new IslandChange(n, game.getBoard().getIsland(n)));
+
         return initUpdate;
     }
 
     private void createGame() throws IOException {
+
         this.game = new Game(this.gameSettings.numberOfPlayers, this.gameSettings.gameMode);
-        Update initialUpdate = createInititalUpdate();
-        for (Socket client : clients.values()) {
+        Update initialUpdate = createInitialUpdate();
+
+        for (Socket client : clients.values())
             sendToClient(new StartingGameMessage(clients.keySet().toArray(new String[0]), initialUpdate), client);
-        }
     }
 }

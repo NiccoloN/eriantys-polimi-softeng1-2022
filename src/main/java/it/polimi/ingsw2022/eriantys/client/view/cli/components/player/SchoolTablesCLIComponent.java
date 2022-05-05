@@ -2,8 +2,11 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.components.player;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -14,8 +17,8 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
 
     private String color;
     private String nickname;
-    private boolean redProf, greenProf, yellowProf, blueProf, pinkProf;
-    private int red, green, yellow, blue, pink;
+    private final Map<PawnColor, Boolean> professors;
+    private final Map<PawnColor, Integer> tableStudents;
 
     /**
      * Constructs a school table cli component with the given nickname
@@ -30,16 +33,11 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
 
         setNickname(nickname);
 
-        redProf = false;
-        greenProf = false;
-        yellowProf = false;
-        blueProf = false;
-        pinkProf = false;
-        red = 0;
-        green = 0;
-        yellow = 0;
-        blue = 0;
-        pink = 0;
+        professors = new HashMap<>(5);
+        for(PawnColor color : PawnColor.values()) professors.put(color, false);
+
+        tableStudents = new HashMap<>(5);
+        for(PawnColor color : PawnColor.values()) tableStudents.put(color, 0);
 
         buildRows();
     }
@@ -48,11 +46,11 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
 
         setRow(0, color + " _" + nickname + "_".repeat(getWidth() - nickname.length() - 3) + " " + RESET);
         setRow(1, color + "|  " + ("_____" + YELLOW + "_" + RESET + color).repeat(3) + "___   ___  |" + RESET);
-        setRow(2, buildTableRow(GREEN_BACKGROUND_BRIGHT, green, greenProf));
-        setRow(3, buildTableRow(RED_BACKGROUND, red, redProf));
-        setRow(4, buildTableRow(YELLOW_BACKGROUND, yellow, yellowProf));
-        setRow(5, buildTableRow(PURPLE_BACKGROUND_BRIGHT, pink, pinkProf));
-        setRow(6, buildTableRow(BLUE_BACKGROUND_BRIGHT, blue, blueProf));
+        setRow(2, buildTableRow(GREEN_BACKGROUND_BRIGHT, tableStudents.get(PawnColor.GREEN), professors.get(PawnColor.GREEN)));
+        setRow(3, buildTableRow(RED_BACKGROUND, tableStudents.get(PawnColor.RED), professors.get(PawnColor.RED)));
+        setRow(4, buildTableRow(YELLOW_BACKGROUND, tableStudents.get(PawnColor.YELLOW), professors.get(PawnColor.YELLOW)));
+        setRow(5, buildTableRow(PURPLE_BACKGROUND_BRIGHT, tableStudents.get(PawnColor.PINK), professors.get(PawnColor.PINK)));
+        setRow(6, buildTableRow(BLUE_BACKGROUND_BRIGHT, tableStudents.get(PawnColor.BLUE), professors.get(PawnColor.BLUE)));
         setRow(7, color + "|" + "_".repeat(getWidth() - 2) + "|" + RESET);
     }
     
@@ -99,102 +97,24 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
     }
 
     /**
-     * Sets the red students visualized on this component
-     * @param red the number of red students to visualize
-     * @throws InvalidParameterException if red is not between 0 and 10
+     * Sets the students of the given color to visualize on this component
+     * @param color the color of the students
+     * @param number the number of students to visualize
+     * @throws InvalidParameterException if number is not between 0 and 10
      */
-    void setRed(int red) {
+    public void setTableStudents(PawnColor color, int number) {
 
-        if (red < 0 || red > 10) throw new InvalidParameterException("Red must be >= 0 and <= 10");
-        this.red = red;
+        if (number < 0 || number > 10) throw new InvalidParameterException("Number must be >= 0 and <= 10");
+        tableStudents.put(color, number);
     }
 
     /**
-     * Sets the green students visualized on this component
-     * @param green the number of green students to visualize
-     * @throws InvalidParameterException if green is not between 0 and 10
+     * Sets if the professor of the given color is visible on this component
+     * @param color the color of the professor
+     * @param prof whether the professor is visible or not
      */
-    void setGreen(int green) {
+    public void setProfessor(PawnColor color, boolean prof) {
 
-        if (green < 0 || green > 10) throw new InvalidParameterException("Green must be >= 0 and <= 10");
-        this.green = green;
-    }
-
-    /**
-     * Sets the yellow students visualized on this component
-     * @param yellow the number of yellow students to visualize
-     * @throws InvalidParameterException if yellow is not between 0 and 10
-     */
-    void setYellow(int yellow) {
-
-        if (yellow < 0 || yellow > 10) throw new InvalidParameterException("Yellow must be >= 0 and <= 10");
-        this.yellow = yellow;
-    }
-
-    /**
-     * Sets the blue students visualized on this component
-     * @param blue the number of blue students to visualize
-     * @throws InvalidParameterException if blue is not between 0 and 10
-     */
-    void setBlue(int blue) {
-
-        if (blue < 0 || blue > 10) throw new InvalidParameterException("Blue must be >= 0 and <= 10");
-        this.blue = blue;
-    }
-
-    /**
-     * Sets the pink students visualized on this component
-     * @param pink the number of pink students to visualize
-     * @throws InvalidParameterException if pink is not between 0 and 10
-     */
-    void setPink(int pink) {
-
-        if (pink < 0 || pink > 10) throw new InvalidParameterException("Pink must be >= 0 and <= 10");
-        this.pink = pink;
-    }
-
-    /**
-     * Sets if the red professor is visible
-     * @param redProf the visibility of the red professor: visible if true, hidden otherwise
-     */
-    void setRedProf(boolean redProf) {
-        
-        this.redProf = redProf;
-    }
-
-    /**
-     * Sets if the green professor is visible
-     * @param greenProf the visibility of the green professor: visible if true, hidden otherwise
-     */
-    void setGreenProf(boolean greenProf) {
-
-        this.greenProf = greenProf;
-    }
-
-    /**
-     * Sets if the yellow professor is visible
-     * @param yellowProf the visibility of the yellow professor: visible if true, hidden otherwise
-     */
-    void setYellowProf(boolean yellowProf) {
-
-        this.yellowProf = yellowProf;
-    }
-
-    /**
-     * Sets if the blue professor is visible
-     * @param blueProf the visibility of the blue professor: visible if true, hidden otherwise
-     */
-    void setBlueProf(boolean blueProf) {
-
-        this.blueProf = blueProf;
-    }
-
-    /**
-     * Sets if the pink professor is visible
-     * @param pinkProf the visibility of the pink professor: visible if true, hidden otherwise
-     */
-    void setPinkProf(boolean pinkProf) {
-
-        this.pinkProf = pinkProf;
+        professors.put(color, prof);
     }
 }

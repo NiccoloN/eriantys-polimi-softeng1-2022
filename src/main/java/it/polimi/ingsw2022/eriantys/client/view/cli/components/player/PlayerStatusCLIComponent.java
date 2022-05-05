@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.components.player;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
 
@@ -116,137 +117,34 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     }
 
     /**
-     * Sets the red students visualized at the entrance
-     * @param red the number of red students to visualize
+     * Sets the students of the given color to visualize at the entrance
+     * @param color the color of the students
+     * @param number the number of students to visualize
+     * @throws InvalidParameterException if number is not between 0 and 9
      */
-    public void setRedEntrance(int red) {
+    public void setEntranceStudents(PawnColor color, int number) {
 
-        statsCLIComponent.setRed(red);
+        statsCLIComponent.setEntranceStudents(color, number);
     }
 
     /**
-     * Sets the  green students visualized at the entrance
-     * @param  green the number of  green students to visualize
+     * Sets the students to visualize at the table of the given color
+     * @param color the color of the students
+     * @param number the number of students to visualize
+     * @throws InvalidParameterException if number is not between 0 and 10
      */
-    public void setGreenEntrance(int green) {
+    public void setTableStudents(PawnColor color, int number) {
 
-        statsCLIComponent.setGreen(green);
+        tablesCLIComponent.setTableStudents(color, number);
     }
 
     /**
-     * Sets the yellow students visualized at the entrance
-     * @param yellow the number of yellow students to visualize
+     * Sets if the professor of the given color is visible on this component
+     * @param color the color of the professor
+     * @param prof whether the professor is visible or not
      */
-    public void setYellowEntrance(int yellow) {
+    public void setProfessor(PawnColor color, boolean prof) {
 
-        statsCLIComponent.setYellow(yellow);
-    }
-
-    /**
-     * Sets the blue students visualized at the entrance
-     * @param blue the number of blue students to visualize
-     */
-    public void setBlueEntrance(int blue) {
-
-        statsCLIComponent.setBlue(blue);
-    }
-
-    /**
-     * Sets the pink students visualized at the entrance
-     * @param pink the number of pink students to visualize
-     */
-    public void setPinkEntrance(int pink) {
-
-        statsCLIComponent.setPink(pink);
-    }
-
-    /**
-     * Sets the red students visualized at the corresponding table
-     * @param red the number of red students to visualize
-     */
-    public void setRed(int red) {
-
-        tablesCLIComponent.setRed(red);
-    }
-
-    /**
-     * Sets the green students visualized at the corresponding table
-     * @param green the number of green students to visualize
-     */
-    public void setGreen(int green) {
-
-        tablesCLIComponent.setGreen(green);
-    }
-
-    /**
-     * Sets the yellow students visualized at the corresponding table
-     * @param yellow the number of yellow students to visualize
-     */
-    public void setYellow(int yellow) {
-
-        tablesCLIComponent.setYellow(yellow);
-    }
-
-    /**
-     * Sets the blue students visualized at the corresponding table
-     * @param blue the number of blue students to visualize
-     */
-    public void setBlue(int blue) {
-
-        tablesCLIComponent.setBlue(blue);
-    }
-
-    /**
-     * Sets the pink students visualized at the corresponding table
-     * @param pink the number of pink students to visualize
-     */
-    public void setPink(int pink) {
-
-        tablesCLIComponent.setPink(pink);
-    }
-
-    /**
-     * Sets if the red professor is visible
-     * @param redProf the visibility of the red professor: visible if true, hidden otherwise
-     */
-    public void setRedProf(boolean redProf) {
-
-        tablesCLIComponent.setRedProf(redProf);
-    }
-
-    /**
-     * Sets if the green professor is visible
-     * @param greenProf the visibility of the green professor: visible if true, hidden otherwise
-     */
-    public void setGreenProf(boolean greenProf) {
-
-        tablesCLIComponent.setGreenProf(greenProf);
-    }
-
-    /**
-     * Sets if the yellow professor is visible
-     * @param yellowProf the visibility of the yellow professor: visible if true, hidden otherwise
-     */
-    public void setYellowProf(boolean yellowProf) {
-
-        tablesCLIComponent.setYellowProf(yellowProf);
-    }
-
-    /**
-     * Sets if the blue professor is visible
-     * @param blueProf the visibility of the blue professor: visible if true, hidden otherwise
-     */
-    public void setBlueProf(boolean blueProf) {
-
-        tablesCLIComponent.setBlueProf(blueProf);
-    }
-
-    /**
-     * Sets if the pink professor is visible
-     * @param pinkProf the visibility of the pink professor: visible if true, hidden otherwise
-     */
-    public void setPinkProf(boolean pinkProf) {
-
-        tablesCLIComponent.setPinkProf(pinkProf);
+        tablesCLIComponent.setProfessor(color, prof);
     }
 }

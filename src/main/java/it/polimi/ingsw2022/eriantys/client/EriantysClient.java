@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
@@ -56,9 +57,8 @@ public class EriantysClient {
 
     private void start() throws IOException, ClassNotFoundException {
 
-
         //start the view in a separate thread
-        /*new Thread(() -> {
+        new Thread(() -> {
 
             try {
 
@@ -68,7 +68,7 @@ public class EriantysClient {
 
                 e.printStackTrace();
             }
-        }).start();*/
+        }).start();
 
         //connect to server
         String host = "localhost";
@@ -123,5 +123,10 @@ public class EriantysClient {
     public GameSettings getGameSettings() {
 
         return view.getGameSettings();
+    }
+
+    public void applyUpdate(Update update) {
+
+        update.applyChanges(view);
     }
 }

@@ -13,6 +13,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -47,7 +48,35 @@ public class Game {
         studentsBag = new StudentsBag();
         board = new Board(players);
         characters = new ArrayList<>();
-        this.gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
+        gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
+
+        placeFirstStudents();
+        for(ColoredPawn student : students) studentsBag.addStudent(student);
+        students.clear();
+    }
+
+    private void placeFirstStudents() {
+
+        int colorCounter;
+        for(PawnColor color : PawnColor.values()) {
+
+            colorCounter = 0;
+            Iterator<ColoredPawn> iterator = students.iterator();
+            while(iterator.hasNext()) {
+
+                ColoredPawn student = iterator.next();
+                if(student.color == color) {
+
+                    iterator.remove();
+                    studentsBag.addStudent(student);
+                    colorCounter++;
+                    if(colorCounter >= 2) break;
+                }
+            }
+        }
+        for(int n = 1; n < board.numberOfIslands(); n++)
+            if(n != board.numberOfIslands() / 2)
+                board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
     }
 
     /**
@@ -105,9 +134,6 @@ public class Game {
 
         }
         return players;
-    }
-
-    public void startGame() {
     }
 
     public void calculatePoints() {

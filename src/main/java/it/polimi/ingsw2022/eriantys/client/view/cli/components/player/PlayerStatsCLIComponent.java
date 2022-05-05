@@ -2,8 +2,11 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.components.player;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -12,7 +15,7 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     private String color;
     private final String teamColor;
     private int coins, towers;
-    private int red, green, yellow, blue, pink;
+    private final Map<PawnColor, Integer> entranceStudents;
 
     /**
      * Constructs a player stats cli component with the given team color
@@ -29,11 +32,9 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
 
         coins = 1;
         towers = 0;
-        red = 0;
-        green = 0;
-        yellow = 0;
-        blue = 0;
-        pink = 0;
+
+        entranceStudents = new HashMap<>(5);
+        for(PawnColor color : PawnColor.values()) entranceStudents.put(color, 0);
 
         buildRows();
     }
@@ -47,11 +48,11 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
         setRow(4, color + " " + teamColor + UNDERLINED + "II" + RESET + color + "x" + towers + "  |" + RESET);
         setRow(5, color + "       |" + RESET);
         setRow(6, color + " " +
-                  RED + red +
-                  GREEN_BRIGHT + green +
-                  YELLOW + yellow +
-                  BLUE_BRIGHT + blue +
-                  PURPLE_BRIGHT + pink +
+                  RED + entranceStudents.get(PawnColor.RED) +
+                  GREEN_BRIGHT + entranceStudents.get(PawnColor.GREEN) +
+                  YELLOW + entranceStudents.get(PawnColor.YELLOW) +
+                  BLUE_BRIGHT + entranceStudents.get(PawnColor.BLUE) +
+                  PURPLE_BRIGHT + entranceStudents.get(PawnColor.PINK) +
                   color + " |" + RESET);
         setRow(7, color + "_______|" + RESET);
     }
@@ -70,58 +71,15 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     }
 
     /**
-     * Sets the red students visualized on this component
-     * @param red the number of red students to visualize
-     * @throws InvalidParameterException if red is not between 0 and 9
+     * Sets the students of the given color to visualize on this component
+     * @param color the color of the students
+     * @param number the number of students to visualize
+     * @throws InvalidParameterException if number is not between 0 and 9
      */
-    void setRed(int red) {
+    public void setEntranceStudents(PawnColor color, int number) {
 
-        if (red < 0 || red > 9) throw new InvalidParameterException("Red must be >= 0 and <= 9");
-        this.red = red;
-    }
-
-    /**
-     * Sets the green students visualized on this component
-     * @param green the number of green students to visualize
-     * @throws InvalidParameterException if green is not between 0 and 9
-     */
-    void setGreen(int green) {
-
-        if (green < 0 || green > 9) throw new InvalidParameterException("Green must be >= 0 and <= 9");
-        this.green = green;
-    }
-
-    /**
-     * Sets the yellow students visualized on this component
-     * @param yellow the number of yellow students to visualize
-     * @throws InvalidParameterException if yellow is not between 0 and 9
-     */
-    void setYellow(int yellow) {
-
-        if (yellow < 0 || yellow > 9) throw new InvalidParameterException("Yellow must be >= 0 and <= 9");
-        this.yellow = yellow;
-    }
-
-    /**
-     * Sets the blue students visualized on this component
-     * @param blue the number of blue students to visualize
-     * @throws InvalidParameterException if blue is not between 0 and 9
-     */
-    void setBlue(int blue) {
-
-        if (blue < 0 || blue > 9) throw new InvalidParameterException("Blue must be >= 0 and <= 9");
-        this.blue = blue;
-    }
-
-    /**
-     * Sets the pink students visualized on this component
-     * @param pink the number of pink students to visualize
-     * @throws InvalidParameterException if pink is not between 0 and 9
-     */
-    void setPink(int pink) {
-
-        if (pink < 0 || pink > 9) throw new InvalidParameterException("Pink must be >= 0 and <= 9");
-        this.pink = pink;
+        if (number < 0 || number > 9) throw new InvalidParameterException("Number must be >= 0 and <= 9");
+        entranceStudents.put(color, number);
     }
 
     /**

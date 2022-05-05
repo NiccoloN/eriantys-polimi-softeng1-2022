@@ -5,8 +5,10 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.states.CLIState;
 import it.polimi.ingsw2022.eriantys.client.view.cli.states.HelperSelection;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -171,18 +173,6 @@ public class EriantysCLI implements View {
         characters[2] = new CharacterCardCLIComponent(1, "Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
                                                          "from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as " +
                                                          "many Students as they have", 3);
-
-        //TODO remove template block
-        islands[0].setTeamColor(TEAM_WHITE_COLOR);
-        islands[0].setTower(true);
-        islands[0].setMother(true);
-
-        players.get(0).setRed(10);
-        players.get(0).setBlue(2);
-        players.get(0).setBlueEntrance(5);
-        players.get(0).setRedProf(true);
-        players.get(0).setGreen(4);
-        //-------------------------
 
         setComponentsPositions();
 
@@ -496,6 +486,24 @@ public class EriantysCLI implements View {
     }
 
     @Override
+    public void applyChange(IslandChange change) {
+
+        IslandCLIComponent island = islands[change.islandTileIndex];
+
+        for(PawnColor color : PawnColor.values()) {
+
+            OptionalInt number = change.getStudents(color);
+            if(number.isPresent()) island.setStudents(color, number.getAsInt());
+        }
+
+        Optional<Boolean> tower = change.hasTower();
+        if(tower.isPresent()) island.setTower(tower.get());
+
+        Optional<Boolean> mother = change.hasMotherNature();
+        if(mother.isPresent()) island.setMother(mother.get());
+    }
+
+    @Override
     public String getUsername() {
 
         return String.valueOf((char) (Math.random() * 50 + 'a'));
@@ -503,6 +511,6 @@ public class EriantysCLI implements View {
 
     @Override
     public GameSettings getGameSettings() {
-        return new GameSettings(4, Mode.BASIC);
+        return new GameSettings(2, Mode.BASIC);
     }
 }
