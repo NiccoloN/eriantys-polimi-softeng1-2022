@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 
@@ -16,6 +16,7 @@ public class BasicCLIComponent implements CLIComponent {
 
     private float x, y;
     private final int width, height;
+    private boolean hidden;
     private final String[][] chars;
 
     /**
@@ -42,8 +43,10 @@ public class BasicCLIComponent implements CLIComponent {
         this.width = width;
         if (height < 1) throw new InvalidParameterException("Height must be >= 1");
         this.height = height;
+
         x = 0;
         y = 0;
+        hidden = false;
 
         chars = new String[height][width];
         for(String[] row : chars) Arrays.fill(row, " ");
@@ -105,14 +108,23 @@ public class BasicCLIComponent implements CLIComponent {
     }
 
     @Override
+    public void setHidden(boolean b) {
+
+        this.hidden = b;
+    }
+
+    @Override
     public void printToFrame(Frame frame) {
 
-        for (int i = 0; i < height; i++) {
+        if(!hidden) {
 
-            for (int j = 0; j < width; j++) {
+            for (int i = 0; i < height; i++) {
 
-                if (!chars[i][j].contains("\0") && y + i >= 0 && y + i < frame.getHeight() && x + j >= 0 && x + j < frame.getWidth())
-                    frame.setChar(getFrameX() + j, getFrameY() + i, chars[i][j]);
+                for (int j = 0; j < width; j++) {
+
+                    if (!chars[i][j].contains("\0") && y + i >= 0 && y + i < frame.getHeight() && x + j >= 0 && x + j < frame.getWidth())
+                        frame.setChar(getFrameX() + j, getFrameY() + i, chars[i][j]);
+                }
             }
         }
     }

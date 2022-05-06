@@ -23,8 +23,6 @@ public class ChooseUsernameMessage extends ToClientMessage {
     public void manageAndReply() throws IOException {
 
         EriantysClient client = EriantysClient.getInstance();
-        String username = client.getUsername();
-        if(username != null) client.sendToServer(new UsernameChoiceMessage(this, username));
-        else client.sendToServer(new AbortMessage(this));
+        client.askUsername(this);
     }
 }

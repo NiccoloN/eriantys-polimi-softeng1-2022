@@ -13,7 +13,6 @@ public class AnsiCodes {
 
     public static final String BOLD = "\u001B[1m";
     public static final String UNDERLINED = "\u001B[4m";
-    public static final String BLINKING = "\u001B[6m";
     public static final String INVERTED = "\u001B[7m";
 
     // Regular colors

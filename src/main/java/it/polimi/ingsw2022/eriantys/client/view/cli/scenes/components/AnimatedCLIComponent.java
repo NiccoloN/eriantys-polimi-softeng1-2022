@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 
@@ -15,18 +15,6 @@ public class AnimatedCLIComponent extends BasicCLIComponent {
     protected float speedX, speedY;
 
     /**
-     * Constructs an animated cli component from the given rows
-     * @param width the width of the component
-     * @param rows the rows from which to construct the component
-     * @throws InvalidParameterException if any of the given rows is not of the given width
-     */
-    public AnimatedCLIComponent(int width, String[] rows) {
-
-        this(width, rows.length);
-        for (int n = 0; n < rows.length; n++) setRow(n, rows[n]);
-    }
-
-    /**
      * Constructs an empty animated cli component of the given size
      * @param width the width of the component
      * @param height the height of the component
@@ -38,6 +26,18 @@ public class AnimatedCLIComponent extends BasicCLIComponent {
         reset();
         speedX = 0;
         speedY = 0;
+    }
+
+    /**
+     * Constructs an animated cli component from the given rows
+     * @param width the width of the component
+     * @param rows the rows from which to construct the component
+     * @throws InvalidParameterException if any of the given rows is not of the given width
+     */
+    public AnimatedCLIComponent(int width, String[] rows) {
+
+        this(width, rows.length);
+        for (int n = 0; n < rows.length; n++) setRow(n, rows[n]);
     }
 
     /**

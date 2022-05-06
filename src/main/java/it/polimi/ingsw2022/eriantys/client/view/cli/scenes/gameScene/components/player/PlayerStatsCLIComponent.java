@@ -1,7 +1,7 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components.player;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
-import it.polimi.ingsw2022.eriantys.client.view.cli.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;

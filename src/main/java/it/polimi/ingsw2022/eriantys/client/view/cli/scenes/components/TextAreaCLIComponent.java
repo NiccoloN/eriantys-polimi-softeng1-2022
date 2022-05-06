@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     private String color;
     private String textColor;
     private final String label;
+
+    private String text;
     private final List<String> textRows;
     private final int maxTextWidth, maxTextHeight;
     private float textSpeed;
@@ -42,6 +44,7 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     public TextAreaCLIComponent(int width, int height, String label) {
 
         super(width, height);
+        if (height < 4) throw new InvalidParameterException("Height must be at least 4");
         if (label.length() > width - 4) throw new InvalidParameterException("Label too long for this text area");
 
         color = DEFAULT_COLOR;
@@ -109,6 +112,8 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
      */
     public void setText(String text) {
 
+        this.text = text;
+
         int i = 0;
         String[] words = text.split(" ");
 
@@ -140,6 +145,11 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
         reset();
     }
 
+    public String getText() {
+
+        return text;
+    }
+
     /**
      * @return the writing speed of this text area
      */
@@ -155,5 +165,11 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     public void setTextSpeed(float textSpeed) {
 
         this.textSpeed = textSpeed;
+    }
+
+    public void setAnimated(boolean b) {
+
+        if(b) setTextSpeed(180);
+        else setTextSpeed(Float.MAX_VALUE);
     }
 }

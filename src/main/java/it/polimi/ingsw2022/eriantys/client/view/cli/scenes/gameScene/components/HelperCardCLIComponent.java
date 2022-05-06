@@ -1,4 +1,6 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components;
+
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 
 import java.security.InvalidParameterException;
 

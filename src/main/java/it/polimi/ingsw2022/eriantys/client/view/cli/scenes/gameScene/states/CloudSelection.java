@@ -1,10 +1,12 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.states;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.components.BasicCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.components.CloudCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -12,14 +14,19 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * This class represents a cli state in which the user is asked to select a cloud
  * @author Niccolò Nicolosi
  */
-public class CloudSelection extends CLIState {
+public class CloudSelection extends GameSceneState {
 
     private int currentSelectedIndex;
     private CloudCLIComponent currentSelected;
 
-    public CloudSelection(EriantysCLI cli) {
+    public CloudSelection(EriantysCLI cli, GameScene scene) {
 
-        super(cli, new BasicCLIComponent(1, new String[] {GREEN + BLINKING + "V" + RESET }));
+        super(cli, scene);
+
+        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {"V"});
+        prompt.setFirstColor(GREEN_BRIGHT);
+        prompt.setSecondColor(GREEN);
+        setPrompt(prompt);
     }
 
     @Override
@@ -27,7 +34,7 @@ public class CloudSelection extends CLIState {
 
         super.enter();
         currentSelectedIndex = 0;
-        cli.getHintTextArea().setText("Select a cloud:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
+        getScene().getHintTextArea().setText("Select a cloud:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
         updateCLI();
     }
@@ -36,8 +43,8 @@ public class CloudSelection extends CLIState {
     public void exit() {
 
         currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
-        cli.getHintTextArea().setText("");
-        cli.setPrompt(null);
+        getScene().getHintTextArea().setText("");
+        getScene().setPrompt(null);
     }
 
     @Override
@@ -45,15 +52,15 @@ public class CloudSelection extends CLIState {
 
         if(input.triggersAction(Action.DOWN)) {
 
-            cli.setState(new CharacterSelection(cli, this, Action.UP));
+            getScene().setState(new CharacterSelection(getCli(), getScene(), this, Action.UP));
             return;
         }
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
         else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
-        if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfClouds() - 1;
-        else if (currentSelectedIndex > cli.getNumberOfClouds() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfClouds() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfClouds() - 1) currentSelectedIndex = 0;
 
         updateCLI();
     }
@@ -61,7 +68,7 @@ public class CloudSelection extends CLIState {
     private void updateCLI() {
 
         if (currentSelected != null) currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
-        currentSelected = cli.getCloud(currentSelectedIndex);
+        currentSelected = getScene().getCloud(currentSelectedIndex);
         currentSelected.setColor(GREEN);
         prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
@@ -33,9 +35,9 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public String getUsername() {
+    public void askUsername(Message requestMessage) {
 
-        return "Prova";
+        //TODO
     }
 
     @Override

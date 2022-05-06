@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 
@@ -12,7 +12,7 @@ import java.security.InvalidParameterException;
 public interface CLIComponent {
 
     /**
-     * Prints this component to the given frame at its position
+     * Prints this component to the given frame at its position, if not hidden
      * @param frame the frame to print to
      */
     void printToFrame(Frame frame);
@@ -47,4 +47,6 @@ public interface CLIComponent {
      * @throws InvalidParameterException if the given color is not an ansi sequence
      */
     void setColor(String ansiColor);
+
+    void setHidden(boolean b);
 }

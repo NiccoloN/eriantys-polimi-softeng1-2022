@@ -1,10 +1,14 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.states;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.components.BasicCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.components.CharacterCardCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CharacterCardCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 
 import java.security.InvalidParameterException;
 
@@ -15,9 +19,9 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * of the cli that will only be set by another and can get back to the previous state if a specific action is triggered
  * @author Niccolò Nicolosi
  */
-public class CharacterSelection extends CLIState {
+public class CharacterSelection extends GameSceneState {
 
-    private final CLIState prevState;
+    private final CLISceneState prevState;
     private final Action goBackAction;
     private int currentSelectedIndex;
     private CharacterCardCLIComponent currentSelected, prevSelected;
@@ -28,9 +32,15 @@ public class CharacterSelection extends CLIState {
      * @param prevState the previous state from which this state was set
      * @param goBackAction the action that makes the cli go back to the previous state if triggered
      */
-    CharacterSelection(EriantysCLI cli, CLIState prevState, Action goBackAction) {
+    CharacterSelection(EriantysCLI cli, GameScene scene, CLISceneState prevState, Action goBackAction) {
 
-        super(cli, new BasicCLIComponent(1, new String[] {GREEN + BLINKING + "V" + RESET }));
+        super(cli, scene);
+
+        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {"V"});
+        prompt.setFirstColor(GREEN_BRIGHT);
+        prompt.setSecondColor(GREEN);
+        setPrompt(prompt);
+
         if(goBackAction == Action.RIGHT || goBackAction == Action.LEFT || goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be RIGHT, LEFT or SELECT, " +
                                                 "because they are already associated to a different behaviour in this state");
@@ -44,7 +54,7 @@ public class CharacterSelection extends CLIState {
         super.enter();
         currentSelectedIndex = 0;
         prevSelected = null;
-        cli.getHintTextArea().setText("Select a character card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
+        getScene().getHintTextArea().setText("Select a character card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to return to your previous selection");
         updateCLI();
     }
@@ -53,9 +63,9 @@ public class CharacterSelection extends CLIState {
     public void exit() {
 
         currentSelected.setColor(RESET);
-        cli.getHintTextArea().setText("");
-        cli.getEffectTextArea().setText("");
-        cli.setPrompt(null);
+        getScene().getHintTextArea().setText("");
+        getScene().getEffectTextArea().setText("");
+        getScene().setPrompt(null);
     }
 
     @Override
@@ -63,15 +73,15 @@ public class CharacterSelection extends CLIState {
 
         if(input.triggersAction(goBackAction)) {
 
-            cli.setState(prevState);
+            getScene().setState(prevState);
             return;
         }
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
         else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
-        if (currentSelectedIndex < 0) currentSelectedIndex = cli.getNumberOfCharacters() - 1;
-        else if (currentSelectedIndex > cli.getNumberOfCharacters() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfCharacters() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfCharacters() - 1) currentSelectedIndex = 0;
 
         updateCLI();
     }
@@ -79,11 +89,11 @@ public class CharacterSelection extends CLIState {
     private void updateCLI() {
 
         if (currentSelected != null) currentSelected.setColor(RESET);
-        currentSelected = cli.getCharacter(currentSelectedIndex);
+        currentSelected = getScene().getCharacter(currentSelectedIndex);
         currentSelected.setColor(GREEN);
 
         if(currentSelected != prevSelected)
-            cli.getEffectTextArea().setText(currentSelected.getEffect() + "\n\n" + YELLOW + "Cost" + BLACK + ": " + currentSelected.getCost());
+            getScene().getEffectTextArea().setText(currentSelected.getEffect() + "\n\n" + YELLOW + "Cost" + BLACK + ": " + currentSelected.getCost());
         prevSelected = currentSelected;
 
         prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * This class represents a keyboard input (the press of a single key) read by the terminal. Every input consists of either 1 char, if it
@@ -52,6 +53,16 @@ public class Input {
 
         for(Input input : action.getTriggerInputs()) if(this.equals(input)) return true;
         return false;
+    }
+
+    /**
+     * @return an optional containing the char corresponding to this input if this input is not an ansi sequence.
+     * An empty optional otherwise
+     */
+    public Optional<Character> getChar() {
+
+        if(inputChars[0] != '\0' && inputChars[1] == '\0' && inputChars[2] == '\0' ) return Optional.of(inputChars[0]);
+        return Optional.empty();
     }
 
     @Override

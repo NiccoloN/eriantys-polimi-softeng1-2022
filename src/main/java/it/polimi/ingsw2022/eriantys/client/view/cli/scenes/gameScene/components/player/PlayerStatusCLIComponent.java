@@ -1,7 +1,7 @@
-package it.polimi.ingsw2022.eriantys.client.view.cli.components.player;
+package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
-import it.polimi.ingsw2022.eriantys.client.view.cli.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
@@ -52,6 +52,13 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         tablesCLIComponent.setColor(ansiColor);
         statsCLIComponent.setColor(ansiColor);
+    }
+
+    @Override
+    public void setHidden(boolean b) {
+
+        tablesCLIComponent.setHidden(b);
+        statsCLIComponent.setHidden(b);
     }
 
     @Override

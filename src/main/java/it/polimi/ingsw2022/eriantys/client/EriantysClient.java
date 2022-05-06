@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class EriantysClient {
 
-    public static void launch(String[] args) throws IOException, ClassNotFoundException {
+    public static void launch(String[] args) throws IOException, TimeoutException {
 
         boolean gui = args.length <= 0 || !args[0].equals("-nogui");
         createInstance(gui);
@@ -55,41 +56,42 @@ public class EriantysClient {
         view = gui ? new EriantysGUI() : new EriantysCLI();
     }
 
-    private void start() throws IOException, ClassNotFoundException {
+    private void start() throws TimeoutException {
 
-        //start the view in a separate thread
+        view.start();
+    }
+
+    public void connectToServer() {
+
         new Thread(() -> {
 
             try {
 
-                view.start();
+                String host = "localhost";
+                int port = EriantysServer.PORT_NUMBER;
+                System.out.println("connecting to " + host + ":" + port);
+                server = new Socket(host, port);
+
+                //initialize object streams
+                serverOutputStream = new ObjectOutputStream(server.getOutputStream());
+                serverInputStream = new ObjectInputStream(server.getInputStream());
+
+                //update loop
+                while(true) {
+
+                    Optional<ToClientMessage> message = readMessage();
+                    if(message.isPresent()) {
+
+                        System.out.println("message received: " + message.get().getClass().getSimpleName());
+                        message.get().manageAndReply();
+                    }
+                }
             }
-            catch(TimeoutException e) {
+            catch(ClassNotFoundException | IOException e) {
 
                 e.printStackTrace();
             }
         }).start();
-
-        //connect to server
-        String host = "localhost";
-        int port = EriantysServer.PORT_NUMBER;
-        System.out.println("connecting to " + host + ":" + port);
-        server = new Socket(host, port);
-
-        //initialize object streams
-        serverOutputStream = new ObjectOutputStream(server.getOutputStream());
-        serverInputStream = new ObjectInputStream(server.getInputStream());
-
-        //update loop
-        while(true) {
-
-            Optional<ToClientMessage> message = readMessage();
-            if(message.isPresent()) {
-
-                System.out.println("message received: " + message.get().getClass().getSimpleName());
-                message.get().manageAndReply();
-            }
-        }
     }
 
     private Optional<ToClientMessage> readMessage() throws IOException, ClassNotFoundException {
@@ -115,9 +117,9 @@ public class EriantysClient {
         server.close();
     }
 
-    public String getUsername() {
+    public void askUsername(Message requestMessage) {
 
-        return view.getUsername();
+        view.askUsername(requestMessage);
     }
 
     public GameSettings getGameSettings() {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view;
 
+import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -15,7 +16,8 @@ public interface View {
 
     void start() throws TimeoutException;
 
-    String getUsername();
+    void askUsername(Message requestMessage);
+
     GameSettings getGameSettings();
 
     void applyChange(IslandChange change);
