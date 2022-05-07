@@ -18,7 +18,9 @@ public interface View {
 
     void askUsername(Message requestMessage);
 
-    GameSettings getGameSettings();
+    void askGameSettings(Message requestMessage);
+
+    void startGame();
 
     void applyChange(IslandChange change);
 }

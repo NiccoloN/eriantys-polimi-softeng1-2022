@@ -14,26 +14,30 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 import java.io.IOException;
 import java.util.Optional;
 
-public class EnterUsername extends CLISceneState {
+public class EnterUsername extends MenuSceneState {
 
     private String username;
-    private Message requestMessage;
+    private final Message requestMessage;
 
     public EnterUsername(EriantysCLI cli, MenuScene scene, Message requestMessage) {
 
         super(cli, scene);
+
         this.requestMessage = requestMessage;
+        username = "";
     }
 
     @Override
     public void enter() {
 
+        getScene().getEnterUsernamePrompt().setHidden(false);
         getScene().getUsernameTextArea().setHidden(false);
     }
 
     @Override
     public void exit() {
 
+        getScene().getEnterUsernamePrompt().setHidden(true);
         getScene().getUsernameTextArea().setHidden(true);
     }
 
@@ -43,29 +47,26 @@ public class EnterUsername extends CLISceneState {
         if(input.triggersAction(Action.SELECT)) {
 
             EriantysClient client = EriantysClient.getInstance();
-            if(username != null && username.length() > 0 && username.length() < 10)
-                client.sendToServer(new UsernameChoiceMessage(requestMessage, username));
-            else client.sendToServer(new AbortMessage(requestMessage));
+            client.sendToServer(new UsernameChoiceMessage(requestMessage, username));
+
+            //TODO client.sendToServer(new AbortMessage(requestMessage));
         }
 
         Optional<Character> character = input.getChar();
         if(character.isPresent()) {
 
+            char c = character.get();
+
             TextAreaCLIComponent textArea = getScene().getUsernameTextArea();
 
-            String prevText = textArea.getText();
-            if(prevText == null) prevText = "";
+            if(c == 8 || c == 127) {
 
-            if(character.get() == 8) textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
-            else textArea.setText(prevText + character.get());
+                String prevText = textArea.getText();
+                textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
+            }
+            else if (c >= 32 && c <= 126 && username.length() <= 10) textArea.appendText(String.valueOf(c));
 
             username = textArea.getText();
         }
-    }
-
-    @Override
-    public MenuScene getScene() {
-
-        return (MenuScene) super.getScene();
     }
 }

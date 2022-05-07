@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class InvalidResponseMessage extends ToClientMessage {
     @Override
     public void manageAndReply() throws IOException {
 
-        System.out.println("The given response (" + response.getClass().getSimpleName() +
+        EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() +
                            ") was invalid for the request (" + request.getClass().getSimpleName() + ")");
     }
 }

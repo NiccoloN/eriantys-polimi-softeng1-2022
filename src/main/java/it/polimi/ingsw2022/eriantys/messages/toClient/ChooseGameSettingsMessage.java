@@ -26,7 +26,6 @@ public class ChooseGameSettingsMessage extends ToClientMessage {
     public void manageAndReply() throws IOException {
 
         EriantysClient client = EriantysClient.getInstance();
-        GameSettings gameSettings = client.getGameSettings();
-        client.sendToServer(new GameSettingsMessage(this, gameSettings));
+        client.askGameSettings(this);
     }
 }

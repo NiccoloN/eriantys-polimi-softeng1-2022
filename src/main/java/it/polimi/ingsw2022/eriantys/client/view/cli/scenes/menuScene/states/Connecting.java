@@ -6,7 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 
-public class Connecting extends CLISceneState{
+public class Connecting extends MenuSceneState {
 
     protected Connecting(EriantysCLI cli, MenuScene scene) {
 
@@ -28,10 +28,4 @@ public class Connecting extends CLISceneState{
 
     @Override
     public void manageInput(Input input) {}
-
-    @Override
-    public MenuScene getScene() {
-
-        return (MenuScene) super.getScene();
-    }
 }

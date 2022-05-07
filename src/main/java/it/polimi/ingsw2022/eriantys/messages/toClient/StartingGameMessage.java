@@ -22,6 +22,7 @@ public class StartingGameMessage extends ToClientMessage {
 
         //TODO set players and order
         EriantysClient client = EriantysClient.getInstance();
+        client.startGame();
         client.applyUpdate(update);
     }
 }

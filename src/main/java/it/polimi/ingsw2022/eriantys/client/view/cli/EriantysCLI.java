@@ -1,10 +1,12 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -195,11 +197,14 @@ public class EriantysCLI implements View {
 
         currentScene.printToFrame(frame);
 
-        //clear the terminal window
-        terminal.writer().print(TERMINAL_HOME);
-
         //print the frame string to terminal
+        terminal.writer().print(TERMINAL_HOME);
         terminal.writer().print(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
+
+        //print log if enabled
+        terminal.writer().print(TERMINAL_HOME);
+        terminal.writer().print(EriantysClient.getInstance().getLog());
+
         terminal.flush();
     }
 
@@ -252,7 +257,15 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public GameSettings getGameSettings() {
-        return new GameSettings(2, Mode.BASIC);
+    public void askGameSettings(Message requestMessage) {
+
+        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for game settings");
+        currentScene.setState(new NumberOfPlayersSelection(this, (MenuScene) currentScene, requestMessage));
+    }
+
+    @Override
+    public void startGame() {
+
+        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight()));
     }
 }

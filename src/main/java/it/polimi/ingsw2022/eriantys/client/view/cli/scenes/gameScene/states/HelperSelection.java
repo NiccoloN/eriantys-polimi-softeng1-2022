@@ -23,11 +23,6 @@ public class HelperSelection extends GameSceneState {
     public HelperSelection(EriantysCLI cli, GameScene scene) {
 
         super(cli, scene);
-
-        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {"V"});
-        prompt.setFirstColor(GREEN_BRIGHT);
-        prompt.setSecondColor(GREEN);
-        setPrompt(prompt);
     }
 
     @Override

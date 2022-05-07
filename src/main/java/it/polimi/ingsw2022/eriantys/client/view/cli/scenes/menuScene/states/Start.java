@@ -4,9 +4,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 
-public class Start extends CLISceneState {
+public class Start extends MenuSceneState {
 
     public Start(EriantysCLI cli, MenuScene scene) {
 
@@ -16,24 +15,18 @@ public class Start extends CLISceneState {
     @Override
     public void enter() {
 
-        getScene().getPromptLabel().setHidden(false);
+        getScene().getStartPrompt().setHidden(false);
     }
 
     @Override
     public void exit() {
 
-        getScene().getPromptLabel().setHidden(true);
+        getScene().getStartPrompt().setHidden(true);
     }
 
     @Override
     public void manageInput(Input input) {
 
         if(input.triggersAction(Action.SELECT)) getScene().setState(new Connecting(getCli(), getScene()));
-    }
-
-    @Override
-    public MenuScene getScene() {
-
-        return (MenuScene) super.getScene();
     }
 }

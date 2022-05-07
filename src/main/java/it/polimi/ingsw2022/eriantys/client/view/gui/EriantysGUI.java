@@ -41,8 +41,15 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public GameSettings getGameSettings() {
-        return new GameSettings(4, Mode.BASIC);
+    public void askGameSettings(Message requestMessage) {
+
+        //TODO
+    }
+
+    @Override
+    public void startGame() {
+
+        //TODO
     }
 
     @Override

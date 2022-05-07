@@ -22,6 +22,8 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     private String text;
     private final List<String> textRows;
     private final int maxTextWidth, maxTextHeight;
+
+    private boolean animated;
     private float textSpeed;
     private int printedChars;
 
@@ -52,11 +54,13 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
 
         this.label = label;
 
+        text = "";
         maxTextWidth = width - 2;
         maxTextHeight = height - 3;
         textRows = new ArrayList<>(maxTextHeight);
         for(int n = 0; n < maxTextHeight; n++) textRows.add("");
 
+        animated = true;
         textSpeed = 180;
 
         buildRows();
@@ -79,9 +83,12 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
         row.append(color).append("|").append(textColor);
 
         String text = textRows.get(textRowIndex);
-        text = ansiTextSubstring(text, 0,
-                Math.min(Math.max((int) (textSpeed * getStateTime()) - printedChars, 0), noAnsiString(text).length()));
-        printedChars += noAnsiString(text).length();
+        if (animated) {
+
+            text = ansiTextSubstring(text, 0,
+                    Math.min(Math.max((int) (textSpeed * getStateTime()) - printedChars, 0), noAnsiString(text).length()));
+            printedChars += noAnsiString(text).length();
+        }
         row.append(text).append(" ".repeat(getWidth() - noAnsiString(text).length() - 2));
         row.append(RESET).append(color).append("|").append(RESET);
 
@@ -145,9 +152,21 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
         reset();
     }
 
+    /**
+     * @return the text currently written in this text area
+     */
     public String getText() {
 
         return text;
+    }
+
+    /**
+     * Appends the given text to the text already written in this text area
+     * @param text the text to append
+     */
+    public void appendText(String text) {
+
+        setText(this.text + text);
     }
 
     /**
@@ -169,7 +188,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
 
     public void setAnimated(boolean b) {
 
-        if(b) setTextSpeed(180);
-        else setTextSpeed(Float.MAX_VALUE);
+        animated = b;
     }
 }

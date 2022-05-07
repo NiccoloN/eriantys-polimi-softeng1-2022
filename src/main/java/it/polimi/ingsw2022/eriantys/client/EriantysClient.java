@@ -48,9 +48,13 @@ public class EriantysClient {
     private ObjectOutputStream serverOutputStream;
     private ObjectInputStream serverInputStream;
 
+    private StringBuilder log;
+
     private final View view;
 
     private EriantysClient(boolean gui) throws IOException {
+
+        log = new StringBuilder();
 
         //initialize view
         view = gui ? new EriantysGUI() : new EriantysCLI();
@@ -69,7 +73,7 @@ public class EriantysClient {
 
                 String host = "localhost";
                 int port = EriantysServer.PORT_NUMBER;
-                System.out.println("connecting to " + host + ":" + port);
+                log("connecting to " + host + ":" + port);
                 server = new Socket(host, port);
 
                 //initialize object streams
@@ -82,7 +86,7 @@ public class EriantysClient {
                     Optional<ToClientMessage> message = readMessage();
                     if(message.isPresent()) {
 
-                        System.out.println("message received: " + message.get().getClass().getSimpleName());
+                        log("message received: " + message.get().getClass().getSimpleName());
                         message.get().manageAndReply();
                     }
                 }
@@ -122,13 +126,33 @@ public class EriantysClient {
         view.askUsername(requestMessage);
     }
 
-    public GameSettings getGameSettings() {
+    public void askGameSettings(Message requestMessage) {
 
-        return view.getGameSettings();
+        view.askGameSettings(requestMessage);
+    }
+
+    public void startGame() {
+
+        view.startGame();
     }
 
     public void applyUpdate(Update update) {
 
         update.applyChanges(view);
+    }
+
+    public void log(String logText) {
+
+        log.append(logText).append('\n');
+    }
+
+    public void clearLog() {
+
+        log = new StringBuilder();
+    }
+
+    public String getLog() {
+
+        return log.toString();
     }
 }

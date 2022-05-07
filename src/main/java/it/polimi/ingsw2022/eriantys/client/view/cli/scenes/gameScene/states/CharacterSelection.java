@@ -36,11 +36,6 @@ public class CharacterSelection extends GameSceneState {
 
         super(cli, scene);
 
-        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {"V"});
-        prompt.setFirstColor(GREEN_BRIGHT);
-        prompt.setSecondColor(GREEN);
-        setPrompt(prompt);
-
         if(goBackAction == Action.RIGHT || goBackAction == Action.LEFT || goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be RIGHT, LEFT or SELECT, " +
                                                 "because they are already associated to a different behaviour in this state");

@@ -22,7 +22,7 @@ public abstract class CLISceneState {
      * @param cli the cli this state is linked to
      * @param prompt the prompt component of this state
      */
-    protected CLISceneState(EriantysCLI cli, CLIScene scene) {
+    public CLISceneState(EriantysCLI cli, CLIScene scene) {
 
         this.cli = cli;
         this.scene = scene;
