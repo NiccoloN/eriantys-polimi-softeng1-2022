@@ -28,11 +28,12 @@ public class NumberOfPlayersSelection extends MenuSceneState {
     public void enter() {
 
         BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {"V"});
-        prompt.setFirstColor(GREEN_BRIGHT + BLUE_BACKGROUND_BRIGHT);
-        prompt.setSecondColor(GREEN + BLUE_BACKGROUND_BRIGHT);
+        prompt.setFirstColor(GREEN_BRIGHT);
+        prompt.setSecondColor(GREEN);
 
         getScene().setPrompt(prompt);
 
+        getScene().getPanel().setHidden(false);
         getScene().getSelectNumberOfPlayersPrompt().setHidden(false);
         for(int n = 0; n < getScene().getNumberOfPlayerNumbers(); n++) getScene().getPlayerNumber(n).setHidden(false);
 
@@ -45,6 +46,7 @@ public class NumberOfPlayersSelection extends MenuSceneState {
 
         getScene().setPrompt(null);
 
+        getScene().getPanel().setHidden(true);
         getScene().getSelectNumberOfPlayersPrompt().setHidden(true);
         for(int n = 0; n < getScene().getNumberOfPlayerNumbers(); n++) getScene().getPlayerNumber(n).setHidden(true);
     }

@@ -22,10 +22,14 @@ public class MenuScene extends CLIScene {
     private final BasicCLIComponent connectingLabel;
     private final BasicCLIComponent enterUsernamePrompt;
     private final TextAreaCLIComponent usernameTextArea;
+    private final BasicCLIComponent panel;
     private final BasicCLIComponent selectNumberOfPlayersPrompt;
     private final BasicCLIComponent[] playerNumbers;
     private final BasicCLIComponent selectGameModePrompt;
     private final BasicCLIComponent[] gameModes;
+    private BasicCLIComponent chosenGameMode;
+    private BasicCLIComponent[] playerUsernames;
+
 
     public MenuScene(EriantysCLI cli, int width, int height) {
 
@@ -89,6 +93,15 @@ public class MenuScene extends CLIScene {
         usernameTextArea.setHidden(true);
         usernameTextArea.setAnimated(false);
 
+        int panelWidth = 35, panelHeight = 14;
+        String[] panelRows = new String[panelHeight];
+        panelRows[0] = " " + "_".repeat(panelWidth - 2) + " ";
+        for(int n = 1; n < panelHeight - 2; n++) panelRows[n] = "|" + " ".repeat(panelWidth - 2) + "|";
+        panelRows[panelHeight - 2] = "|" + "_".repeat(panelWidth - 2) + "|";
+        panelRows[panelHeight - 1] = " ".repeat(panelWidth);
+        panel = new BasicCLIComponent(panelWidth, panelRows);
+        panel.setHidden(true);
+
         selectNumberOfPlayersPrompt = new BasicCLIComponent(28, new String[] {"Select the number of players"});
         selectNumberOfPlayersPrompt.setColor(RESET);
         selectNumberOfPlayersPrompt.setHidden(true);
@@ -132,10 +145,12 @@ public class MenuScene extends CLIScene {
         startPrompt.setPosition(getWidth() / 2f - startPrompt.getWidth() / 2f, title.getFrameY() + title.getHeight() + 2);
         connectingLabel.setPosition(getWidth() / 2f - connectingLabel.getWidth() / 2f, startPrompt.getY());
         enterUsernamePrompt.setPosition(getWidth() / 2f - enterUsernamePrompt.getWidth() / 2f, startPrompt.getY());
-        selectNumberOfPlayersPrompt.setPosition(getWidth() / 2f - selectNumberOfPlayersPrompt.getWidth() / 2f, startPrompt.getY());
-        selectGameModePrompt.setPosition(getWidth() / 2f - selectGameModePrompt.getWidth() / 2f, startPrompt.getY());
 
         usernameTextArea.setPosition(getWidth() / 2f - usernameTextArea.getWidth() / 2f, enterUsernamePrompt.getFrameY() + 2);
+
+        panel.setPosition(getWidth() / 2f - panel.getWidth() / 2f, startPrompt.getY());
+        selectNumberOfPlayersPrompt.setPosition(getWidth() / 2f - selectNumberOfPlayersPrompt.getWidth() / 2f, panel.getY() + 2);
+        selectGameModePrompt.setPosition(getWidth() / 2f - selectGameModePrompt.getWidth() / 2f, panel.getY() + 2);
 
         for(int n = 0; n < playerNumbers.length; n++) playerNumbers[n].setPosition(
                 getWidth() / 2f - (playerNumbers[0].getWidth() * playerNumbers.length + playerNumbers.length - 2) / 2f + (playerNumbers[0].getWidth() + 1) * n,
@@ -165,6 +180,7 @@ public class MenuScene extends CLIScene {
         skyBackground.printToFrame(frame);
         for(AnimatedCLIComponent decorativeCloud : decorativeClouds) decorativeCloud.printToFrame(frame);
         title.printToFrame(frame);
+        panel.printToFrame(frame);
         startPrompt.printToFrame(frame);
         connectingLabel.printToFrame(frame);
         enterUsernamePrompt.printToFrame(frame);
@@ -173,6 +189,8 @@ public class MenuScene extends CLIScene {
         usernameTextArea.printToFrame(frame);
         for(BasicCLIComponent playerNumber : playerNumbers) playerNumber.printToFrame(frame);
         for(BasicCLIComponent gameMode : gameModes) gameMode.printToFrame(frame);
+        if(chosenGameMode != null) chosenGameMode.printToFrame(frame);
+        if(playerUsernames != null) for(BasicCLIComponent playerUsername : playerUsernames) playerUsername.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
     }
 
@@ -194,6 +212,11 @@ public class MenuScene extends CLIScene {
     public BasicCLIComponent getConnectingLabel() {
 
         return connectingLabel;
+    }
+
+    public BasicCLIComponent getPanel() {
+
+        return panel;
     }
 
     public BasicCLIComponent getEnterUsernamePrompt() {
@@ -234,5 +257,22 @@ public class MenuScene extends CLIScene {
     public int getNumberOfGameModes() {
 
         return gameModes.length;
+    }
+
+    public void setChosenGameMode(BasicCLIComponent chosenGameMode) {
+
+        this.chosenGameMode = chosenGameMode;
+        if(chosenGameMode != null) chosenGameMode.setPosition(getWidth() / 2f - chosenGameMode.getWidth() / 2f, panel.getY() + 2);
+    }
+
+    public void setPlayerUsernames(BasicCLIComponent[] playerUsernames) {
+
+        this.playerUsernames = playerUsernames;
+        if(chosenGameMode != null) {
+
+            playerUsernames[0].setPosition(getWidth() / 2f - playerUsernames[0].getWidth() / 2f, panel.getY() + 4);
+            for(int n = 1; n < playerUsernames.length - 1; n++) playerUsernames[n].setPosition(playerUsernames[0].getX(), panel.getY() + 5 + n);
+            playerUsernames[playerUsernames.length - 1].setPosition(getWidth() / 2f - playerUsernames[playerUsernames.length - 1].getWidth() / 2f, panel.getY() + panel.getHeight() - 3);
+        }
     }
 }

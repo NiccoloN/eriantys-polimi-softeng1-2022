@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
@@ -197,14 +198,16 @@ public class EriantysCLI implements View {
 
         currentScene.printToFrame(frame);
 
+        //build the frame string
+        StringBuilder frameBuilder = new StringBuilder();
+        frameBuilder.append(TERMINAL_HOME);
+        frameBuilder.append(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
+
+        //append log if enabled
+        if(true) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog());
+
         //print the frame string to terminal
-        terminal.writer().print(TERMINAL_HOME);
-        terminal.writer().print(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
-
-        //print log if enabled
-        terminal.writer().print(TERMINAL_HOME);
-        terminal.writer().print(EriantysClient.getInstance().getLog());
-
+        terminal.writer().print(frameBuilder);
         terminal.flush();
     }
 
@@ -261,6 +264,13 @@ public class EriantysCLI implements View {
 
         if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for game settings");
         currentScene.setState(new NumberOfPlayersSelection(this, (MenuScene) currentScene, requestMessage));
+    }
+
+    @Override
+    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
+
+        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to show the game lobby");
+        currentScene.setState(new LobbyWaiting(this, (MenuScene) currentScene, playerUsernames, gameSettings));
     }
 
     @Override

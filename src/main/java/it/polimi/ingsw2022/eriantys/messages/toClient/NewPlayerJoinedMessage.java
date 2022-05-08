@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+
 import java.io.IOException;
 
 /**
@@ -19,6 +21,6 @@ public class NewPlayerJoinedMessage extends ToClientMessage {
     @Override
     public void manageAndReply() throws IOException {
 
-        //TODO aggiornare view con le info sui nuovi player
+        EriantysClient.getInstance().showUpdatedLobby(playerUsernames);
     }
 }

@@ -20,6 +20,8 @@ public interface View {
 
     void askGameSettings(Message requestMessage);
 
+    void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings);
+
     void startGame();
 
     void applyChange(IslandChange change);

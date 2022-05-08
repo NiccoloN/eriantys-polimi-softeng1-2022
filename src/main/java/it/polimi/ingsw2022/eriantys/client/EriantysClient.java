@@ -52,6 +52,8 @@ public class EriantysClient {
 
     private final View view;
 
+    private GameSettings gameSettings;
+
     private EriantysClient(boolean gui) throws IOException {
 
         log = new StringBuilder();
@@ -129,6 +131,17 @@ public class EriantysClient {
     public void askGameSettings(Message requestMessage) {
 
         view.askGameSettings(requestMessage);
+    }
+
+    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
+
+        this.gameSettings = gameSettings;
+        view.showUpdatedLobby(playerUsernames, gameSettings);
+    }
+
+    public void showUpdatedLobby(String[] playerUsernames) {
+
+        view.showUpdatedLobby(playerUsernames, gameSettings);
     }
 
     public void startGame() {

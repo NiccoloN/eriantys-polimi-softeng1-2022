@@ -47,6 +47,12 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
+    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
+
+        //TODO
+    }
+
+    @Override
     public void startGame() {
 
         //TODO
