@@ -5,8 +5,17 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 
+/**
+ * This class represents the first menu scene state
+ * @author Niccolò Nicolosi
+ */
 public class Start extends MenuSceneState {
 
+    /**
+     * Constructs a start state
+     * @param cli the cli associated to this state
+     * @param scene the menu scene associated to this state
+     */
     public Start(EriantysCLI cli, MenuScene scene) {
 
         super(cli, scene);

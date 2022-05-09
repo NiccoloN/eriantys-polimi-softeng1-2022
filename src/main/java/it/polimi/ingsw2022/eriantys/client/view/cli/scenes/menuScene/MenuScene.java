@@ -11,6 +11,10 @@ import java.util.Arrays;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a menu scene
+ * @author Niccolò Nicolosi
+ */
 public class MenuScene extends CLIScene {
 
     private final BasicCLIComponent title;
@@ -30,7 +34,12 @@ public class MenuScene extends CLIScene {
     private BasicCLIComponent chosenGameMode;
     private BasicCLIComponent[] playerUsernames;
 
-
+    /**
+     * Constructs a menu scene
+     * @param cli the cli to associate to this scene
+     * @param width the width of this scene
+     * @param height the height of this scene
+     */
     public MenuScene(EriantysCLI cli, int width, int height) {
 
         super(cli, width, height);

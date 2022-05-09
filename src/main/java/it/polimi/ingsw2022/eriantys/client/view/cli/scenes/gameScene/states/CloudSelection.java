@@ -3,15 +3,13 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
- * This class represents a cli state in which the user is asked to select a cloud
+ * This class represents a game scene state in which the user is asked to select a cloud
  * @author Niccolò Nicolosi
  */
 public class CloudSelection extends GameSceneState {
@@ -19,6 +17,11 @@ public class CloudSelection extends GameSceneState {
     private int currentSelectedIndex;
     private CloudCLIComponent currentSelected;
 
+    /**
+     * Constructs a  cloud selection state
+     * @param cli the cli to associate to this state
+     * @param scene the game scene to associate to this state
+     */
     public CloudSelection(EriantysCLI cli, GameScene scene) {
 
         super(cli, scene);

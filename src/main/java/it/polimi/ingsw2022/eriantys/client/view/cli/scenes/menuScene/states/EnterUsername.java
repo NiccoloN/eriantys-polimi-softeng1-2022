@@ -6,19 +6,26 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * This class represents a menu scene state in which the user is asked to provide a username
+ * @author Niccolò Nicolosi
+ */
 public class EnterUsername extends MenuSceneState {
 
     private String username;
     private final Message requestMessage;
 
+    /**
+     * Constructs an enter-username state
+     * @param cli the cli associated to this state
+     * @param scene the menu scene associated to this state
+     */
     public EnterUsername(EriantysCLI cli, MenuScene scene, Message requestMessage) {
 
         super(cli, scene);

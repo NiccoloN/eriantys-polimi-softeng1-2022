@@ -13,7 +13,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.HelperSelection;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -21,6 +20,10 @@ import java.util.*;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a game scene
+ * @author Niccolò Nicolosi
+ */
 public class GameScene extends CLIScene {
     
     private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
@@ -39,7 +42,13 @@ public class GameScene extends CLIScene {
     private final List<PlayerStatusCLIComponent> players;
     private final List<HelperCardCLIComponent> helpers;
     private final CharacterCardCLIComponent[] characters;
-    
+
+    /**
+     * Constructs a game scene
+     * @param cli the cli to associate to this scene
+     * @param width the width of this scene
+     * @param height the height of this scene
+     */
     public GameScene(EriantysCLI cli, int width, int height) {
 
         super(cli, width, height);
@@ -279,6 +288,10 @@ public class GameScene extends CLIScene {
         return effectTextArea;
     }
 
+    /**
+     * Applies the given island change to this scene
+     * @param change the change to apply
+     */
     public void applyChange(IslandChange change) {
 
         IslandCLIComponent island = islands[change.islandTileIndex];

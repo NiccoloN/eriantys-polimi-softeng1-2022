@@ -48,5 +48,9 @@ public interface CLIComponent {
      */
     void setColor(String ansiColor);
 
+    /**
+     * Sets whether this component is hidden or not
+     * @param b true to hide the component, false to make it visible
+     */
     void setHidden(boolean b);
 }

@@ -43,6 +43,7 @@ public class EriantysCLI implements View {
     private boolean inputProcessed;
 
     private final Frame frame;
+    private boolean showLog;
 
     private GameScene gameScene;
     private CLIScene currentScene;
@@ -70,6 +71,7 @@ public class EriantysCLI implements View {
 
         //initialize frame
         frame = new Frame(FRAME_WIDTH, FRAME_HEIGHT);
+        showLog = false;
 
         currentScene = new MenuScene(this, frame.getWidth(), frame.getHeight());
     }
@@ -204,13 +206,17 @@ public class EriantysCLI implements View {
         frameBuilder.append(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
 
         //append log if enabled
-        if(true) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog());
+        if(showLog) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog(frame.getHeight()));
 
         //print the frame string to terminal
         terminal.writer().print(frameBuilder);
         terminal.flush();
     }
 
+    /**
+     * Sets the scene to show
+     * @param scene the scene to show
+     */
     public void setScene(CLIScene scene) {
 
         this.currentScene = scene;
@@ -243,6 +249,15 @@ public class EriantysCLI implements View {
         running = false;
         clear();
         e.printStackTrace();
+    }
+
+    /**
+     * Sets whether the log should be visualized or not
+     * @param b true to visualize the log, false otherwise
+     */
+    public void showLog(boolean b) {
+
+        this.showLog = b;
     }
 
     @Override

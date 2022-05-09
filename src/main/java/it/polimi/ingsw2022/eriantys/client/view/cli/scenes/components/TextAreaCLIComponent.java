@@ -186,6 +186,10 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
         this.textSpeed = textSpeed;
     }
 
+    /**
+     * Sets whether the text of this text area should be animated
+     * @param b true for animated text, false otherwise
+     */
     public void setAnimated(boolean b) {
 
         animated = b;

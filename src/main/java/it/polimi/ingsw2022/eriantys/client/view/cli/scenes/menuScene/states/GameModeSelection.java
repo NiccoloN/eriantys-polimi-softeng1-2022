@@ -16,6 +16,10 @@ import java.io.IOException;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a menu scene state in which the user is asked to select a game mode
+ * @author Niccolò Nicolosi
+ */
 public class GameModeSelection extends MenuSceneState {
 
     private final int selectedNumberOfPlayers;
@@ -24,6 +28,11 @@ public class GameModeSelection extends MenuSceneState {
     private int currentSelectedIndex;
     private BasicCLIComponent currentSelected;
 
+    /**
+     * Constructs a game mode selection state
+     * @param cli the cli associated to this state
+     * @param scene the menu scene associated to this state
+     */
     protected GameModeSelection(EriantysCLI cli, MenuScene scene, int selectedNumberOfPlayers, Message requestMessage) {
 
         super(cli, scene);

@@ -12,7 +12,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
- * This class represents a cli state in which the user is asked to select a helper card
+ * This class represents a game scene state in which the user is asked to select a helper card
  * @author Niccolò Nicolosi
  */
 public class HelperSelection extends GameSceneState {
@@ -20,6 +20,11 @@ public class HelperSelection extends GameSceneState {
     private int currentSelectedIndex;
     private HelperCardCLIComponent currentSelected;
 
+    /**
+     * Constructs a helper selection state
+     * @param cli the cli to associate to this state
+     * @param scene the game scene to associate to this state
+     */
     public HelperSelection(EriantysCLI cli, GameScene scene) {
 
         super(cli, scene);

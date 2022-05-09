@@ -8,11 +8,20 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 
 import java.io.IOException;
 
+/**
+ * This class represents a menu scene state in which the user must wait for players to join the game
+ * @author Niccolò Nicolosi
+ */
 public class LobbyWaiting extends MenuSceneState {
 
     private final String[] playerUsernames;
     private final GameSettings gameSettings;
 
+    /**
+     * Constructs a lobby waiting state
+     * @param cli the cli associated to this state
+     * @param scene the menu scene associated to this state
+     */
     public LobbyWaiting(EriantysCLI cli, MenuScene scene, String[] playerUsernames, GameSettings gameSettings) {
 
         super(cli, scene);

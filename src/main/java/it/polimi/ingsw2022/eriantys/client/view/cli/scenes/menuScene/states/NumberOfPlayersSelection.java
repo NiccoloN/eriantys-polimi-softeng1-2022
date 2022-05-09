@@ -12,12 +12,21 @@ import java.io.IOException;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a menu scene state in which the user is asked to select the number of players of the game
+ * @author Niccolò Nicolosi
+ */
 public class NumberOfPlayersSelection extends MenuSceneState {
 
     private final Message requestMessage;
     private int currentSelectedIndex;
     private BasicCLIComponent currentSelected;
 
+    /**
+     * Constructs a number of players selection state
+     * @param cli the cli associated to this state
+     * @param scene the menu scene associated to this state
+     */
     public NumberOfPlayersSelection(EriantysCLI cli, MenuScene scene, Message requestMessage) {
 
         super(cli, scene);

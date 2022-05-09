@@ -5,7 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 
 /**
- * This class represents a "view only" state of the cli. In this state inputs are ignored
+ * This class represents a "view only" state of a scene. In this state inputs are ignored
  * @author Niccolò Nicolosi
  */
 public class ViewOnly extends CLISceneState {
