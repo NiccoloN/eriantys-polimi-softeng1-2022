@@ -2,11 +2,15 @@ package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -199,21 +203,53 @@ public class EriantysServer {
         notifyAll();
     }
 
-    private Update createInitialUpdate() {
+    private Update[] createInitialUpdate() {
 
-        Update initUpdate = new Update();
-        for (int n = 0; n < game.getBoard().numberOfIslands(); n++)
-            initUpdate.addChange(new IslandChange(n, game.getBoard().getIsland(n)));
+        Update[] initUpdates = new Update[gameSettings.numberOfPlayers];
+        for(int n = 0; n < initUpdates.length; n++) initUpdates[n] = new Update();
 
-        return initUpdate;
+        //add a game init change to every initUpdate (a different one for every player)
+        Player[] players = game.getPlayers();
+        for(int n = 0; n < players.length; n++) {
+
+            GameInitChange gameInitChange = new GameInitChange();
+
+            Player player = players[n];
+            for(int i = 0; i < player.getNumberOfHelpers(); i++)
+                gameInitChange.addHelperCard(player.getHelperCard(i));
+
+            for(int i = 0; i < game.getNumberOfCharacters(); i++)
+                gameInitChange.addCharacterCard(game.getCharacter(i));
+
+            initUpdates[n].addChange(gameInitChange);
+        }
+
+        //add island changes to every initUpdate
+        for (int n = 0; n < game.getBoard().numberOfIslands(); n++) {
+
+            IslandChange change = new IslandChange(n, game.getBoard().getIsland(n));
+            for(Update initUpdate : initUpdates) initUpdate.addChange(change);
+        }
+
+        return initUpdates;
     }
 
     private void createGame() throws IOException {
 
-        this.game = new Game(this.gameSettings.numberOfPlayers, this.gameSettings.gameMode);
-        Update initialUpdate = createInitialUpdate();
+        String[] playerUsernames = clients.keySet().toArray(new String[0]);
 
-        for (Socket client : clients.values())
-            sendToClient(new StartingGameMessage(clients.keySet().toArray(new String[0]), initialUpdate), client);
+        game = new Game(playerUsernames, gameSettings.gameMode);
+
+        Player[] players = game.getPlayers();
+        Team[] playerTeams = new Team[players.length];
+        for(int n = 0; n < players.length; n++) playerTeams[n] = players[n].team;
+
+        Update[] initialUpdates = createInitialUpdate();
+
+        for (int n = 0; n < playerUsernames.length; n++) {
+
+            sendToClient(new StartingGameMessage(playerUsernames, playerTeams, gameSettings.gameMode, initialUpdates[n]),
+                    clients.get(playerUsernames[n]));
+        }
     }
 }

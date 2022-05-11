@@ -29,11 +29,16 @@ public class UsernameChoiceMessage extends ToServerMessage {
         super.manageAndReply(responseSocket);
 
         EriantysServer server = EriantysServer.getInstance();
-        if(server.isAvailableUsername(username)) {
+
+        if(username.length() < 1 || username.length() > 15)
+            server.sendToClient(new InvalidUsernameMessage(true, false), responseSocket);
+
+        else if(server.isAvailableUsername(username)) {
 
             server.addClient(responseSocket, username);
             server.sendToClient(new AckMessage(), responseSocket);
         }
+
         else server.sendToClient(new InvalidUsernameMessage(false, true), responseSocket);
     }
 }

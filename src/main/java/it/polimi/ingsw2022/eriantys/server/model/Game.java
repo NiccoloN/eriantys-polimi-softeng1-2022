@@ -27,7 +27,6 @@ public class Game {
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
     public static final int MIN_NUMBER_OF_PLAYERS = 2;
 
-    // TODO: import Mode
     private GameMode gameMode;
     private final Board board;
     private final List<ColoredPawn> students;
@@ -40,14 +39,14 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(int numberOfPlayers, Mode mode) {
+    public Game(String[] playerUsernames, Mode mode) {
         gameEnding = false;
         students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
-        players = generatePlayers(numberOfPlayers);
+        players = generatePlayers(playerUsernames);
         professors = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
         studentsBag = new StudentsBag();
         board = new Board(players);
-        characters = new ArrayList<>();
+        characters = new ArrayList<>(3);
         gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
 
         placeFirstStudents();
@@ -99,12 +98,14 @@ public class Game {
 
     /**
      * Generates a list of players containing the given number of players, dividing them in teams
-     * @param numberOfPlayers the number of players to be generated
+     * @param playerUsernames the usernames of the players to be generated
      * @return the generated list
      */
-    private List<Player> generatePlayers(int numberOfPlayers) {
+    private List<Player> generatePlayers(String[] playerUsernames) {
         final String errorMsg = String.format("Invalid number of players: must be >= %s and <= %s",
                 MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS);
+
+        final int numberOfPlayers = playerUsernames.length;
 
         if (numberOfPlayers > MAX_NUMBER_OF_PLAYERS || numberOfPlayers < MIN_NUMBER_OF_PLAYERS) {
             throw new RuntimeException(errorMsg);
@@ -130,8 +131,7 @@ public class Game {
                         throw new RuntimeException(errorMsg);
                 }
             }
-            players.add(new Player(team, mageNames[playerNumber]));
-
+            players.add(new Player(playerUsernames[playerNumber], team, mageNames[playerNumber]));
         }
         return players;
     }
@@ -148,6 +148,10 @@ public class Game {
         return studentsBag;
     }
 
+    public int getNumberOfCharacters() {
+        return characters.size();
+    }
+
     public CharacterCard getCharacter(int index) {
         return characters.get(index);
     }
@@ -158,6 +162,10 @@ public class Game {
 
     public Player getPlayer(int index) {
         return players.get(index);
+    }
+
+    public Player[] getPlayers() {
+        return players.toArray(new Player[0]);
     }
 
     public Player getCurrentPlayer() {

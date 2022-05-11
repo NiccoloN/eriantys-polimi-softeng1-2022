@@ -19,7 +19,7 @@ class PlayerTest {
     void setUp() {
 
         Team.WHITE.reset();
-        player = new Player(Team.WHITE, Mage.MAGE_1);
+        player = new Player("", Team.WHITE, Mage.MAGE_1);
     }
 
     @Test

@@ -8,8 +8,8 @@ package it.polimi.ingsw2022.eriantys.server.model.cards;
 public class CounterCharacterCard extends CharacterCard{
     private int counter;
 
-    CounterCharacterCard(int index, Skill skill, int counter) {
-        super(index, skill);
+    CounterCharacterCard(int index, Skill skill, String effect, int cost, int counter) {
+        super(index, skill, effect, cost);
         this.counter = counter;
     }
 

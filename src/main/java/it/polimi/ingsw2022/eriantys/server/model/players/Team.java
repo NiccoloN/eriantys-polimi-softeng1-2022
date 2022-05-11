@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model.players;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * This enumeration represents the teams of the game. Every team should contain from 0 to 2 players
  * @author Emanuele Musto
  */
-public enum Team {
+public enum Team implements Serializable {
 
     WHITE,
     BLACK,

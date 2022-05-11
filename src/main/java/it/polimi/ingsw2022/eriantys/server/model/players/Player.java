@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.server.model.players;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,6 +15,11 @@ import java.util.NoSuchElementException;
  */
 
 public class Player {
+
+    /**
+     * The username of the player
+     */
+    public final String username;
 
     /**
      * The mage associated to the player
@@ -40,7 +46,9 @@ public class Player {
      * @param team the team of the player
      * @param mage the mage associated with this player
      */
-    public Player(Team team, Mage mage) {
+    public Player(String username, Team team, Mage mage) {
+
+        this.username = username;
 
         this.team = team;
         team.addPlayer(this);
@@ -71,18 +79,13 @@ public class Player {
      */
     public void playHelperCard(int index) {
 
-        currentHelper = getHelperCard(index);
+        currentHelper = helperCards.stream().filter((x) -> x.index == index).findAny().orElseThrow();
         helperCards.remove(currentHelper);
     }
 
-    /**
-     * @return the helper card of the given index
-     * @param index the index of the card to play
-     * @throws NoSuchElementException if player's hand does not contain a card of the given index
-     */
-    public HelperCard getHelperCard(int index){
+    public HelperCard getHelperCard(int index) {
 
-        return helperCards.stream().filter((x) -> x.index == index).findAny().orElseThrow();
+        return helperCards.get(index);
     }
 
     /**

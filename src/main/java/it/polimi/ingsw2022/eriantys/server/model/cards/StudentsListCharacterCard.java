@@ -17,8 +17,8 @@ public class StudentsListCharacterCard extends CharacterCard{
      * @param index  index of the card
      * @param skill skill that needs to be handled by the card
      */
-    StudentsListCharacterCard(int index, Skill skill) {
-        super(index, skill);
+    StudentsListCharacterCard(int index, Skill skill, String effect, int cost) {
+        super(index, skill, effect, cost);
         this.students = new ArrayList<>();
     }
 

@@ -9,9 +9,12 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Ente
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -82,8 +85,9 @@ public class EriantysCLI implements View {
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
     @Override
-    public void start() throws TimeoutException {
+    public void start(boolean showLog) throws TimeoutException {
 
+        this.showLog = showLog;
         running = true;
 
         //the input thread will take care of accepting new inputs at the right time and passing them to the controller
@@ -206,7 +210,7 @@ public class EriantysCLI implements View {
         frameBuilder.append(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
 
         //append log if enabled
-        if(showLog) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog(frame.getHeight()));
+        if(showLog) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog(frame.getHeight() - 1));
 
         //print the frame string to terminal
         terminal.writer().print(frameBuilder);
@@ -268,6 +272,13 @@ public class EriantysCLI implements View {
     }
 
     @Override
+    public void applyChange(GameInitChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
+    }
+
+    @Override
     public void askUsername(Message requestMessage) {
 
         if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for a username");
@@ -289,8 +300,8 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame() {
+    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
 
-        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight()));
+        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), playerUsernames, playerTeams, gameMode));
     }
 }

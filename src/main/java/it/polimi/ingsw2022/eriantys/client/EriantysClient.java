@@ -8,13 +8,11 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
@@ -38,8 +36,9 @@ public class EriantysClient {
      */
     public static void launch(String[] args) throws IOException, TimeoutException {
 
-        boolean gui = args.length <= 0 || !args[0].equals("-nogui");
-        createInstance(gui);
+        boolean gui = args.length == 0 || !args[0].equals("-nogui");
+        boolean showLog = (gui && args.length >= 1 && args[0].equals("-log")) || (!gui && args.length >= 2 && args[1].equals("-log"));
+        createInstance(gui, showLog);
         getInstance().start();
     }
 
@@ -48,11 +47,12 @@ public class EriantysClient {
     /**
      * Initializes the singleton instance
      * @param gui whether the gui version of the view or the cli one should be launched
+     * @param showLog whether view should show logs
      * @throws IOException if could not correctly launch the view
      */
-    private static void createInstance(boolean gui) throws IOException {
+    private static void createInstance(boolean gui, boolean showLog) throws IOException {
 
-        instance = new EriantysClient(gui);
+        instance = new EriantysClient(gui, showLog);
     }
 
     /**
@@ -67,15 +67,20 @@ public class EriantysClient {
     private ObjectOutputStream serverOutputStream;
     private ObjectInputStream serverInputStream;
 
-    private StringBuilder log;
+    private final boolean showLog;
+    private final StringWriter log;
+    private final PrintWriter logWriter;
 
     private final View view;
 
     private GameSettings gameSettings;
 
-    private EriantysClient(boolean gui) throws IOException {
+    private EriantysClient(boolean gui, boolean showLog) throws IOException {
 
-        log = new StringBuilder();
+        this.showLog = showLog;
+        log = new StringWriter();
+        logWriter    = new PrintWriter(log);
+        if(!gui) Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(logWriter));
 
         //initialize view
         view = gui ? new EriantysGUI() : new EriantysCLI();
@@ -83,7 +88,7 @@ public class EriantysClient {
 
     private void start() throws TimeoutException {
 
-        view.start();
+        view.start(showLog);
     }
 
     /**
@@ -201,9 +206,9 @@ public class EriantysClient {
     /**
      * Asks the view to start the game
      */
-    public void startGame() {
+    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
 
-        view.startGame();
+        view.startGame(playerUsernames, playerTeams, gameMode);
     }
 
     /**
@@ -221,15 +226,8 @@ public class EriantysClient {
      */
     public void log(String logText) {
 
-        log.append(logText).append('\n');
-    }
-
-    /**
-     * Clears the log
-     */
-    public void clearLog() {
-
-        log = new StringBuilder();
+        logWriter.print(logText);
+        logWriter.print('\n');
     }
 
     /**
@@ -247,7 +245,7 @@ public class EriantysClient {
 
         StringBuilder stringBuilder = new StringBuilder();
         String[] logLines = log.toString().split("\n");
-        for(int n = logLines.length - lines; n < logLines.length; n++) stringBuilder.append(logLines[n]);
+        for(int n = Math.max(logLines.length - lines, 0); n < logLines.length; n++) stringBuilder.append(logLines[n]).append("\n");
         return stringBuilder.toString();
     }
 }

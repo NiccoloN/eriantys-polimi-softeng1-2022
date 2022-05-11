@@ -4,8 +4,12 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.concurrent.TimeoutException;
 
@@ -21,9 +25,10 @@ public interface View {
 
     /**
      * Starts this view
+     * @param showLog whether this view should show logs
      * @throws TimeoutException if this view stops responding
      */
-    void start() throws TimeoutException;
+    void start(boolean showLog) throws TimeoutException;
 
     /**
      * Makes this view ask the user for a username
@@ -46,12 +51,21 @@ public interface View {
 
     /**
      * Makes this view start the game, showing the game scenario
+     * @param playerUsernames the username of each player in the game
+     * @param playerTeams the team of each player in the game
+     * @param gameMode the mode of the game
      */
-    void startGame();
+    void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode);
 
     /**
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
     void applyChange(IslandChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
+    void applyChange(GameInitChange change);
 }

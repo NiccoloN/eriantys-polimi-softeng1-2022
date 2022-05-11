@@ -13,8 +13,8 @@ public class ColorCharacterCard extends CharacterCard{
      * @param index index of the CharacterCard
      * @param skill skill associated with the Card
      */
-    ColorCharacterCard(int index, Skill skill) {
-        super(index, skill);
+    ColorCharacterCard(int index, Skill skill, String effect, int cost) {
+        super(index, skill, effect, cost);
     }
 
     public ColoredPawn getPawnColor() {
