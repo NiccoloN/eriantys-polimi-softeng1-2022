@@ -3,8 +3,7 @@ package it.polimi.ingsw2022.eriantys.client.view;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 
 import java.util.concurrent.TimeoutException;
@@ -54,4 +53,8 @@ public interface View {
      * @param change the change to apply
      */
     void applyChange(IslandChange change);
+    void applyChange(CloudChange change);
+    void applyChange(SchoolDashboardChange change);
+    void applyChange(StudentsBagChange change);
+    void applyChange(HelperCardsChange change);
 }

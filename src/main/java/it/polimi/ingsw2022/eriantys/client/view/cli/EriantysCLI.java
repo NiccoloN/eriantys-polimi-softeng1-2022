@@ -9,7 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Ente
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import org.jline.terminal.Terminal;
@@ -265,6 +265,26 @@ public class EriantysCLI implements View {
 
         if(gameScene != null) gameScene.applyChange(change);
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
+    }
+
+    @Override
+    public void applyChange(CloudChange change) {
+
+    }
+
+    @Override
+    public void applyChange(SchoolDashboardChange change) {
+
+    }
+
+    @Override
+    public void applyChange(StudentsBagChange change) {
+
+    }
+
+    @Override
+    public void applyChange(HelperCardsChange change) {
+
     }
 
     @Override
