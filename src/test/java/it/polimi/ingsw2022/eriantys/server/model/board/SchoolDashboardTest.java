@@ -1,14 +1,14 @@
-package it.polimi.ingsw2022.eriantys.model.board;
+package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.model.players.Player;
 import it.polimi.ingsw2022.eriantys.model.players.Team;
+import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;

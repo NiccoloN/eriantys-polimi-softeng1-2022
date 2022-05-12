@@ -1,11 +1,10 @@
-package it.polimi.ingsw2022.eriantys.model.board;
+package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.model.players.Team;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

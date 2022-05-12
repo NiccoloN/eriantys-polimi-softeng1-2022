@@ -1,7 +1,8 @@
-package it.polimi.ingsw2022.eriantys.model.board;
+package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
