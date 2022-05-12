@@ -86,8 +86,9 @@ public class EriantysCLI implements View {
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
     @Override
-    public void start() throws TimeoutException {
+    public void start(boolean showLog) throws TimeoutException {
 
+        this.showLog = showLog;
         running = true;
 
         //the input thread will take care of accepting new inputs at the right time and passing them to the controller
@@ -265,6 +266,33 @@ public class EriantysCLI implements View {
     }
 
     @Override
+    public void askUsername(Message requestMessage) {
+
+        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for a username");
+        currentScene.setState(new EnterUsername(this, (MenuScene) currentScene, requestMessage));
+    }
+
+    @Override
+    public void askGameSettings(Message requestMessage) {
+
+        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for game settings");
+        currentScene.setState(new NumberOfPlayersSelection(this, (MenuScene) currentScene, requestMessage));
+    }
+
+    @Override
+    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
+
+        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to show the game lobby");
+        currentScene.setState(new LobbyWaiting(this, (MenuScene) currentScene, playerUsernames, gameSettings));
+    }
+
+    @Override
+    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+
+        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), playerUsernames, playerTeams, gameMode));
+    }
+
+    @Override
     public void applyChange(IslandChange change) {
 
         if(gameScene != null) gameScene.applyChange(change);
@@ -296,32 +324,5 @@ public class EriantysCLI implements View {
     @Override
     public void applyChange(HelperCardsChange change) {
 
-    }
-
-    @Override
-    public void askUsername(Message requestMessage) {
-
-        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for a username");
-        currentScene.setState(new EnterUsername(this, (MenuScene) currentScene, requestMessage));
-    }
-
-    @Override
-    public void askGameSettings(Message requestMessage) {
-
-        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for game settings");
-        currentScene.setState(new NumberOfPlayersSelection(this, (MenuScene) currentScene, requestMessage));
-    }
-
-    @Override
-    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
-
-        if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to show the game lobby");
-        currentScene.setState(new LobbyWaiting(this, (MenuScene) currentScene, playerUsernames, gameSettings));
-    }
-
-    @Override
-    public void startGame() {
-
-        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight()));
     }
 }

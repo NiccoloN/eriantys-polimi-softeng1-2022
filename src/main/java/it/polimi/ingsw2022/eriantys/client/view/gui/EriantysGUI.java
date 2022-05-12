@@ -2,9 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
@@ -65,6 +63,26 @@ public class EriantysGUI extends Application implements View {
     public void applyChange(IslandChange change) {
 
         //TODO
+    }
+
+    @Override
+    public void applyChange(CloudChange change) {
+
+    }
+
+    @Override
+    public void applyChange(SchoolDashboardChange change) {
+
+    }
+
+    @Override
+    public void applyChange(StudentsBagChange change) {
+
+    }
+
+    @Override
+    public void applyChange(HelperCardsChange change) {
+
     }
 
     @Override

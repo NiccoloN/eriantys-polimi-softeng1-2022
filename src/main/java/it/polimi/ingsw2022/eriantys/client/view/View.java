@@ -62,15 +62,35 @@ public interface View {
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
+    void applyChange(GameInitChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
     void applyChange(IslandChange change);
 
     /**
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
-    void applyChange(GameInitChange change);
     void applyChange(CloudChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
     void applyChange(SchoolDashboardChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
     void applyChange(StudentsBagChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
     void applyChange(HelperCardsChange change);
 }
