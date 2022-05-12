@@ -1,6 +1,5 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene;
 
-import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
@@ -14,7 +13,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.HelperCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -255,6 +255,24 @@ public class GameScene extends CLIScene {
     }
 
     /**
+     * Applies the given character cards change to this scene
+     * @param change the change to apply
+     */
+    public void applyChange(CharacterCardsChange change) {
+
+        initializeCharacters(change.getCharacterCards());
+    }
+
+    /**
+     * Applies the given helper cards change to this scene
+     * @param change the change to apply
+     */
+    public void applyChange(HelperCardsChange change) {
+
+        initializeHelpers(change.getHelperCards());
+    }
+
+    /**
      * Applies the given island change to this scene
      * @param change the change to apply
      */
@@ -273,16 +291,6 @@ public class GameScene extends CLIScene {
 
         Optional<Boolean> mother = change.hasMotherNature();
         if(mother.isPresent()) island.setMother(mother.get());
-    }
-
-    /**
-     * Applies the given game init change to this scene
-     * @param change the change to apply
-     */
-    public void applyChange(GameInitChange change) {
-
-        initializeHelpers(change.getHelperCards());
-        initializeCharacters(change.getCharacterCards());
     }
 
     public void setPrompt(CLIComponent prompt) {

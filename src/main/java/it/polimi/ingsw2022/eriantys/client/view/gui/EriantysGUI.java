@@ -5,8 +5,6 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.Game;
-import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -86,7 +84,7 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void applyChange(GameInitChange change) {
+    public void applyChange(CharacterCardsChange change) {
 
         //TODO
     }

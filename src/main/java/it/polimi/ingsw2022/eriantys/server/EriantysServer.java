@@ -2,13 +2,13 @@ package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.HelperCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
-import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
@@ -18,7 +18,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.*;
 
 /**
@@ -208,20 +207,20 @@ public class EriantysServer {
         Update[] initUpdates = new Update[gameSettings.numberOfPlayers];
         for(int n = 0; n < initUpdates.length; n++) initUpdates[n] = new Update();
 
-        //add a game init change to every initUpdate (a different one for every player)
+        //add a character cards change to every initUpdate
+        CharacterCardsChange characterCardsChange = new CharacterCardsChange();
+        for(int i = 0; i < game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
+        for(Update initUpdate : initUpdates) initUpdate.addChange(characterCardsChange);
+
+        //add a helper cards change to every initUpdate (a different one for every player)
         Player[] players = game.getPlayers();
         for(int n = 0; n < players.length; n++) {
 
-            GameInitChange gameInitChange = new GameInitChange();
-
+            HelperCardsChange change = new HelperCardsChange();
             Player player = players[n];
-            for(int i = 0; i < player.getNumberOfHelpers(); i++)
-                gameInitChange.addHelperCard(player.getHelperCard(i));
 
-            for(int i = 0; i < game.getNumberOfCharacters(); i++)
-                gameInitChange.addCharacterCard(game.getCharacter(i));
-
-            initUpdates[n].addChange(gameInitChange);
+            for(int i = 0; i < player.getNumberOfHelpers(); i++) change.addHelperCard(player.getHelperCard(i));
+            initUpdates[n].addChange(change);
         }
 
         //add island changes to every initUpdate

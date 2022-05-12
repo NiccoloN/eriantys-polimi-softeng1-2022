@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
+import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
@@ -12,6 +13,8 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +30,7 @@ public class Game {
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
     public static final int MIN_NUMBER_OF_PLAYERS = 2;
 
-    private GameMode gameMode;
+    private final GameMode gameMode;
     private final Board board;
     private final List<ColoredPawn> students;
     private final StudentsBag studentsBag;
@@ -39,19 +42,21 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(String[] playerUsernames, Mode mode) {
+    public Game(String[] playerUsernames, Mode mode) throws IOException {
+
         gameEnding = false;
-        students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         players = generatePlayers(playerUsernames);
+        board = new Board(players);
+        students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         professors = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
         studentsBag = new StudentsBag();
-        board = new Board(players);
         characters = new ArrayList<>(3);
         gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
 
         placeFirstStudents();
-        for(ColoredPawn student : students) studentsBag.addStudent(student);
-        students.clear();
+        fillStudentsBag();
+        chooseCharacters();
+        assignHelpers();
     }
 
     private void placeFirstStudents() {
@@ -76,6 +81,26 @@ public class Game {
         for(int n = 1; n < board.numberOfIslands(); n++)
             if(n != board.numberOfIslands() / 2)
                 board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
+    }
+
+    private void fillStudentsBag() {
+
+        for(ColoredPawn student : students) studentsBag.addStudent(student);
+        students.clear();
+    }
+
+    private void chooseCharacters() throws IOException {
+
+        List<CharacterCard> characterCards = new ArrayList<>(12);
+        for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
+        for(int n = 0; n < 3; n++) characters.add(characterCards.remove((int) (Math.random() * characterCards.size())));
+    }
+
+    private void assignHelpers() throws IOException {
+
+        for(Player player : players)
+            for(int  n = 1; n <= 10; n++)
+                player.addHelperCard(CardFactory.createHelperCard(n, player.mage));
     }
 
     /**

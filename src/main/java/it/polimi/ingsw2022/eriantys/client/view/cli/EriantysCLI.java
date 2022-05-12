@@ -9,12 +9,11 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Ente
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -293,14 +292,21 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void applyChange(IslandChange change) {
+    public void applyChange(CharacterCardsChange change) {
 
         if(gameScene != null) gameScene.applyChange(change);
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
-    public void applyChange(GameInitChange change) {
+    public void applyChange(HelperCardsChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
+    }
+
+    @Override
+    public void applyChange(IslandChange change) {
 
         if(gameScene != null) gameScene.applyChange(change);
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
@@ -318,11 +324,6 @@ public class EriantysCLI implements View {
 
     @Override
     public void applyChange(StudentsBagChange change) {
-
-    }
-
-    @Override
-    public void applyChange(HelperCardsChange change) {
 
     }
 }

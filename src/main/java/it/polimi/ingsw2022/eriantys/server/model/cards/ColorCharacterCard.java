@@ -6,7 +6,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
  * Extension of CharacterCard that handles selection of a color.
  * @author Francesco Melegati Maccari
  */
-public class ColorCharacterCard extends CharacterCard{
+public class ColorCharacterCard extends CharacterCard {
     private ColoredPawn pawnColor;
 
     /**
