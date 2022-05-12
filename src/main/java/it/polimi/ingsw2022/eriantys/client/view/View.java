@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -68,4 +69,8 @@ public interface View {
      * @param change the change to apply
      */
     void applyChange(GameInitChange change);
+    void applyChange(CloudChange change);
+    void applyChange(SchoolDashboardChange change);
+    void applyChange(StudentsBagChange change);
+    void applyChange(HelperCardsChange change);
 }

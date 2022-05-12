@@ -51,4 +51,8 @@ public class StudentsBag {
         int extractionIndex = (int) (Math.random() * (students.size()));
         return (students.remove(extractionIndex));
     }
+
+    public int getNumberOfStudents() {
+        return this.students.size();
+    }
 }
