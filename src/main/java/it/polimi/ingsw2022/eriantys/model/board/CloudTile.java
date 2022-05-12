@@ -32,7 +32,7 @@ public class CloudTile {
 
     /**
      * Removes all the students from this cloud
-     * @return an array containing the removed students
+     * @return a List containing the removed students
      */
     public List<ColoredPawn> withdrawStudents() {
         List<ColoredPawn> students = new ArrayList<>(this.students);

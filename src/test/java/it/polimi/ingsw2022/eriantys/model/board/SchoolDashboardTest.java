@@ -47,6 +47,7 @@ class SchoolDashboardTest {
         assertThrows(NoSuchElementException.class, () -> schoolDashboard.removeFromEntrance(student));
         schoolDashboard.addToEntrance(student);
         final ColoredPawn studentToRemove = schoolDashboard.getEntranceStudents().get(0);
+        assertEquals(student, studentToRemove);
         schoolDashboard.removeFromEntrance(studentToRemove);
         assertEquals(0, schoolDashboard.getEntranceStudents().size());
     }

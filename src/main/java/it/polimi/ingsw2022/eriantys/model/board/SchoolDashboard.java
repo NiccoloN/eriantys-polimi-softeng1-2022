@@ -160,4 +160,8 @@ public class SchoolDashboard {
         if (towers <= 0) throw new RuntimeException("There are no towers in this school");
         towers--;
     }
+
+    public int getNumberOfTowers() {
+        return towers;
+    }
 }
