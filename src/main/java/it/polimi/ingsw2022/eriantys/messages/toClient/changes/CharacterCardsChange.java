@@ -8,15 +8,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameInitChange implements Change, Serializable {
+public class CharacterCardsChange implements Change, Serializable {
 
     private final List<CharacterCard> characterCards;
-    private final List<HelperCard> helperCards;
 
-    public GameInitChange() {
+    public CharacterCardsChange() {
 
         characterCards = new ArrayList<>(3);
-        helperCards = new ArrayList<>(10);
     }
 
     public CharacterCard[] getCharacterCards() {
@@ -27,16 +25,6 @@ public class GameInitChange implements Change, Serializable {
     public void addCharacterCard(CharacterCard card) {
 
         characterCards.add(card);
-    }
-
-    public HelperCard[] getHelperCards() {
-
-        return helperCards.toArray(new HelperCard[0]);
-    }
-
-    public void addHelperCard(HelperCard card) {
-
-        helperCards.add(card);
     }
 
     @Override

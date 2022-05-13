@@ -10,7 +10,7 @@ import java.util.List;
  * Extension of the CharacterCard used for special skill that needs to have students pawns placed on card
  * @author Francesco Melegati Maccari
  */
-public class StudentsListCharacterCard extends CharacterCard{
+public class StudentsListCharacterCard extends CharacterCard {
     private final List<ColoredPawn> students;
 
     /**

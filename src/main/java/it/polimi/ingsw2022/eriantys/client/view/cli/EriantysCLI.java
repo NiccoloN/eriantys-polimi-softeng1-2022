@@ -9,7 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Ente
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -287,9 +287,23 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+    public void startGame(Player[] players, Mode gameMode) {
 
-        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), playerUsernames, playerTeams, gameMode));
+        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
+    }
+
+    @Override
+    public void applyChange(CharacterCardsChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
+    }
+
+    @Override
+    public void applyChange(HelperCardsChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
@@ -300,29 +314,29 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void applyChange(GameInitChange change) {
+    public void applyChange(CloudChange change) {
 
         if(gameScene != null) gameScene.applyChange(change);
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
-    public void applyChange(CloudChange change) {
+    public void applyChange(SchoolChange change) {
 
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
-    public void applyChange(SchoolDashboardChange change) {
+    public void applyChange(PlayerChange change) {
 
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
     public void applyChange(StudentsBagChange change) {
 
-    }
-
-    @Override
-    public void applyChange(HelperCardsChange change) {
 
     }
 }

@@ -1,12 +1,10 @@
 package it.polimi.ingsw2022.eriantys.server.model.cards;
 
-import java.io.Serializable;
-
 /**
  * Special card with an associated Skill
  * @author Francesco Melegati Maccari
  */
-public class CharacterCard extends Card implements Serializable {
+public class CharacterCard extends Card {
     public final Skill skill;
     public final String effect;
     private int cost;

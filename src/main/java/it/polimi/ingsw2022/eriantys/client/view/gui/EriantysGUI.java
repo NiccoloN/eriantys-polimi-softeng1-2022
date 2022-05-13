@@ -5,7 +5,6 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
@@ -54,7 +53,7 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+    public void startGame(Player[] players, Mode gameMode) {
 
         //TODO
     }
@@ -68,25 +67,35 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void applyChange(CloudChange change) {
 
+        //TODO
     }
 
     @Override
-    public void applyChange(SchoolDashboardChange change) {
+    public void applyChange(SchoolChange change) {
 
+        //TODO
+    }
+
+    @Override
+    public void applyChange(PlayerChange change) {
+
+        //TODO
     }
 
     @Override
     public void applyChange(StudentsBagChange change) {
 
+        //TODO
     }
 
     @Override
     public void applyChange(HelperCardsChange change) {
 
+        //TODO
     }
 
     @Override
-    public void applyChange(GameInitChange change) {
+    public void applyChange(CharacterCardsChange change) {
 
         //TODO
     }

@@ -18,23 +18,18 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
     static final String PLAYER_STATUS_DEFAULT_COLOR = RESET;
 
-    private final int index;
     private final SchoolTablesCLIComponent tablesCLIComponent;
     private final PlayerStatsCLIComponent statsCLIComponent;
 
     /**
      * Constructs a player status cli component with the given index, nickname and team color
-     * @param index the index of this component
      * @param nickname the nickname to associate to this component
      * @param teamAnsiColor the team color to associate to this component
      * @throws InvalidParameterException if the given index is not a positive single-digit integer
      * @throws InvalidParameterException if the given nickname is invalid
      * @throws InvalidParameterException if the given team color is not an ansi sequence
      */
-    public PlayerStatusCLIComponent(int index, String nickname, String teamAnsiColor) {
-
-        if (index < 0 || index > 9) throw new InvalidParameterException("Index must be a positive single digit-integer");
-        this.index = index;
+    public PlayerStatusCLIComponent(String nickname, String teamAnsiColor) {
 
         tablesCLIComponent = new SchoolTablesCLIComponent(nickname);
         statsCLIComponent = new PlayerStatsCLIComponent(teamAnsiColor);
@@ -118,9 +113,9 @@ public class PlayerStatusCLIComponent implements CLIComponent {
         return tablesCLIComponent.getHeight();
     }
 
-    public int getIndex() {
+    public String getNickname() {
 
-        return index;
+        return tablesCLIComponent.getNickname();
     }
 
     /**
@@ -153,5 +148,25 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     public void setProfessor(PawnColor color, boolean prof) {
 
         tablesCLIComponent.setProfessor(color, prof);
+    }
+
+    /**
+     * Sets the coins to visualize on this component
+     * @param coins the coins to visualize on this component
+     * @throws InvalidParameterException if number is not between 0 and 99
+     */
+    public void setCoins(int coins) {
+
+        statsCLIComponent.setCoins(coins);
+    }
+
+    /**
+     * Sets the towers to visualize on this component
+     * @param towers the towers to visualize on this component
+     * @throws InvalidParameterException if number is not between 0 and 9
+     */
+    public void setTowers(int towers) {
+
+        statsCLIComponent.setTowers(towers);
     }
 }

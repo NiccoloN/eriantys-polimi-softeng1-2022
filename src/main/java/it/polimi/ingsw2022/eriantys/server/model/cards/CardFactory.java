@@ -3,9 +3,15 @@ package it.polimi.ingsw2022.eriantys.server.model.cards;
 import com.google.gson.Gson;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * This class is used to easily build Card instances, reading data from files
@@ -17,7 +23,6 @@ import java.nio.file.Path;
 public class CardFactory {
 
     private static final Gson gson = new Gson();
-    private static final String RESOURCES_DIR = "src/main/resources";
     private static final String HELPERS_FILE_NAME = "helpers.json";
     private static final String CHARACTERS_FILE_NAME = "characters.json";
     private static HelperCard[] helperCardSamples;
@@ -29,8 +34,8 @@ public class CardFactory {
      */
     private static void readHelpersFile() throws IOException {
 
-        Path path = Path.of(RESOURCES_DIR, HELPERS_FILE_NAME);
-        String json = Files.readString(path);
+        Scanner scanner = new Scanner(Objects.requireNonNull(CardFactory.class.getClassLoader().getResource(HELPERS_FILE_NAME)).openStream());
+        String json = scanner.useDelimiter("\\Z").next();
         helperCardSamples = gson.fromJson(json, HelperCard[].class);
     }
 
@@ -40,8 +45,8 @@ public class CardFactory {
      */
     private static void readCharacterFile() throws IOException {
 
-        Path path = Path.of(RESOURCES_DIR, CHARACTERS_FILE_NAME);
-        String json = Files.readString(path);
+        Scanner scanner = new Scanner(Objects.requireNonNull(CardFactory.class.getClassLoader().getResource(CHARACTERS_FILE_NAME)).openStream());
+        String json = scanner.useDelimiter("\\Z").next();
         characterCardSamples = gson.fromJson(json, CharacterCard[].class);
     }
 

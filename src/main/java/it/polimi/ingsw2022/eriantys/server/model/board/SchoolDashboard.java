@@ -4,14 +4,19 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-import java.util.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a school. Every school is associated to a player
  * @author Niccolò Nicolosi
  * @see Player
  */
-public class SchoolDashboard {
+public class SchoolDashboard implements Serializable {
 
     /**
      * The player associated to this school
@@ -37,6 +42,15 @@ public class SchoolDashboard {
         professors = new ArrayList<>();
         this.maxTowers = maxTowers;
         towers = maxTowers;
+    }
+
+    /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently placed at the entrance of this school
+     */
+    public int countEntranceStudents(PawnColor color) {
+
+        return (int) entranceStudents.stream().filter((x) -> x.color == color).count();
     }
 
     /**
@@ -67,6 +81,15 @@ public class SchoolDashboard {
      */
     public void removeFromEntrance(ColoredPawn student) {
         if (!entranceStudents.remove(student)) throw new NoSuchElementException();
+    }
+
+    /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently at the table of the corresponding color
+     */
+    public int countTableStudents(PawnColor color) {
+
+        return studentsTables.get(color).size();
     }
 
     /**
@@ -128,6 +151,11 @@ public class SchoolDashboard {
         ColoredPawn professor = professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
         professors.remove(professor);
         return professor;
+    }
+
+    public int getTowers() {
+
+        return towers;
     }
 
     /**
