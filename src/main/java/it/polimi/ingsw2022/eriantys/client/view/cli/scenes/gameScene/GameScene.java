@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
@@ -13,17 +14,18 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.HelperCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.security.InvalidParameterException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -32,10 +34,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * @author Niccolò Nicolosi
  */
 public class GameScene extends CLIScene {
-    
-    private static final String TEAM_WHITE_COLOR = WHITE_BRIGHT;
-    private static final String TEAM_BLACK_COLOR = BLACK_BRIGHT;
-    private static final String TEAM_GRAY_COLOR = WHITE;
     
     private CLIComponent prompt;
     private final BasicCLIComponent title;
@@ -55,16 +53,12 @@ public class GameScene extends CLIScene {
      * @param cli the cli to associate to this scene
      * @param width the width of this scene
      * @param height the height of this scene
-     * @param playerUsernames the usernames of each player
-     * @param playerTeams the team of each player (must be of the same length of playerUsernames)
+     * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    public GameScene(EriantysCLI cli, int width, int height, String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+    public GameScene(EriantysCLI cli, int width, int height, Player[] players, Mode gameMode) {
 
         super(cli, width, height);
-
-        if(playerTeams.length != playerUsernames.length)
-            throw new InvalidParameterException("Invalid playerTeams for the given playerUsernames: they must be of the same length");
 
         //build title component
         title = new BasicCLIComponent(73, ("\0________\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0__\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "|        \\\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\n" + "| $$$$$$$$\0\0______\0\0\0\\$$\0\0______\0\0\0_______\0\0_| $$_\0\0\0\0__\0\0\0\0__\0\0\0_______\0\n" + "| $$__\0\0\0\0\0/      \\\0|  \\\0|      \\\0|       \\|   $$ \\\0\0|  \\\0\0|  \\\0/       \\\n" + "| $$  \\\0\0\0|  $$$$$$\\| $$\0\0\\$$$$$$\\| $$$$$$$\\\\$$$$$$\0\0| $$\0\0| $$|  $$$$$$$\n" + "| $$$$$\0\0\0| $$\0\0\0\\$$| $$\0/      $$| $$\0\0| $$\0| $$\0__\0| $$\0\0| $$\0\\$$    \\\0\n" + "| $$_____\0| $$\0\0\0\0\0\0| $$|  $$$$$$$| $$\0\0| $$\0| $$|  \\| $$__/ $$\0_\\$$$$$$\\\n" + "| $$     \\| $$\0\0\0\0\0\0| $$\0\\$$\0\0\0\0$$| $$\0\0| $$\0\0\\$$  $$\0\\$$    $$|       $$\n" + "\0\\$$$$$$$$\0\\$$\0\0\0\0\0\0\0\\$$\0\0\\$$$$$$$\0\\$$\0\0\0\\$$\0\0\0\\$$$$\0\0_\\$$$$$$$\0\\$$$$$$$\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0|  \\__| $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$    $$\0\0\0\0\0\0\0\0\0\0\n" + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\$$$$$$\0\0\0\0\0\0\0\0\0\0\0\n").split("\n"));
@@ -117,33 +111,15 @@ public class GameScene extends CLIScene {
         for(int n = 0; n < islands.length; n++) islands[n] = new IslandCLIComponent(n + 1);
 
         //build cloud components
-        clouds = new ArrayList<>(playerUsernames.length);
-        for(int n = 0; n < playerUsernames.length; n++) clouds.add(new CloudCLIComponent(n + 1));
+        clouds = new ArrayList<>(players.length);
+        for(int n = 0; n < players.length; n++) clouds.add(new CloudCLIComponent(n + 1));
 
         //build player dashboard components
-        players = new ArrayList<>(playerUsernames.length);
-        for(int n = 0; n < playerUsernames.length; n++) {
-
-            String ansiColor;
-            switch(playerTeams[n]) {
-
-                case WHITE:
-                    ansiColor = TEAM_WHITE_COLOR;
-                    break;
-                case BLACK:
-                    ansiColor = TEAM_BLACK_COLOR;
-                    break;
-                case GRAY:
-                    ansiColor = TEAM_GRAY_COLOR;
-                    break;
-                default:
-                    throw new RuntimeException("Invalid team");
-            }
-            this.players.add(new PlayerStatusCLIComponent(n, playerUsernames[n], ansiColor));
-        }
+        this.players = new ArrayList<>(players.length);
+        for (Player player : players) this.players.add(new PlayerStatusCLIComponent(player.username, player.team.ansiColor));
 
         //build text area components
-        hintTextArea = new TextAreaCLIComponent(players.get(0).getWidth(), 15, "Hints");
+        hintTextArea = new TextAreaCLIComponent(this.players.get(0).getWidth(), 15, "Hints");
         effectTextArea = new TextAreaCLIComponent(hintTextArea.getWidth(), hintTextArea.getHeight(), "Effect");
 
         setComponentsPositions();
@@ -207,11 +183,12 @@ public class GameScene extends CLIScene {
         }
     }
 
-    private void initializeHelpers(HelperCard[] helperCards) {
+    private void setHelpers(HelperCard[] helperCards) {
 
-        helpers = new ArrayList<>(helperCards.length);
-        for(HelperCard card : helperCards)
-            helpers.add(new HelperCardCLIComponent(card.index, card.priority, card.movement));
+        if (helpers == null) helpers = new ArrayList<>(helperCards.length);
+        else helpers.clear();
+
+        for(HelperCard card : helperCards) helpers.add(new HelperCardCLIComponent(card.index, card.priority, card.movement));
 
         //arrange helper cards in a row at the bottom of the screen
         for(int n = 0; n < helpers.size(); n++) helpers.get(n).setPosition(
@@ -219,9 +196,10 @@ public class GameScene extends CLIScene {
                 getHeight() - helpers.get(0).getHeight() - 1);
     }
 
-    private void initializeCharacters(CharacterCard[] characterCards) {
+    private void setCharacters(CharacterCard[] characterCards) {
 
-        characters = new CharacterCardCLIComponent[characterCards.length];
+        if (characters == null) characters = new CharacterCardCLIComponent[characterCards.length];
+
         for(int n = 0; n < characterCards.length; n++) {
 
             CharacterCard card = characterCards[n];
@@ -260,7 +238,7 @@ public class GameScene extends CLIScene {
      */
     public void applyChange(CharacterCardsChange change) {
 
-        initializeCharacters(change.getCharacterCards());
+        setCharacters(change.getCharacterCards());
     }
 
     /**
@@ -269,7 +247,7 @@ public class GameScene extends CLIScene {
      */
     public void applyChange(HelperCardsChange change) {
 
-        initializeHelpers(change.getHelperCards());
+        setHelpers(change.getHelperCards());
     }
 
     /**
@@ -278,19 +256,62 @@ public class GameScene extends CLIScene {
      */
     public void applyChange(IslandChange change) {
 
-        IslandCLIComponent island = islands[change.islandTileIndex];
+        AtomicInteger islandTileIndex = new AtomicInteger();
+
+        Arrays.stream(islands).filter((x) -> x.getIndex() == change.compoundIslandIndex)
+                .forEach((island) -> {
+
+                    IslandTile islandTile = change.getIslandTile(islandTileIndex.getAndIncrement());
+
+                    for(PawnColor color : PawnColor.values()) island.setStudents(color, islandTile.countStudents(color));
+                    island.setMother(islandTile.hasMotherNature());
+                    island.setTower(islandTile.hasTower());
+
+                    String teamColor = change.getTeam().isPresent() ? change.getTeam().get().ansiColor : RESET;
+                    island.setTeamColor(teamColor);
+                });
+    }
+
+    /**
+     * Applies the given cloud change to this scene
+     * @param change the change to apply
+     */
+    public void applyChange(CloudChange change) {
+
+        CloudCLIComponent cloud = clouds.get(change.cloudIndex - 1);
+        for(PawnColor color : PawnColor.values()) cloud.setStudents(color, change.getStudents(color));
+    }
+
+    /**
+     * Applies the given school change to this scene
+     * @param change the change to apply
+     * @throws NoSuchElementException if no player of the given username is found in this game scene
+     */
+    public void applyChange(SchoolChange change) {
+
+        PlayerStatusCLIComponent player = players.stream()
+                .filter((x) -> x.getNickname().equals(change.getPlayerUsername())).findAny().orElseThrow();
 
         for(PawnColor color : PawnColor.values()) {
 
-            OptionalInt number = change.getStudents(color);
-            if(number.isPresent()) island.setStudents(color, number.getAsInt());
+            player.setEntranceStudents(color, change.getEntranceStudents(color));
+            player.setTableStudents(color, change.getTableStudents(color));
+            player.setProfessor(color, change.hasProfessor(color));
+            player.setTowers(change.getTowers());
         }
+    }
 
-        Optional<Boolean> tower = change.hasTower();
-        if(tower.isPresent()) island.setTower(tower.get());
+    /**
+     * Applies the given player change to this scene
+     * @param change the change to apply
+     * @throws NoSuchElementException if no player of the given username is found in this game scene
+     */
+    public void applyChange(PlayerChange change) {
 
-        Optional<Boolean> mother = change.hasMotherNature();
-        if(mother.isPresent()) island.setMother(mother.get());
+        PlayerStatusCLIComponent player = players.stream()
+                .filter((x) -> x.getNickname().equals(change.getUsername())).findAny().orElseThrow();
+
+        player.setCoins(change.getCoins());
     }
 
     public void setPrompt(CLIComponent prompt) {

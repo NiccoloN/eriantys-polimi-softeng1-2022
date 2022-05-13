@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author Niccolò Nicolosi
  * @see Player
  */
-public class SchoolDashboard {
+public class SchoolDashboard implements Serializable {
 
     /**
      * The player associated to this school
@@ -43,6 +44,15 @@ public class SchoolDashboard {
     }
 
     /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently placed at the entrance of this school
+     */
+    public int countEntranceStudents(PawnColor color) {
+
+        return (int) entranceStudents.stream().filter((x) -> x.color == color).count();
+    }
+
+    /**
      * Place a colored pawn at the entrance of this school. Only pawns that represent students should be placed at the entrance
      * @param student the student to place
      * @throws RuntimeException if the entrance of this school already contains 7 or more students
@@ -63,6 +73,15 @@ public class SchoolDashboard {
     public ColoredPawn removeFromEntrance(ColoredPawn student) {
 
         return entranceStudents.stream().filter((x) -> x == student).findAny().orElseThrow();
+    }
+
+    /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently at the table of the corresponding color
+     */
+    public int countTableStudents(PawnColor color) {
+
+        return studentsTables.get(color).size();
     }
 
     /**
@@ -122,6 +141,11 @@ public class SchoolDashboard {
     public ColoredPawn removeProfessor(PawnColor color) {
 
         return professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+    }
+
+    public int getTowers() {
+
+        return towers;
     }
 
     /**

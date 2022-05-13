@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,14 +13,17 @@ import java.util.List;
  * @author Niccolò Nicolosi
  * @see CompoundIslandTile
  */
-public class IslandTile {
+public class IslandTile implements Serializable {
 
     private final List<ColoredPawn> students;
+    private boolean motherNature;
     private boolean tower;
 
-    public IslandTile() {
+    IslandTile() {
 
         students = new ArrayList<>();
+        motherNature = false;
+        tower = false;
     }
 
     /**
@@ -55,7 +59,7 @@ public class IslandTile {
      * @param student the student to place
      * @throws RuntimeException if the given student is already in this tile
      */
-    public void addStudent(ColoredPawn student) {
+    void addStudent(ColoredPawn student) {
 
         if (students.contains(student)) throw new RuntimeException("No duplicates allowed");
         students.add(student);
@@ -72,6 +76,23 @@ public class IslandTile {
     }
 
     /**
+     * @return whether mother nature is currently on this specific tile of an island
+     */
+    public boolean hasMotherNature() {
+
+        return motherNature;
+    }
+
+    /**
+     * Sets whether mother nature is currently on this specific tile of an island
+     * @param motherNature true to place mother nature on this tile, false to remove it
+     */
+    void setMotherNature(boolean motherNature) {
+
+        this.motherNature = motherNature;
+    }
+
+    /**
      * @return whether a tower has been placed on this tile
      */
     public boolean hasTower() {
@@ -82,7 +103,7 @@ public class IslandTile {
     /**
      * Places a tower onto this tile. Once a tower is placed, it cannot be removed.
      */
-    public void addTower() {
+    void addTower() {
 
         tower = true;
     }

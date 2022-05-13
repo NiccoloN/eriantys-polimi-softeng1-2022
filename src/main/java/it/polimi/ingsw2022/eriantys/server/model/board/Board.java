@@ -16,7 +16,7 @@ public class Board {
     private final List<CompoundIslandTile> islands;
     private final List<CloudTile> clouds;
     private final List<SchoolDashboard> schools;
-    private int motherNatureIsland;
+    private int motherNatureIslandIndex;
 
     /**
      * Constructs a board for the given players
@@ -56,6 +56,9 @@ public class Board {
             player.setSchool(school);
             schools.add(school);
         }
+
+        motherNatureIslandIndex = 0;
+        islands.get(0).setMotherNature(true);
     }
 
     /**
@@ -83,8 +86,10 @@ public class Board {
      */
     public void moveMotherNature(int steps) {
 
-        motherNatureIsland += steps;
-        motherNatureIsland %= islands.size();
+        islands.get(motherNatureIslandIndex).setMotherNature(false);
+        motherNatureIslandIndex += steps;
+        motherNatureIslandIndex %= islands.size();
+        islands.get(motherNatureIslandIndex).setMotherNature(true);
     }
 
     /**
@@ -92,13 +97,13 @@ public class Board {
      */
     public CompoundIslandTile getMotherNatureIsland() {
 
-        return getIsland(motherNatureIsland);
+        return getIsland(motherNatureIslandIndex);
     }
 
     /**
      * @return the number of islands at the current state of the game
      */
-    public int numberOfIslands() {
+    public int getNumberOfIslands() {
 
         return islands.size();
     }

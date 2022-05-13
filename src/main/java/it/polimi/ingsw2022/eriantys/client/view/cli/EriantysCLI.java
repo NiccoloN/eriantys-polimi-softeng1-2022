@@ -14,6 +14,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -286,9 +287,9 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+    public void startGame(Player[] players, Mode gameMode) {
 
-        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), playerUsernames, playerTeams, gameMode));
+        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
     }
 
     @Override
@@ -315,15 +316,27 @@ public class EriantysCLI implements View {
     @Override
     public void applyChange(CloudChange change) {
 
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
-    public void applyChange(SchoolDashboardChange change) {
+    public void applyChange(SchoolChange change) {
 
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
+    }
+
+    @Override
+    public void applyChange(PlayerChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
     public void applyChange(StudentsBagChange change) {
+
 
     }
 }

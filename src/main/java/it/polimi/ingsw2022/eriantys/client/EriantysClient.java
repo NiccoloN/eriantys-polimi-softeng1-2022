@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.*;
@@ -205,10 +206,12 @@ public class EriantysClient {
 
     /**
      * Asks the view to start the game
+     * @param players the players of the game
+     * @param gameMode the mode of the game
      */
-    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+    public void startGame(Player[] players, Mode gameMode) {
 
-        view.startGame(playerUsernames, playerTeams, gameMode);
+        view.startGame(players, gameMode);
     }
 
     /**

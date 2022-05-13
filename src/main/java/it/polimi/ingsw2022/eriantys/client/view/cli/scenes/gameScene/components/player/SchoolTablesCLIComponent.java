@@ -96,6 +96,11 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
         this.nickname = nickname;
     }
 
+    public String getNickname() {
+
+        return nickname;
+    }
+
     /**
      * Sets the students of the given color to visualize on this component
      * @param color the color of the students

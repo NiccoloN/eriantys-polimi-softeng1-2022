@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,10 +15,11 @@ import java.util.Optional;
  * @author Niccolò Nicolosi
  * @see IslandTile
  */
-public class CompoundIslandTile {
+public class CompoundIslandTile implements Serializable {
 
     private final List<IslandTile> tiles;
     private Team team;
+    private boolean motherNature;
     private boolean denied;
 
     /**
@@ -27,6 +29,22 @@ public class CompoundIslandTile {
 
         tiles = new ArrayList<>();
         tiles.add(new IslandTile());
+        team = null;
+        motherNature = false;
+        denied = false;
+    }
+
+    /**
+     * @return the number of island tiles this island is made of
+     */
+    public int getSize() {
+
+        return tiles.size();
+    }
+
+    public IslandTile getTile(int index) {
+
+        return tiles.get(index);
     }
 
     /**
@@ -108,7 +126,7 @@ public class CompoundIslandTile {
      */
     public Optional<Team> getTeam() {
 
-        return Optional.of(team);
+        return team != null ? Optional.of(team) : Optional.empty();
     }
 
     /**
@@ -122,25 +140,36 @@ public class CompoundIslandTile {
         this.team = team;
     }
 
+    /**
+     * @return whether mother nature is currently on this island
+     */
+    public boolean hasMotherNature() {
+
+        return motherNature;
+    }
+
+    /**
+     * Sets whether mother nature is currently on this island and places/removes it on/from the first tile of this island
+     * @param motherNature true to place mother nature on this island, false to remove it
+     */
+    void setMotherNature(boolean motherNature) {
+
+        this.motherNature = motherNature;
+        tiles.get(0).setMotherNature(motherNature);
+    }
+
     public boolean isDenied() {
 
         return denied;
     }
 
     /**
-     * Denies this island: a denied island cannot change its controller team
+     * Sets whether this island is denied. A denied island cannot change its controller team
+     * @param denied true to deny this island, false to make it not-denied
      */
-    public void deny() {
+    public void setDenied(boolean denied) {
 
-        denied = true;
-    }
-
-    /**
-     * Un-denies this island: after the call of this method, a new team can control this island
-     */
-    public void undeny() {
-
-        denied = false;
+        this.denied = denied;
     }
 
     /**

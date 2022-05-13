@@ -2,10 +2,7 @@ package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.HelperCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
@@ -202,32 +199,46 @@ public class EriantysServer {
         notifyAll();
     }
 
-    private Update[] createInitialUpdate() {
+    /**
+     * @return an array of initial updates, one for each player
+     */
+    private Update[] createInitialUpdates() {
 
-        Update[] initUpdates = new Update[gameSettings.numberOfPlayers];
-        for(int n = 0; n < initUpdates.length; n++) initUpdates[n] = new Update();
-
-        //add a character cards change to every initUpdate
-        CharacterCardsChange characterCardsChange = new CharacterCardsChange();
-        for(int i = 0; i < game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
-        for(Update initUpdate : initUpdates) initUpdate.addChange(characterCardsChange);
-
-        //add a helper cards change to every initUpdate (a different one for every player)
         Player[] players = game.getPlayers();
-        for(int n = 0; n < players.length; n++) {
+        Update[] initUpdates = new Update[players.length];
 
-            HelperCardsChange change = new HelperCardsChange();
-            Player player = players[n];
+        CharacterCardsChange characterCardsChange = new CharacterCardsChange();
+        for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
 
-            for(int i = 0; i < player.getNumberOfHelpers(); i++) change.addHelperCard(player.getHelperCard(i));
-            initUpdates[n].addChange(change);
+        IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
+        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n + 1, game.getBoard().getIsland(n));
+
+        CloudChange[] cloudChanges = new CloudChange[players.length];
+        for (int n = 0; n < players.length; n++) cloudChanges[n] = new CloudChange(n + 1, game.getBoard().getCloud(n));
+
+        SchoolChange[] schoolChanges = new SchoolChange[players.length];
+        for (int n = 0; n < players.length; n++) schoolChanges[n] = new SchoolChange(players[n].getSchool());
+
+        PlayerChange[] playerChanges = new PlayerChange[players.length];
+        for (int n = 0; n < players.length; n++) playerChanges[n] = new PlayerChange(players[n]);
+
+        for (int n = 0; n < initUpdates.length; n++) {
+
+            initUpdates[n] = new Update();
+            initUpdates[n].addChange(characterCardsChange);
+            for (IslandChange islandChange : islandChanges) initUpdates[n].addChange(islandChange);
+            for (CloudChange cloudChange : cloudChanges) initUpdates[n].addChange(cloudChange);
+            for (SchoolChange schoolChange : schoolChanges) initUpdates[n].addChange(schoolChange);
+            for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
         }
 
-        //add island changes to every initUpdate
-        for (int n = 0; n < game.getBoard().numberOfIslands(); n++) {
+        for (int n = 0; n < players.length; n++) {
 
-            IslandChange change = new IslandChange(n, game.getBoard().getIsland(n));
-            for(Update initUpdate : initUpdates) initUpdate.addChange(change);
+            Player player = players[n];
+
+            HelperCardsChange helperCardsChange = new HelperCardsChange();
+            for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
+            initUpdates[n].addChange(helperCardsChange);
         }
 
         return initUpdates;
@@ -239,16 +250,9 @@ public class EriantysServer {
 
         game = new Game(playerUsernames, gameSettings.gameMode);
 
-        Player[] players = game.getPlayers();
-        Team[] playerTeams = new Team[players.length];
-        for(int n = 0; n < players.length; n++) playerTeams[n] = players[n].team;
+        Update[] initialUpdates = createInitialUpdates();
 
-        Update[] initialUpdates = createInitialUpdate();
-
-        for (int n = 0; n < playerUsernames.length; n++) {
-
-            sendToClient(new StartingGameMessage(playerUsernames, playerTeams, gameSettings.gameMode, initialUpdates[n]),
-                    clients.get(playerUsernames[n]));
-        }
+        for (int n = 0; n < playerUsernames.length; n++)
+            sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
     }
 }

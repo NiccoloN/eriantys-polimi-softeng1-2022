@@ -78,8 +78,8 @@ public class Game {
                 }
             }
         }
-        for(int n = 1; n < board.numberOfIslands(); n++)
-            if(n != board.numberOfIslands() / 2)
+        for(int n = 1; n < board.getNumberOfIslands(); n++)
+            if(n != board.getNumberOfIslands() / 2)
                 board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
     }
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.concurrent.TimeoutException;
@@ -50,17 +51,22 @@ public interface View {
 
     /**
      * Makes this view start the game, showing the game scenario
-     * @param playerUsernames the username of each player in the game
-     * @param playerTeams the team of each player in the game
+     * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode);
+    void startGame(Player[] players, Mode gameMode);
 
     /**
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
     void applyChange(CharacterCardsChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
+    void applyChange(HelperCardsChange change);
 
     /**
      * Applies a given change to the game this view is showing
@@ -78,17 +84,17 @@ public interface View {
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
-    void applyChange(SchoolDashboardChange change);
+    void applyChange(SchoolChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
+    void applyChange(PlayerChange change);
 
     /**
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
     void applyChange(StudentsBagChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(HelperCardsChange change);
 }

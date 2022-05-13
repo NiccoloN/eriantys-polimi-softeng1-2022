@@ -1,16 +1,24 @@
 package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class represents a cloud
  * @author Niccolò Nicolosi
  */
-public class CloudTile {
+public class CloudTile implements Serializable {
 
-    private List<ColoredPawn> students;
+    private final List<ColoredPawn> students;
+
+    public CloudTile() {
+
+        students = new ArrayList<>();
+    }
 
     /**
      * Places a colored pawn onto this cloud. Only pawns that represent students should be placed on a cloud
@@ -34,6 +42,15 @@ public class CloudTile {
         ColoredPawn[] students = new ColoredPawn[this.students.size()];
         this.students.toArray(students);
         return students;
+    }
+
+    /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently placed on this tile
+     */
+    public int countStudents(PawnColor color) {
+
+        return (int) students.stream().filter((x) -> x.color == color).count();
     }
 
     /**
