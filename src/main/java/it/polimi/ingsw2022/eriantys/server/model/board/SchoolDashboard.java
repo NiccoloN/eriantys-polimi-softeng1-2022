@@ -4,10 +4,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents a school. Every school is associated to a player
@@ -56,13 +53,20 @@ public class SchoolDashboard {
     }
 
     /**
+     * @return students contained in entrance
+     */
+    public List<ColoredPawn> getEntranceStudents() {
+        return new ArrayList<>(entranceStudents);
+    }
+
+    /**
      * Removes the given student from the entrance of this school, if present
      * @param student the student to remove
      * @return the removed student
+     * @throws NoSuchElementException if the given student is not at the entrance of this school
      */
-    public ColoredPawn removeFromEntrance(ColoredPawn student) {
-
-        return entranceStudents.stream().filter((x) -> x == student).findAny().orElseThrow();
+    public void removeFromEntrance(ColoredPawn student) {
+        if (!entranceStudents.remove(student)) throw new NoSuchElementException();
     }
 
     /**
@@ -121,7 +125,9 @@ public class SchoolDashboard {
      */
     public ColoredPawn removeProfessor(PawnColor color) {
 
-        return professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+        ColoredPawn professor = professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+        professors.remove(professor);
+        return professor;
     }
 
     /**
@@ -142,5 +148,9 @@ public class SchoolDashboard {
 
         if (towers <= 0) throw new RuntimeException("There are no towers in this school");
         towers--;
+    }
+
+    public int getNumberOfTowers() {
+        return towers;
     }
 }
