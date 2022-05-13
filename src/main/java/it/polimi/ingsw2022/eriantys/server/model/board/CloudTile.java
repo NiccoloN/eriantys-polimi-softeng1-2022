@@ -20,6 +20,10 @@ public class CloudTile implements Serializable {
         students = new ArrayList<>();
     }
 
+    public CloudTile() {
+        this.students = new ArrayList<>(3);
+    }
+
     /**
      * Places a colored pawn onto this cloud. Only pawns that represent students should be placed on a cloud
      * @param student the student to place
@@ -35,12 +39,11 @@ public class CloudTile implements Serializable {
 
     /**
      * Removes all the students from this cloud
-     * @return an array containing the removed students
+     * @return a List containing the removed students
      */
-    public ColoredPawn[] withdrawStudents() {
-
-        ColoredPawn[] students = new ColoredPawn[this.students.size()];
-        this.students.toArray(students);
+    public List<ColoredPawn> withdrawStudents() {
+        List<ColoredPawn> students = new ArrayList<>(this.students);
+        this.students.clear();
         return students;
     }
 

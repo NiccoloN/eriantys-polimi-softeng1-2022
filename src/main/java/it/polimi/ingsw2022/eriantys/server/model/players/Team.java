@@ -53,8 +53,7 @@ public enum Team implements Serializable {
     /**
      * Resets this team to an empty team (only for test purposes)
      */
-    void reset() {
-
+    public void reset() {
         players.clear();
     }
 }

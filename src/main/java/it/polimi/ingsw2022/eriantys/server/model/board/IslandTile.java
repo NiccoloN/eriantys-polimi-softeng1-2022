@@ -39,10 +39,7 @@ public class IslandTile implements Serializable {
      * @return the number of students of the given color currently placed on this tile
      */
     public int countStudents(PawnColor color) {
-
-        int count = 0;
-        for (ColoredPawn student : students) if (student.color == color) count++;
-        return count;
+        return (int) students.stream().filter((x) -> x.color == color).count();
     }
 
     /**
@@ -74,6 +71,7 @@ public class IslandTile implements Serializable {
 
         return students.remove(students.size() - 1);
     }
+
 
     /**
      * @return whether mother nature is currently on this specific tile of an island
