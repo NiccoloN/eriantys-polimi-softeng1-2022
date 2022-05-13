@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,10 @@ import java.util.List;
 public class CloudTile {
 
     private List<ColoredPawn> students;
+
+    public CloudTile() {
+        this.students = new ArrayList<>(3);
+    }
 
     /**
      * Places a colored pawn onto this cloud. Only pawns that represent students should be placed on a cloud
@@ -27,12 +32,11 @@ public class CloudTile {
 
     /**
      * Removes all the students from this cloud
-     * @return an array containing the removed students
+     * @return a List containing the removed students
      */
-    public ColoredPawn[] withdrawStudents() {
-
-        ColoredPawn[] students = new ColoredPawn[this.students.size()];
-        this.students.toArray(students);
+    public List<ColoredPawn> withdrawStudents() {
+        List<ColoredPawn> students = new ArrayList<>(this.students);
+        this.students.clear();
         return students;
     }
 
