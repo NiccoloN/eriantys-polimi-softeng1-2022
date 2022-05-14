@@ -17,11 +17,7 @@ public class CloudTile implements Serializable {
 
     public CloudTile() {
 
-        students = new ArrayList<>();
-    }
-
-    public CloudTile() {
-        this.students = new ArrayList<>(3);
+        students = new ArrayList<>(3);
     }
 
     /**

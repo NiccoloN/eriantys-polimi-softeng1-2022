@@ -29,13 +29,13 @@ class PlayerTest {
         HelperCard card1 = CardFactory.createHelperCard(1, player.mage);
         player.addHelperCard(card1);
         assertEquals(1, player.getNumberOfHelpers());
-        assertEquals(card1, player.getHelperCard(1));
+        assertEquals(card1, player.getHelperCard(0));
         assertThrows(RuntimeException.class, () -> player.addHelperCard(card1));
         assertThrows(RuntimeException.class, () -> player.addHelperCard(CardFactory.createHelperCard(1, player.mage)));
         HelperCard card2 = CardFactory.createHelperCard(2, player.mage);
         player.addHelperCard(card2);
         assertEquals(2, player.getNumberOfHelpers());
-        assertEquals(card2, player.getHelperCard(2));
+        assertEquals(card2, player.getHelperCard(1));
     }
 
     @Test
@@ -57,10 +57,10 @@ class PlayerTest {
         HelperCard card2 = CardFactory.createHelperCard(2, player.mage);
         player.addHelperCard(card1);
         player.addHelperCard(card2);
-        assertEquals(card1, player.getHelperCard(1));
-        assertEquals(card1, player.getHelperCard(1));
-        assertEquals(card2, player.getHelperCard(2));
-        assertThrows(NoSuchElementException.class, () -> player.getHelperCard(3));
+        assertEquals(card1, player.getHelperCard(0));
+        assertEquals(card1, player.getHelperCard(0));
+        assertEquals(card2, player.getHelperCard(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> player.getHelperCard(2));
     }
 
     @Test

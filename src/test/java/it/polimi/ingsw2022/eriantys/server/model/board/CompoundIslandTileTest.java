@@ -35,7 +35,7 @@ class CompoundIslandTileTest {
     @Test
     void setTeam() {
         compoundIsland.setTeam(Team.BLACK);
-        compoundIsland.deny();
+        compoundIsland.setDenied(true);
         assertThrows(RuntimeException.class, () -> compoundIsland.setTeam(Team.GRAY));
     }
 }

@@ -6,10 +6,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents a school. Every school is associated to a player
@@ -76,10 +73,10 @@ public class SchoolDashboard implements Serializable {
     /**
      * Removes the given student from the entrance of this school, if present
      * @param student the student to remove
-     * @return the removed student
      * @throws NoSuchElementException if the given student is not at the entrance of this school
      */
     public void removeFromEntrance(ColoredPawn student) {
+
         if (!entranceStudents.remove(student)) throw new NoSuchElementException();
     }
 
@@ -176,9 +173,5 @@ public class SchoolDashboard implements Serializable {
 
         if (towers <= 0) throw new RuntimeException("There are no towers in this school");
         towers--;
-    }
-
-    public int getNumberOfTowers() {
-        return towers;
     }
 }
