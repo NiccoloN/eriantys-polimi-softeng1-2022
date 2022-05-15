@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server;
 
+import it.polimi.ingsw2022.eriantys.messages.Move.Move;
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
@@ -107,6 +108,7 @@ public class EriantysServer {
 
         //initialize game
         createGame();
+        //Start controller
     }
 
     private Socket acceptConnection() throws IOException {
@@ -251,5 +253,9 @@ public class EriantysServer {
             sendToClient(new StartingGameMessage(playerUsernames, playerTeams, gameSettings.gameMode, initialUpdates[n]),
                     clients.get(playerUsernames[n]));
         }
+    }
+
+    public void setPerformedMove(Move move, String username){
+        //set sul controller della move ( avrà syncronized e notify alla fine)
     }
 }

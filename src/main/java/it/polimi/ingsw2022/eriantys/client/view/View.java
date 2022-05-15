@@ -3,13 +3,13 @@ package it.polimi.ingsw2022.eriantys.client.view;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Change;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.concurrent.TimeoutException;
@@ -93,4 +93,10 @@ public interface View {
      * @param change the change to apply
      */
     void applyChange(HelperCardsChange change);
+
+    /**
+     * Ask the client for a certain move
+     * @param previousMessage the message containing a move request
+     */
+    void askMoveType(MoveRequestMessage previousMessage);
 }

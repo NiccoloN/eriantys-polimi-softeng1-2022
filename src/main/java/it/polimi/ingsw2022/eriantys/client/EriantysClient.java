@@ -4,6 +4,8 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -66,6 +68,7 @@ public class EriantysClient {
     private Socket server;
     private ObjectOutputStream serverOutputStream;
     private ObjectInputStream serverInputStream;
+    private String username;
 
     private final boolean showLog;
     private final StringWriter log;
@@ -221,6 +224,14 @@ public class EriantysClient {
     }
 
     /**
+     * Asks the view to make a given move
+     * @param requestMessage the message containing the requested move
+     */
+    public void askMoveType(MoveRequestMessage requestMessage){
+        view.askMoveType(requestMessage);
+    }
+
+    /**
      * Appends the given logText to the log
      * @param logText the text to append
      */
@@ -247,5 +258,13 @@ public class EriantysClient {
         String[] logLines = log.toString().split("\n");
         for(int n = Math.max(logLines.length - lines, 0); n < logLines.length; n++) stringBuilder.append(logLines[n]).append("\n");
         return stringBuilder.toString();
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername(){
+        return username;
     }
 }

@@ -73,7 +73,8 @@ public class GameModeSelection extends MenuSceneState {
         if (input.triggersAction(Action.SELECT)) {
 
             EriantysClient client = EriantysClient.getInstance();
-            client.sendToServer(new GameSettingsMessage(requestMessage, new GameSettings(selectedNumberOfPlayers, Mode.values()[currentSelectedIndex])));
+            client.sendToServer(new GameSettingsMessage(requestMessage,
+                    new GameSettings(selectedNumberOfPlayers, Mode.values()[currentSelectedIndex]), client.getUsername()));
 
             //TODO abort message
         }

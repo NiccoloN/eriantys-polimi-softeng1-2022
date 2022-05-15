@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
@@ -8,6 +9,14 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
+import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveMotherNature;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
+
+import java.io.IOException;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -20,14 +29,17 @@ public class IslandSelection extends GameSceneState {
     private int currentSelectedIndex;
     private IslandCLIComponent currentSelected;
 
+    private final Message requestMessage;
+
     /**
      * Constructs an island selection state
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public IslandSelection(EriantysCLI cli, GameScene scene) {
+    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
         super(cli, scene);
+        this.requestMessage = requestMessage;
     }
 
     @Override
@@ -49,7 +61,7 @@ public class IslandSelection extends GameSceneState {
     }
 
     @Override
-    public void manageInput(Input input) {
+    public void manageInput(Input input) throws IOException {
 
         if(input.triggersAction(Action.DOWN)) {
 
@@ -59,6 +71,14 @@ public class IslandSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
         else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+
+        if(input.triggersAction(Action.SELECT)){
+
+            EriantysClient client = EriantysClient.getInstance();
+            client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveMotherNature
+                    (MoveType.MOVE_MOTHER_NATURE, currentSelected.getIndex()), client.getUsername()));
+            return;
+        }
 
         if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
         else if (currentSelectedIndex > getScene().getNumberOfIslands() - 1) currentSelectedIndex = 0;

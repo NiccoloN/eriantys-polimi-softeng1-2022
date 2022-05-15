@@ -8,8 +8,8 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
  */
 public class AbortMessage extends ToServerMessage {
 
-    public AbortMessage(Message previousMessage) {
+    public AbortMessage(Message previousMessage, String username) {
 
-        super(previousMessage);
+        super(previousMessage, username);
     }
 }

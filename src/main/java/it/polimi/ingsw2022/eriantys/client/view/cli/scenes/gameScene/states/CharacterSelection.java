@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
@@ -9,6 +10,9 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CharacterCardCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
+import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
 import java.security.InvalidParameterException;
 
@@ -34,7 +38,7 @@ public class CharacterSelection extends GameSceneState {
      * @param prevState the previous state from which this state was set
      * @param goBackAction the action that makes the game scene go back to the previous state if triggered
      */
-    CharacterSelection(EriantysCLI cli, GameScene scene, CLISceneState prevState, Action goBackAction) {
+    public CharacterSelection(EriantysCLI cli, GameScene scene, CLISceneState prevState, Action goBackAction) {
 
         super(cli, scene);
 
@@ -76,6 +80,10 @@ public class CharacterSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
         else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+
+        if(input.triggersAction(Action.SELECT)){
+            //TODO
+        }
 
         if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfCharacters() - 1;
         else if (currentSelectedIndex > getScene().getNumberOfCharacters() - 1) currentSelectedIndex = 0;
