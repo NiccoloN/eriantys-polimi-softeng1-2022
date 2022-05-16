@@ -46,11 +46,11 @@ public class CloudCLIComponent extends BasicCLIComponent {
         setRow(0, color + "  _____  " + RESET);
         setRow(1, color + " (     ) " + RESET);
         setRow(2,color + "( " +
-                 RED + students.get(PawnColor.RED) +
-                 GREEN_BRIGHT + students.get(PawnColor.GREEN) +
-                 YELLOW + students.get(PawnColor.YELLOW) +
-                 BLUE_BRIGHT + students.get(PawnColor.BLUE) +
-                 PURPLE_BRIGHT + students.get(PawnColor.PINK) +
+                 PawnColor.RED.ansiForegroundColor + students.get(PawnColor.RED) +
+                 PawnColor.GREEN.ansiForegroundColor + students.get(PawnColor.GREEN) +
+                 PawnColor.YELLOW.ansiForegroundColor + students.get(PawnColor.YELLOW) +
+                 PawnColor.BLUE.ansiForegroundColor + students.get(PawnColor.BLUE) +
+                 PawnColor.PINK.ansiForegroundColor + students.get(PawnColor.PINK) +
                  color + " )" + RESET);
         setRow(3, color + " (_____) " + RESET);
         setRow(4, RESET + "    " + String.format("%01d", index) + "    ");

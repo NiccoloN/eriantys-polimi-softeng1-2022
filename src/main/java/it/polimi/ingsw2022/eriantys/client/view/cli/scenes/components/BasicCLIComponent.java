@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 
 import java.security.InvalidParameterException;
@@ -75,7 +77,7 @@ public class BasicCLIComponent implements CLIComponent {
             if (toConsider) {
 
                 this.chars[index][length] = currentChar;
-                                            currentChar = "";
+                currentChar = "";
                 length++;
             }
             if (chars[n] == 'm') toConsider = true;

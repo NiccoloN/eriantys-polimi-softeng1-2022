@@ -1,6 +1,5 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene;
 
-import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
@@ -8,11 +7,9 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.AnimatedCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CharacterCardCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.IslandSelection;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
@@ -21,9 +18,7 @@ import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
-import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,7 +29,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * @author Niccolò Nicolosi
  */
 public class GameScene extends CLIScene {
-    
+
     private CLIComponent prompt;
     private final BasicCLIComponent title;
     private final BasicCLIComponent line;
@@ -47,6 +42,7 @@ public class GameScene extends CLIScene {
     private final List<PlayerStatusCLIComponent> players;
     private List<HelperCardCLIComponent> helpers;
     private CharacterCardCLIComponent[] characters;
+    private ColorCLIComponent[] colors;
 
     /**
      * Constructs a game scene
@@ -116,7 +112,7 @@ public class GameScene extends CLIScene {
 
         //build player dashboard components
         this.players = new ArrayList<>(players.length);
-        for (Player player : players) this.players.add(new PlayerStatusCLIComponent(player.username, player.team.ansiColor));
+        for (int n = 0; n < players.length; n++) this.players.add(new PlayerStatusCLIComponent(players[n].username, players[n].team.ansiColor, n % 2 != 0));
 
         //build text area components
         hintTextArea = new TextAreaCLIComponent(this.players.get(0).getWidth(), 15, "Hints");
@@ -213,6 +209,17 @@ public class GameScene extends CLIScene {
 
     }
 
+    public void setColors(PawnColor[] colors) {
+
+        this.colors = new ColorCLIComponent[colors.length];
+        for(int n = 0; n < colors.length; n++) this.colors[n] = new ColorCLIComponent(colors[n]);
+
+        //arrange colors in a row at the bottom of the screen
+        for(int n = 0; n < this.colors.length; n++) this.colors[n].setPosition(
+                getWidth() / 2f - (this.colors[0].getWidth() * this.colors.length + this.colors.length - 2) / 2f + (this.colors[0].getWidth() + 1) * n,
+                getHeight() - this.colors[0].getHeight() - 3);
+    }
+
     @Override
     public void printToFrame(Frame frame) {
 
@@ -227,6 +234,7 @@ public class GameScene extends CLIScene {
         for(PlayerStatusCLIComponent player : players) player.printToFrame(frame);
         if(helpers != null) for(HelperCardCLIComponent helper : helpers) helper.printToFrame(frame);
         if(characters != null) for(CharacterCardCLIComponent character : characters) character.printToFrame(frame);
+        if(colors != null) for(BasicCLIComponent color : colors) color.printToFrame(frame);
         hintTextArea.printToFrame(frame);
         effectTextArea.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
@@ -248,6 +256,8 @@ public class GameScene extends CLIScene {
     public void applyChange(HelperCardsChange change) {
 
         setHelpers(change.getHelperCards());
+        //TODO remove
+        //setState(new ColorSelection(getCli(), this, PawnColor.values()));
     }
 
     /**
@@ -346,7 +356,7 @@ public class GameScene extends CLIScene {
 
     public int getNumberOfHelpers() {
 
-        return helpers.size();
+        return helpers != null ? helpers.size() : 0;
     }
 
     public CharacterCardCLIComponent getCharacter(int index) {
@@ -356,7 +366,17 @@ public class GameScene extends CLIScene {
 
     public int getNumberOfCharacters() {
 
-        return characters.length;
+        return characters != null ? characters.length : 0;
+    }
+
+    public ColorCLIComponent getColor(int index) {
+
+        return colors[index];
+    }
+
+    public int getNumberOfColors() {
+
+        return colors != null ? colors.length : 0;
     }
 
     public TextAreaCLIComponent getHintTextArea() {
@@ -367,5 +387,12 @@ public class GameScene extends CLIScene {
     public TextAreaCLIComponent getEffectTextArea() {
 
         return effectTextArea;
+    }
+
+    public PlayerStatusCLIComponent getPlayer() {
+
+        //TODO
+        //return players.stream().filter((x) -> x.getNickname().equals(EriantysClient.getInstance().username)).findAny().orElseThrow();
+        return players.get(0);
     }
 }

@@ -40,6 +40,7 @@ public class CloudSelection extends GameSceneState {
     @Override
     public void exit() {
 
+        super.exit();
         currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
         getScene().getHintTextArea().setText("");
         getScene().setPrompt(null);
