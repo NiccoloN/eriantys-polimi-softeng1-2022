@@ -55,6 +55,7 @@ public class HelperSelection extends GameSceneState {
     @Override
     public void exit() {
 
+        super.exit();
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
         getScene().setPrompt(null);

@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
@@ -18,26 +19,28 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
     static final String PLAYER_STATUS_DEFAULT_COLOR = RESET;
 
-    private final int index;
+    private final boolean helperLeft;
     private final SchoolTablesCLIComponent tablesCLIComponent;
     private final PlayerStatsCLIComponent statsCLIComponent;
+    private HelperCardCLIComponent lastHelperCLIComponent;
 
     /**
      * Constructs a player status cli component with the given index, nickname and team color
-     * @param index the index of this component
      * @param nickname the nickname to associate to this component
      * @param teamAnsiColor the team color to associate to this component
+     * @param helperLeft whether the last played helper should be placed on the left instead of on the right of this component
      * @throws InvalidParameterException if the given index is not a positive single-digit integer
      * @throws InvalidParameterException if the given nickname is invalid
      * @throws InvalidParameterException if the given team color is not an ansi sequence
      */
-    public PlayerStatusCLIComponent(int index, String nickname, String teamAnsiColor) {
+    public PlayerStatusCLIComponent(String nickname, String teamAnsiColor, boolean helperLeft) {
 
-        if (index < 0 || index > 9) throw new InvalidParameterException("Index must be a positive single digit-integer");
-        this.index = index;
-
+        this.helperLeft = helperLeft;
         tablesCLIComponent = new SchoolTablesCLIComponent(nickname);
         statsCLIComponent = new PlayerStatsCLIComponent(teamAnsiColor);
+        lastHelperCLIComponent = new HelperCardCLIComponent(1, 1, 1);
+        lastHelperCLIComponent.setHidden(true);
+        setPosition(0, 0);
     }
 
     @Override
@@ -45,6 +48,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         tablesCLIComponent.printToFrame(frame);
         statsCLIComponent.printToFrame(frame);
+        lastHelperCLIComponent.printToFrame(frame);
     }
 
     @Override
@@ -55,10 +59,11 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     }
 
     @Override
-    public void setHidden(boolean b) {
+    public void setHidden(boolean hidden) {
 
-        tablesCLIComponent.setHidden(b);
-        statsCLIComponent.setHidden(b);
+        tablesCLIComponent.setHidden(hidden);
+        statsCLIComponent.setHidden(hidden);
+        lastHelperCLIComponent.setHidden(hidden);
     }
 
     @Override
@@ -76,8 +81,19 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     @Override
     public void setX(float x) {
 
-        tablesCLIComponent.setX(x);
-        statsCLIComponent.setX(x + tablesCLIComponent.getWidth());
+        if(helperLeft) {
+
+            lastHelperCLIComponent.setX(x);
+            tablesCLIComponent.setX(x + lastHelperCLIComponent.getWidth() + 1);
+            statsCLIComponent.setX(tablesCLIComponent.getX() + tablesCLIComponent.getWidth());
+        }
+
+        else {
+
+            tablesCLIComponent.setX(x);
+            statsCLIComponent.setX(tablesCLIComponent.getX() + tablesCLIComponent.getWidth());
+            lastHelperCLIComponent.setX(statsCLIComponent.getX() + statsCLIComponent.getWidth() + 1);
+        }
     }
 
     @Override
@@ -97,6 +113,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         tablesCLIComponent.setY(y);
         statsCLIComponent.setY(y);
+        lastHelperCLIComponent.setY(y + (getHeight() - lastHelperCLIComponent.getHeight()) / 2f);
     }
 
     @Override
@@ -109,7 +126,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     @Override
     public int getWidth() {
 
-        return tablesCLIComponent.getWidth() + statsCLIComponent.getWidth();
+        return tablesCLIComponent.getWidth() + statsCLIComponent.getWidth() + lastHelperCLIComponent.getWidth() + 1;
     }
 
     @Override
@@ -118,9 +135,19 @@ public class PlayerStatusCLIComponent implements CLIComponent {
         return tablesCLIComponent.getHeight();
     }
 
-    public int getIndex() {
+    public String getNickname() {
 
-        return index;
+        return tablesCLIComponent.getNickname();
+    }
+
+    /**
+     * Sets the last played helper to visualize on this component
+     * @param lastHelperCLIComponent the helper component to visualize
+     */
+    public void setLastHelperCLIComponent(HelperCardCLIComponent lastHelperCLIComponent) {
+
+        if(lastHelperCLIComponent == null) throw new InvalidParameterException("Last helper component must be != null");
+        this.lastHelperCLIComponent = lastHelperCLIComponent;
     }
 
     /**
@@ -153,5 +180,25 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     public void setProfessor(PawnColor color, boolean prof) {
 
         tablesCLIComponent.setProfessor(color, prof);
+    }
+
+    /**
+     * Sets the coins to visualize on this component
+     * @param coins the coins to visualize on this component
+     * @throws InvalidParameterException if number is not between 0 and 99
+     */
+    public void setCoins(int coins) {
+
+        statsCLIComponent.setCoins(coins);
+    }
+
+    /**
+     * Sets the towers to visualize on this component
+     * @param towers the towers to visualize on this component
+     * @throws InvalidParameterException if number is not between 0 and 9
+     */
+    public void setTowers(int towers) {
+
+        statsCLIComponent.setTowers(towers);
     }
 }

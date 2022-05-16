@@ -46,11 +46,11 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
 
         setRow(0, color + " _" + nickname + "_".repeat(getWidth() - nickname.length() - 3) + " " + RESET);
         setRow(1, color + "|  " + ("_____" + YELLOW + "_" + RESET + color).repeat(3) + "___   ___  |" + RESET);
-        setRow(2, buildTableRow(GREEN_BACKGROUND_BRIGHT, tableStudents.get(PawnColor.GREEN), professors.get(PawnColor.GREEN)));
-        setRow(3, buildTableRow(RED_BACKGROUND, tableStudents.get(PawnColor.RED), professors.get(PawnColor.RED)));
-        setRow(4, buildTableRow(YELLOW_BACKGROUND, tableStudents.get(PawnColor.YELLOW), professors.get(PawnColor.YELLOW)));
-        setRow(5, buildTableRow(PURPLE_BACKGROUND_BRIGHT, tableStudents.get(PawnColor.PINK), professors.get(PawnColor.PINK)));
-        setRow(6, buildTableRow(BLUE_BACKGROUND_BRIGHT, tableStudents.get(PawnColor.BLUE), professors.get(PawnColor.BLUE)));
+        setRow(2, buildTableRow(PawnColor.GREEN.ansiBackgroundColor, tableStudents.get(PawnColor.GREEN), professors.get(PawnColor.GREEN)));
+        setRow(3, buildTableRow(PawnColor.RED.ansiBackgroundColor, tableStudents.get(PawnColor.RED), professors.get(PawnColor.RED)));
+        setRow(4, buildTableRow(PawnColor.YELLOW.ansiBackgroundColor, tableStudents.get(PawnColor.YELLOW), professors.get(PawnColor.YELLOW)));
+        setRow(5, buildTableRow(PawnColor.PINK.ansiBackgroundColor, tableStudents.get(PawnColor.PINK), professors.get(PawnColor.PINK)));
+        setRow(6, buildTableRow(PawnColor.BLUE.ansiBackgroundColor, tableStudents.get(PawnColor.BLUE), professors.get(PawnColor.BLUE)));
         setRow(7, color + "|" + "_".repeat(getWidth() - 2) + "|" + RESET);
     }
     
@@ -94,6 +94,11 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
         if (nickname.length() == 0) throw new InvalidParameterException("Nickname must be at least 1 character");
         if (nickname.length() > NICKNAME_MAX_CHARS) throw new InvalidParameterException("Nickname must be at most" + NICKNAME_MAX_CHARS + " characters");
         this.nickname = nickname;
+    }
+
+    public String getNickname() {
+
+        return nickname;
     }
 
     /**

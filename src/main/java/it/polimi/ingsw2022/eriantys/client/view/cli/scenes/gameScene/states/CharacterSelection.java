@@ -26,7 +26,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class CharacterSelection extends GameSceneState {
 
-    private final CLISceneState prevState;
+    private final GameSceneState prevState;
     private final Action goBackAction;
     private int currentSelectedIndex;
     private CharacterCardCLIComponent currentSelected, prevSelected;
@@ -38,6 +38,7 @@ public class CharacterSelection extends GameSceneState {
      * @param prevState the previous state from which this state was set
      * @param goBackAction the action that makes the game scene go back to the previous state if triggered
      */
+
     public CharacterSelection(EriantysCLI cli, GameScene scene, CLISceneState prevState, Action goBackAction) {
 
         super(cli, scene);
@@ -57,16 +58,21 @@ public class CharacterSelection extends GameSceneState {
         prevSelected = null;
         getScene().getHintTextArea().setText("Select a character card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to return to your previous selection");
+        if(prevState instanceof ColorSelection)
+            for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
         updateCLI();
     }
 
     @Override
     public void exit() {
 
+        super.exit();
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
         getScene().getEffectTextArea().setText("");
         getScene().setPrompt(null);
+        if(prevState instanceof ColorSelection)
+            for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
     }
 
     @Override

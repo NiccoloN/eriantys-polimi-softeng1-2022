@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.server.model.players;
 
+import it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +12,20 @@ import java.util.List;
  */
 public enum Team implements Serializable {
 
-    WHITE,
-    BLACK,
-    GRAY;
+    WHITE(AnsiCodes.WHITE_BRIGHT),
+    BLACK(AnsiCodes.BLACK_BRIGHT),
+    GRAY(AnsiCodes.WHITE);
 
+    public final String ansiColor;
     private final List<Player> players;
 
     /**
      * Initializes the list of player with initial capacity equal to 2
+     * @param ansiColor the ansi color of this team to use in the cli
      */
-    Team() {
+    Team(String ansiColor) {
 
+        this.ansiColor = ansiColor;
         players = new ArrayList<>(2);
     }
 
@@ -48,8 +53,7 @@ public enum Team implements Serializable {
     /**
      * Resets this team to an empty team (only for test purposes)
      */
-    void reset() {
-
+    public void reset() {
         players.clear();
     }
 }

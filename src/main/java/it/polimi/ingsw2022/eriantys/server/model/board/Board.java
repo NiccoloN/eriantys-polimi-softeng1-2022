@@ -16,7 +16,7 @@ public class Board {
     private final List<CompoundIslandTile> islands;
     private final List<CloudTile> clouds;
     private final List<SchoolDashboard> schools;
-    private int motherNatureIsland;
+    private int motherNatureIslandIndex;
 
     /**
      * Constructs a board for the given players
@@ -30,9 +30,9 @@ public class Board {
 
         islands = new ArrayList<>(12);
         for (int n = 0; n < 12; n ++) islands.add(new CompoundIslandTile());
-        clouds = new ArrayList<>(4);
+        clouds = new ArrayList<>(players.size());
         for (int n = 0; n < players.size(); n++) clouds.add(new CloudTile());
-        schools = new ArrayList<>(4);
+        schools = new ArrayList<>(players.size());
         for (int n = 0; n < players.size(); n++) {
 
             Player player = players.get(n);
@@ -56,6 +56,9 @@ public class Board {
             player.setSchool(school);
             schools.add(school);
         }
+
+        motherNatureIslandIndex = 0;
+        islands.get(0).setMotherNature(true);
     }
 
     /**
@@ -67,12 +70,11 @@ public class Board {
      * @throws RuntimeException if any island tile is part of both the islands
      */
     public void mergeIslands(int index1, int index2) {
-
+        if (index1 > islands.size() - 1 || index2 > islands.size() - 1) throw new RuntimeException("Index are out of bounds");
         if (index1 == index2) throw new RuntimeException("Cannot merge an island with itself");
-        if (Math.abs(index1 - index2) != 1) throw new RuntimeException("Cannot merge not adjacent islands");
+        if (Math.abs(index1 - index2) != 1 && Math.abs(index1 - index2) != islands.size() - 1) throw new RuntimeException("Cannot merge not adjacent islands");
         CompoundIslandTile island1 = getIsland(Math.min(index1, index2));
         CompoundIslandTile island2 = getIsland(Math.max(index1, index2));
-
         island1.mergeWithIsland(island2);
         islands.remove(island2);
     }
@@ -80,11 +82,15 @@ public class Board {
     /**
      * Moves mother nature of the given steps. Every step corresponds to moving from an island to its adjacent
      * @param steps the number of steps to perform
+     * @return the index of the island where mother nature is located after the move
      */
-    public void moveMotherNature(int steps) {
+    public int moveMotherNature(int steps) {
 
-        motherNatureIsland += steps;
-        motherNatureIsland %= islands.size();
+        islands.get(motherNatureIslandIndex).setMotherNature(false);
+        motherNatureIslandIndex += steps;
+        motherNatureIslandIndex %= islands.size();
+        islands.get(motherNatureIslandIndex).setMotherNature(true);
+        return motherNatureIslandIndex;
     }
 
     /**
@@ -92,13 +98,13 @@ public class Board {
      */
     public CompoundIslandTile getMotherNatureIsland() {
 
-        return getIsland(motherNatureIsland);
+        return getIsland(motherNatureIslandIndex);
     }
 
     /**
      * @return the number of islands at the current state of the game
      */
-    public int numberOfIslands() {
+    public int getNumberOfIslands() {
 
         return islands.size();
     }

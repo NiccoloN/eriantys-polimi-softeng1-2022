@@ -51,13 +51,13 @@ public class IslandCLIComponent extends BasicCLIComponent {
         setRow(0, color + "   ________   " + RESET);
         setRow(1, color + "  /   " + teamColor + (tower ? UNDERLINED + "II" : "  ") + RESET + color + "   \\  " + RESET);
         setRow(2, color + " / " +
-                  RED + (students.get(PawnColor.RED) < 10 ? "0" : "") + students.get(PawnColor.RED) + "    " +
-                  GREEN_BRIGHT + (students.get(PawnColor.GREEN) < 10 ? "0" : "") + students.get(PawnColor.GREEN) + color + " \\ " + RESET);
+                  PawnColor.RED.ansiForegroundColor + (students.get(PawnColor.RED) < 10 ? "0" : "") + students.get(PawnColor.RED) + "    " +
+                  PawnColor.GREEN.ansiForegroundColor + (students.get(PawnColor.GREEN) < 10 ? "0" : "") + students.get(PawnColor.GREEN) + color + " \\ " + RESET);
         setRow(3,color + "|     " +
-                 YELLOW + (students.get(PawnColor.YELLOW) < 10 ? "0" : "") + students.get(PawnColor.YELLOW) + color + "     |" + RESET);
+                 PawnColor.YELLOW.ansiForegroundColor + (students.get(PawnColor.YELLOW) < 10 ? "0" : "") + students.get(PawnColor.YELLOW) + color + "     |" + RESET);
         setRow(4, color + " \\ " +
-                  BLUE_BRIGHT + (students.get(PawnColor.BLUE) < 10 ? "0" : "") + students.get(PawnColor.BLUE) + "    " +
-                  PURPLE_BRIGHT + (students.get(PawnColor.PINK) < 10 ? "0" : "") + students.get(PawnColor.PINK) + color + " / " + RESET);
+                  PawnColor.BLUE.ansiForegroundColor + (students.get(PawnColor.BLUE) < 10 ? "0" : "") + students.get(PawnColor.BLUE) + "    " +
+                  PawnColor.PINK.ansiForegroundColor + (students.get(PawnColor.PINK) < 10 ? "0" : "") + students.get(PawnColor.PINK) + color + " / " + RESET);
         setRow(5, color + "  \\___" + UNDERLINED + (mother ? "MM" : "  ") + RESET + color + "___/  " + RESET);
         setRow(6, color + "      " + (index < 10 ? "0" : "") + index + "      " + RESET);
     }

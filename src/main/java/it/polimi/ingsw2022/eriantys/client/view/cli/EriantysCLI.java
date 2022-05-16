@@ -13,9 +13,13 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Ente
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -38,7 +42,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 public class EriantysCLI implements View {
 
     private static final float FRAME_TIME = 1 / 60f;
-    private static final int FRAME_WIDTH = 181, FRAME_HEIGHT = 58;
+    private static final int FRAME_WIDTH = 189, FRAME_HEIGHT = 58;
 
     private static final String TERMINAL_RESET = "\u001Bc\u001B[3J\u001Bc\u001B[H";
     private static final String TERMINAL_RESIZE = "\u001B[8;" + FRAME_HEIGHT + ";" + FRAME_WIDTH + "t";
@@ -264,11 +268,11 @@ public class EriantysCLI implements View {
 
     /**
      * Sets whether the log should be visualized or not
-     * @param b true to visualize the log, false otherwise
+     * @param log true to visualize the log, false otherwise
      */
-    public void showLog(boolean b) {
+    public void showLog(boolean log) {
 
-        this.showLog = b;
+        this.showLog = log;
     }
 
     @Override
@@ -293,9 +297,23 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode) {
+    public void startGame(Player[] players, Mode gameMode) {
 
-        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), playerUsernames, playerTeams, gameMode));
+        setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
+    }
+
+    @Override
+    public void applyChange(CharacterCardsChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
+    }
+
+    @Override
+    public void applyChange(HelperCardsChange change) {
+
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
@@ -306,29 +324,29 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void applyChange(GameInitChange change) {
+    public void applyChange(CloudChange change) {
 
         if(gameScene != null) gameScene.applyChange(change);
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
-    public void applyChange(CloudChange change) {
+    public void applyChange(SchoolChange change) {
 
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
-    public void applyChange(SchoolDashboardChange change) {
+    public void applyChange(PlayerChange change) {
 
+        if(gameScene != null) gameScene.applyChange(change);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override
     public void applyChange(StudentsBagChange change) {
 
-    }
-
-    @Override
-    public void applyChange(HelperCardsChange change) {
 
     }
 

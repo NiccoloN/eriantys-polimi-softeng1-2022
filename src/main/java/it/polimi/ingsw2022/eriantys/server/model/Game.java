@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
+import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
@@ -43,16 +44,17 @@ public class Game {
 
     public Game(String[] playerUsernames) {
         gameEnding = false;
-        students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         players = generatePlayers(playerUsernames);
+        board = new Board(players);
+        students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         professors = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
         studentsBag = new StudentsBag();
-        board = new Board(players);
         characters = new ArrayList<>(3);
 
         placeFirstStudents();
-        for(ColoredPawn student : students) studentsBag.addStudent(student);
-        students.clear();
+        fillStudentsBag();
+        chooseCharacters();
+        assignHelpers();
     }
 
     private void placeFirstStudents() {
@@ -74,9 +76,29 @@ public class Game {
                 }
             }
         }
-        for(int n = 1; n < board.numberOfIslands(); n++)
-            if(n != board.numberOfIslands() / 2)
+        for(int n = 1; n < board.getNumberOfIslands(); n++)
+            if(n != board.getNumberOfIslands() / 2)
                 board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
+    }
+
+    private void fillStudentsBag() {
+
+        for(ColoredPawn student : students) studentsBag.addStudent(student);
+        students.clear();
+    }
+
+    private void chooseCharacters() throws IOException {
+
+        List<CharacterCard> characterCards = new ArrayList<>(12);
+        for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
+        for(int n = 0; n < 3; n++) characters.add(characterCards.remove((int) (Math.random() * characterCards.size())));
+    }
+
+    private void assignHelpers() throws IOException {
+
+        for(Player player : players)
+            for(int  n = 1; n <= 10; n++)
+                player.addHelperCard(CardFactory.createHelperCard(n, player.mage));
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  * @see Team
  */
 
-public class Player {
+public class Player implements Serializable {
 
     /**
      * The username of the player
@@ -39,7 +39,7 @@ public class Player {
     private int coins;
     private HelperCard currentHelper;
     private final List<HelperCard> helperCards;
-    private SchoolDashboard school;
+    private transient SchoolDashboard school;
 
     /**
      * Initializes the player adding it to a team and associating it to a mage

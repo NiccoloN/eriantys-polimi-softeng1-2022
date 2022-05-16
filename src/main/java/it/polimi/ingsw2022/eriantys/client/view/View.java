@@ -3,9 +3,13 @@ package it.polimi.ingsw2022.eriantys.client.view;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -52,17 +56,22 @@ public interface View {
 
     /**
      * Makes this view start the game, showing the game scenario
-     * @param playerUsernames the username of each player in the game
-     * @param playerTeams the team of each player in the game
+     * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    void startGame(String[] playerUsernames, Team[] playerTeams, Mode gameMode);
+    void startGame(Player[] players, Mode gameMode);
 
     /**
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
-    void applyChange(GameInitChange change);
+    void applyChange(CharacterCardsChange change);
+
+    /**
+     * Applies a given change to the game this view is showing
+     * @param change the change to apply
+     */
+    void applyChange(HelperCardsChange change);
 
     /**
      * Applies a given change to the game this view is showing
@@ -80,13 +89,13 @@ public interface View {
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
-    void applyChange(SchoolDashboardChange change);
+    void applyChange(SchoolChange change);
 
     /**
      * Applies a given change to the game this view is showing
      * @param change the change to apply
      */
-    void applyChange(StudentsBagChange change);
+    void applyChange(PlayerChange change);
 
     /**
      * Applies a given change to the game this view is showing
@@ -99,4 +108,5 @@ public interface View {
      * @param previousMessage the message containing a move request
      */
     void askMoveType(MoveRequestMessage previousMessage);
+
 }

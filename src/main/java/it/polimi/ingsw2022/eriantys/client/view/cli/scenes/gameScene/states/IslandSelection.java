@@ -28,6 +28,7 @@ public class IslandSelection extends GameSceneState {
 
     private int currentSelectedIndex;
     private IslandCLIComponent currentSelected;
+    private final boolean movingStudent;
 
     private final Message requestMessage;
 
@@ -35,11 +36,13 @@ public class IslandSelection extends GameSceneState {
      * Constructs an island selection state
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
+     * @param movingStudent whether this state is being used to move a student or not
      */
-    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
+    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, boolean movingStudent) {
 
         super(cli, scene);
         this.requestMessage = requestMessage;
+        this.movingStudent = movingStudent;
     }
 
     @Override
@@ -55,6 +58,7 @@ public class IslandSelection extends GameSceneState {
     @Override
     public void exit() {
 
+        super.exit();
         currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
         getScene().getHintTextArea().setText("");
         getScene().setPrompt(null);
@@ -62,6 +66,12 @@ public class IslandSelection extends GameSceneState {
 
     @Override
     public void manageInput(Input input) throws IOException {
+
+        if(input.triggersAction(Action.UP) && movingStudent) {
+
+            getScene().setState(new DiningRoomSelection(getCli(), getScene(), this, Action.DOWN));
+            return;
+        }
 
         if(input.triggersAction(Action.DOWN)) {
 

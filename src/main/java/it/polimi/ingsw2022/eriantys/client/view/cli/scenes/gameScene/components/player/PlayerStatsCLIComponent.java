@@ -43,16 +43,16 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
 
         setRow(0, color + "_______ " + RESET);
         setRow(1, color + "       |" + RESET);
-        setRow(2, color + " " + YELLOW + "C" + color + "x" + (coins < 10 ? "0" : "") + coins + "  |" + RESET);
+        setRow(2, color + " " + YELLOW + "C" + RESET + "x" + (coins < 10 ? "0" : "") + coins + color +"  |" + RESET);
         setRow(3, color + "       |" + RESET);
-        setRow(4, color + " " + teamColor + UNDERLINED + "II" + RESET + color + "x" + towers + "  |" + RESET);
+        setRow(4, color + " " + teamColor + UNDERLINED + "II" + RESET + "x" + towers + color + "  |" + RESET);
         setRow(5, color + "       |" + RESET);
         setRow(6, color + " " +
-                  RED + entranceStudents.get(PawnColor.RED) +
-                  GREEN_BRIGHT + entranceStudents.get(PawnColor.GREEN) +
-                  YELLOW + entranceStudents.get(PawnColor.YELLOW) +
-                  BLUE_BRIGHT + entranceStudents.get(PawnColor.BLUE) +
-                  PURPLE_BRIGHT + entranceStudents.get(PawnColor.PINK) +
+                  PawnColor.RED.ansiForegroundColor + entranceStudents.get(PawnColor.RED) +
+                  PawnColor.GREEN.ansiForegroundColor + entranceStudents.get(PawnColor.GREEN) +
+                  PawnColor.YELLOW.ansiForegroundColor + entranceStudents.get(PawnColor.YELLOW) +
+                  PawnColor.BLUE.ansiForegroundColor + entranceStudents.get(PawnColor.BLUE) +
+                  PawnColor.PINK.ansiForegroundColor + entranceStudents.get(PawnColor.PINK) +
                   color + " |" + RESET);
         setRow(7, color + "_______|" + RESET);
     }

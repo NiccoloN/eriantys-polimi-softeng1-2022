@@ -1,10 +1,12 @@
 package it.polimi.ingsw2022.eriantys.server.model.pawns;
 
+import java.io.Serializable;
+
 /**
  * This class represents a colored pawn
  * @author Emanuele Musto
  */
-public class ColoredPawn {
+public class ColoredPawn implements Serializable {
 
     public final PawnColor color;
 
