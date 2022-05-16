@@ -85,12 +85,6 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void applyChange(StudentsBagChange change) {
-
-        //TODO
-    }
-
-    @Override
     public void applyChange(HelperCardsChange change) {
 
         //TODO

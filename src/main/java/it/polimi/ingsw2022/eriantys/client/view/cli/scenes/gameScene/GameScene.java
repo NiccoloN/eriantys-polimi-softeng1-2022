@@ -256,8 +256,6 @@ public class GameScene extends CLIScene {
     public void applyChange(HelperCardsChange change) {
 
         setHelpers(change.getHelperCards());
-        //TODO remove
-        //setState(new ColorSelection(getCli(), this, PawnColor.values()));
     }
 
     /**

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HelperCardsChange implements Change, Serializable {
 
-    private final List<HelperCard> helperCards;
+    private List<HelperCard> helperCards;
 
     public HelperCardsChange() {
         this.helperCards = new ArrayList<>();
@@ -23,6 +23,8 @@ public class HelperCardsChange implements Change, Serializable {
     public void addHelperCard(HelperCard helperCard) {
         this.helperCards.add(helperCard);
     }
+
+    public void addHelperCards(List<HelperCard> helperCards) {this.helperCards = new ArrayList<>(helperCards); };
 
     @Override
     public void apply(View view) {

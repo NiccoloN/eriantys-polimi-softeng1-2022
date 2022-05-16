@@ -31,25 +31,27 @@ public class BasicGameMode implements GameMode {
     @Override
     public void playGame() throws IOException, InterruptedException {
         while (!game.isGameEnding()) {
-            fillCloudIslands();
+            //fillCloudIslands();
             for (Player player : game.getPlayers()) {
-                game.setCurrentPlayer(player);
+                game.setCurrentPlayer(player); // Maybe it's useless
                 chooseHelperCard(player.username);
-                // save helper cards
             }
         }
     }
 
     private void chooseHelperCard(String playerUsername) throws IOException, InterruptedException {
-        server.sendToClient(new MoveRequestMessage(MoveType.CHOOSE_HELPER_CARD), server.getClients().get(playerUsername));
+        Socket clientSocket =  server.getClientSocket(playerUsername);
+        Player currentPlayer = game.getPlayer(playerUsername);
+        server.sendToClient(new MoveRequestMessage(MoveType.CHOOSE_HELPER_CARD), clientSocket);
         synchronized (this) {
             while (performedMove == null) this.wait();
             if (!(performedMove instanceof ChooseHelperCard)) {
                 // TODO: send InvalidMoveMessage
             }
             ChooseHelperCard chooseHelperCard = (ChooseHelperCard) performedMove;
-            List<HelperCard> updatedHelperCards = game.getPlayer(playerUsername).getHelperCards();
-            server.sendToClient(craftHelperCardUpdateMessage(updatedHelperCards), server.getClients().get(playerUsername));
+            currentPlayer.playHelperCard(chooseHelperCard.helperCardIndex);
+            List<HelperCard> updatedHelperCards = currentPlayer.getHelperCards();
+            server.sendToClient(craftHelperCardUpdateMessage(updatedHelperCards), clientSocket);
             performedMove = null;
             notifyAll();
         }

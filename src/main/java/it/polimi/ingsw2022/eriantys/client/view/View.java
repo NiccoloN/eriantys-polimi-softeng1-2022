@@ -6,7 +6,6 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
 
@@ -14,6 +13,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.concurrent.TimeoutException;
@@ -66,12 +66,6 @@ public interface View {
      * @param change the change to apply
      */
     void applyChange(CharacterCardsChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(HelperCardsChange change);
 
     /**
      * Applies a given change to the game this view is showing

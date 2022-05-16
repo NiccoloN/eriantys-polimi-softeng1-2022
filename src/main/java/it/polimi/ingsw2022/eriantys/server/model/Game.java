@@ -42,7 +42,7 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(String[] playerUsernames) {
+    public Game(String[] playerUsernames) throws IOException {
         gameEnding = false;
         players = generatePlayers(playerUsernames);
         board = new Board(players);

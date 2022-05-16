@@ -266,8 +266,8 @@ public class EriantysServer {
         System.out.println("Sent initial update");
     }
 
-    public Map<String, Socket> getClients() {
-        return new HashMap<>(clients);
+    public Socket getClientSocket(String username) {
+        return clients.get(username);
     }
 
     public void setPerformedMove(Move move, String username) throws IOException {
