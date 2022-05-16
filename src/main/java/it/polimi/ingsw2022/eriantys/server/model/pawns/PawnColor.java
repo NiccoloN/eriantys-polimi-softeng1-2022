@@ -1,28 +1,30 @@
 package it.polimi.ingsw2022.eriantys.server.model.pawns;
 
+import it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes;
+
 /**
  * This class represents the five possible colors of the pawns used in the game and the associated names
  * @author Emanuele Musto
  */
 public enum PawnColor {
 
-    YELLOW("gnome", "yellow"),
-    BLUE("unicorn", "blue"),
-    GREEN("frog", "green"),
-    RED("dragon", "red"),
-    PINK("fairy", "pink");
+    YELLOW(AnsiCodes.YELLOW, AnsiCodes.YELLOW_BACKGROUND),
+    BLUE(AnsiCodes.BLUE_BRIGHT, AnsiCodes.BLUE_BACKGROUND_BRIGHT),
+    GREEN(AnsiCodes.GREEN_BRIGHT, AnsiCodes.GREEN_BACKGROUND_BRIGHT),
+    RED(AnsiCodes.RED, AnsiCodes.RED_BACKGROUND),
+    PINK(AnsiCodes.PURPLE_BRIGHT, AnsiCodes.PURPLE_BACKGROUND_BRIGHT);
 
-    public final String name;
-    public final String colorName;
+    public final String ansiForegroundColor;
+    public final String ansiBackgroundColor;
 
     /**
      * Initializes a color
-     * @param name name of the species associated to the color
-     * @param colorName string associated to the color
+     * @param ansiForegroundColor the ansi foreground olor corresponding to this color in the cli
+     * @param ansiBackgroundColor the ansi background olor corresponding to this color in the cli
      */
-    PawnColor(String name, String colorName) {
+    PawnColor(String ansiForegroundColor, String ansiBackgroundColor) {
 
-        this.name = name;
-        this.colorName = colorName;
+        this.ansiForegroundColor = ansiForegroundColor;
+        this.ansiBackgroundColor = ansiBackgroundColor;
     }
 }
