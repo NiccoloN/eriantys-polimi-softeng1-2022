@@ -2,7 +2,6 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,7 @@ public class CloudTile implements Serializable {
     private final List<ColoredPawn> students;
 
     public CloudTile() {
-
-        students = new ArrayList<>(3);
+        this.students = new ArrayList<>(2);
     }
 
     /**

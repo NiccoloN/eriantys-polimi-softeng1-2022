@@ -1,10 +1,15 @@
 package it.polimi.ingsw2022.eriantys.server;
 
+import it.polimi.ingsw2022.eriantys.messages.Move.Move;
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
+import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
+import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
@@ -51,7 +56,7 @@ public class EriantysServer {
     private final Map<Socket, ObjectInputStream> clientInputStreams;
     private GameSettings gameSettings;
     private Game game;
-
+    private GameMode gameMode;
     private boolean running;
 
     private EriantysServer() throws IOException {
@@ -103,6 +108,8 @@ public class EriantysServer {
 
         //initialize game
         createGame();
+        //Start controller
+        gameMode.playGame();
     }
 
     private Socket acceptConnection() throws IOException {
@@ -248,11 +255,24 @@ public class EriantysServer {
 
         String[] playerUsernames = clients.keySet().toArray(new String[0]);
 
-        game = new Game(playerUsernames, gameSettings.gameMode);
+        game = new Game(playerUsernames);
+        gameMode = gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game);
 
         Update[] initialUpdates = createInitialUpdates();
 
+
         for (int n = 0; n < playerUsernames.length; n++)
             sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
+        System.out.println("Sent initial update");
+    }
+
+    public Map<String, Socket> getClients() {
+        return new HashMap<>(clients);
+    }
+
+    public void setPerformedMove(Move move, String username) throws IOException {
+        // set sul controller della move ( avrà synchronized e notify alla fine)
+        gameMode.setPerformedMove(move);
+
     }
 }

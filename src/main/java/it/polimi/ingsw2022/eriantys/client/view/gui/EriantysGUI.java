@@ -2,6 +2,8 @@ package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
@@ -92,6 +94,10 @@ public class EriantysGUI extends Application implements View {
     public void applyChange(HelperCardsChange change) {
 
         //TODO
+    }
+
+    @Override
+    public void askMoveType(MoveRequestMessage requestMessage) {
     }
 
     @Override

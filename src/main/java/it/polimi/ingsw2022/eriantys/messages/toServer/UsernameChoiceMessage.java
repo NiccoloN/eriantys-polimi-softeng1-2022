@@ -15,12 +15,10 @@ import java.net.Socket;
  */
 public class UsernameChoiceMessage extends ToServerMessage {
 
-    public final String username;
 
-    public UsernameChoiceMessage(Message previousMessage, String username) {
+    public UsernameChoiceMessage(Message previousMessage, String clientUsername) {
 
-        super(previousMessage);
-        this.username = username;
+        super(previousMessage, clientUsername);
     }
 
     @Override
@@ -30,12 +28,12 @@ public class UsernameChoiceMessage extends ToServerMessage {
 
         EriantysServer server = EriantysServer.getInstance();
 
-        if(username.length() < 1 || username.length() > 15)
+        if(clientUsername.length() < 1 || clientUsername.length() > 15)
             server.sendToClient(new InvalidUsernameMessage(true, false), responseSocket);
 
-        else if(server.isAvailableUsername(username)) {
+        else if(server.isAvailableUsername(clientUsername)) {
 
-            server.addClient(responseSocket, username);
+            server.addClient(responseSocket, clientUsername);
             server.sendToClient(new AckMessage(), responseSocket);
         }
 

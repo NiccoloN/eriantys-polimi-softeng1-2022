@@ -14,10 +14,12 @@ import java.net.Socket;
 public abstract class ToServerMessage extends Message {
 
     public final Message previousMessage;
+    public final String clientUsername;
 
-    public ToServerMessage(Message previousMessage) {
+    public ToServerMessage(Message previousMessage, String clientUsername) {
 
         this.previousMessage = previousMessage;
+        this.clientUsername = clientUsername;
     }
 
     public void manageAndReply(Socket responseSocket) throws IOException {

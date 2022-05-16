@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents the game instance.
@@ -30,7 +31,6 @@ public class Game {
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
     public static final int MIN_NUMBER_OF_PLAYERS = 2;
 
-    private final GameMode gameMode;
     private final Board board;
     private final List<ColoredPawn> students;
     private final StudentsBag studentsBag;
@@ -42,8 +42,7 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(String[] playerUsernames, Mode mode) throws IOException {
-
+    public Game(String[] playerUsernames) {
         gameEnding = false;
         players = generatePlayers(playerUsernames);
         board = new Board(players);
@@ -51,7 +50,6 @@ public class Game {
         professors = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
         studentsBag = new StudentsBag();
         characters = new ArrayList<>(3);
-        gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
 
         placeFirstStudents();
         fillStudentsBag();
@@ -185,8 +183,8 @@ public class Game {
         return professors.get(index);
     }
 
-    public Player getPlayer(int index) {
-        return players.get(index);
+    public Player getPlayer(String username) {
+        return players.stream().filter(player -> player.username == username).findFirst().get();
     }
 
     public Player[] getPlayers() {

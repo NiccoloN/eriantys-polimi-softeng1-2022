@@ -55,6 +55,7 @@ public class EnterUsername extends MenuSceneState {
 
             EriantysClient client = EriantysClient.getInstance();
             client.sendToServer(new UsernameChoiceMessage(requestMessage, username));
+            client.setUsername(username);
 
             //TODO client.sendToServer(new AbortMessage(requestMessage));
         }

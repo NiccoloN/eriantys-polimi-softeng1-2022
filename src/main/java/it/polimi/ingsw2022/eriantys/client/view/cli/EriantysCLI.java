@@ -3,18 +3,28 @@ package it.polimi.ingsw2022.eriantys.client.view.cli;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CharacterSelection;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CloudSelection;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.HelperSelection;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.IslandSelection;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.changes.GameInitChange;
+
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -338,5 +348,23 @@ public class EriantysCLI implements View {
     public void applyChange(StudentsBagChange change) {
 
 
+    }
+
+    @Override
+    public void askMoveType(MoveRequestMessage requestMessage){
+        if(!(currentScene instanceof GameScene))
+            throw new RuntimeException("The current scene must be a MenuScene to ask for a username");
+        switch(requestMessage.requestedMove) {
+            case CHOOSE_HELPER_CARD:
+                currentScene.setState(new HelperSelection(this, gameScene, requestMessage));
+            case CHOOSE_CLOUD:
+                currentScene.setState(new CloudSelection(this, gameScene, requestMessage));
+            case MOVE_MOTHER_NATURE:
+                currentScene.setState(new IslandSelection(this, gameScene, requestMessage));
+            case CHOOSE_CHARACTER_CARD:
+                //do nothing
+            case MOVE_STUDENT:
+                //TODO
+        }
     }
 }

@@ -1,10 +1,18 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent;
+import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.Move.ChooseCloud;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
+
+import java.io.IOException;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -17,14 +25,17 @@ public class CloudSelection extends GameSceneState {
     private int currentSelectedIndex;
     private CloudCLIComponent currentSelected;
 
+    private final Message requestMessage;
+
     /**
      * Constructs a  cloud selection state
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public CloudSelection(EriantysCLI cli, GameScene scene) {
+    public CloudSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
         super(cli, scene);
+        this.requestMessage = requestMessage;
     }
 
     @Override
@@ -47,7 +58,7 @@ public class CloudSelection extends GameSceneState {
     }
 
     @Override
-    public void manageInput(Input input) {
+    public void manageInput(Input input) throws IOException {
 
         if(input.triggersAction(Action.DOWN)) {
 
@@ -57,6 +68,14 @@ public class CloudSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
         else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+
+        else if(input.triggersAction(Action.SELECT)){
+
+            EriantysClient client = EriantysClient.getInstance();
+            client.sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud
+                    (MoveType.CHOOSE_CLOUD, currentSelected.getIndex()), client.getUsername()));
+            return;
+        }
 
         if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfClouds() - 1;
         else if (currentSelectedIndex > getScene().getNumberOfClouds() - 1) currentSelectedIndex = 0;

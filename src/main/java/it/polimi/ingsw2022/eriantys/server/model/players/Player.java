@@ -76,16 +76,21 @@ public class Player implements Serializable {
      * Plays a helper card. The played card will be removed from the hand of the player and stored in currentHelper
      * @param index the index of the card to play
      * @throws NoSuchElementException if player's hand does not contain a card of the given index
+     * @return played card
      */
-    public void playHelperCard(int index) {
-
+    public HelperCard playHelperCard(int index) {
         currentHelper = helperCards.stream().filter((x) -> x.index == index).findAny().orElseThrow();
         helperCards.remove(currentHelper);
+        return currentHelper;
     }
 
     public HelperCard getHelperCard(int index) {
 
         return helperCards.get(index);
+    }
+
+    public List<HelperCard> getHelperCards() {
+        return new ArrayList<>(helperCards);
     }
 
     /**
