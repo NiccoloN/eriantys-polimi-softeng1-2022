@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,11 @@ import java.util.List;
  */
 public class CloudTile {
 
-    private List<ColoredPawn> students;
+    private final List<ColoredPawn> students;
+
+    public CloudTile() {
+        this.students = new ArrayList<>(2);
+    }
 
     /**
      * Places a colored pawn onto this cloud. Only pawns that represent students should be placed on a cloud

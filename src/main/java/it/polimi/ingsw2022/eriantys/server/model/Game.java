@@ -12,9 +12,12 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents the game instance.
@@ -27,7 +30,6 @@ public class Game {
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
     public static final int MIN_NUMBER_OF_PLAYERS = 2;
 
-    private GameMode gameMode;
     private final Board board;
     private final List<ColoredPawn> students;
     private final StudentsBag studentsBag;
@@ -39,7 +41,7 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(String[] playerUsernames, Mode mode) {
+    public Game(String[] playerUsernames) {
         gameEnding = false;
         students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         players = generatePlayers(playerUsernames);
@@ -47,7 +49,6 @@ public class Game {
         studentsBag = new StudentsBag();
         board = new Board(players);
         characters = new ArrayList<>(3);
-        gameMode = mode == Mode.BASIC ? new BasicGameMode(this) : new ExpertGameMode(this);
 
         placeFirstStudents();
         for(ColoredPawn student : students) studentsBag.addStudent(student);
@@ -160,8 +161,8 @@ public class Game {
         return professors.get(index);
     }
 
-    public Player getPlayer(int index) {
-        return players.get(index);
+    public Player getPlayer(String username) {
+        return players.stream().filter(player -> player.username == username).findFirst().get();
     }
 
     public Player[] getPlayers() {

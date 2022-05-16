@@ -6,7 +6,7 @@ package it.polimi.ingsw2022.eriantys.messages.Move;
  */
 public class ChooseHelperCard extends Move{
 
-    int helperCardIndex;
+    public final int helperCardIndex;
 
     public ChooseHelperCard(MoveType moveType, int helperCardIndex){
 
