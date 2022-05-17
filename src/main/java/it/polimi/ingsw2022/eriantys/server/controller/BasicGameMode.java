@@ -4,17 +4,19 @@ import it.polimi.ingsw2022.eriantys.messages.Move.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.Move.Move;
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.HelperCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ public class BasicGameMode implements GameMode {
 
     private Game game;
     private EriantysServer server = EriantysServer.getInstance();
-    private Move performedMove;
+    private PerformedMoveMessage performedMoveMessage;
 
     public BasicGameMode(Game game) {
         this.game = game;
@@ -56,15 +58,15 @@ public class BasicGameMode implements GameMode {
         Player currentPlayer = game.getPlayer(playerUsername);
         server.sendToClient(new MoveRequestMessage(MoveType.CHOOSE_HELPER_CARD), clientSocket);
         synchronized (this) {
-            while (performedMove == null) this.wait();
-            if (!(performedMove instanceof ChooseHelperCard)) {
+            while (performedMoveMessage == null) this.wait();
+            if (!(performedMoveMessage.move instanceof ChooseHelperCard)) {
                 // TODO: send InvalidMoveMessage
             }
-            ChooseHelperCard chooseHelperCard = (ChooseHelperCard) performedMove;
+            ChooseHelperCard chooseHelperCard = (ChooseHelperCard) performedMoveMessage.move;
             currentPlayer.playHelperCard(chooseHelperCard.helperCardIndex);
             List<HelperCard> updatedHelperCards = currentPlayer.getHelperCards();
             server.sendToClient(craftHelperCardUpdateMessage(updatedHelperCards), clientSocket);
-            performedMove = null;
+            performedMoveMessage = null;
             notifyAll();
         }
     }
@@ -74,26 +76,39 @@ public class BasicGameMode implements GameMode {
         Player currentPlayer = game.getCurrentPlayer();
         server.sendToClient(new MoveRequestMessage(MoveType.MOVE_STUDENT), clientSocket);
         synchronized (this) {
-            while (performedMove == null) this.wait();
-            if (!(performedMove instanceof MoveStudent)) {
-                // TODO: send InvalidMoveMessage
+            while (performedMoveMessage == null) this.wait();
+            if (!(performedMoveMessage.move instanceof MoveStudent)) {
+                server.sendToClient(new InvalidMoveMessage(
+                        performedMoveMessage,
+                        performedMoveMessage.previousMessage,
+                        "Error, required move is a " + MoveType.MOVE_STUDENT), clientSocket);
             }
-            MoveStudent moveStudent = (MoveStudent) performedMove;
-            ColoredPawn movedStudent = game.getBoard().getSchool(playerIndex).removeFromEntrance(moveStudent.studentColor);
-            if (moveStudent.toDining) {
-                game.getBoard().getSchool(playerIndex).addToTable(movedStudent);
-                server.sendToClient(craftSchoolDashboardUpdate(playerIndex), clientSocket);
-            } else if (moveStudent.toIsland) {
+            MoveStudent moveStudent = (MoveStudent) performedMoveMessage.move;
+            ColoredPawn movedStudent = null;
+            try{movedStudent = currentPlayer.getSchool().removeFromEntrance(moveStudent.studentColor); }
+            catch(Exception e){
+                server.sendToClient(new InvalidMoveMessage(
+                        performedMoveMessage,
+                        performedMoveMessage.previousMessage,
+                        "Student is not available in school dashboard"), clientSocket);
+            }
+            Update update = new Update();
+            if (moveStudent.toDining) currentPlayer.getSchool().addToTable(movedStudent);
+            SchoolChange schoolChange = new SchoolChange(currentPlayer.getSchool());
+            update.addChange(schoolChange);
+            if (moveStudent.toIsland) {
                 game.getBoard().getIsland(moveStudent.islandIndex).addStudent(movedStudent);
-                server.sendToClient(craftIslandUpdate(moveStudent.islandIndex), clientSocket);
+                IslandChange islandChange = new IslandChange(moveStudent.islandIndex, game.getBoard().getIsland(moveStudent.islandIndex));
+                update.addChange(islandChange);
             }
-            performedMove = null;
+            server.sendToClient(new UpdateMessage(update), clientSocket);
+            performedMoveMessage = null;
             notifyAll();
         }
     }
 
-    public synchronized void setPerformedMove(Move performedMove) {
-        this.performedMove = performedMove;
+    public synchronized void setPerformedMoveMessage(PerformedMoveMessage performedMoveMessage) {
+        this.performedMoveMessage = performedMoveMessage;
         notifyAll();
     }
 
@@ -117,20 +132,5 @@ public class BasicGameMode implements GameMode {
         return new UpdateMessage(helperCardUpdate);
     }
 
-    private UpdateMessage craftIslandUpdate(int islandIndex) {
-        Update islandUpdate = new Update();
-        IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
-        islandUpdate.addChange(islandChange);
-        System.out.println("Crafted island update");
-        return new UpdateMessage(islandUpdate);
-    };
-
-    private UpdateMessage craftSchoolDashboardUpdate(int playerIndex) {
-        Update schoolUpdate = new Update();
-        SchoolChange schoolChange = new SchoolChange(game.getBoard().getSchool(playerIndex));
-        schoolUpdate.addChange(schoolChange);
-        System.out.println("Crafted school dashboard update");
-        return new UpdateMessage(schoolUpdate);
-    };
 
 }

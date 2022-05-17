@@ -15,7 +15,7 @@ import java.net.Socket;
  */
 public class PerformedMoveMessage extends ToServerMessage{
 
-    private final Move move;
+    public final Move move;
 
     static {
 
@@ -35,6 +35,6 @@ public class PerformedMoveMessage extends ToServerMessage{
 
         EriantysServer server = EriantysServer.getInstance();
 
-        server.setPerformedMove(move, clientUsername);
+        server.setPerformedMoveMessage(this);
     }
 }

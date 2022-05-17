@@ -81,11 +81,10 @@ public class SchoolDashboard implements Serializable {
     }
 
     public ColoredPawn removeFromEntrance(PawnColor color) {
-        try {
-            return entranceStudents.stream().filter((student) -> student.color == color).findFirst().get();
-        } catch (NullPointerException e) {
-            throw new RuntimeException("The selected color is not in the student entrance");
-        }
+
+        ColoredPawn student = entranceStudents.stream().filter((x) -> x.color == color).findFirst().orElseThrow();
+        entranceStudents.remove(student);
+        return student;
     }
 
     /**

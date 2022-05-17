@@ -39,9 +39,9 @@ public class CharacterSelection extends GameSceneState {
      * @param goBackAction the action that makes the game scene go back to the previous state if triggered
      */
 
-    public CharacterSelection(EriantysCLI cli, GameScene scene, GameSceneState prevState, Action goBackAction) {
+    public CharacterSelection(EriantysCLI cli, GameScene scene, Message requestMessage, GameSceneState prevState, Action goBackAction) {
 
-        super(cli, scene);
+        super(cli, scene, requestMessage);
 
         if(goBackAction == Action.RIGHT || goBackAction == Action.LEFT || goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be RIGHT, LEFT or SELECT, " +

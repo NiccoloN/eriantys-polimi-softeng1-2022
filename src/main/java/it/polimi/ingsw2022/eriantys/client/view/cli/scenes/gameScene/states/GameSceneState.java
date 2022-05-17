@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
+import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN;
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN_BRIGHT;
@@ -15,15 +16,18 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN_BRIGH
 public abstract class GameSceneState extends CLISceneState {
 
     protected BlinkingCLIComponent prompt;
+    public final Message requestMessage;
 
     /**
      * Constructs a game scene state
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public GameSceneState(EriantysCLI cli, GameScene scene) {
+    public GameSceneState(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
         super(cli, scene);
+        this.requestMessage = requestMessage;
+
         prompt = new BlinkingCLIComponent(1, new String[] {"V"});
         prompt.setFirstColor(GREEN_BRIGHT);
         prompt.setSecondColor(GREEN);

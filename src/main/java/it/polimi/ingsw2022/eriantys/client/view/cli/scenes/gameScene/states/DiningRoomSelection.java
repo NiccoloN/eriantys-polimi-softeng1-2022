@@ -1,9 +1,15 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -20,14 +26,17 @@ public class DiningRoomSelection extends GameSceneState {
     private final GameSceneState prevState;
     private final Action goBackAction;
 
+    private PawnColor studentColor;
+
     /**
      * Constructs a dining room selection state
      * @param cli   the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public DiningRoomSelection(EriantysCLI cli, GameScene scene, GameSceneState prevState, Action goBackAction) {
+    public DiningRoomSelection(EriantysCLI cli, GameScene scene, Message requestMessage, PawnColor studentColor, GameSceneState prevState, Action goBackAction) {
 
-        super(cli, scene);
+        super(cli, scene, requestMessage);
+        this.studentColor = studentColor;
 
         if(goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be SELECT, " +
@@ -58,6 +67,13 @@ public class DiningRoomSelection extends GameSceneState {
 
             getScene().setState(prevState);
             return;
+        }
+
+        if(input.triggersAction(Action.SELECT)){
+
+            EriantysClient client = EriantysClient.getInstance();
+            client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent
+                    (MoveType.MOVE_STUDENT, true, false, -1, studentColor), client.getUsername()));
         }
     }
 }

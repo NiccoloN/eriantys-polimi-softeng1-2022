@@ -140,7 +140,6 @@ public class EriantysClient {
     private Optional<ToClientMessage> readMessage() throws IOException, ClassNotFoundException {
 
         try {
-
             ToClientMessage message = (ToClientMessage) serverInputStream.readObject();
             return Optional.of(message);
         }
@@ -158,6 +157,7 @@ public class EriantysClient {
     public void sendToServer(Message message) throws IOException {
 
         serverOutputStream.writeObject(message);
+        log("Message sent: " + message.getClass().getSimpleName());
     }
 
     /**

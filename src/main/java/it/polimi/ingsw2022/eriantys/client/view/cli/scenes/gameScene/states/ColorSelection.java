@@ -3,9 +3,9 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.ColorCLIComponent;
+import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN;
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
@@ -17,18 +17,17 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 public class ColorSelection extends GameSceneState {
 
     private int currentSelectedIndex;
-    private BasicCLIComponent currentSelected;
+    private ColorCLIComponent currentSelected;
 
     /**
      * Constructs a color selection state
      * @param cli   the cli to associate to this state
      * @param scene the game scene to associate to this state
-     * @param colors the color to choose from
      */
-    public ColorSelection(EriantysCLI cli, GameScene scene, PawnColor[] colors) {
+    public ColorSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
-        super(cli, scene);
-        scene.setColors(colors);
+        super(cli, scene, requestMessage);
+        scene.setColors(scene.getPlayer().getEntranceColors());
     }
 
     @Override
@@ -57,8 +56,13 @@ public class ColorSelection extends GameSceneState {
 
         if(input.triggersAction(Action.UP)) {
 
-            getScene().setState(new CharacterSelection(getCli(), getScene(), this, Action.DOWN));
+            getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;
+        }
+
+        if(input.triggersAction(Action.SELECT)){
+
+            getScene().setState(new IslandSelection(getCli(), getScene(), requestMessage, currentSelected.pawnColor));
         }
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;

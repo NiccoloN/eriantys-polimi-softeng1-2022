@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
@@ -12,7 +13,6 @@ import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -167,7 +167,11 @@ public class EriantysServer {
     public void sendToClient(Message message, Socket clientSocket) throws IOException {
 
         ObjectOutputStream outputStream = clientOutputStreams.get(clientSocket);
-        synchronized(outputStream) { outputStream.writeObject(message); }
+        synchronized(outputStream) {
+            outputStream.writeObject(message);
+        }
+
+        System.out.println("Message sent: " + message.getClass().getSimpleName());
     }
 
     private Optional<ToServerMessage> readMessageFromClient(Socket clientSocket) throws IOException, ClassNotFoundException {
@@ -270,9 +274,9 @@ public class EriantysServer {
         return clients.get(username);
     }
 
-    public void setPerformedMove(Move move, String username) throws IOException {
+    public void setPerformedMoveMessage(PerformedMoveMessage moveMessage) {
         // set sul controller della move ( avrà synchronized e notify alla fine)
-        gameMode.setPerformedMove(move);
+        gameMode.setPerformedMoveMessage(moveMessage);
 
     }
 }

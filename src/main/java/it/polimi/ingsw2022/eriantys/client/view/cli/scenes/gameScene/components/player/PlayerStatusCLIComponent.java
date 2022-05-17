@@ -6,6 +6,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
@@ -200,5 +202,15 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     public void setTowers(int towers) {
 
         statsCLIComponent.setTowers(towers);
+    }
+
+    public ArrayList<PawnColor> getEntranceColors(){
+
+        return statsCLIComponent.getEntranceColors();
+    }
+
+    public Map<PawnColor, Integer> getEntranceStudents() {
+
+        return statsCLIComponent.getEntranceStudents();
     }
 }

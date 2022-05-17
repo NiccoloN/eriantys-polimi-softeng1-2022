@@ -20,6 +20,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
@@ -354,13 +355,13 @@ public class EriantysCLI implements View {
                 currentScene.setState(new CloudSelection(this, gameScene, requestMessage));
                 break;
             case MOVE_MOTHER_NATURE:
-                currentScene.setState(new IslandSelection(this, gameScene, requestMessage, false));
+                currentScene.setState(new IslandSelection(this, gameScene, requestMessage));
                 break;
             case CHOOSE_CHARACTER_CARD:
                 //do nothing
                 break;
             case MOVE_STUDENT:
-                //TODO
+                currentScene.setState(new ColorSelection(this, gameScene, requestMessage));
                 break;
             default:
                 throw new RuntimeException("Invalid move");

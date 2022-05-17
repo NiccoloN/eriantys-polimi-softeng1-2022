@@ -1,10 +1,13 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient.changes;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class SchoolChange implements Change, Serializable {
 
@@ -13,6 +16,8 @@ public class SchoolChange implements Change, Serializable {
     public SchoolChange(SchoolDashboard schoolDashboard) {
 
         this.schoolDashboard = schoolDashboard;
+        for (ColoredPawn color: this.schoolDashboard.getEntranceStudents())
+            System.out.println(color.color.toString());
     }
 
     public String getPlayerUsername() {
@@ -42,7 +47,6 @@ public class SchoolChange implements Change, Serializable {
 
     @Override
     public void apply(View view) {
-
         view.applyChange(this);
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
+import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator;
@@ -46,6 +47,7 @@ public class Game {
 
         placeFirstStudents();
         fillStudentsBag();
+        fillSchools();
         chooseCharacters();
         assignHelpers();
     }
@@ -78,6 +80,15 @@ public class Game {
 
         for(ColoredPawn student : students) studentsBag.addStudent(student);
         students.clear();
+    }
+
+    private void fillSchools() {
+
+        for (Player player : players) {
+            
+            SchoolDashboard school = player.getSchool();
+            for (int n = 0; n < 7; n++) school.addToEntrance(studentsBag.extractRandomStudent());
+        }
     }
 
     private void chooseCharacters() throws IOException {

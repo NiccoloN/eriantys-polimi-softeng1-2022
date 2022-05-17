@@ -118,9 +118,4 @@ public class Board {
 
         return clouds.get(index);
     }
-
-    public SchoolDashboard getSchool(int index) {
-
-        return schools.get(index);
-    }
 }
