@@ -1,8 +1,4 @@
 package it.polimi.ingsw2022.eriantys.server.model;
-import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -15,10 +11,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class represents the game instance.
@@ -157,6 +150,10 @@ public class Game {
             players.add(new Player(playerUsernames[playerNumber], team, mageNames[playerNumber]));
         }
         return players;
+    }
+
+    public void reorderPlayersBasedOnHelperCard() {
+        players.sort((p1, p2) -> p1.comparePriorityTo(p2));
     }
 
     public void calculatePoints() {
