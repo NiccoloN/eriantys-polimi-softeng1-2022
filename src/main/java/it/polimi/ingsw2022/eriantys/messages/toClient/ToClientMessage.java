@@ -10,5 +10,6 @@ import java.io.IOException;
  */
 public abstract class ToClientMessage extends Message {
 
+    @Override
     public abstract void manageAndReply() throws IOException;
 }

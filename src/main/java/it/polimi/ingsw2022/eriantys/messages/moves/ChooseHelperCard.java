@@ -27,14 +27,13 @@ public class ChooseHelperCard extends Move {
     @Override
     public void apply(Game game, String playerUsername) {
 
-        currentPlayer = game.getPlayer(playerUsername);
-        currentPlayer.playHelperCard(helperCardIndex);
+        game.getPlayer(playerUsername).playHelperCard(helperCardIndex);
     }
 
     @Override
-    public Update getUpdate(Game game) {
+    public Update getUpdate(Game game, String playerUsername) {
 
-        List<HelperCard> updatedHelperCards = currentPlayer.getHelperCards();
+        List<HelperCard> updatedHelperCards = game.getPlayer(playerUsername).getHelperCards();
         Update helperCardUpdate = new Update();
         HelperCardsChange helperCardsChange = new HelperCardsChange();
         helperCardsChange.addHelperCards(updatedHelperCards);

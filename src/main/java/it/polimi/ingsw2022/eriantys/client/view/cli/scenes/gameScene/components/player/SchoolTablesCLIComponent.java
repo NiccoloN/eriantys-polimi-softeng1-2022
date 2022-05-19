@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
@@ -13,10 +14,10 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 class SchoolTablesCLIComponent extends BasicCLIComponent {
 
     private static final int NICKNAME_MAX_CHARS = 15;
-    private static final int TABLE_LENGTH = 21;
 
     private String color;
     private String nickname;
+    private Mode gameMode;
     private final Map<PawnColor, Boolean> professors;
     private final Map<PawnColor, Integer> tableStudents;
 
@@ -25,13 +26,15 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
      * @param nickname the nickname to associate to this component
      * @throws InvalidParameterException if the given nickname is not valid
      */
-    SchoolTablesCLIComponent(String nickname) {
+    SchoolTablesCLIComponent(String nickname, Mode gameMode) {
 
         super(33, 8);
 
         color = PlayerStatusCLIComponent.PLAYER_STATUS_DEFAULT_COLOR;
 
         setNickname(nickname);
+
+        this.gameMode = gameMode;
 
         professors = new HashMap<>(5);
         for(PawnColor color : PawnColor.values()) professors.put(color, false);
@@ -65,7 +68,7 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
             if ((n + 1) % 3 == 0) {
 
                 row.append(YELLOW).append(UNDERLINED);
-                if (n >= students) row.append("C");
+                if (gameMode == Mode.EXPERT && n >= students) row.append("C");
                 else row.append("_");
             }
             else row.append("_");

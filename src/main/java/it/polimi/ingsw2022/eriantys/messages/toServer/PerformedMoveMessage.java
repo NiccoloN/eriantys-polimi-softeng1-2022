@@ -29,12 +29,9 @@ public class PerformedMoveMessage extends ToServerMessage{
     }
 
     @Override
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    public void manageAndReply() throws IOException {
 
-        super.manageAndReply(responseSocket);
-
-        EriantysServer server = EriantysServer.getInstance();
-
-        server.setPerformedMoveMessage(this);
+        super.manageAndReply();
+        EriantysServer.getInstance().setPerformedMoveMessage(this);
     }
 }

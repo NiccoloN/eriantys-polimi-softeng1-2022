@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @author Emanuele Musto
  */
 public abstract class Move implements Serializable {
+
     public final MoveType moveType;
-    protected Player currentPlayer;
 
     public Move(MoveType moveType){
         this.moveType = moveType;
@@ -20,5 +20,5 @@ public abstract class Move implements Serializable {
 
     public abstract void apply(Game game, String playerUsername);
 
-    public abstract Update getUpdate(Game game);
+    public abstract Update getUpdate(Game game, String playerUsername);
 }

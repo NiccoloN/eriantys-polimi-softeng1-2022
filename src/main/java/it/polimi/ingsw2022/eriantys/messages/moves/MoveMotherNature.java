@@ -22,7 +22,7 @@ public class MoveMotherNature extends Move {
     }
 
     @Override
-    public Update getUpdate(Game game) {
+    public Update getUpdate(Game game, String playerUsername) {
         return null;
     }
 }

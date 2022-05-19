@@ -23,13 +23,12 @@ public abstract class ToServerMessage extends Message {
         clientUsername = EriantysClient.getInstance().getUsername();
     }
 
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    @Override
+    public void manageAndReply() throws IOException {
 
         EriantysServer server = EriantysServer.getInstance();
 
-        if(previousMessage != null) {
-
-            if(!previousMessage.isValidResponse(this)) server.sendToClient(new InvalidResponseMessage(this, previousMessage), responseSocket);
-        }
+        if(previousMessage != null && !previousMessage.isValidResponse(this))
+                server.sendToClient(new InvalidResponseMessage(this, previousMessage), clientUsername);
     }
 }

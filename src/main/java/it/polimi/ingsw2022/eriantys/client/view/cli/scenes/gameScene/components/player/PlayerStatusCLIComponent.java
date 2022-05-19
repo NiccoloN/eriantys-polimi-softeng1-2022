@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
@@ -35,11 +36,11 @@ public class PlayerStatusCLIComponent implements CLIComponent {
      * @throws InvalidParameterException if the given nickname is invalid
      * @throws InvalidParameterException if the given team color is not an ansi sequence
      */
-    public PlayerStatusCLIComponent(String nickname, String teamAnsiColor, boolean helperLeft) {
+    public PlayerStatusCLIComponent(String nickname, String teamAnsiColor, boolean helperLeft, Mode gameMode) {
 
         this.helperLeft = helperLeft;
-        tablesCLIComponent = new SchoolTablesCLIComponent(nickname);
-        statsCLIComponent = new PlayerStatsCLIComponent(teamAnsiColor);
+        tablesCLIComponent = new SchoolTablesCLIComponent(nickname, gameMode);
+        statsCLIComponent = new PlayerStatsCLIComponent(teamAnsiColor, gameMode);
         lastHelperCLIComponent = new HelperCardCLIComponent(1, 1, 1);
         lastHelperCLIComponent.setHidden(true);
         setPosition(0, 0);

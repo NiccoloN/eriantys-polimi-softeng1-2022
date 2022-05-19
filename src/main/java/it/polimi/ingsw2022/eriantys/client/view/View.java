@@ -3,12 +3,7 @@ package it.polimi.ingsw2022.eriantys.client.view;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-
-import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
-
-import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
@@ -70,5 +65,4 @@ public interface View {
      * @param previousMessage the message containing a move request
      */
     void askMove(MoveRequestMessage previousMessage);
-
 }

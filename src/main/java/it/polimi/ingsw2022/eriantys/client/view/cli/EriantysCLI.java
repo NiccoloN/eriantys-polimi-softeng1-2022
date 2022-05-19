@@ -302,7 +302,6 @@ public class EriantysCLI implements View {
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
-
     @Override
     public void askMove(MoveRequestMessage requestMessage) {
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -21,6 +22,7 @@ public class MoveStudent extends Move {
 
 
     public MoveStudent(boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor) {
+
         super(MoveType.MOVE_STUDENT);
         this.toDining = toDining;
         this.toIsland = toIsland;
@@ -31,17 +33,19 @@ public class MoveStudent extends Move {
     @Override
     public void apply(Game game, String playerUsername) {
 
-        movedStudent = currentPlayer.getSchool().removeFromEntrance(studentColor);
+        movedStudent = game.getPlayer(playerUsername).getSchool().removeFromEntrance(studentColor);
     }
 
     @Override
-    public Update getUpdate(Game game) {
+    public Update getUpdate(Game game, String playerUsername) {
 
         Update update = new Update();
 
         if (toDining) {
-            currentPlayer.getSchool().addToTable(movedStudent);
-            SchoolChange schoolChange = new SchoolChange(currentPlayer.getSchool());
+
+            SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
+            school.addToTable(movedStudent);
+            SchoolChange schoolChange = new SchoolChange(school);
             update.addChange(schoolChange);
         }
 

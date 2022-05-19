@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.lang.reflect.Array;
@@ -17,6 +18,7 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
 
     private String color;
     private final String teamColor;
+    private final Mode gameMode;
     private int coins, towers;
     private final Map<PawnColor, Integer> entranceStudents;
 
@@ -24,7 +26,7 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
      * Constructs a player stats cli component with the given team color
      * @param teamColor the team color to associate to this component
      */
-    PlayerStatsCLIComponent(String teamColor) {
+    PlayerStatsCLIComponent(String teamColor, Mode gameMode) {
 
         super(8, 8);
 
@@ -32,6 +34,8 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
 
         if(!isAnsiSequence(teamColor)) throw new InvalidParameterException("TeamColor is not an ansi sequence");
         this.teamColor = teamColor;
+
+        this.gameMode = gameMode;
 
         coins = 1;
         towers = 0;
@@ -46,7 +50,7 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
 
         setRow(0, color + "_______ " + RESET);
         setRow(1, color + "       |" + RESET);
-        setRow(2, color + " " + YELLOW + "C" + RESET + "x" + (coins < 10 ? "0" : "") + coins + color +"  |" + RESET);
+        setRow(2, color + " " + (gameMode == Mode.EXPERT ? (YELLOW + "C" + RESET + "x" + (coins < 10 ? "0" : "") + coins + color) : "    ") + "  |" + RESET);
         setRow(3, color + "       |" + RESET);
         setRow(4, color + " " + teamColor + UNDERLINED + "II" + RESET + "x" + towers + color + "  |" + RESET);
         setRow(5, color + "       |" + RESET);

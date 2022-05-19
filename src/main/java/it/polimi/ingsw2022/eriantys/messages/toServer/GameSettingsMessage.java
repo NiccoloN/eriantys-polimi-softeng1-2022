@@ -28,16 +28,16 @@ public class GameSettingsMessage extends ToServerMessage {
     }
 
     @Override
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    public void manageAndReply() throws IOException {
 
-        super.manageAndReply(responseSocket);
+        super.manageAndReply();
 
         EriantysServer server = EriantysServer.getInstance();
         if (gameSettings.isValid()) {
 
             server.addGameSettings(this.gameSettings);
-            server.sendToClient(new AckMessage(), responseSocket);
+            server.sendToClient(new AckMessage(), clientUsername);
         }
-        else server.sendToClient(new InvalidGameSettingsMessage(), responseSocket);
+        else server.sendToClient(new InvalidGameSettingsMessage(), clientUsername);
     }
 }

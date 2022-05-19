@@ -6,26 +6,20 @@ import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
-import it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
-import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class BasicGameMode implements GameMode {
 
-    private Game game;
-    private EriantysServer server = EriantysServer.getInstance();
+    private final Game game;
+    private final EriantysServer server = EriantysServer.getInstance();
     private PerformedMoveMessage performedMoveMessage;
 
     public BasicGameMode(Game game) {
@@ -60,10 +54,7 @@ public class BasicGameMode implements GameMode {
 
     private void chooseHelperCard(String playerUsername) throws IOException, InterruptedException {
 
-        Socket clientSocket =  server.getClientSocket(playerUsername);
-        Player currentPlayer = game.getPlayer(playerUsername);
-        server.sendToClient(new MoveRequestMessage(MoveType.CHOOSE_HELPER_CARD), clientSocket);
-
+        server.sendToClient(new MoveRequestMessage(MoveType.CHOOSE_HELPER_CARD), playerUsername);
         synchronized (this) {
             while (performedMoveMessage == null) this.wait();
             if (!(performedMoveMessage.move instanceof ChooseHelperCard)) {
@@ -75,7 +66,7 @@ public class BasicGameMode implements GameMode {
                 //TODO : send InvalidMoveMessage
             }
 
-            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game)));
+            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;
             notifyAll();
         }
@@ -83,9 +74,7 @@ public class BasicGameMode implements GameMode {
 
     private void chooseAndMoveStudent(String playerUsername) throws IOException, InterruptedException {
 
-        Socket clientSocket = server.getClientSocket(playerUsername);
-        Player currentPlayer = game.getCurrentPlayer();
-        server.sendToClient(new MoveRequestMessage(MoveType.MOVE_STUDENT), clientSocket);
+        server.sendToClient(new MoveRequestMessage(MoveType.MOVE_STUDENT), playerUsername);
 
         synchronized (this) {
 
@@ -95,18 +84,20 @@ public class BasicGameMode implements GameMode {
                 server.sendToClient(new InvalidMoveMessage(
                         performedMoveMessage,
                         performedMoveMessage.previousMessage,
-                        "Error, required move is a " + MoveType.MOVE_STUDENT), clientSocket);
+                        "Error, required move is a " + MoveType.MOVE_STUDENT), playerUsername);
             }
 
             try{ performedMoveMessage.move.apply(game, playerUsername); }
-            catch(Exception e){
+            catch(Exception e) {
+
+                e.printStackTrace();
                 server.sendToClient(new InvalidMoveMessage(
                         performedMoveMessage,
                         performedMoveMessage.previousMessage,
-                        "Student is not available in school dashboard"), clientSocket);
+                        "Student is not available in school dashboard"), playerUsername);
             }
 
-            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game)));
+            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;
             notifyAll();
         }

@@ -11,7 +11,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
@@ -19,7 +18,6 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -111,7 +109,7 @@ public class GameScene extends CLIScene {
 
         //build player dashboard components
         this.players = new ArrayList<>(players.length);
-        for (int n = 0; n < players.length; n++) this.players.add(new PlayerStatusCLIComponent(players[n].username, players[n].team.ansiColor, n % 2 != 0));
+        for (int n = 0; n < players.length; n++) this.players.add(new PlayerStatusCLIComponent(players[n].username, players[n].team.ansiColor, n % 2 != 0, gameMode));
 
         //build text area components
         hintTextArea = new TextAreaCLIComponent(this.players.get(0).getWidth(), 15, "Hints");
