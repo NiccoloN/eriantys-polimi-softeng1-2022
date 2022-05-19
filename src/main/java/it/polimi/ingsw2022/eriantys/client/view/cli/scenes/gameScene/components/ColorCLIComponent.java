@@ -10,7 +10,7 @@ public class ColorCLIComponent extends BasicCLIComponent {
     public static final String DEFAULT_COLOR = RESET;
 
     private String color;
-    private final PawnColor pawnColor;
+    public final PawnColor pawnColor;
 
     public ColorCLIComponent(PawnColor color) {
 

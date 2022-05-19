@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
@@ -9,7 +10,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLICompone
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.IslandSelection;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
@@ -209,10 +209,10 @@ public class GameScene extends CLIScene {
 
     }
 
-    public void setColors(PawnColor[] colors) {
+    public void setColors(List<PawnColor> colors) {
 
-        this.colors = new ColorCLIComponent[colors.length];
-        for(int n = 0; n < colors.length; n++) this.colors[n] = new ColorCLIComponent(colors[n]);
+        this.colors = new ColorCLIComponent[colors.size()];
+        for(int n = 0; n < colors.size(); n++) this.colors[n] = new ColorCLIComponent(colors.get(n));
 
         //arrange colors in a row at the bottom of the screen
         for(int n = 0; n < this.colors.length; n++) this.colors[n].setPosition(
@@ -256,8 +256,6 @@ public class GameScene extends CLIScene {
     public void applyChange(HelperCardsChange change) {
 
         setHelpers(change.getHelperCards());
-        //TODO remove
-        //setState(new ColorSelection(getCli(), this, PawnColor.values()));
     }
 
     /**
@@ -302,7 +300,7 @@ public class GameScene extends CLIScene {
         PlayerStatusCLIComponent player = players.stream()
                 .filter((x) -> x.getNickname().equals(change.getPlayerUsername())).findAny().orElseThrow();
 
-        for(PawnColor color : PawnColor.values()) {
+        for (PawnColor color : PawnColor.values()) {
 
             player.setEntranceStudents(color, change.getEntranceStudents(color));
             player.setTableStudents(color, change.getTableStudents(color));
@@ -391,8 +389,6 @@ public class GameScene extends CLIScene {
 
     public PlayerStatusCLIComponent getPlayer() {
 
-        //TODO
-        //return players.stream().filter((x) -> x.getNickname().equals(EriantysClient.getInstance().username)).findAny().orElseThrow();
-        return players.get(0);
+        return players.stream().filter((x) -> x.getNickname().equals(EriantysClient.getInstance().getUsername())).findAny().orElseThrow();
     }
 }

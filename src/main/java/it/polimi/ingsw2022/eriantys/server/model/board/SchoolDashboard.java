@@ -80,6 +80,13 @@ public class SchoolDashboard implements Serializable {
         if (!entranceStudents.remove(student)) throw new NoSuchElementException();
     }
 
+    public ColoredPawn removeFromEntrance(PawnColor color) {
+
+        ColoredPawn student = entranceStudents.stream().filter((x) -> x.color == color).findFirst().orElseThrow();
+        entranceStudents.remove(student);
+        return student;
+    }
+
     /**
      * @param color the color of students to count
      * @return the number of students of the given color currently at the table of the corresponding color

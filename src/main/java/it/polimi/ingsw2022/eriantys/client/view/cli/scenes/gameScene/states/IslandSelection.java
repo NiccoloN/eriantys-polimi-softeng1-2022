@@ -11,10 +11,12 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveMotherNature;
+import it.polimi.ingsw2022.eriantys.messages.Move.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.IOException;
 
@@ -28,21 +30,25 @@ public class IslandSelection extends GameSceneState {
 
     private int currentSelectedIndex;
     private IslandCLIComponent currentSelected;
-    private final boolean movingStudent;
-
-    private final Message requestMessage;
+    private boolean movingStudent;
+    private PawnColor studentColor;
 
     /**
      * Constructs an island selection state
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
-     * @param movingStudent whether this state is being used to move a student or not
      */
-    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, boolean movingStudent) {
+    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
-        super(cli, scene);
-        this.requestMessage = requestMessage;
-        this.movingStudent = movingStudent;
+        super(cli, scene, requestMessage);
+        this.movingStudent = false;
+    }
+
+    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, PawnColor studentColor){
+
+        this(cli, scene, requestMessage);
+        this.movingStudent = true;
+        this.studentColor = studentColor;
     }
 
     @Override
@@ -69,13 +75,13 @@ public class IslandSelection extends GameSceneState {
 
         if(input.triggersAction(Action.UP) && movingStudent) {
 
-            getScene().setState(new DiningRoomSelection(getCli(), getScene(), this, Action.DOWN));
+            getScene().setState(new DiningRoomSelection(getCli(), getScene(), requestMessage, studentColor, this, Action.DOWN));
             return;
         }
 
         if(input.triggersAction(Action.DOWN)) {
 
-            getScene().setState(new CharacterSelection(getCli(), getScene(), this, Action.UP));
+            getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.UP));
             return;
         }
 
@@ -85,8 +91,14 @@ public class IslandSelection extends GameSceneState {
         if(input.triggersAction(Action.SELECT)){
 
             EriantysClient client = EriantysClient.getInstance();
-            client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveMotherNature
-                    (MoveType.MOVE_MOTHER_NATURE, currentSelected.getIndex()), client.getUsername()));
+            if(!movingStudent) {
+                client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveMotherNature
+                        (MoveType.MOVE_MOTHER_NATURE, currentSelected.getIndex()), client.getUsername()));
+            }
+            else{
+                client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent
+                        (MoveType.MOVE_STUDENT, false, true, currentSelected.getIndex(), studentColor), client.getUsername()));
+            }
             return;
         }
 

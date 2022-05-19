@@ -29,8 +29,6 @@ public class HelperSelection extends GameSceneState {
     private int currentSelectedIndex;
     private HelperCardCLIComponent currentSelected;
 
-    private final Message requestMessage;
-
     /**
      * Constructs a helper selection state
      * @param cli the cli to associate to this state
@@ -38,8 +36,7 @@ public class HelperSelection extends GameSceneState {
      */
     public HelperSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
-        super(cli, scene);
-        this.requestMessage = requestMessage;
+        super(cli, scene, requestMessage);
     }
 
     @Override
@@ -67,7 +64,7 @@ public class HelperSelection extends GameSceneState {
 
         if(input.triggersAction(Action.UP)) {
 
-            getScene().setState(new CharacterSelection(getCli(), getScene(), this, Action.DOWN));
+            getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;
         }
 

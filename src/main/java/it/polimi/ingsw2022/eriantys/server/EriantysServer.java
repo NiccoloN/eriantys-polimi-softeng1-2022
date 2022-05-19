@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
@@ -12,7 +13,6 @@ import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -167,7 +167,18 @@ public class EriantysServer {
     public void sendToClient(Message message, Socket clientSocket) throws IOException {
 
         ObjectOutputStream outputStream = clientOutputStreams.get(clientSocket);
-        synchronized(outputStream) { outputStream.writeObject(message); }
+        synchronized(outputStream) {
+
+            outputStream.reset();
+            outputStream.writeObject(message);
+        }
+
+        System.out.println("Message sent: " + message.getClass().getSimpleName());
+    }
+
+    public void sendToAllClients(Message message) throws IOException {
+
+        for(Socket client : clients.values()) sendToClient(message, client);
     }
 
     private Optional<ToServerMessage> readMessageFromClient(Socket clientSocket) throws IOException, ClassNotFoundException {
@@ -218,10 +229,10 @@ public class EriantysServer {
         for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
 
         IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
-        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n + 1, game.getBoard().getIsland(n));
+        for (int n = 1; n <= islandChanges.length; n++) islandChanges[n - 1] = new IslandChange(n, game.getBoard().getIsland(n));
 
         CloudChange[] cloudChanges = new CloudChange[players.length];
-        for (int n = 0; n < players.length; n++) cloudChanges[n] = new CloudChange(n + 1, game.getBoard().getCloud(n));
+        for (int n = 1; n <= cloudChanges.length; n++) cloudChanges[n - 1] = new CloudChange(n, game.getBoard().getCloud(n));
 
         SchoolChange[] schoolChanges = new SchoolChange[players.length];
         for (int n = 0; n < players.length; n++) schoolChanges[n] = new SchoolChange(players[n].getSchool());
@@ -266,13 +277,13 @@ public class EriantysServer {
         System.out.println("Sent initial update");
     }
 
-    public Map<String, Socket> getClients() {
-        return new HashMap<>(clients);
+    public Socket getClientSocket(String username) {
+        return clients.get(username);
     }
 
-    public void setPerformedMove(Move move, String username) throws IOException {
+    public void setPerformedMoveMessage(PerformedMoveMessage moveMessage) {
         // set sul controller della move ( avrà synchronized e notify alla fine)
-        gameMode.setPerformedMove(move);
+        gameMode.setPerformedMoveMessage(moveMessage);
 
     }
 }

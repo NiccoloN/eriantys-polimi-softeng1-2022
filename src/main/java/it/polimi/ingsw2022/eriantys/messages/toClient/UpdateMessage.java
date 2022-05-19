@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class UpdateMessage extends ToClientMessage {
 
-    private Update update;
+    private final Update update;
 
     public UpdateMessage(Update update) {
         this.update = update;

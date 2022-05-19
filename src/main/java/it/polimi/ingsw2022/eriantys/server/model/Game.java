@@ -1,9 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model;
-import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
+import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator;
@@ -15,10 +12,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class represents the game instance.
@@ -42,7 +36,7 @@ public class Game {
     private Player currentPlayer;
     private boolean gameEnding;
 
-    public Game(String[] playerUsernames) {
+    public Game(String[] playerUsernames) throws IOException {
         gameEnding = false;
         players = generatePlayers(playerUsernames);
         board = new Board(players);
@@ -53,6 +47,7 @@ public class Game {
 
         placeFirstStudents();
         fillStudentsBag();
+        fillSchools();
         chooseCharacters();
         assignHelpers();
     }
@@ -76,8 +71,8 @@ public class Game {
                 }
             }
         }
-        for(int n = 1; n < board.getNumberOfIslands(); n++)
-            if(n != board.getNumberOfIslands() / 2)
+        for(int n = 2; n <= board.getNumberOfIslands(); n++)
+            if(n != board.getNumberOfIslands() / 2 + 1)
                 board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
     }
 
@@ -85,6 +80,15 @@ public class Game {
 
         for(ColoredPawn student : students) studentsBag.addStudent(student);
         students.clear();
+    }
+
+    private void fillSchools() {
+
+        for (Player player : players) {
+            
+            SchoolDashboard school = player.getSchool();
+            for (int n = 0; n < 7; n++) school.addToEntrance(studentsBag.extractRandomStudent());
+        }
     }
 
     private void chooseCharacters() throws IOException {
@@ -157,6 +161,10 @@ public class Game {
             players.add(new Player(playerUsernames[playerNumber], team, mageNames[playerNumber]));
         }
         return players;
+    }
+
+    public void reorderPlayersBasedOnHelperCard() {
+        players.sort((p1, p2) -> p1.comparePriorityTo(p2));
     }
 
     public void calculatePoints() {

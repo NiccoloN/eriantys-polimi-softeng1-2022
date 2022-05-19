@@ -4,8 +4,11 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
+import java.lang.reflect.Array;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
@@ -102,5 +105,19 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
 
         if (towers < 0 || towers > 9) throw new InvalidParameterException("Towers must be >= 0 and <= 9");
         this.towers = towers;
+    }
+
+    public ArrayList<PawnColor> getEntranceColors(){
+
+        ArrayList<PawnColor> colors = new ArrayList<>();
+        for(PawnColor pawnColor : entranceStudents.keySet()) {
+
+            if(entranceStudents.get(pawnColor) > 0) colors.add(pawnColor);
+        }
+        return colors;
+    }
+
+    public Map<PawnColor, Integer> getEntranceStudents() {
+        return entranceStudents;
     }
 }

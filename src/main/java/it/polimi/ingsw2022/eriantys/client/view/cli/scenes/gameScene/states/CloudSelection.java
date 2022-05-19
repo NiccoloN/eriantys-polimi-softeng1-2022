@@ -25,8 +25,6 @@ public class CloudSelection extends GameSceneState {
     private int currentSelectedIndex;
     private CloudCLIComponent currentSelected;
 
-    private final Message requestMessage;
-
     /**
      * Constructs a  cloud selection state
      * @param cli the cli to associate to this state
@@ -34,8 +32,7 @@ public class CloudSelection extends GameSceneState {
      */
     public CloudSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
-        super(cli, scene);
-        this.requestMessage = requestMessage;
+        super(cli, scene, requestMessage);
     }
 
     @Override
@@ -62,7 +59,7 @@ public class CloudSelection extends GameSceneState {
 
         if(input.triggersAction(Action.DOWN)) {
 
-            getScene().setState(new CharacterSelection(getCli(), getScene(), this, Action.UP));
+            getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.UP));
             return;
         }
 

@@ -148,4 +148,8 @@ public class Player implements Serializable {
         if (this.school != null) throw new RuntimeException("Player already associated to a school");
         this.school = school;
     }
+
+    public int comparePriorityTo(Player otherPlayer) {
+        return this.getCurrentHelper().priority < otherPlayer.getCurrentHelper().priority ? -1 : 1;
+    }
 }
