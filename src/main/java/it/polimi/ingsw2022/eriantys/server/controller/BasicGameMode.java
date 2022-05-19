@@ -90,7 +90,6 @@ public class BasicGameMode implements GameMode {
             try{ performedMoveMessage.move.apply(game, playerUsername); }
             catch(Exception e) {
 
-                e.printStackTrace();
                 server.sendToClient(new InvalidMoveMessage(
                         performedMoveMessage,
                         performedMoveMessage.previousMessage,
