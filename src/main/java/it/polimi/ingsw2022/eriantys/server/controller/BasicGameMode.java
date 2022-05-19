@@ -1,20 +1,18 @@
 package it.polimi.ingsw2022.eriantys.server.controller;
 
-import it.polimi.ingsw2022.eriantys.messages.Move.ChooseHelperCard;
-import it.polimi.ingsw2022.eriantys.messages.Move.Move;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveStudent;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.HelperCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.SchoolChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
-import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;

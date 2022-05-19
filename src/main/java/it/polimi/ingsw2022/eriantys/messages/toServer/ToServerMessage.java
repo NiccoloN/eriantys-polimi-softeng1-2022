@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.messages.toServer;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidResponseMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
@@ -16,10 +17,10 @@ public abstract class ToServerMessage extends Message {
     public final Message previousMessage;
     public final String clientUsername;
 
-    public ToServerMessage(Message previousMessage, String clientUsername) {
+    public ToServerMessage(Message previousMessage) {
 
         this.previousMessage = previousMessage;
-        this.clientUsername = clientUsername;
+        clientUsername = EriantysClient.getInstance().getUsername();
     }
 
     public void manageAndReply(Socket responseSocket) throws IOException {

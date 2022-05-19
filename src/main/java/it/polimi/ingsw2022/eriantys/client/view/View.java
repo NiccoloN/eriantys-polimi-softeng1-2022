@@ -4,17 +4,15 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
+import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.concurrent.TimeoutException;
 
@@ -62,45 +60,15 @@ public interface View {
     void startGame(Player[] players, Mode gameMode);
 
     /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
+     * Applies a given update to the game this view is showing
+     * @param update the update to apply
      */
-    void applyChange(CharacterCardsChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(IslandChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(CloudChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(SchoolChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(PlayerChange change);
-
-    /**
-     * Applies a given change to the game this view is showing
-     * @param change the change to apply
-     */
-    void applyChange(HelperCardsChange change);
+    void applyUpdate(Update update);
 
     /**
      * Ask the client for a certain move
      * @param previousMessage the message containing a move request
      */
-    void askMoveType(MoveRequestMessage previousMessage);
+    void askMove(MoveRequestMessage previousMessage);
 
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.messages.Move;
+package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import java.io.Serializable;
 

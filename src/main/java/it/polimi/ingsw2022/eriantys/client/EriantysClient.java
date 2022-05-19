@@ -4,15 +4,13 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.*;
 import java.net.Socket;
@@ -223,15 +221,16 @@ public class EriantysClient {
      */
     public void applyUpdate(Update update) {
 
-        update.applyChanges(view);
+        view.applyUpdate(update);
     }
 
     /**
      * Asks the view to make a given move
      * @param requestMessage the message containing the requested move
      */
-    public void askMoveType(MoveRequestMessage requestMessage){
-        view.askMoveType(requestMessage);
+    public void askMove(MoveRequestMessage requestMessage) {
+
+        view.askMove(requestMessage);
     }
 
     /**
@@ -263,11 +262,11 @@ public class EriantysClient {
         return stringBuilder.toString();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getUsername(){
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

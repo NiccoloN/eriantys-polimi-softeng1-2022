@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.messages.Move;
+package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -7,15 +7,15 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
  * If it's towards an island it specifies that island index.
  * @author Emanuele Musto
  */
-public class MoveStudent extends Move{
+public class MoveStudent extends Move {
 
     public final boolean toDining, toIsland;
     public final int islandIndex;
     public final PawnColor studentColor;
 
 
-    public MoveStudent(MoveType movetype, boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor){
-        this.moveType = movetype;
+    public MoveStudent(boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor) {
+        this.moveType = MoveType.MOVE_STUDENT;
         this.toDining = toDining;
         this.toIsland = toIsland;
         this.islandIndex = islandIndex;

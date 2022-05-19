@@ -11,18 +11,14 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Lobb
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.CharacterCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
+import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
-import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -218,7 +214,7 @@ public class EriantysCLI implements View {
         frameBuilder.append(frame.getAnsiString(Math.max(terminal.getWidth(), FRAME_WIDTH), Math.max(terminal.getHeight(), FRAME_HEIGHT)));
 
         //append log if enabled
-        if(showLog) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog(frame.getHeight()));
+        if(showLog) frameBuilder.append(TERMINAL_HOME).append(EriantysClient.getInstance().getLog(frame.getHeight() - 1));
 
         //print the frame string to terminal
         terminal.writer().print(frameBuilder);
@@ -300,54 +296,23 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void applyChange(CharacterCardsChange change) {
+    public void applyUpdate(Update update) {
 
-        if(gameScene != null) gameScene.applyChange(change);
-        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
-    }
-
-    @Override
-    public void applyChange(HelperCardsChange change) {
-
-        if(gameScene != null) gameScene.applyChange(change);
-        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
-    }
-
-    @Override
-    public void applyChange(IslandChange change) {
-
-        if(gameScene != null) gameScene.applyChange(change);
-        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
-    }
-
-    @Override
-    public void applyChange(CloudChange change) {
-
-        if(gameScene != null) gameScene.applyChange(change);
-        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
-    }
-
-    @Override
-    public void applyChange(SchoolChange change) {
-
-        if(gameScene != null) gameScene.applyChange(change);
-        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
-    }
-
-    @Override
-    public void applyChange(PlayerChange change) {
-
-        if(gameScene != null) gameScene.applyChange(change);
+        if(gameScene != null) update.applyChanges(gameScene);
         else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
 
     @Override
-    public void askMoveType(MoveRequestMessage requestMessage){
+    public void askMove(MoveRequestMessage requestMessage) {
+
         EriantysClient.getInstance().log(requestMessage.requestedMove.toString());
+
         if(!(currentScene instanceof GameScene))
-            throw new RuntimeException("The current scene must be a MenuScene to ask for a username");
+            throw new RuntimeException("The current scene must be a GameScene to ask for a move");
+
         switch(requestMessage.requestedMove) {
+
             case CHOOSE_HELPER_CARD:
                 currentScene.setState(new HelperSelection(this, gameScene, requestMessage));
                 break;
@@ -358,7 +323,7 @@ public class EriantysCLI implements View {
                 currentScene.setState(new IslandSelection(this, gameScene, requestMessage));
                 break;
             case CHOOSE_CHARACTER_CARD:
-                //do nothing
+                //do nothing (optional move)
                 break;
             case MOVE_STUDENT:
                 currentScene.setState(new ColorSelection(this, gameScene, requestMessage));

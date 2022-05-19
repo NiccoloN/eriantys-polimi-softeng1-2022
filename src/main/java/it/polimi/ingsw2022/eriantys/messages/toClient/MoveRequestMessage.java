@@ -1,7 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class MoveRequestMessage extends ToClientMessage{
 
     @Override
     public void manageAndReply() throws IOException {
-        EriantysClient.getInstance().log(requestedMove.sentence);
-        EriantysClient.getInstance().askMoveType(this);
+        EriantysClient.getInstance().log(requestedMove.promptSentence);
+        EriantysClient.getInstance().askMove(this);
     }
 }

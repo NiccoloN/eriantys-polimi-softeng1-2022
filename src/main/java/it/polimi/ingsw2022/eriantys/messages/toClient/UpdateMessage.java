@@ -1,7 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 
 import java.io.IOException;
 

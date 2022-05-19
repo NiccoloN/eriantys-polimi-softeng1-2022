@@ -21,9 +21,9 @@ public class GameSettingsMessage extends ToServerMessage {
 
     public final GameSettings gameSettings;
 
-    public GameSettingsMessage(Message previousMessage, GameSettings gameSettings, String username) {
+    public GameSettingsMessage(Message previousMessage, GameSettings gameSettings) {
 
-        super(previousMessage, username);
+        super(previousMessage);
         this.gameSettings = gameSettings;
     }
 

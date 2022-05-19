@@ -16,9 +16,9 @@ import java.net.Socket;
 public class UsernameChoiceMessage extends ToServerMessage {
 
 
-    public UsernameChoiceMessage(Message previousMessage, String clientUsername) {
+    public UsernameChoiceMessage(Message previousMessage) {
 
-        super(previousMessage, clientUsername);
+        super(previousMessage);
     }
 
     @Override

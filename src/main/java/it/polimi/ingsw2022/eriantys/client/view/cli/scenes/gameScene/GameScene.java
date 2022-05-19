@@ -11,9 +11,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
@@ -41,8 +40,8 @@ public class GameScene extends CLIScene {
     private final List<CloudCLIComponent> clouds;
     private final List<PlayerStatusCLIComponent> players;
     private List<HelperCardCLIComponent> helpers;
-    private CharacterCardCLIComponent[] characters;
-    private ColorCLIComponent[] colors;
+    private List<CharacterCardCLIComponent> characters;
+    private List<ColorCLIComponent> colors;
 
     /**
      * Constructs a game scene
@@ -179,12 +178,13 @@ public class GameScene extends CLIScene {
         }
     }
 
-    private void setHelpers(HelperCard[] helperCards) {
+    public void setHelpers(List<HelperCard> helperCards) {
 
-        if (helpers == null) helpers = new ArrayList<>(helperCards.length);
+        if (helpers == null) helpers = new ArrayList<>(helperCards.size());
         else helpers.clear();
 
-        for(HelperCard card : helperCards) helpers.add(new HelperCardCLIComponent(card.index, card.priority, card.movement));
+        for(HelperCard card : helperCards)
+            helpers.add(new HelperCardCLIComponent(card.index, card.priority, card.movement));
 
         //arrange helper cards in a row at the bottom of the screen
         for(int n = 0; n < helpers.size(); n++) helpers.get(n).setPosition(
@@ -192,32 +192,32 @@ public class GameScene extends CLIScene {
                 getHeight() - helpers.get(0).getHeight() - 1);
     }
 
-    private void setCharacters(CharacterCard[] characterCards) {
+    public void setCharacters(List<CharacterCard> characterCards) {
 
-        if (characters == null) characters = new CharacterCardCLIComponent[characterCards.length];
+        if (characters == null) characters = new ArrayList<>(characterCards.size());
+        else characters.clear();
 
-        for(int n = 0; n < characterCards.length; n++) {
-
-            CharacterCard card = characterCards[n];
-            characters[n] = new CharacterCardCLIComponent(card.index, card.effect, card.getCost());
-        }
+        for(CharacterCard card : characterCards)
+            characters.add(new CharacterCardCLIComponent(card.index, card.effect, card.getCost()));
 
         //arrange character cards in a row below the islands
         int charactersY = islands[5].getFrameY() + islands[5].getHeight() + 2;
-        for(int n = 0; n < characters.length; n++) characters[n].setPosition(
-                getWidth() / 2f - (characters[0].getWidth() * characters.length + characters.length - 2) / 2f + (characters[0].getWidth() + 1) * n, charactersY);
+        for(int n = 0; n < characters.size(); n++) characters.get(n).setPosition(
+                getWidth() / 2f - (characters.get(0).getWidth() * characters.size() + characters.size() - 2) / 2f + (characters.get(0).getWidth() + 1) * n, charactersY);
 
     }
 
     public void setColors(List<PawnColor> colors) {
 
-        this.colors = new ColorCLIComponent[colors.size()];
-        for(int n = 0; n < colors.size(); n++) this.colors[n] = new ColorCLIComponent(colors.get(n));
+        if(this.colors == null) this.colors = new ArrayList<>(colors.size());
+        else this.colors.clear();
+
+        for(PawnColor color : colors) this.colors.add(new ColorCLIComponent(color));
 
         //arrange colors in a row at the bottom of the screen
-        for(int n = 0; n < this.colors.length; n++) this.colors[n].setPosition(
-                getWidth() / 2f - (this.colors[0].getWidth() * this.colors.length + this.colors.length - 2) / 2f + (this.colors[0].getWidth() + 1) * n,
-                getHeight() - this.colors[0].getHeight() - 3);
+        for(int n = 0; n < this.colors.size(); n++) this.colors.get(n).setPosition(
+                getWidth() / 2f - (this.colors.get(0).getWidth() * this.colors.size() + this.colors.size() - 2) / 2f + (this.colors.get(0).getWidth() + 1) * n,
+                getHeight() - this.colors.get(0).getHeight() - 3);
     }
 
     @Override
@@ -238,88 +238,6 @@ public class GameScene extends CLIScene {
         hintTextArea.printToFrame(frame);
         effectTextArea.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
-    }
-
-    /**
-     * Applies the given character cards change to this scene
-     * @param change the change to apply
-     */
-    public void applyChange(CharacterCardsChange change) {
-
-        setCharacters(change.getCharacterCards());
-    }
-
-    /**
-     * Applies the given helper cards change to this scene
-     * @param change the change to apply
-     */
-    public void applyChange(HelperCardsChange change) {
-
-        setHelpers(change.getHelperCards());
-    }
-
-    /**
-     * Applies the given island change to this scene
-     * @param change the change to apply
-     */
-    public void applyChange(IslandChange change) {
-
-        AtomicInteger islandTileIndex = new AtomicInteger();
-
-        Arrays.stream(islands).filter((x) -> x.getIndex() == change.compoundIslandIndex)
-                .forEach((island) -> {
-
-                    IslandTile islandTile = change.getIslandTile(islandTileIndex.getAndIncrement());
-
-                    for(PawnColor color : PawnColor.values()) island.setStudents(color, islandTile.countStudents(color));
-                    island.setMother(islandTile.hasMotherNature());
-                    island.setTower(islandTile.hasTower());
-
-                    String teamColor = change.getTeam().isPresent() ? change.getTeam().get().ansiColor : RESET;
-                    island.setTeamColor(teamColor);
-                });
-    }
-
-    /**
-     * Applies the given cloud change to this scene
-     * @param change the change to apply
-     */
-    public void applyChange(CloudChange change) {
-
-        CloudCLIComponent cloud = clouds.get(change.cloudIndex - 1);
-        for(PawnColor color : PawnColor.values()) cloud.setStudents(color, change.getStudents(color));
-    }
-
-    /**
-     * Applies the given school change to this scene
-     * @param change the change to apply
-     * @throws NoSuchElementException if no player of the given username is found in this game scene
-     */
-    public void applyChange(SchoolChange change) {
-
-        PlayerStatusCLIComponent player = players.stream()
-                .filter((x) -> x.getNickname().equals(change.getPlayerUsername())).findAny().orElseThrow();
-
-        for (PawnColor color : PawnColor.values()) {
-
-            player.setEntranceStudents(color, change.getEntranceStudents(color));
-            player.setTableStudents(color, change.getTableStudents(color));
-            player.setProfessor(color, change.hasProfessor(color));
-            player.setTowers(change.getTowers());
-        }
-    }
-
-    /**
-     * Applies the given player change to this scene
-     * @param change the change to apply
-     * @throws NoSuchElementException if no player of the given username is found in this game scene
-     */
-    public void applyChange(PlayerChange change) {
-
-        PlayerStatusCLIComponent player = players.stream()
-                .filter((x) -> x.getNickname().equals(change.getUsername())).findAny().orElseThrow();
-
-        player.setCoins(change.getCoins());
     }
 
     public void setPrompt(CLIComponent prompt) {
@@ -359,22 +277,22 @@ public class GameScene extends CLIScene {
 
     public CharacterCardCLIComponent getCharacter(int index) {
 
-        return characters[index];
+        return characters.get(index);
     }
 
     public int getNumberOfCharacters() {
 
-        return characters != null ? characters.length : 0;
+        return characters != null ? characters.size() : 0;
     }
 
     public ColorCLIComponent getColor(int index) {
 
-        return colors[index];
+        return colors.get(index);
     }
 
     public int getNumberOfColors() {
 
-        return colors != null ? colors.length : 0;
+        return colors != null ? colors.size() : 0;
     }
 
     public TextAreaCLIComponent getHintTextArea() {
@@ -389,6 +307,11 @@ public class GameScene extends CLIScene {
 
     public PlayerStatusCLIComponent getPlayer() {
 
-        return players.stream().filter((x) -> x.getNickname().equals(EriantysClient.getInstance().getUsername())).findAny().orElseThrow();
+        return getPlayer(EriantysClient.getInstance().getUsername());
+    }
+
+    public PlayerStatusCLIComponent getPlayer(String username) {
+
+        return players.stream().filter((x) -> x.getNickname().equals(username)).findAny().orElseThrow();
     }
 }
