@@ -109,13 +109,23 @@ public class Board {
         return islands.size();
     }
 
+    /**
+     * @param index the index of the island (1 <= index <= number of islands)
+     * @return the island of the given index
+     * @throws IndexOutOfBoundsException if this board contains no island of the given index
+     */
     public CompoundIslandTile getIsland(int index) {
 
-        return islands.get(index);
+        return islands.get(index - 1);
     }
 
+    /**
+     * @param index the index of the cloud (1 <= index <= number of clouds)
+     * @return the cloud of the given index
+     * @throws IndexOutOfBoundsException if this board contains no cloud of the given index
+     */
     public CloudTile getCloud(int index) {
 
-        return clouds.get(index);
+        return clouds.get(index - 1);
     }
 }

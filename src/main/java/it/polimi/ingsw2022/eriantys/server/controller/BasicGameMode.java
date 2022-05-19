@@ -101,7 +101,7 @@ public class BasicGameMode implements GameMode {
                 IslandChange islandChange = new IslandChange(moveStudent.islandIndex, game.getBoard().getIsland(moveStudent.islandIndex));
                 update.addChange(islandChange);
             }
-            server.sendToClient(new UpdateMessage(update), clientSocket);
+            server.sendToAllClients(new UpdateMessage(update));
             performedMoveMessage = null;
             notifyAll();
         }
