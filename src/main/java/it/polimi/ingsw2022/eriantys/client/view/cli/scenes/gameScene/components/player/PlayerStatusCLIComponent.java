@@ -77,7 +77,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     @Override
     public float getX() {
 
-        return tablesCLIComponent.getFrameX();
+        return helperLeft ? tablesCLIComponent.getX() - HelperCardCLIComponent.WIDTH - 1 : tablesCLIComponent.getX();
     }
 
     @Override
