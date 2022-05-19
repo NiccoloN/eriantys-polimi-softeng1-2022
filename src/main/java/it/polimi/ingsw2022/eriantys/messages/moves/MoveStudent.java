@@ -50,9 +50,11 @@ public class MoveStudent extends Move {
         }
 
         if (toIsland) {
+            SchoolChange schoolChange = new SchoolChange(game.getPlayer(playerUsername).getSchool());
             game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
             IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
             update.addChange(islandChange);
+            update.addChange(schoolChange);
         }
 
         return(update);
