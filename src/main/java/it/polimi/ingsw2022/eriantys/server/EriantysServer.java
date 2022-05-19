@@ -1,9 +1,8 @@
 package it.polimi.ingsw2022.eriantys.server;
 
-import it.polimi.ingsw2022.eriantys.messages.Move.Move;
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
@@ -51,9 +50,11 @@ public class EriantysServer {
 
     private final ServerSocket serverSocket;
 
+    private Socket currentlyConnectingClient;
     private final Map<String, Socket> clients;
     private final Map<Socket, ObjectOutputStream> clientOutputStreams;
     private final Map<Socket, ObjectInputStream> clientInputStreams;
+
     private GameSettings gameSettings;
     private Game game;
     private GameMode gameMode;
@@ -116,6 +117,7 @@ public class EriantysServer {
 
         //accept a connection
         Socket client = serverSocket.accept();
+        currentlyConnectingClient = client;
         System.out.println("Connection established with client " + client);
 
         //initialize object the streams of the accepted client
@@ -153,7 +155,7 @@ public class EriantysServer {
                 try {
 
                     Optional<ToServerMessage> message = readMessageFromClient(client);
-                    if(message.isPresent()) message.get().manageAndReply(client);
+                    if(message.isPresent()) message.get().manageAndReply();
                 }
                 catch(IOException | ClassNotFoundException e) {
 
@@ -164,9 +166,9 @@ public class EriantysServer {
         }).start();
     }
 
-    public void sendToClient(Message message, Socket clientSocket) throws IOException {
+    public void sendToClient(Message message, Socket client) throws IOException {
 
-        ObjectOutputStream outputStream = clientOutputStreams.get(clientSocket);
+        ObjectOutputStream outputStream = clientOutputStreams.get(client);
         synchronized(outputStream) {
 
             outputStream.reset();
@@ -174,6 +176,11 @@ public class EriantysServer {
         }
 
         System.out.println("Message sent: " + message.getClass().getSimpleName());
+    }
+
+    public void sendToClient(Message message, String clientUsername) throws IOException {
+
+        sendToClient(message, clients.get(clientUsername));
     }
 
     public void sendToAllClients(Message message) throws IOException {
@@ -194,6 +201,11 @@ public class EriantysServer {
         }
     }
 
+    public Socket getCurrentlyConnectingClient() {
+
+        return currentlyConnectingClient;
+    }
+
     public boolean isAvailableUsername(String username) {
 
         return !clients.containsKey(username);
@@ -207,6 +219,7 @@ public class EriantysServer {
 
             clients.put(username, clientSocket);
             System.out.println("Added client with username: " + username);
+            currentlyConnectingClient = null;
             clients.notifyAll();
         }
     }

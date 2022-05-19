@@ -1,10 +1,10 @@
 package it.polimi.ingsw2022.eriantys.messages.toServer;
 
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.Move.Move;
+import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.server.model.Game;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -22,19 +22,16 @@ public class PerformedMoveMessage extends ToServerMessage{
         validResponses.add(InvalidMoveMessage.class);
     }
 
-    public PerformedMoveMessage(Message previousMessage, Move move, String username) {
+    public PerformedMoveMessage(Message previousMessage, Move move) {
 
-        super(previousMessage, username);
+        super(previousMessage);
         this.move = move;
     }
 
     @Override
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    public void manageAndReply() throws IOException {
 
-        super.manageAndReply(responseSocket);
-
-        EriantysServer server = EriantysServer.getInstance();
-
-        server.setPerformedMoveMessage(this);
+        super.manageAndReply();
+        EriantysServer.getInstance().setPerformedMoveMessage(this);
     }
 }

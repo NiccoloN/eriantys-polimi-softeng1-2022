@@ -13,6 +13,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class CharacterCardCLIComponent extends BasicCLIComponent {
 
+    public static final int WIDTH = 7, HEIGHT = 5;
     public static final String CHARACTER_DEFAULT_COLOR = RESET;
 
     private String color;
@@ -28,7 +29,7 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
      */
     public CharacterCardCLIComponent(int index, String effect, int cost) {
 
-        super(7, 5);
+        super(WIDTH, HEIGHT);
 
         color = CHARACTER_DEFAULT_COLOR;
         this.index = index;

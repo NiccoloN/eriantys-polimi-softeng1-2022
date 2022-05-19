@@ -1,6 +1,7 @@
-package it.polimi.ingsw2022.eriantys.messages.toClient.changes;
+package it.polimi.ingsw2022.eriantys.messages.changes;
 
-import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.Serializable;
@@ -25,8 +26,10 @@ public class PlayerChange implements Change, Serializable {
     }
 
     @Override
-    public void apply(View view) {
+    public void apply(GameScene scene) {
 
-        view.applyChange(this);
+        PlayerStatusCLIComponent cliPlayer = scene.getPlayer(player.username);
+
+        cliPlayer.setCoins(player.getCoins());
     }
 }

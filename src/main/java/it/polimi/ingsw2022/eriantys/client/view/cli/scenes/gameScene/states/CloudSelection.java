@@ -6,11 +6,11 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.Move.ChooseCloud;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
-import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
 import java.io.IOException;
 
@@ -51,7 +51,6 @@ public class CloudSelection extends GameSceneState {
         super.exit();
         currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
         getScene().getHintTextArea().setText("");
-        getScene().setPrompt(null);
     }
 
     @Override
@@ -63,16 +62,17 @@ public class CloudSelection extends GameSceneState {
             return;
         }
 
-        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if(input.triggersAction(Action.SELECT)) {
 
-        else if(input.triggersAction(Action.SELECT)){
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new ChooseCloud(currentSelected.getIndex())));
 
-            EriantysClient client = EriantysClient.getInstance();
-            client.sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud
-                    (MoveType.CHOOSE_CLOUD, currentSelected.getIndex()), client.getUsername()));
+            getScene().setState(new ViewOnly(getCli(), getScene()));
             return;
         }
+
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
         if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfClouds() - 1;
         else if (currentSelectedIndex > getScene().getNumberOfClouds() - 1) currentSelectedIndex = 0;

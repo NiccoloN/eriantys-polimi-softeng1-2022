@@ -4,18 +4,15 @@ import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveMotherNature;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveStudent;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
-import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
-import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.IOException;
@@ -42,6 +39,10 @@ public class IslandSelection extends GameSceneState {
 
         super(cli, scene, requestMessage);
         this.movingStudent = false;
+
+        prompt = new BlinkingCLIComponent(2, new String[] {"VV"});
+        prompt.setFirstColor(GREEN_BRIGHT);
+        prompt.setSecondColor(GREEN);
     }
 
     public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, PawnColor studentColor){
@@ -67,7 +68,6 @@ public class IslandSelection extends GameSceneState {
         super.exit();
         currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
         getScene().getHintTextArea().setText("");
-        getScene().setPrompt(null);
     }
 
     @Override
@@ -85,22 +85,21 @@ public class IslandSelection extends GameSceneState {
             return;
         }
 
-        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
-
         if(input.triggersAction(Action.SELECT)){
 
             EriantysClient client = EriantysClient.getInstance();
-            if(!movingStudent) {
-                client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveMotherNature
-                        (MoveType.MOVE_MOTHER_NATURE, currentSelected.getIndex()), client.getUsername()));
-            }
-            else{
-                client.sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent
-                        (MoveType.MOVE_STUDENT, false, true, currentSelected.getIndex(), studentColor), client.getUsername()));
-            }
+
+            if(!movingStudent) client.sendToServer(new PerformedMoveMessage(requestMessage,
+                        new MoveMotherNature(currentSelected.getIndex())));
+            else client.sendToServer(new PerformedMoveMessage(requestMessage,
+                        new MoveStudent(false, true, currentSelected.getIndex(), studentColor)));
+
+            getScene().setState(new ViewOnly(getCli(), getScene()));
             return;
         }
+
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
 
         if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
         else if (currentSelectedIndex > getScene().getNumberOfIslands() - 1) currentSelectedIndex = 0;

@@ -2,13 +2,11 @@ package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.changes.*;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -61,41 +59,13 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void applyChange(IslandChange change) {
+    public void applyUpdate(Update update) {
 
         //TODO
     }
 
     @Override
-    public void applyChange(CloudChange change) {
-
-        //TODO
-    }
-
-    @Override
-    public void applyChange(SchoolChange change) {
-
-        //TODO
-    }
-
-    @Override
-    public void applyChange(PlayerChange change) {
-
-        //TODO
-    }
-
-    @Override
-    public void applyChange(HelperCardsChange change) {
-
-        //TODO
-    }
-
-    @Override
-    public void askMoveType(MoveRequestMessage requestMessage) {
-    }
-
-    @Override
-    public void applyChange(CharacterCardsChange change) {
+    public void askMove(MoveRequestMessage requestMessage) {
 
         //TODO
     }

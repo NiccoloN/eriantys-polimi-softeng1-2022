@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.messages.Move;
+package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import java.io.Serializable;
 
@@ -13,9 +13,9 @@ public enum MoveType implements Serializable {
     CHOOSE_CLOUD("Choose a cloud from which taking new students"),
     CHOOSE_CHARACTER_CARD("If wanted, it's possible to choose a character card");
 
-    public final String sentence;
+    public final String promptSentence;
 
-    MoveType(String sentence) {
-        this.sentence = sentence;
+    MoveType(String promptSentence) {
+        this.promptSentence = promptSentence;
     }
 }

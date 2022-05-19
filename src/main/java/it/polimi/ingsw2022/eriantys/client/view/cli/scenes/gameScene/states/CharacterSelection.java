@@ -11,9 +11,11 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CharacterCardCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
@@ -70,13 +72,12 @@ public class CharacterSelection extends GameSceneState {
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
         getScene().getEffectTextArea().setText("");
-        getScene().setPrompt(null);
         if(prevState instanceof ColorSelection)
             for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
     }
 
     @Override
-    public void manageInput(Input input) {
+    public void manageInput(Input input) throws IOException {
 
         if(input.triggersAction(goBackAction)) {
 
@@ -84,12 +85,17 @@ public class CharacterSelection extends GameSceneState {
             return;
         }
 
+        if(input.triggersAction(Action.SELECT)) {
+
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new ChooseCharacterCard(currentSelected.getIndex())));
+
+            getScene().setState(prevState);
+            return;
+        }
+
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
         else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
-
-        if(input.triggersAction(Action.SELECT)){
-            //TODO
-        }
 
         if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfCharacters() - 1;
         else if (currentSelectedIndex > getScene().getNumberOfCharacters() - 1) currentSelectedIndex = 0;

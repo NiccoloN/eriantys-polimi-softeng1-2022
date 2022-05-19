@@ -47,8 +47,8 @@ public class ColorSelection extends GameSceneState {
         super.exit();
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
-        getScene().setPrompt(null);
         for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
+        for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
     }
 
     @Override
@@ -63,6 +63,7 @@ public class ColorSelection extends GameSceneState {
         if(input.triggersAction(Action.SELECT)){
 
             getScene().setState(new IslandSelection(getCli(), getScene(), requestMessage, currentSelected.pawnColor));
+            return;
         }
 
         if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;

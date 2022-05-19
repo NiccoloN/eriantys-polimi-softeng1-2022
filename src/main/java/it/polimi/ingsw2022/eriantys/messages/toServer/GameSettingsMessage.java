@@ -21,23 +21,23 @@ public class GameSettingsMessage extends ToServerMessage {
 
     public final GameSettings gameSettings;
 
-    public GameSettingsMessage(Message previousMessage, GameSettings gameSettings, String username) {
+    public GameSettingsMessage(Message previousMessage, GameSettings gameSettings) {
 
-        super(previousMessage, username);
+        super(previousMessage);
         this.gameSettings = gameSettings;
     }
 
     @Override
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    public void manageAndReply() throws IOException {
 
-        super.manageAndReply(responseSocket);
+        super.manageAndReply();
 
         EriantysServer server = EriantysServer.getInstance();
         if (gameSettings.isValid()) {
 
             server.addGameSettings(this.gameSettings);
-            server.sendToClient(new AckMessage(), responseSocket);
+            server.sendToClient(new AckMessage(), clientUsername);
         }
-        else server.sendToClient(new InvalidGameSettingsMessage(), responseSocket);
+        else server.sendToClient(new InvalidGameSettingsMessage(), clientUsername);
     }
 }

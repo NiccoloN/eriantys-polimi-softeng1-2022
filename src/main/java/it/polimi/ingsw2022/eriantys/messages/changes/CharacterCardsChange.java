@@ -1,8 +1,7 @@
-package it.polimi.ingsw2022.eriantys.messages.toClient.changes;
+package it.polimi.ingsw2022.eriantys.messages.changes;
 
-import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
-import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,19 +16,14 @@ public class CharacterCardsChange implements Change, Serializable {
         characterCards = new ArrayList<>(3);
     }
 
-    public CharacterCard[] getCharacterCards() {
-
-        return characterCards.toArray(new CharacterCard[0]);
-    }
-
     public void addCharacterCard(CharacterCard card) {
 
         characterCards.add(card);
     }
 
     @Override
-    public void apply(View view) {
+    public void apply(GameScene scene) {
 
-        view.applyChange(this);
+        scene.setCharacters(characterCards);
     }
 }

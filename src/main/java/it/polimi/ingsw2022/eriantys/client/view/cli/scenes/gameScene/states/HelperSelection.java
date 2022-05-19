@@ -4,16 +4,12 @@ import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.Move.ChooseHelperCard;
-import it.polimi.ingsw2022.eriantys.messages.Move.Move;
-import it.polimi.ingsw2022.eriantys.messages.Move.MoveType;
-import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 
 import java.io.IOException;
@@ -55,7 +51,6 @@ public class HelperSelection extends GameSceneState {
         super.exit();
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
-        getScene().setPrompt(null);
     }
 
 
@@ -70,9 +65,10 @@ public class HelperSelection extends GameSceneState {
 
         if(input.triggersAction(Action.SELECT)) {
 
-            EriantysClient client = EriantysClient.getInstance();
-            client.sendToServer(new PerformedMoveMessage(requestMessage, new ChooseHelperCard
-                    (MoveType.CHOOSE_HELPER_CARD, currentSelected.getIndex()), client.getUsername()));
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new ChooseHelperCard(currentSelected.getIndex())));
+
+            getScene().setState(new ViewOnly(getCli(), getScene()));
             return;
         }
 

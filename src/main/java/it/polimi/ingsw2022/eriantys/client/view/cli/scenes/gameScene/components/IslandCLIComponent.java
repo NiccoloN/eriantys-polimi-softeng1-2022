@@ -16,6 +16,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class IslandCLIComponent extends BasicCLIComponent {
 
+    public static final int WIDTH = 14, HEIGHT = 7;
     public static final String DEFAULT_COLOR = RESET;
 
     private String color;
@@ -30,7 +31,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
      */
     public IslandCLIComponent(int index) {
 
-        super(14, 7);
+        super(WIDTH, HEIGHT);
 
         color     = DEFAULT_COLOR;
         teamColor = RESET;

@@ -15,28 +15,27 @@ import java.net.Socket;
  */
 public class UsernameChoiceMessage extends ToServerMessage {
 
+    public UsernameChoiceMessage(Message previousMessage) {
 
-    public UsernameChoiceMessage(Message previousMessage, String clientUsername) {
-
-        super(previousMessage, clientUsername);
+        super(previousMessage);
     }
 
     @Override
-    public void manageAndReply(Socket responseSocket) throws IOException {
+    public void manageAndReply() throws IOException {
 
-        super.manageAndReply(responseSocket);
+        super.manageAndReply();
 
         EriantysServer server = EriantysServer.getInstance();
 
         if(clientUsername.length() < 1 || clientUsername.length() > 15)
-            server.sendToClient(new InvalidUsernameMessage(true, false), responseSocket);
+            server.sendToClient(new InvalidUsernameMessage(true, false), server.getCurrentlyConnectingClient());
 
         else if(server.isAvailableUsername(clientUsername)) {
 
-            server.addClient(responseSocket, clientUsername);
-            server.sendToClient(new AckMessage(), responseSocket);
+            server.addClient(server.getCurrentlyConnectingClient(), clientUsername);
+            server.sendToClient(new AckMessage(), clientUsername);
         }
 
-        else server.sendToClient(new InvalidUsernameMessage(false, true), responseSocket);
+        else server.sendToClient(new InvalidUsernameMessage(false, true), server.getCurrentlyConnectingClient());
     }
 }
