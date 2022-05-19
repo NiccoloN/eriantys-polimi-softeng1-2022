@@ -16,6 +16,8 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 class PlayerStatsCLIComponent extends BasicCLIComponent {
 
+    public static final int WIDTH = 8, HEIGHT = 8;
+
     private String color;
     private final String teamColor;
     private final Mode gameMode;
@@ -28,7 +30,7 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
      */
     PlayerStatsCLIComponent(String teamColor, Mode gameMode) {
 
-        super(8, 8);
+        super(WIDTH, HEIGHT);
 
         color = PlayerStatusCLIComponent.PLAYER_STATUS_DEFAULT_COLOR;
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
@@ -41,8 +42,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
         this.helperLeft = helperLeft;
         tablesCLIComponent = new SchoolTablesCLIComponent(nickname, gameMode);
         statsCLIComponent = new PlayerStatsCLIComponent(teamAnsiColor, gameMode);
-        lastHelperCLIComponent = new HelperCardCLIComponent(1, 1, 1);
-        lastHelperCLIComponent.setHidden(true);
         setPosition(0, 0);
     }
 
@@ -51,7 +50,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         tablesCLIComponent.printToFrame(frame);
         statsCLIComponent.printToFrame(frame);
-        lastHelperCLIComponent.printToFrame(frame);
+        if(lastHelperCLIComponent != null) lastHelperCLIComponent.printToFrame(frame);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         tablesCLIComponent.setHidden(hidden);
         statsCLIComponent.setHidden(hidden);
-        lastHelperCLIComponent.setHidden(hidden);
+        if(lastHelperCLIComponent != null) lastHelperCLIComponent.setHidden(hidden);
     }
 
     @Override
@@ -86,8 +85,8 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         if(helperLeft) {
 
-            lastHelperCLIComponent.setX(x);
-            tablesCLIComponent.setX(x + lastHelperCLIComponent.getWidth() + 1);
+            if(lastHelperCLIComponent != null) lastHelperCLIComponent.setX(x);
+            tablesCLIComponent.setX(x + HelperCardCLIComponent.WIDTH + 1);
             statsCLIComponent.setX(tablesCLIComponent.getX() + tablesCLIComponent.getWidth());
         }
 
@@ -95,7 +94,8 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
             tablesCLIComponent.setX(x);
             statsCLIComponent.setX(tablesCLIComponent.getX() + tablesCLIComponent.getWidth());
-            lastHelperCLIComponent.setX(statsCLIComponent.getX() + statsCLIComponent.getWidth() + 1);
+            if(lastHelperCLIComponent != null)
+                lastHelperCLIComponent.setX(statsCLIComponent.getX() + statsCLIComponent.getWidth() + 1);
         }
     }
 
@@ -116,7 +116,8 @@ public class PlayerStatusCLIComponent implements CLIComponent {
 
         tablesCLIComponent.setY(y);
         statsCLIComponent.setY(y);
-        lastHelperCLIComponent.setY(y + (getHeight() - lastHelperCLIComponent.getHeight()) / 2f);
+        if(lastHelperCLIComponent != null)
+            lastHelperCLIComponent.setY(y + (getHeight() - lastHelperCLIComponent.getHeight()) / 2f);
     }
 
     @Override
@@ -129,7 +130,7 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     @Override
     public int getWidth() {
 
-        return tablesCLIComponent.getWidth() + statsCLIComponent.getWidth() + lastHelperCLIComponent.getWidth() + 1;
+        return tablesCLIComponent.getWidth() + statsCLIComponent.getWidth() + HelperCardCLIComponent.WIDTH + 1;
     }
 
     @Override
@@ -141,16 +142,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     public String getNickname() {
 
         return tablesCLIComponent.getNickname();
-    }
-
-    /**
-     * Sets the last played helper to visualize on this component
-     * @param lastHelperCLIComponent the helper component to visualize
-     */
-    public void setLastHelperCLIComponent(HelperCardCLIComponent lastHelperCLIComponent) {
-
-        if(lastHelperCLIComponent == null) throw new InvalidParameterException("Last helper component must be != null");
-        this.lastHelperCLIComponent = lastHelperCLIComponent;
     }
 
     /**
@@ -203,6 +194,17 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     public void setTowers(int towers) {
 
         statsCLIComponent.setTowers(towers);
+    }
+
+    /**
+     * Sets the last played helper to visualize on this component
+     * @param lastHelperCLIComponent the helper component to visualize
+     */
+    public void setLastHelperCLIComponent(HelperCardCLIComponent lastHelperCLIComponent) {
+
+        if(lastHelperCLIComponent == null) throw new InvalidParameterException("Last helper component must be != null");
+        this.lastHelperCLIComponent = lastHelperCLIComponent;
+        setPosition(getX(), getY());
     }
 
     public ArrayList<PawnColor> getEntranceColors(){

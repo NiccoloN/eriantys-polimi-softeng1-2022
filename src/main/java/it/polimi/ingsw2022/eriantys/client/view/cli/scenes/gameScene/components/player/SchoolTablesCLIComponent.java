@@ -13,6 +13,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 class SchoolTablesCLIComponent extends BasicCLIComponent {
 
+    public static final int WIDTH = 33, HEIGHT = 8;
     private static final int NICKNAME_MAX_CHARS = 15;
 
     private String color;
@@ -28,7 +29,7 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
      */
     SchoolTablesCLIComponent(String nickname, Mode gameMode) {
 
-        super(33, 8);
+        super(WIDTH, HEIGHT);
 
         color = PlayerStatusCLIComponent.PLAYER_STATUS_DEFAULT_COLOR;
 

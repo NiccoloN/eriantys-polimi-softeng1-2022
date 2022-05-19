@@ -33,13 +33,16 @@ public class ChooseHelperCard extends Move {
     @Override
     public Update getUpdate(Game game, String playerUsername) {
 
-        List<HelperCard> updatedHelperCards = game.getPlayer(playerUsername).getHelperCards();
-        Update helperCardUpdate = new Update();
-        HelperCardsChange helperCardsChange = new HelperCardsChange();
-        helperCardsChange.addHelperCards(updatedHelperCards);
-        helperCardUpdate.addChange(helperCardsChange);
+        Update update = new Update();
+        HelperCardsChange change = new HelperCardsChange();
+
+        Player player = game.getPlayer(playerUsername);
+        change.addHelperCards(player.getHelperCards());
+        change.setPlayedHelperCard(player.getCurrentHelper(), playerUsername);
+
+        update.addChange(change);
         System.out.println("Crafted helper card update");
 
-        return helperCardUpdate;
+        return update;
     }
 }

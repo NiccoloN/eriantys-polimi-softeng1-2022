@@ -10,6 +10,8 @@ import java.security.InvalidParameterException;
  */
 public class HelperCardCLIComponent extends BasicCLIComponent {
 
+    public static final int WIDTH = 7, HEIGHT = 5;
+
     private final int index;
     private final int priority, movement;
 
@@ -21,7 +23,7 @@ public class HelperCardCLIComponent extends BasicCLIComponent {
      */
     public HelperCardCLIComponent(int index, int priority, int movement) {
 
-        super(7, 5);
+        super(WIDTH, HEIGHT);
 
         if (index < 0 || index > 10) throw new InvalidParameterException("Index must be between 1 and 10");
         this.index = index;

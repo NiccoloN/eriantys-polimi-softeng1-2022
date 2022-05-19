@@ -16,6 +16,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class CloudCLIComponent extends BasicCLIComponent {
 
+    public static final int WIDTH = 9, HEIGHT = 5;
     public static final String DEFAULT_COLOR = CYAN;
 
     private String color;
@@ -28,7 +29,7 @@ public class CloudCLIComponent extends BasicCLIComponent {
      */
     public CloudCLIComponent(int index) {
 
-        super(9, 5);
+        super(WIDTH, HEIGHT);
 
         color = DEFAULT_COLOR;
 
