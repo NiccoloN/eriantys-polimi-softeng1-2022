@@ -1,5 +1,10 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
+import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 /**
@@ -9,16 +14,43 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
  */
 public class MoveStudent extends Move {
 
-    public final boolean toDining, toIsland;
-    public final int islandIndex;
-    public final PawnColor studentColor;
+    private final boolean toDining, toIsland;
+    private final int islandIndex;
+    private final PawnColor studentColor;
+    private ColoredPawn movedStudent;
 
 
     public MoveStudent(boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor) {
-        this.moveType = MoveType.MOVE_STUDENT;
+        super(MoveType.MOVE_STUDENT);
         this.toDining = toDining;
         this.toIsland = toIsland;
         this.islandIndex = islandIndex;
         this.studentColor = studentColor;
+    }
+
+    @Override
+    public void apply(Game game, String playerUsername) {
+
+        movedStudent = currentPlayer.getSchool().removeFromEntrance(studentColor);
+    }
+
+    @Override
+    public Update getUpdate(Game game) {
+
+        Update update = new Update();
+
+        if (toDining) {
+            currentPlayer.getSchool().addToTable(movedStudent);
+            SchoolChange schoolChange = new SchoolChange(currentPlayer.getSchool());
+            update.addChange(schoolChange);
+        }
+
+        if (toIsland) {
+            game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
+            IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
+            update.addChange(islandChange);
+        }
+
+        return(update);
     }
 }

@@ -312,7 +312,6 @@ public class EriantysCLI implements View {
             throw new RuntimeException("The current scene must be a GameScene to ask for a move");
 
         switch(requestMessage.requestedMove) {
-
             case CHOOSE_HELPER_CARD:
                 currentScene.setState(new HelperSelection(this, gameScene, requestMessage));
                 break;
