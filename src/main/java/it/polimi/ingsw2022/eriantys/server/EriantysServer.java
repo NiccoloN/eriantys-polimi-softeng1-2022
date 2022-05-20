@@ -54,11 +54,11 @@ public class EriantysServer {
 
     private Socket currentlyConnectingClient;
     private final Map<String, Socket> clients;
+    private int nextLockId;
     private final Map<Socket, ObjectOutputStream> clientOutputStreams;
     private final Map<Socket, ObjectInputStream> clientInputStreams;
     private final List<Thread> clientThreads;
-
-    private final AtomicBoolean validResponseReceived;
+    private final Map<Integer, AtomicBoolean> messageLocks;
 
     private GameSettings gameSettings;
     private Game game;
@@ -72,11 +72,10 @@ public class EriantysServer {
 
         //initialize client maps
         clients = new LinkedHashMap<>(4);
+        messageLocks = new HashMap<>(10);
         clientOutputStreams = new HashMap<>(4);
         clientInputStreams = new HashMap<>(4);
         clientThreads = new ArrayList<>(4);
-
-        validResponseReceived = new AtomicBoolean();
     }
 
     private void start() throws IOException, InterruptedException {
@@ -92,6 +91,7 @@ public class EriantysServer {
 
             while (gameSettings == null) wait();
             sendToClient(new GameJoinedMessage(clients.keySet().toArray(new String[0]), gameSettings), firstClient);
+            startPing(firstClient);
             notifyAll();
         }
 
@@ -111,6 +111,7 @@ public class EriantysServer {
                     if (client != currentClient)
                         sendToClient(new NewPlayerJoinedMessage(playerUsernames), client);
 
+                startPing(currentClient);
                 clients.notifyAll();
             }
         }
@@ -138,20 +139,9 @@ public class EriantysServer {
         listenToClient(client);
 
         //ask the connected client to provide a username
-        Message sent = new ChooseUsernameMessage();
+        TimedMessage sent = new ChooseUsernameMessage();
         sendToClient(sent, client);
-        waitForValidResponse(10, () -> {
-
-            try {
-
-                System.out.println("Username response timeout");
-                shutdown();
-            }
-            catch(IOException e) {
-
-                e.printStackTrace();
-            }
-        });
+        sent.waitForValidResponse();
 
         return client;
     }
@@ -161,19 +151,10 @@ public class EriantysServer {
         synchronized(clients) {
 
             while(clients.size() == 0) clients.wait();
-            sendToClient(new ChooseGameSettingsMessage(), client);
-            waitForValidResponse(5, () -> {
+            ChooseGameSettingsMessage sent = new ChooseGameSettingsMessage();
+            sendToClient(sent, client);
+            //sent.waitForValidResponse();
 
-                try {
-
-                    System.out.println("Game settings response timeout");
-                    shutdown();
-                }
-                catch(IOException e) {
-
-                    e.printStackTrace();
-                }
-            });
             clients.notifyAll();
         }
     }
@@ -248,26 +229,6 @@ public class EriantysServer {
         for(Socket client : clients.values()) sendToClient(message, client);
     }
 
-    public void waitForValidResponse(int timeout, Runnable timeoutTask) throws InterruptedException {
-
-        synchronized(validResponseReceived) {
-
-            validResponseReceived.set(false);
-            validResponseReceived.wait(timeout * 1000L);
-            if(!validResponseReceived.get()) timeoutTask.run();
-            validResponseReceived.notify();
-        }
-    }
-
-    public void acceptResponse() {
-
-        synchronized(validResponseReceived) {
-
-            validResponseReceived.set(true);
-            validResponseReceived.notify();
-        }
-    }
-
     public Socket getCurrentlyConnectingClient() {
 
         return currentlyConnectingClient;
@@ -287,6 +248,7 @@ public class EriantysServer {
             clients.put(username, clientSocket);
             System.out.println("Added client with username: " + username);
             currentlyConnectingClient = null;
+
             clients.notify();
         }
     }
@@ -295,6 +257,24 @@ public class EriantysServer {
 
         this.gameSettings = gameSettings;
         notify();
+    }
+
+    private void startPing(Socket client){
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    PingMessage sent = new PingMessage();
+                    sendToClient(sent, client);
+                    sent.waitForValidResponse();
+
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 10000);
     }
 
     /**
@@ -362,14 +342,28 @@ public class EriantysServer {
         gameMode.setPerformedMoveMessage(moveMessage);
     }
 
+    public AtomicBoolean getLock(int lockId){
+
+        return messageLocks.computeIfAbsent(lockId, k -> new AtomicBoolean());
+    }
+
+    public int getNextLockId(){
+        nextLockId += 1;
+        return nextLockId;
+    }
+
+    public void removeLock(int lockId){
+        messageLocks.remove(lockId);
+    }
+
     public void shutdown() throws IOException {
 
         System.out.println("Shutting down");
 
         running = false;
-        for(Thread thread : clientThreads) thread.interrupt();
-        for(Socket socket : clients.values()) socket.close();
-        for(ObjectOutputStream outputStream : clientOutputStreams.values()) outputStream.close();
-        for(ObjectInputStream inputStream : clientInputStreams.values()) inputStream.close();
+        for (Thread thread : clientThreads) thread.interrupt();
+        for (Socket socket : clients.values()) socket.close();
+        for (ObjectOutputStream outputStream : clientOutputStreams.values()) outputStream.close();
+        for (ObjectInputStream inputStream : clientInputStreams.values()) inputStream.close();
     }
 }

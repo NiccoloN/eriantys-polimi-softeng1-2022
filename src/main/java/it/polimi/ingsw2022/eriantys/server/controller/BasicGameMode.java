@@ -31,7 +31,7 @@ public class BasicGameMode implements GameMode {
 
         while (!game.isGameEnding()) {
 
-            //fillCloudIslands();
+            fillCloudIslands();
             for (Player player : game.getPlayers()) {
 
                 game.setCurrentPlayer(player); // Maybe it's useless

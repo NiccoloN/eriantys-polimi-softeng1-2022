@@ -15,8 +15,6 @@ public class SchoolChange implements Change, Serializable {
     public SchoolChange(SchoolDashboard schoolDashboard) {
 
         this.schoolDashboard = schoolDashboard;
-        for (ColoredPawn color: this.schoolDashboard.getEntranceStudents())
-            System.out.println(color.color.toString());
     }
 
     @Override

@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.messages.toServer;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.PingMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.TimedMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
@@ -21,7 +22,9 @@ public class PongMessage extends ToServerMessage{
 
     @Override
     public void manageAndReply() throws IOException {
+        super.manageAndReply();
 
-        EriantysServer.getInstance().sendToClient(previousMessage, EriantysClient.getInstance().getUsername());
+        TimedMessage request = (TimedMessage)previousMessage;
+        request.acceptResponse();
     }
 }

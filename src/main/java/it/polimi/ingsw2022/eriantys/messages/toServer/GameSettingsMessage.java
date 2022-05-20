@@ -2,7 +2,9 @@ package it.polimi.ingsw2022.eriantys.messages.toServer;
 
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.AckMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseGameSettingsMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidGameSettingsMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.TimedMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
@@ -35,7 +37,8 @@ public class GameSettingsMessage extends ToServerMessage {
         EriantysServer server = EriantysServer.getInstance();
         if (gameSettings.isValid()) {
 
-            server.acceptResponse();
+            TimedMessage request = (TimedMessage) previousMessage;
+            request.acceptResponse();
             server.addGameSettings(this.gameSettings);
             server.sendToClient(new AckMessage(), clientUsername);
         }

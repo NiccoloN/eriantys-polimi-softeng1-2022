@@ -1,8 +1,11 @@
 package it.polimi.ingsw2022.eriantys.messages.toServer;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.AckMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidUsernameMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.TimedMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
@@ -32,7 +35,8 @@ public class UsernameChoiceMessage extends ToServerMessage {
 
         else if(server.isAvailableUsername(clientUsername)) {
 
-            server.acceptResponse();
+            TimedMessage request = (TimedMessage) previousMessage;
+            request.acceptResponse();
             server.addClient(server.getCurrentlyConnectingClient(), clientUsername);
             server.sendToClient(new AckMessage(), clientUsername);
         }
