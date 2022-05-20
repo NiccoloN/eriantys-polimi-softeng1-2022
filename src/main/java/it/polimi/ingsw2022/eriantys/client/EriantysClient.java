@@ -117,7 +117,7 @@ public class EriantysClient {
                     Optional<ToClientMessage> message = readMessage();
                     if(message.isPresent()) {
 
-                        log("message received: " + message.get().getClass().getSimpleName());
+                        log("Message received: " + message.get().getClass().getSimpleName());
                         message.get().manageAndReply();
                     }
                 }

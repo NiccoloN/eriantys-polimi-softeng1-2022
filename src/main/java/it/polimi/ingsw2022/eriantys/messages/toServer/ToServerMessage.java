@@ -6,7 +6,6 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidResponseMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * @author Niccolò Nicolosi
@@ -29,6 +28,6 @@ public abstract class ToServerMessage extends Message {
         EriantysServer server = EriantysServer.getInstance();
 
         if(previousMessage != null && !previousMessage.isValidResponse(this))
-                server.sendToClient(new InvalidResponseMessage(this, previousMessage), clientUsername);
+            server.sendToClient(new InvalidResponseMessage(this, previousMessage), clientUsername);
     }
 }
