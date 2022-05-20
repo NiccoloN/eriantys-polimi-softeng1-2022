@@ -35,6 +35,7 @@ public class GameSettingsMessage extends ToServerMessage {
         EriantysServer server = EriantysServer.getInstance();
         if (gameSettings.isValid()) {
 
+            server.acceptResponse();
             server.addGameSettings(this.gameSettings);
             server.sendToClient(new AckMessage(), clientUsername);
         }

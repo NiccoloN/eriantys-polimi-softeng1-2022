@@ -32,6 +32,7 @@ public class UsernameChoiceMessage extends ToServerMessage {
 
         else if(server.isAvailableUsername(clientUsername)) {
 
+            server.acceptResponse();
             server.addClient(server.getCurrentlyConnectingClient(), clientUsername);
             server.sendToClient(new AckMessage(), clientUsername);
         }
