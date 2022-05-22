@@ -29,6 +29,8 @@ public class IslandSelection extends GameSceneState {
     private IslandCLIComponent currentSelected;
     private boolean movingStudent;
     private PawnColor studentColor;
+    private int motherNatureIndex;
+    private int motherNatureMaxSteps;
 
     /**
      * Constructs an island selection state
@@ -38,25 +40,34 @@ public class IslandSelection extends GameSceneState {
     public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
 
         super(cli, scene, requestMessage);
-        this.movingStudent = false;
+        movingStudent = false;
+        motherNatureIndex = -1;
+        motherNatureMaxSteps = -1;
 
         prompt = new BlinkingCLIComponent(2, new String[] {"VV"});
         prompt.setFirstColor(GREEN_BRIGHT);
         prompt.setSecondColor(GREEN);
     }
 
-    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, PawnColor studentColor){
+    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, PawnColor studentColor) {
 
         this(cli, scene, requestMessage);
         this.movingStudent = true;
         this.studentColor = studentColor;
     }
 
+    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, int motherNatureMaxSteps) {
+
+        this(cli, scene, requestMessage);
+        this.motherNatureIndex = scene.getMotherNatureIslandIndex();
+        this.motherNatureMaxSteps = motherNatureMaxSteps;
+    }
+
     @Override
     public void enter() {
 
         super.enter();
-        currentSelectedIndex = 0;
+        currentSelectedIndex = motherNatureIndex == -1 ? 0 : motherNatureIndex + 1;
         getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
         updateCLI();
@@ -85,7 +96,7 @@ public class IslandSelection extends GameSceneState {
             return;
         }
 
-        if(input.triggersAction(Action.SELECT)){
+        if(input.triggersAction(Action.SELECT)) {
 
             EriantysClient client = EriantysClient.getInstance();
 
@@ -98,11 +109,29 @@ public class IslandSelection extends GameSceneState {
             return;
         }
 
-        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) {
 
-        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
-        else if (currentSelectedIndex > getScene().getNumberOfIslands() - 1) currentSelectedIndex = 0;
+            do {
+
+                currentSelectedIndex++;
+                if (currentSelectedIndex > getScene().getNumberOfIslands() - 1) currentSelectedIndex = 0;
+            }
+            while (motherNatureIndex > -1 &&
+                    (currentSelectedIndex < motherNatureIndex + 1 ||
+                            currentSelectedIndex > motherNatureIndex + motherNatureMaxSteps));
+        }
+
+        else if (input.triggersAction(Action.LEFT)) {
+
+            do {
+
+                currentSelectedIndex--;
+                if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
+            }
+            while (motherNatureIndex > -1 &&
+                    (currentSelectedIndex < motherNatureIndex + 1 ||
+                            currentSelectedIndex > motherNatureIndex + motherNatureMaxSteps));
+        }
 
         updateCLI();
     }

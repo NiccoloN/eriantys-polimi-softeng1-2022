@@ -113,6 +113,14 @@ public class IslandCLIComponent extends BasicCLIComponent {
     }
 
     /**
+     * @return whether the mother nature is visible on this island
+     */
+    public boolean hasMother() {
+
+        return mother;
+    }
+
+    /**
      * Sets if mother nature is visible on this island
      * @param mother the visibility of mother nature: visible if true, hidden otherwise
      */

@@ -4,9 +4,13 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.*;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Start;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 
+import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;

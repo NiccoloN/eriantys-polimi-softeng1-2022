@@ -10,6 +10,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLICompone
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -17,6 +19,7 @@ import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
@@ -311,5 +314,11 @@ public class GameScene extends CLIScene {
     public PlayerStatusCLIComponent getPlayer(String username) {
 
         return players.stream().filter((x) -> x.getNickname().equals(username)).findAny().orElseThrow();
+    }
+
+    public int getMotherNatureIslandIndex() {
+
+        IslandCLIComponent island = Arrays.stream(islands).filter(IslandCLIComponent::hasMother).findAny().orElseThrow();
+        return island.getIndex();
     }
 }

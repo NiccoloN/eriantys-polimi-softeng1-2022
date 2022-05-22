@@ -4,8 +4,8 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.TimedMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -230,12 +230,12 @@ public class EriantysClient {
     }
 
     /**
-     * Asks the view to make a given move
-     * @param requestMessage the message containing the requested move
+     * Asks the view to satisfy the given move request
+     * @param moveRequestMessage the received request message
      */
-    public void askMove(MoveRequestMessage requestMessage) {
+    public void requestMove(MoveRequestMessage moveRequestMessage) {
 
-        view.askMove(requestMessage);
+        view.requestMove(moveRequestMessage);
     }
 
     /**
