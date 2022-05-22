@@ -101,11 +101,11 @@ public class GameScene extends CLIScene {
 
         //build island components
         islands = new IslandCLIComponent[12];
-        for(int n = 0; n < islands.length; n++) islands[n] = new IslandCLIComponent(n + 1);
+        for(int n = 0; n < islands.length; n++) islands[n] = new IslandCLIComponent(n);
 
         //build cloud components
         clouds = new ArrayList<>(players.length);
-        for(int n = 0; n < players.length; n++) clouds.add(new CloudCLIComponent(n + 1));
+        for(int n = 0; n < players.length; n++) clouds.add(new CloudCLIComponent(n));
 
         //build player dashboard components
         this.players = new ArrayList<>(players.length);

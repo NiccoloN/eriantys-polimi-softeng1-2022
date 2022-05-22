@@ -289,10 +289,10 @@ public class EriantysServer {
         for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
 
         IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
-        for (int n = 1; n <= islandChanges.length; n++) islandChanges[n - 1] = new IslandChange(n, game.getBoard().getIsland(n));
+        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n, game.getBoard().getIsland(n));
 
         CloudChange[] cloudChanges = new CloudChange[players.length];
-        for (int n = 1; n <= cloudChanges.length; n++) cloudChanges[n - 1] = new CloudChange(n, game.getBoard().getCloud(n));
+        for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
 
         SchoolChange[] schoolChanges = new SchoolChange[players.length];
         for (int n = 0; n < players.length; n++) schoolChanges[n] = new SchoolChange(players[n].getSchool());
