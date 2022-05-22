@@ -72,7 +72,6 @@ public class EriantysClient {
 
     private final boolean showLog;
     private final StringWriter log;
-    private final PrintWriter logWriter;
 
     private final View view;
 
@@ -82,11 +81,16 @@ public class EriantysClient {
 
         this.showLog = showLog;
         log = new StringWriter();
-        logWriter    = new PrintWriter(log);
-        if(!gui) Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(logWriter));
 
         //initialize view
         view = gui ? new EriantysGUI() : new EriantysCLI();
+
+        if (!gui) Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+
+            ((EriantysCLI) view).stop();
+            System.out.println(log);
+            e.printStackTrace();
+        });
     }
 
     private void start() throws TimeoutException {
@@ -240,8 +244,7 @@ public class EriantysClient {
      */
     public void log(String logText) {
 
-        logWriter.print(logText);
-        logWriter.print('\n');
+        log.append(logText).append('\n');
     }
 
     /**

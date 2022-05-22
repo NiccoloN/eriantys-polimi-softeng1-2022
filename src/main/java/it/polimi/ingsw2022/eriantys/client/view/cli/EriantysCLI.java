@@ -12,9 +12,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Numb
 import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 
-import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
@@ -99,7 +97,7 @@ public class EriantysCLI implements View {
 
             synchronized(this) { terminal.enterRawMode(); }
 
-            while(true) {
+            while(running) {
 
                 try {
 
@@ -175,29 +173,7 @@ public class EriantysCLI implements View {
      */
     private void update() throws TimeoutException {
 
-        //resize terminal window to the correct size
-        long start = System.nanoTime();
-        long time;
-        long timeout = 5000000000L;
-        while (!acceptableWindowSize()) {
-
-            terminal.writer().print(TERMINAL_RESIZE);
-
-            try {
-
-                Thread.sleep(1);
-            }
-            catch (InterruptedException e) {
-
-                e.printStackTrace();
-            }
-
-            time = System.nanoTime() - start;
-            if (time >= timeout)
-                throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)\n"
-                                           + "This application needs a terminal window of at least " + FRAME_WIDTH + " columns and " + FRAME_HEIGHT + " rows to run\n"
-                                           + "Try to manually resize your terminal window or to reduce the font size of your terminal");
-        }
+        resizeTerminalWindow();
 
         //reset terminal if size changed or buffer is too big
         if (terminal.getWidth() != prevWidth || terminal.getHeight() != prevHeight) terminal.writer().print(TERMINAL_RESET);
@@ -240,6 +216,32 @@ public class EriantysCLI implements View {
         terminal.flush();
     }
 
+    private void resizeTerminalWindow() throws TimeoutException {
+
+        long start = System.nanoTime();
+        long time;
+        long timeout = 5000000000L;
+        while (!acceptableWindowSize()) {
+
+            terminal.writer().print(TERMINAL_RESIZE);
+
+            try {
+
+                Thread.sleep(1);
+            }
+            catch (InterruptedException e) {
+
+                e.printStackTrace();
+            }
+
+            time = System.nanoTime() - start;
+            if (time >= timeout)
+                throw new TimeoutException("Could not correctly resize terminal window (elapsed time: " + time / 1000000 + "ms)\n"
+                        + "This application needs a terminal window of at least " + FRAME_WIDTH + " columns and " + FRAME_HEIGHT + " rows to run\n"
+                        + "Try to manually resize your terminal window or to reduce the font size of your terminal");
+        }
+    }
+
     /**
      * @return whether the terminal window is of an acceptable size
      */
@@ -249,14 +251,22 @@ public class EriantysCLI implements View {
     }
 
     /**
-     * Stops cli updating, clears the terminal window and prints the given exception
+     * Stops the cli and prints the given exception
      * @param e the exception to print
      */
     private void printException(Exception e) {
 
+        stop();
+        e.printStackTrace();
+    }
+
+    /**
+     * Stops cli updating and clears the terminal window
+     */
+    public void stop() {
+
         running = false;
         clear();
-        e.printStackTrace();
     }
 
     /**
