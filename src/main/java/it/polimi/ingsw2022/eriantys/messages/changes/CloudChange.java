@@ -21,7 +21,7 @@ public class CloudChange implements Change, Serializable {
     @Override
     public void apply(GameScene scene) {
 
-        CloudCLIComponent cliCloud = scene.getCloud(cloudIndex - 1);
+        CloudCLIComponent cliCloud = scene.getCloud(cloudIndex);
         for(PawnColor color : PawnColor.values()) cliCloud.setStudents(color, cloud.countStudents(color));
     }
 }

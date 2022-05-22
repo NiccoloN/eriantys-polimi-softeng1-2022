@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.server.controller;
 
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
@@ -33,7 +34,6 @@ public class BasicGameMode implements GameMode {
 
             fillCloudIslands();
             for (Player player : game.getPlayers()) {
-
                 game.setCurrentPlayer(player); // Maybe it's useless
                 chooseHelperCard(player.username);
             }
@@ -48,6 +48,8 @@ public class BasicGameMode implements GameMode {
 
                     chooseAndMoveStudent(player.username);
                 }
+
+                moveMotherNature(player.username);
             }
         }
     }
@@ -101,6 +103,32 @@ public class BasicGameMode implements GameMode {
             notifyAll();
         }
     }
+
+    public synchronized void moveMotherNature(String playerUsername) throws IOException, InterruptedException {
+        server.sendToClient(new MoveRequestMessage(MoveType.MOVE_MOTHER_NATURE), playerUsername);
+
+        synchronized (this) {
+            while (performedMoveMessage == null) this.wait();
+
+            if (!(performedMoveMessage.move instanceof MoveMotherNature)) {
+                // TODO: send InvalidMoveMessage
+            }
+
+            try {
+                performedMoveMessage.move.apply(game, playerUsername);
+            } catch (Exception e) {
+                server.sendToClient(new InvalidMoveMessage(
+                        performedMoveMessage,
+                        performedMoveMessage.previousMessage,
+                        "Wrong move for mother nature"), playerUsername);
+            }
+
+            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
+            performedMoveMessage = null;
+            notifyAll();
+        }
+    }
+
 
     public synchronized void setPerformedMoveMessage(PerformedMoveMessage performedMoveMessage) {
 

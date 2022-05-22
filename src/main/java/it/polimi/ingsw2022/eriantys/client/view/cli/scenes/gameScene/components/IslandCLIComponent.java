@@ -90,7 +90,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
      */
     public void setIndex(int index) {
 
-        if (index < 1 || index > 12) throw new InvalidParameterException("Index must be between 1 and 12");
+        if (index < 0 || index > 11) throw new InvalidParameterException("Index must be between 1 and 12");
         this.index = index;
     }
 

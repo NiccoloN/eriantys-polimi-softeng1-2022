@@ -116,7 +116,19 @@ public class Board {
      */
     public CompoundIslandTile getIsland(int index) {
 
-        return islands.get(index - 1);
+        return islands.get(index);
+    }
+
+    public int getIslandIndex(CompoundIslandTile lookingForIsland) {
+        int islandIndex = 0;
+        for (CompoundIslandTile island : islands) {
+            if (island != lookingForIsland) {
+                islandIndex++;
+            } else {
+                return islandIndex;
+            }
+        }
+        throw new RuntimeException("Island not found");
     }
 
     /**
@@ -126,6 +138,6 @@ public class Board {
      */
     public CloudTile getCloud(int index) {
 
-        return clouds.get(index - 1);
+        return clouds.get(index);
     }
 }
