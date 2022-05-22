@@ -65,7 +65,7 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void askMove(MoveRequestMessage requestMessage) {
+    public void requestMove(MoveRequestMessage requestMessage) {
 
         //TODO
     }

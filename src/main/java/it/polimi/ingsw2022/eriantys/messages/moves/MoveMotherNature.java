@@ -7,17 +7,19 @@ import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
+import java.io.Serializable;
+
 /**
  * This class represents the movement of mother nature by specifying the destination island's index
  * @author Emanuele Musto
  */
-public class MoveMotherNature extends Move {
+public class MoveMotherNature implements Move, Serializable {
 
     int islandIndex;
     int oldIslandIndex;
 
     public MoveMotherNature(int islandIndex) {
-        super(MoveType.MOVE_MOTHER_NATURE);
+
         this.islandIndex = islandIndex;
     }
 

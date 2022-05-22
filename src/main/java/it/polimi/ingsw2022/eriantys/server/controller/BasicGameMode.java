@@ -1,15 +1,21 @@
 package it.polimi.ingsw2022.eriantys.server.controller;
 
+import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseHelperCardRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
@@ -20,11 +26,13 @@ import java.util.NoSuchElementException;
 public class BasicGameMode implements GameMode {
 
     private final Game game;
-    private final EriantysServer server = EriantysServer.getInstance();
+    private final EriantysServer server;
     private PerformedMoveMessage performedMoveMessage;
 
     public BasicGameMode(Game game) {
+
         this.game = game;
+        server = EriantysServer.getInstance();
     }
 
     @Override
@@ -54,9 +62,30 @@ public class BasicGameMode implements GameMode {
         }
     }
 
+    private void fillCloudIslands() throws IOException {
+
+        Update update = new Update();
+
+        for (int cloudIndex = 0; cloudIndex < game.getPlayers().length; cloudIndex++) {
+
+            CloudTile cloud = game.getBoard().getCloud(cloudIndex);
+
+            for (int i = 0; i < 3; i++) {
+
+                ColoredPawn student = game.getStudentsBag().extractRandomStudent();
+                cloud.addStudent(student);
+            }
+
+            update.addChange(new CloudChange(cloudIndex, cloud));
+        }
+
+        server.sendToAllClients(new UpdateMessage(update));
+    }
+
     private void chooseHelperCard(String playerUsername) throws IOException, InterruptedException {
 
-        server.sendToClient(new MoveRequestMessage(MoveType.CHOOSE_HELPER_CARD), playerUsername);
+        server.sendToClient(new MoveRequestMessage(new ChooseHelperCardRequest()), playerUsername);
+
         synchronized (this) {
             while (performedMoveMessage == null) this.wait();
             if (!(performedMoveMessage.move instanceof ChooseHelperCard)) {
@@ -76,7 +105,7 @@ public class BasicGameMode implements GameMode {
 
     private void chooseAndMoveStudent(String playerUsername) throws IOException, InterruptedException {
 
-        server.sendToClient(new MoveRequestMessage(MoveType.MOVE_STUDENT), playerUsername);
+        server.sendToClient(new MoveRequestMessage(new MoveStudentRequest()), playerUsername);
 
         synchronized (this) {
 
@@ -104,10 +133,13 @@ public class BasicGameMode implements GameMode {
         }
     }
 
-    public synchronized void moveMotherNature(String playerUsername) throws IOException, InterruptedException {
-        server.sendToClient(new MoveRequestMessage(MoveType.MOVE_MOTHER_NATURE), playerUsername);
+    public void moveMotherNature(String playerUsername) throws IOException, InterruptedException {
+
+        int motherNatureMaxSteps = game.getPlayer(playerUsername).getCurrentHelper().movement;
+        server.sendToClient(new MoveRequestMessage(new MoveMotherNatureRequest(motherNatureMaxSteps)), playerUsername);
 
         synchronized (this) {
+
             while (performedMoveMessage == null) this.wait();
 
             if (!(performedMoveMessage.move instanceof MoveMotherNature)) {
@@ -134,18 +166,5 @@ public class BasicGameMode implements GameMode {
 
         this.performedMoveMessage = performedMoveMessage;
         notifyAll();
-    }
-
-    // Updating model
-    private void fillCloudIslands() {
-
-        for (int cloudIndex = 0; cloudIndex < game.getPlayers().length; cloudIndex++) {
-
-            for (int i = 0; i < 3; i++) {
-
-                ColoredPawn student = game.getStudentsBag().extractRandomStudent();
-                game.getBoard().getCloud(cloudIndex).addStudent(student);
-            }
-        }
     }
 }

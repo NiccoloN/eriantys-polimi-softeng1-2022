@@ -313,31 +313,11 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void askMove(MoveRequestMessage requestMessage) {
-
-        EriantysClient.getInstance().log(requestMessage.requestedMove.toString());
+    public void requestMove(MoveRequestMessage requestMessage) {
 
         if(!(currentScene instanceof GameScene))
             throw new RuntimeException("The current scene must be a GameScene to ask for a move");
 
-        switch(requestMessage.requestedMove) {
-            case CHOOSE_HELPER_CARD:
-                currentScene.setState(new HelperSelection(this, gameScene, requestMessage));
-                break;
-            case CHOOSE_CLOUD:
-                currentScene.setState(new CloudSelection(this, gameScene, requestMessage));
-                break;
-            case MOVE_MOTHER_NATURE:
-                currentScene.setState(new IslandSelection(this, gameScene, requestMessage));
-                break;
-            case CHOOSE_CHARACTER_CARD:
-                //do nothing (optional move)
-                break;
-            case MOVE_STUDENT:
-                currentScene.setState(new ColorSelection(this, gameScene, requestMessage));
-                break;
-            default:
-                throw new RuntimeException("Invalid move");
-        }
+        requestMessage.moveRequest.manage(this, gameScene, requestMessage);
     }
 }

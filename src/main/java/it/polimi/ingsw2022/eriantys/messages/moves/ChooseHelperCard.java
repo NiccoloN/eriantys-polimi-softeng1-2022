@@ -7,6 +7,7 @@ import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,12 @@ import java.util.List;
  * This class represents the choice of a helper card by a player
  * @author Emanuele Musto
  */
-public class ChooseHelperCard extends Move {
+public class ChooseHelperCard implements Move, Serializable {
 
     private final int helperCardIndex;
 
     public ChooseHelperCard(int helperCardIndex) {
 
-        super(MoveType.CHOOSE_HELPER_CARD);
         this.helperCardIndex = helperCardIndex;
     }
 

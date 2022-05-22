@@ -10,15 +10,9 @@ import java.io.Serializable;
  * This class represents a generic Move done by a player
  * @author Emanuele Musto
  */
-public abstract class Move implements Serializable {
+public interface Move {
 
-    public final MoveType moveType;
+    void apply(Game game, String playerUsername);
 
-    public Move(MoveType moveType){
-        this.moveType = moveType;
-    }
-
-    public abstract void apply(Game game, String playerUsername);
-
-    public abstract Update getUpdate(Game game, String playerUsername);
+    Update getUpdate(Game game, String playerUsername);
 }

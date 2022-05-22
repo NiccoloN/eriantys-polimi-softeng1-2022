@@ -8,12 +8,14 @@ import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
+import java.io.Serializable;
+
 /**
  * This class represents the movement of a student. It can be to the dining table or to an island.
  * If it's towards an island it specifies that island index.
  * @author Emanuele Musto
  */
-public class MoveStudent extends Move {
+public class MoveStudent implements Move, Serializable {
 
     private final boolean toDining, toIsland;
     private final int islandIndex;
@@ -23,7 +25,6 @@ public class MoveStudent extends Move {
 
     public MoveStudent(boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor) {
 
-        super(MoveType.MOVE_STUDENT);
         this.toDining = toDining;
         this.toIsland = toIsland;
         this.islandIndex = islandIndex;

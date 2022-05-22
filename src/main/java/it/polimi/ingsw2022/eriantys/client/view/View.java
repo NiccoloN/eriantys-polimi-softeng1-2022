@@ -62,7 +62,7 @@ public interface View {
 
     /**
      * Ask the client for a certain move
-     * @param previousMessage the message containing a move request
+     * @param requestMessage the message containing a move request
      */
-    void askMove(MoveRequestMessage previousMessage);
+    void requestMove(MoveRequestMessage requestMessage);
 }
