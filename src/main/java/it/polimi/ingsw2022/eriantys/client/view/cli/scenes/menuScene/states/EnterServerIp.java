@@ -39,6 +39,7 @@ public class EnterServerIp extends MenuSceneState {
 
         getScene().getEnterServerIpPrompt().setHidden(true);
         getScene().getTextArea().setHidden(true);
+        getScene().getTextArea().setText("");
     }
 
     @Override
