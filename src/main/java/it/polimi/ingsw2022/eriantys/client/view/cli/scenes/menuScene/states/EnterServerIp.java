@@ -73,7 +73,7 @@ public class EnterServerIp extends MenuSceneState {
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
             else if ((c == '.' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')
-                    || (c >= 'A' && c <= 'Z')) && serverIP.length() <= 21)
+                    || (c >= 'A' && c <= 'Z')) && serverIP.length() < 21)
                 textArea.appendText(String.valueOf(c));
 
             serverIP = textArea.getText();

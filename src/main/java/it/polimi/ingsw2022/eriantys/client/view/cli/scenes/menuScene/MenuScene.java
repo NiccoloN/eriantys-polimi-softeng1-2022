@@ -103,7 +103,7 @@ public class MenuScene extends CLIScene {
         enterServerIpPrompt.setColor(RESET);
         enterServerIpPrompt.setHidden(true);
 
-        textArea = new TextAreaCLIComponent(20, 4);
+        textArea = new TextAreaCLIComponent(22, 4);
         textArea.setHidden(true);
         textArea.setAnimated(false);
 

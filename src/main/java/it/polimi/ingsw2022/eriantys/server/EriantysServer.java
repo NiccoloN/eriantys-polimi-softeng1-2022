@@ -153,7 +153,7 @@ public class EriantysServer {
             while(clients.size() == 0) clients.wait();
             ChooseGameSettingsMessage sent = new ChooseGameSettingsMessage();
             sendToClient(sent, client);
-            //sent.waitForValidResponse();
+            sent.waitForValidResponse();
 
             clients.notifyAll();
         }
@@ -213,7 +213,7 @@ public class EriantysServer {
 
             outputStream.reset();
             outputStream.writeObject(message);
-            outputStream.notify();
+            outputStream.notifyAll();
         }
 
         System.out.println("Message sent: " + message.getClass().getSimpleName());
@@ -249,14 +249,14 @@ public class EriantysServer {
             System.out.println("Added client with username: " + username);
             currentlyConnectingClient = null;
 
-            clients.notify();
+            clients.notifyAll();
         }
     }
 
     public synchronized void addGameSettings(GameSettings gameSettings) {
 
         this.gameSettings = gameSettings;
-        notify();
+        notifyAll();
     }
 
     private void startPing(Socket client){

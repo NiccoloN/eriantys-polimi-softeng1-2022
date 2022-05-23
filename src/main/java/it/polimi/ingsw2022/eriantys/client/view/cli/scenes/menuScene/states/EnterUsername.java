@@ -72,7 +72,7 @@ public class EnterUsername extends MenuSceneState {
                 String prevText = textArea.getText();
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
-            else if (c >= 32 && c <= 126 && username.length() <= 20) textArea.appendText(String.valueOf(c));
+            else if (c >= 32 && c <= 126 && username.length() < 20) textArea.appendText(String.valueOf(c));
 
             username = textArea.getText();
         }
