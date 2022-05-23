@@ -41,7 +41,7 @@ public class ChooseGameSettingsMessage extends TimedMessage {
         waitForValidResponse(60, () -> {
             try {
                 System.out.println("Game settings response timeout");
-                EriantysServer.getInstance().shutdown();
+                EriantysServer.getInstance().shutdown(true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

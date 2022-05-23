@@ -8,7 +8,9 @@ import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -169,7 +171,7 @@ public class EriantysClient {
      * @param message the message to send
      * @throws IOException if an I/O exception occurs
      */
-    public void sendToServer(Message message) throws IOException {
+    public void sendToServer(ToServerMessage message) throws IOException {
 
         serverOutputStream.writeObject(message);
         log("Message sent: " + message.getClass().getSimpleName());
@@ -181,6 +183,7 @@ public class EriantysClient {
      */
     public void disconnect() throws IOException {
 
+        sendToServer(new DisconnectMessage());
         server.close();
     }
 

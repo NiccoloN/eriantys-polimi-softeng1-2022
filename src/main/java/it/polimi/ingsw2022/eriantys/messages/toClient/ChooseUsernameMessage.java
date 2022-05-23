@@ -37,7 +37,7 @@ public class ChooseUsernameMessage extends TimedMessage {
         waitForValidResponse(60, () -> {
             try {
                 System.out.println("Username response timeout");
-                EriantysServer.getInstance().shutdown();
+                EriantysServer.getInstance().shutdown(true);
             }
 
             catch(IOException e) {

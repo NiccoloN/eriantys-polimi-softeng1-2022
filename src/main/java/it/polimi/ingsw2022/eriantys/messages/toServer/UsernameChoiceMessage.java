@@ -2,13 +2,11 @@ package it.polimi.ingsw2022.eriantys.messages.toServer;
 
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.AckMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.TimedMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * @author Niccolò Nicolosi
