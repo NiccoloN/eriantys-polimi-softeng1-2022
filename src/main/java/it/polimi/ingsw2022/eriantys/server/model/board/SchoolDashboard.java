@@ -135,25 +135,41 @@ public class SchoolDashboard implements Serializable {
     }
 
     /**
+     * Checks if dashboard has a professor of a given color
+     * @param color color of the professor
+     * @return "true" if it has professor, "false" otherwise
+     */
+    public boolean hasProfessor(PawnColor color) {
+        for (ColoredPawn professor : professors) {
+            if (professor.color == color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Place a colored pawn into this school. Only pawns that represent professors should be place with this method
+     * If the professor is present, do nothing
      * @param professor the professor to place
-     * @throws RuntimeException if the given professor is already in this school
      */
     public void addProfessor(ColoredPawn professor) {
-
-        if (professors.contains(professor)) throw new RuntimeException("No duplicates allowed");
-        professors.add(professor);
+        if (!professors.contains(professor)) {
+            professors.add(professor);
+        }
     }
 
     /**
      * Removes the professor of the given color from this school
      * @param color the color of the professor to remove
-     * @return the removed professor
+     * @return Optional of the removed professor
      */
-    public ColoredPawn removeProfessor(PawnColor color) {
+    public Optional<ColoredPawn> removeProfessor(PawnColor color) {
 
-        ColoredPawn professor = professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
-        professors.remove(professor);
+        Optional<ColoredPawn> professor = professors.stream().filter((x) -> x.color == color).findAny();
+        if (professor.isPresent()) {
+            professors.remove(professor.get());
+        }
         return professor;
     }
 

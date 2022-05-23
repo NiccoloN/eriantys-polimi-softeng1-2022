@@ -3,10 +3,12 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.Serializable;
 
@@ -33,8 +35,16 @@ public class MoveStudent implements Move, Serializable {
 
     @Override
     public void apply(Game game, String playerUsername) {
-
         movedStudent = game.getPlayer(playerUsername).getSchool().removeFromEntrance(studentColor);
+
+        if (toDining) {
+            SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
+            school.addToTable(movedStudent);
+        }
+
+        if (toIsland) {
+            game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
+        }
     }
 
     @Override
@@ -42,20 +52,14 @@ public class MoveStudent implements Move, Serializable {
 
         Update update = new Update();
 
-        if (toDining) {
-
-            SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
-            school.addToTable(movedStudent);
-            SchoolChange schoolChange = new SchoolChange(school);
-            update.addChange(schoolChange);
-        }
-
         if (toIsland) {
-            SchoolChange schoolChange = new SchoolChange(game.getPlayer(playerUsername).getSchool());
-            game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
             IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
             update.addChange(islandChange);
-            update.addChange(schoolChange);
+        }
+
+        // Updates all the schools due to the update professor
+        for (Player player : game.getPlayers()) {
+            update.addChange(new SchoolChange(player.getSchool()));
         }
 
         return(update);
