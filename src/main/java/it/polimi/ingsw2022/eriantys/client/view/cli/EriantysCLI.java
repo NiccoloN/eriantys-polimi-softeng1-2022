@@ -55,7 +55,7 @@ public class EriantysCLI implements View {
 
     /**
      * Constructs the CLI and all of its components
-     * @throws IOException if the terminal instance could not be built
+     * @throws IOException if the terminal instance could not be built or could not load scii arts from files
      */
     public EriantysCLI() throws IOException {
 
@@ -77,6 +77,9 @@ public class EriantysCLI implements View {
         //initialize frame
         frame = new Frame(FRAME_WIDTH, FRAME_HEIGHT);
         showLog = false;
+
+        //load ascii arts
+        AsciiArts.loadFromFiles();
 
         currentScene = new MenuScene(this, frame.getWidth(), frame.getHeight());
     }
