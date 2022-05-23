@@ -16,7 +16,8 @@ public enum Action {
     DOWN(new Input[] { new Input('s'), new Input('S'), new Input(ESCAPE_CHAR, '[', 'B'), new Input(ESCAPE_CHAR, 'O', 'B') }),
     RIGHT(new Input[] { new Input('d'), new Input('D'), new Input(ESCAPE_CHAR, '[', 'C'), new Input(ESCAPE_CHAR, 'O', 'C') }),
     LEFT(new Input[] { new Input('a'), new Input('A'), new Input(ESCAPE_CHAR, '[', 'D'), new Input(ESCAPE_CHAR, 'O', 'D') }),
-    SELECT(new Input[] { new Input((char) 13) });
+    SELECT(new Input[] { new Input((char) 13) }),
+    ESC(new Input[] { new Input((char) 27) });
 
     private final Input[] inputs;
 

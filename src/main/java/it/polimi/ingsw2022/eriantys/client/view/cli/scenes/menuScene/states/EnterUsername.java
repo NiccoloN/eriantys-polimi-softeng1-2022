@@ -38,14 +38,14 @@ public class EnterUsername extends MenuSceneState {
     public void enter() {
 
         getScene().getEnterUsernamePrompt().setHidden(false);
-        getScene().getUsernameTextArea().setHidden(false);
+        getScene().getTextArea().setHidden(false);
     }
 
     @Override
     public void exit() {
 
         getScene().getEnterUsernamePrompt().setHidden(true);
-        getScene().getUsernameTextArea().setHidden(true);
+        getScene().getTextArea().setHidden(true);
     }
 
     @Override
@@ -65,14 +65,14 @@ public class EnterUsername extends MenuSceneState {
 
             char c = character.get();
 
-            TextAreaCLIComponent textArea = getScene().getUsernameTextArea();
+            TextAreaCLIComponent textArea = getScene().getTextArea();
 
             if(c == 8 || c == 127) {
 
                 String prevText = textArea.getText();
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
-            else if (c >= 32 && c <= 126 && username.length() <= 10) textArea.appendText(String.valueOf(c));
+            else if (c >= 32 && c <= 126 && username.length() <= 20) textArea.appendText(String.valueOf(c));
 
             username = textArea.getText();
         }

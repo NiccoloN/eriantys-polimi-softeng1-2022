@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -26,7 +27,7 @@ public class GameModeSelection extends MenuSceneState {
     private final Message requestMessage;
 
     private int currentSelectedIndex;
-    private BasicCLIComponent currentSelected;
+    private CLIComponent currentSelected;
 
     /**
      * Constructs a game mode selection state

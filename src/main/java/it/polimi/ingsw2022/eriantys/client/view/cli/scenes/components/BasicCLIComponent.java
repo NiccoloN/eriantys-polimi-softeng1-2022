@@ -76,6 +76,11 @@ public class BasicCLIComponent implements CLIComponent {
             if (chars[n] == ESCAPE_CHAR) toConsider = false;
             if (toConsider) {
 
+                if (length >= width) {
+
+                    length--;
+                    break;
+                }
                 this.chars[index][length] = currentChar;
                 currentChar = "";
                 length++;
@@ -85,8 +90,7 @@ public class BasicCLIComponent implements CLIComponent {
         this.chars[index][length - 1] += currentChar;
 
         if (length != width)
-            throw new InvalidParameterException("Row must be of length " + width +
-                                                ", like declared (actual length: " + length + ")");
+            throw new InvalidParameterException("Row must be of length " + width + ", like declared");
     }
 
     @Override

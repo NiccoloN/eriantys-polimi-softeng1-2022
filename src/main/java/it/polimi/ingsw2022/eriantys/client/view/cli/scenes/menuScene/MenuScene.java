@@ -4,13 +4,9 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.*;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Start;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
@@ -27,16 +23,18 @@ public class MenuScene extends CLIScene {
 
     private CLIComponent prompt;
     private final BlinkingCLIComponent startPrompt;
-    private final BasicCLIComponent connectingLabel;
-    private final BasicCLIComponent enterUsernamePrompt;
-    private final TextAreaCLIComponent usernameTextArea;
-    private final BasicCLIComponent panel;
-    private final BasicCLIComponent selectNumberOfPlayersPrompt;
-    private final BasicCLIComponent[] playerNumbers;
-    private final BasicCLIComponent selectGameModePrompt;
-    private final BasicCLIComponent[] gameModes;
-    private BasicCLIComponent chosenGameMode;
-    private BasicCLIComponent[] playerUsernames;
+    private final CLIComponent changeServerPrompt;
+    private CLIComponent connectingLabel;
+    private final CLIComponent enterUsernamePrompt;
+    private final CLIComponent enterServerIpPrompt;
+    private final TextAreaCLIComponent textArea;
+    private final CLIComponent panel;
+    private final CLIComponent selectNumberOfPlayersPrompt;
+    private final CLIComponent[] playerNumbers;
+    private final CLIComponent selectGameModePrompt;
+    private final CLIComponent[] gameModes;
+    private CLIComponent chosenGameMode;
+    private CLIComponent[] playerUsernames;
 
     /**
      * Constructs a menu scene
@@ -90,21 +88,24 @@ public class MenuScene extends CLIScene {
             decorativeClouds[n] = decorativeCloud;
         }
 
-        startPrompt = new BlinkingCLIComponent(29, new String[] {"Press enter to start the game"});
+        startPrompt = new BlinkingCLIComponent(29, new String[] {"Press Enter to start the game"});
         startPrompt.setFirstColor(BLACK + BLUE_BACKGROUND_BRIGHT);
         startPrompt.setFirstColor(WHITE_BRIGHT + BLUE_BACKGROUND_BRIGHT);
 
-        connectingLabel = new BasicCLIComponent(27, new String[] {"Connecting to the server..."});
-        connectingLabel.setColor(BLACK + BLUE_BACKGROUND_BRIGHT);
-        connectingLabel.setHidden(true);
+        changeServerPrompt = new BasicCLIComponent(29, new String[] {"Press ESC to change server IP"});
+        changeServerPrompt.setColor(BLACK + BLUE_BACKGROUND_BRIGHT);
 
         enterUsernamePrompt = new BasicCLIComponent(16, new String[] {"Enter a username"});
         enterUsernamePrompt.setColor(RESET);
         enterUsernamePrompt.setHidden(true);
 
-        usernameTextArea = new TextAreaCLIComponent(20, 4);
-        usernameTextArea.setHidden(true);
-        usernameTextArea.setAnimated(false);
+        enterServerIpPrompt = new BasicCLIComponent(23, new String[] {"Enter server IP address"});
+        enterServerIpPrompt.setColor(RESET);
+        enterServerIpPrompt.setHidden(true);
+
+        textArea = new TextAreaCLIComponent(20, 4);
+        textArea.setHidden(true);
+        textArea.setAnimated(false);
 
         int panelWidth = 35, panelHeight = 14;
         String[] panelRows = new String[panelHeight];
@@ -156,10 +157,11 @@ public class MenuScene extends CLIScene {
                     (int) (Math.random() * skyBackground.getHeight() - decorativeCloud.getHeight()));
 
         startPrompt.setPosition(getWidth() / 2f - startPrompt.getWidth() / 2f, title.getFrameY() + title.getHeight() + 2);
-        connectingLabel.setPosition(getWidth() / 2f - connectingLabel.getWidth() / 2f, startPrompt.getY());
+        changeServerPrompt.setPosition(getWidth() / 2f - changeServerPrompt.getWidth() / 2f, startPrompt.getY() + 3);
         enterUsernamePrompt.setPosition(getWidth() / 2f - enterUsernamePrompt.getWidth() / 2f, startPrompt.getY());
+        enterServerIpPrompt.setPosition(getWidth() / 2f - enterServerIpPrompt.getWidth() / 2f, startPrompt.getY());
 
-        usernameTextArea.setPosition(getWidth() / 2f - usernameTextArea.getWidth() / 2f, enterUsernamePrompt.getFrameY() + 2);
+        textArea.setPosition(getWidth() / 2f - textArea.getWidth() / 2f, enterUsernamePrompt.getFrameY() + 2);
 
         panel.setPosition(getWidth() / 2f - panel.getWidth() / 2f, startPrompt.getY());
         selectNumberOfPlayersPrompt.setPosition(getWidth() / 2f - selectNumberOfPlayersPrompt.getWidth() / 2f, panel.getY() + 2);
@@ -195,15 +197,17 @@ public class MenuScene extends CLIScene {
         title.printToFrame(frame);
         panel.printToFrame(frame);
         startPrompt.printToFrame(frame);
-        connectingLabel.printToFrame(frame);
+        changeServerPrompt.printToFrame(frame);
+        if (connectingLabel != null) connectingLabel.printToFrame(frame);
         enterUsernamePrompt.printToFrame(frame);
+        enterServerIpPrompt.printToFrame(frame);
         selectNumberOfPlayersPrompt.printToFrame(frame);
         selectGameModePrompt.printToFrame(frame);
-        usernameTextArea.printToFrame(frame);
-        for(BasicCLIComponent playerNumber : playerNumbers) playerNumber.printToFrame(frame);
-        for(BasicCLIComponent gameMode : gameModes) gameMode.printToFrame(frame);
+        textArea.printToFrame(frame);
+        for(CLIComponent playerNumber : playerNumbers) playerNumber.printToFrame(frame);
+        for(CLIComponent gameMode : gameModes) gameMode.printToFrame(frame);
         if(chosenGameMode != null) chosenGameMode.printToFrame(frame);
-        if(playerUsernames != null) for(BasicCLIComponent playerUsername : playerUsernames) playerUsername.printToFrame(frame);
+        if(playerUsernames != null) for(CLIComponent playerUsername : playerUsernames) playerUsername.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
     }
 
@@ -222,37 +226,54 @@ public class MenuScene extends CLIScene {
         return startPrompt;
     }
 
-    public BasicCLIComponent getConnectingLabel() {
+    public CLIComponent getChangeServerPrompt() {
+
+        return changeServerPrompt;
+    }
+
+    public CLIComponent getConnectingLabel() {
 
         return connectingLabel;
     }
 
-    public BasicCLIComponent getPanel() {
+    public void setConnectingLabel(CLIComponent connectingLabel) {
+
+        this.connectingLabel = connectingLabel;
+        connectingLabel.setPosition(getWidth() / 2f - connectingLabel.getWidth() / 2f, startPrompt.getY());
+
+    }
+
+    public CLIComponent getPanel() {
 
         return panel;
     }
 
-    public BasicCLIComponent getEnterUsernamePrompt() {
+    public CLIComponent getEnterUsernamePrompt() {
 
         return enterUsernamePrompt;
     }
 
-    public BasicCLIComponent getSelectNumberOfPlayersPrompt() {
+    public CLIComponent getEnterServerIpPrompt() {
+
+        return enterServerIpPrompt;
+    }
+
+    public CLIComponent getSelectNumberOfPlayersPrompt() {
 
         return selectNumberOfPlayersPrompt;
     }
 
-    public BasicCLIComponent getSelectGameModePrompt() {
+    public CLIComponent getSelectGameModePrompt() {
 
         return selectGameModePrompt;
     }
 
-    public TextAreaCLIComponent getUsernameTextArea() {
+    public TextAreaCLIComponent getTextArea() {
 
-        return usernameTextArea;
+        return textArea;
     }
 
-    public BasicCLIComponent getPlayerNumber(int index) {
+    public CLIComponent getPlayerNumber(int index) {
 
         return playerNumbers[index];
     }
@@ -262,7 +283,7 @@ public class MenuScene extends CLIScene {
         return playerNumbers.length;
     }
 
-    public BasicCLIComponent getGameMode(int index) {
+    public CLIComponent getGameMode(int index) {
 
         return gameModes[index];
     }

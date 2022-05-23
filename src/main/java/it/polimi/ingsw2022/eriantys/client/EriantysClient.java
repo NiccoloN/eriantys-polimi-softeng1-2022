@@ -16,6 +16,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import java.io.*;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -44,6 +45,7 @@ public class EriantysClient {
         getInstance().start();
     }
 
+    public static final String ADDRESS_FILE_NAME = "server address";
     private static EriantysClient instance;
 
     /**
@@ -82,6 +84,16 @@ public class EriantysClient {
         this.showLog = showLog;
         log = new StringWriter();
 
+        //create server address file if missing
+        File file = new File(ADDRESS_FILE_NAME);
+        if (file.createNewFile()) {
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            outputStreamWriter.write("localhost");
+            outputStreamWriter.close();
+        }
+
         //initialize view
         view = gui ? new EriantysGUI() : new EriantysCLI();
 
@@ -100,17 +112,17 @@ public class EriantysClient {
 
     /**
      * Starts the connection to the server and remain listening in a separate thread
+     * @param serverIP the IP address of the server
      */
-    public void connectToServer() {
+    public void connectToServer(String serverIP) {
 
         new Thread(() -> {
 
             try {
 
-                String host = "localhost";
                 int port = EriantysServer.PORT_NUMBER;
-                log("connecting to " + host + ":" + port);
-                server = new Socket(host, port);
+                log("connecting to " + serverIP + ":" + port);
+                server = new Socket(serverIP, port);
 
                 //initialize object streams
                 serverOutputStream = new ObjectOutputStream(server.getOutputStream());
