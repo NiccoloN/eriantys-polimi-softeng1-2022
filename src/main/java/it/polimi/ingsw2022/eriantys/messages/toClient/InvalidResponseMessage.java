@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class InvalidResponseMessage extends ToClientMessage {
 
-    private final Message response, request;
+    protected final Message response, request;
 
     public InvalidResponseMessage(Message response, Message request) {
 

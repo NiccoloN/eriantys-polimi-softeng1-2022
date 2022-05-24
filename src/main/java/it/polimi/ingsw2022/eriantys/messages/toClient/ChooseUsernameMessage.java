@@ -6,7 +6,6 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * @author Niccolò Nicolosi
@@ -38,7 +37,7 @@ public class ChooseUsernameMessage extends TimedMessage {
         waitForValidResponse(60, () -> {
             try {
                 System.out.println("Username response timeout");
-                EriantysServer.getInstance().shutdown();
+                EriantysServer.getInstance().shutdown(true);
             }
 
             catch(IOException e) {

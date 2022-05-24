@@ -8,7 +8,9 @@ import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -16,6 +18,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import java.io.*;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -44,6 +47,7 @@ public class EriantysClient {
         getInstance().start();
     }
 
+    public static final String ADDRESS_FILE_NAME = "server address.txt";
     private static EriantysClient instance;
 
     /**
@@ -82,6 +86,16 @@ public class EriantysClient {
         this.showLog = showLog;
         log = new StringWriter();
 
+        //create server address file if missing
+        File file = new File(ADDRESS_FILE_NAME);
+        if (file.createNewFile()) {
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            outputStreamWriter.write("localhost");
+            outputStreamWriter.close();
+        }
+
         //initialize view
         view = gui ? new EriantysGUI() : new EriantysCLI();
 
@@ -100,17 +114,17 @@ public class EriantysClient {
 
     /**
      * Starts the connection to the server and remain listening in a separate thread
+     * @param serverIP the IP address of the server
      */
-    public void connectToServer() {
+    public void connectToServer(String serverIP) {
 
         new Thread(() -> {
 
             try {
 
-                String host = "localhost";
                 int port = EriantysServer.PORT_NUMBER;
-                log("connecting to " + host + ":" + port);
-                server = new Socket(host, port);
+                log("connecting to " + serverIP + ":" + port);
+                server = new Socket(serverIP, port);
 
                 //initialize object streams
                 serverOutputStream = new ObjectOutputStream(server.getOutputStream());
@@ -157,7 +171,7 @@ public class EriantysClient {
      * @param message the message to send
      * @throws IOException if an I/O exception occurs
      */
-    public void sendToServer(Message message) throws IOException {
+    public void sendToServer(ToServerMessage message) throws IOException {
 
         serverOutputStream.writeObject(message);
         log("Message sent: " + message.getClass().getSimpleName());
@@ -169,6 +183,7 @@ public class EriantysClient {
      */
     public void disconnect() throws IOException {
 
+        sendToServer(new DisconnectMessage());
         server.close();
     }
 

@@ -7,7 +7,6 @@ import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
-import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseHelperCardRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
@@ -28,6 +27,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
+import java.util.NoSuchElementException;
 
 public class BasicGameMode implements GameMode {
 
@@ -119,19 +119,16 @@ public class BasicGameMode implements GameMode {
             while (performedMoveMessage == null) this.wait();
 
             if (!(performedMoveMessage.move instanceof MoveStudent)) {
-                server.sendToClient(new InvalidMoveMessage(
-                        performedMoveMessage,
-                        performedMoveMessage.previousMessage,
-                        "Error, required move is a " + MoveType.MOVE_STUDENT), playerUsername);
+
+                server.sendToClient(new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.previousMessage,
+                        "the user is required to move a student"), playerUsername);
             }
 
             try{ performedMoveMessage.move.apply(game, playerUsername); }
             catch(Exception e) {
 
-                server.sendToClient(new InvalidMoveMessage(
-                        performedMoveMessage,
-                        performedMoveMessage.previousMessage,
-                        "Student is not available in school dashboard"), playerUsername);
+                server.sendToClient(new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.previousMessage,
+                        "a student of the selected color is not available in your school dashboard"), playerUsername);
             }
 
             game.getBoard().checkAndUpdateProfessors();
@@ -154,14 +151,8 @@ public class BasicGameMode implements GameMode {
                 // TODO: send InvalidMoveMessage
             }
 
-            try {
-                performedMoveMessage.move.apply(game, playerUsername);
-            } catch (Exception e) {
-                server.sendToClient(new InvalidMoveMessage(
-                        performedMoveMessage,
-                        performedMoveMessage.previousMessage,
-                        "Wrong move for mother nature"), playerUsername);
-            }
+            performedMoveMessage.move.apply(game, playerUsername);
+            //TODO controllo mossa
 
             server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;

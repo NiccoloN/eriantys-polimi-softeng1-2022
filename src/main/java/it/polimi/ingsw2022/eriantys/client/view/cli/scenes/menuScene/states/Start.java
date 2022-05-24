@@ -5,6 +5,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 
+import java.io.IOException;
+
 /**
  * This class represents the first menu scene state
  * @author Niccolò Nicolosi
@@ -25,17 +27,28 @@ public class Start extends MenuSceneState {
     public void enter() {
 
         getScene().getStartPrompt().setHidden(false);
+        getScene().getChangeServerPrompt().setHidden(false);
     }
 
     @Override
     public void exit() {
 
         getScene().getStartPrompt().setHidden(true);
+        getScene().getChangeServerPrompt().setHidden(true);
     }
 
     @Override
-    public void manageInput(Input input) {
+    public void manageInput(Input input) throws IOException {
 
-        if(input.triggersAction(Action.SELECT)) getScene().setState(new Connecting(getCli(), getScene()));
+        if(input.triggersAction(Action.SELECT)) {
+
+            getScene().setState(new Connecting(getCli(), getScene()));
+            return;
+        }
+
+        if(input.triggersAction(Action.ESC)) {
+
+            getScene().setState(new EnterServerIp(getCli(), getScene()));
+        }
     }
 }
