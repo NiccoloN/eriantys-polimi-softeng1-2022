@@ -47,7 +47,7 @@ public class EriantysClient {
         getInstance().start();
     }
 
-    public static final String ADDRESS_FILE_NAME = "server address";
+    public static final String ADDRESS_FILE_NAME = "server address.txt";
     private static EriantysClient instance;
 
     /**
