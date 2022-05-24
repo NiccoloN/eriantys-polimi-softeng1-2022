@@ -43,6 +43,14 @@ public enum Team implements Serializable {
     }
 
     /**
+     * Get the list of players of the team
+     * @return Array of players
+     */
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
      * @return the number of players of the team
      */
     public int getSize() {

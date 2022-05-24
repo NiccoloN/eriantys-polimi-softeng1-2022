@@ -1,5 +1,7 @@
 package it.polimi.ingsw2022.eriantys.server.model.board;
 
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.util.*;
@@ -139,5 +141,24 @@ public class Board {
     public CloudTile getCloud(int index) {
 
         return clouds.get(index);
+    }
+
+    public void checkAndUpdateProfessors() {
+        for (PawnColor color : PawnColor.values()) {
+            SchoolDashboard winnerSchool = schools.get(0);
+            for (SchoolDashboard school : schools) {
+                if (school.hasProfessor(color) && school.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
+                    winnerSchool = school;
+                } else if (!school.hasProfessor(color) && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
+                    winnerSchool = school;
+                }
+            }
+            for (SchoolDashboard school : schools) {
+                school.removeProfessor(color);
+            }
+            if (winnerSchool.countTableStudents(color) > 0) {
+                winnerSchool.addProfessor(new ColoredPawn(color));
+            }
+        }
     }
 }
