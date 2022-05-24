@@ -102,7 +102,6 @@ public class IslandTile implements Serializable {
      * Places a tower onto this tile. Once a tower is placed, it cannot be removed.
      */
     void addTower() {
-
         tower = true;
     }
 }

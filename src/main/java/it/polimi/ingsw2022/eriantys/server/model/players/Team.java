@@ -42,6 +42,13 @@ public enum Team implements Serializable {
         players.add(player);
     }
 
+    public Player getLeader() {
+        for (Player player : players) {
+            if (player.isTeamLeader) return player;
+        }
+        throw new RuntimeException("No team leader found");
+    }
+
     /**
      * Get the list of players of the team
      * @return Array of players

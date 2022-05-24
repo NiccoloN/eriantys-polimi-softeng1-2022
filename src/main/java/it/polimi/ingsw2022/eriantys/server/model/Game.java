@@ -167,6 +167,39 @@ public class Game {
         players.sort((p1, p2) -> p1.comparePriorityTo(p2));
     }
 
+    public void checkAndUpdateProfessor(PawnColor color) {
+        SchoolDashboard winnerSchool = null;
+
+        for (Player player : getPlayers()) {
+            SchoolDashboard schoolDashboard = player.getSchool();
+            if (schoolDashboard.hasProfessor(color)) {
+                winnerSchool = schoolDashboard;
+                break;
+            }
+        }
+
+        if (winnerSchool == null) {
+            for (Player player : players) {
+                if (player.getSchool().countTableStudents(color) > 0) {
+                    player.getSchool().addProfessor(getProfessor(color));
+                    winnerSchool = player.getSchool();
+                }
+            }
+            if (winnerSchool == null) return;
+        }
+
+        for (Player player : getPlayers()) {
+            SchoolDashboard school = player.getSchool();
+            if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
+                ColoredPawn professor;
+                professor = winnerSchool.removeProfessor(color);
+
+                winnerSchool = school;
+                winnerSchool.addProfessor(professor);
+            }
+        }
+    }
+
     public void calculatePoints() {
         // TODO: implement it
     }
@@ -187,8 +220,10 @@ public class Game {
         return characters.get(index);
     }
 
-    public ColoredPawn getProfessor(int index) {
-        return professors.get(index);
+    public ColoredPawn getProfessor(PawnColor color) {
+        ColoredPawn professor = professors.stream().filter(x -> x.color == color).findFirst().orElseThrow();
+        professors.remove(professor);
+        return professor;
     }
 
     public Player getPlayer(String username) {

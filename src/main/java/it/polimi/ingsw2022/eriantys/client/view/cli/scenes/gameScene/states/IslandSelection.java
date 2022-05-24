@@ -116,8 +116,8 @@ public class IslandSelection extends GameSceneState {
                 if (currentSelectedIndex > getScene().getNumberOfIslands() - 1) currentSelectedIndex = 0;
             }
             while (motherNatureIndex > -1 &&
-                    (currentSelectedIndex < motherNatureIndex + 1 ||
-                            currentSelectedIndex > motherNatureIndex + motherNatureMaxSteps));
+                    (currentSelectedIndex < (motherNatureIndex + 1) % getScene().getNumberOfIslands() ||
+                            currentSelectedIndex > (motherNatureIndex + motherNatureMaxSteps) % getScene().getNumberOfIslands()));
         }
 
         else if (input.triggersAction(Action.LEFT)) {
@@ -128,8 +128,8 @@ public class IslandSelection extends GameSceneState {
                 if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
             }
             while (motherNatureIndex > -1 &&
-                    (currentSelectedIndex < motherNatureIndex + 1 ||
-                            currentSelectedIndex > motherNatureIndex + motherNatureMaxSteps));
+                    (currentSelectedIndex < (motherNatureIndex + 1) % getScene().getNumberOfIslands() ||
+                            currentSelectedIndex > (motherNatureIndex + motherNatureMaxSteps) % getScene().getNumberOfIslands()));
         }
 
         updateCLI();

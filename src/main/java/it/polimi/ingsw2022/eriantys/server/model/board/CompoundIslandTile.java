@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,7 @@ public class CompoundIslandTile implements Serializable {
     /**
      * @return the number of island tiles this island is made of
      */
-    public int getSize() {
+    public int getNumberOfTiles() {
 
         return tiles.size();
     }
@@ -134,11 +135,15 @@ public class CompoundIslandTile implements Serializable {
      * Sets the given team as the controller of this island
      * @param team the new team that controls this island
      * @throws RuntimeException if this island is denied
+     * @throws InvalidParameterException if team is null
      */
     public void setTeam(Team team) {
-
         if (denied) throw new RuntimeException("Cannot set a new controller team on a denied island");
+        if (team == null) throw new InvalidParameterException("Team cannot be null");
         this.team = team;
+        for (IslandTile tile : tiles) {
+            tile.addTower();
+        }
     }
 
     /**

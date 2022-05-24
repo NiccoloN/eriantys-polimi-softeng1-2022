@@ -164,12 +164,10 @@ public class SchoolDashboard implements Serializable {
      * @param color the color of the professor to remove
      * @return Optional of the removed professor
      */
-    public Optional<ColoredPawn> removeProfessor(PawnColor color) {
+    public ColoredPawn removeProfessor(PawnColor color) {
 
-        Optional<ColoredPawn> professor = professors.stream().filter((x) -> x.color == color).findAny();
-        if (professor.isPresent()) {
-            professors.remove(professor.get());
-        }
+        ColoredPawn professor = professors.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+        professors.remove(professor);
         return professor;
     }
 

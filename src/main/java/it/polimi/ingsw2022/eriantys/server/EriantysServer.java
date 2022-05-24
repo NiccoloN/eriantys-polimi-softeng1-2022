@@ -1,7 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
@@ -138,7 +137,7 @@ public class EriantysServer {
         gameMode.playGame();
     }
 
-    private Socket acceptConnection() throws IOException, InterruptedException {
+    private void acceptConnection() throws IOException, InterruptedException {
 
         //accept a connection
         Socket client = serverSocket.accept();
@@ -159,7 +158,6 @@ public class EriantysServer {
         sendToClient(sent, client);
         sent.waitForValidResponse();
 
-        return client;
     }
 
     private void requestGameSettings(String clientUsername) throws InterruptedException, IOException {

@@ -18,6 +18,7 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
+import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
@@ -25,7 +26,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 import java.util.NoSuchElementException;
 
@@ -46,7 +46,7 @@ public class BasicGameMode implements GameMode {
 
         while (!game.isGameEnding()) {
 
-            fillCloudIslands();
+            // fillCloudIslands();
             for (Player player : game.getPlayers()) {
                 game.setCurrentPlayer(player); // Maybe it's useless
                 chooseHelperCard(player.username);
@@ -131,7 +131,6 @@ public class BasicGameMode implements GameMode {
                         "a student of the selected color is not available in your school dashboard"), playerUsername);
             }
 
-            game.getBoard().checkAndUpdateProfessors();
             server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;
             notifyAll();
@@ -171,54 +170,49 @@ public class BasicGameMode implements GameMode {
         // If there is a dominant team, find its leader and check the towers
         if (dominantTeam.isPresent()) {
             updateTower(dominantTeam.get(), motherNatureIsland);
-            // TODO: Create updates for island and the school dashboards
         }
     }
 
     private void updateTower(Team dominantTeam, CompoundIslandTile island) throws IOException {
-        List<Player> dominantTeamPlayers = dominantTeam.getPlayers();
-        Player dominantTeamLeader;
+        int islandSize = island.getNumberOfTiles();
 
-        Optional<Team> currentControllingTeam = island.getTeam();
+        Player dominantTeamLeader = dominantTeam.getLeader();
         Player currentControllingTeamLeader = null;
 
-        if (dominantTeamPlayers.size() > 1) {
-            dominantTeamLeader = dominantTeamPlayers.stream().filter(player -> player.isTeamLeader).findFirst().orElseThrow();
-        } else {
-            dominantTeamLeader = dominantTeamPlayers.get(0);
-        }
-
         // If there's a team controlling the island and it's not the new team who will control the island, remove the old tower
-        if (currentControllingTeam.isPresent() && dominantTeam != currentControllingTeam.get()) {
-            currentControllingTeamLeader = currentControllingTeam.get().getPlayers().stream().filter(teamPlayer -> teamPlayer.isTeamLeader).findFirst().orElseThrow();
-            currentControllingTeamLeader.getSchool().addTower();
+        if (island.getTeam().isPresent()) {
+            currentControllingTeamLeader = island.getTeam().get().getLeader();
+            for (int i = 0; i < islandSize; i++) {
+                currentControllingTeamLeader.getSchool().addTower();
+            }
         }
-        dominantTeamLeader.getSchool().removeTower();
+        for (int i = 0; i < islandSize; i++) {
+            dominantTeamLeader.getSchool().removeTower();
+            // TODO: check end of game
+        }
         island.setTeam(dominantTeam);
+        //TODO: merge islands
 
         UpdateMessage influenceUpdate = craftInfluenceUpdate(
                 island,
-                currentControllingTeam.isPresent() ? currentControllingTeamLeader.getSchool() : null,
-                dominantTeamLeader.getSchool());
+                currentControllingTeamLeader,
+                dominantTeamLeader);
 
-        synchronized (this) {
-            server.sendToAllClients(influenceUpdate);
-            notifyAll();
-        }
+        server.sendToAllClients(influenceUpdate);
     }
 
-    private UpdateMessage craftInfluenceUpdate(CompoundIslandTile island, SchoolDashboard currentControllingSchool, SchoolDashboard dominantSchool) {
+    private UpdateMessage craftInfluenceUpdate(CompoundIslandTile island, Player currentTeamLeader, Player dominantTeamLeader) {
         Update update = new Update();
 
         IslandChange islandChange = new IslandChange(game.getBoard().getIslandIndex(island), island);
         update.addChange(islandChange);
 
-        if (currentControllingSchool != null) {
-            SchoolChange oldSchoolChange = new SchoolChange(currentControllingSchool);
+        if (currentTeamLeader != null) {
+            SchoolChange oldSchoolChange = new SchoolChange(currentTeamLeader.getSchool());
             update.addChange(oldSchoolChange);
         }
 
-        SchoolChange newSchoolChange = new SchoolChange(dominantSchool);
+        SchoolChange newSchoolChange = new SchoolChange(dominantTeamLeader.getSchool());
         update.addChange(newSchoolChange);
 
         return new UpdateMessage(update);

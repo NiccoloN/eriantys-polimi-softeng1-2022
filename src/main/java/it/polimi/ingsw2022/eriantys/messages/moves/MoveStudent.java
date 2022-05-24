@@ -3,7 +3,6 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
-import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
@@ -40,11 +39,13 @@ public class MoveStudent implements Move, Serializable {
         if (toDining) {
             SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
             school.addToTable(movedStudent);
+            game.checkAndUpdateProfessor(studentColor);
         }
 
         if (toIsland) {
             game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
         }
+
     }
 
     @Override
