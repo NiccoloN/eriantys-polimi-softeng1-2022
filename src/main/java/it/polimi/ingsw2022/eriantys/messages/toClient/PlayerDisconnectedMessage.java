@@ -6,11 +6,10 @@ import java.io.IOException;
 
 public class PlayerDisconnectedMessage extends ToClientMessage{
 
-    public PlayerDisconnectedMessage(){}
-
     @Override
     public void manageAndReply() throws IOException {
 
-        EriantysClient.getInstance().log("A player disconnected. Game ended.");
+        EriantysClient.getInstance().log("A player disconnected from the server");
+        throw new RuntimeException("Server shutdown");
     }
 }

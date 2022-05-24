@@ -19,7 +19,7 @@ public abstract class TimedMessage extends ToClientMessage {
         EriantysServer server = EriantysServer.getInstance();
         AtomicBoolean lock = server.getLock(lockId);
 
-        synchronized (lock){
+        synchronized (lock) {
             lock.wait(timeout * 1000L);
             if(!lock.get()) timeoutTask.run();
             server.removeLock(lockId);
@@ -31,7 +31,7 @@ public abstract class TimedMessage extends ToClientMessage {
 
         AtomicBoolean lock = EriantysServer.getInstance().getLock(lockId);
 
-        synchronized (lock){
+        synchronized (lock) {
             lock.set(true);
             lock.notifyAll();
         }

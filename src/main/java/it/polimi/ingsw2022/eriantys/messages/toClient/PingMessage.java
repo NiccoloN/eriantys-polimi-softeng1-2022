@@ -27,10 +27,10 @@ public class PingMessage extends TimedMessage{
     @Override
     public void waitForValidResponse() throws InterruptedException {
 
-        waitForValidResponse(20, () -> {
+        waitForValidResponse(10, () -> {
             try {
                 System.out.println("Ping response timeout");
-                EriantysServer.getInstance().shutdown();
+                EriantysServer.getInstance().shutdown(true);
             }
 
             catch(IOException e) {

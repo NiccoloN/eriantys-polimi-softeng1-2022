@@ -54,11 +54,13 @@ public class EriantysServer {
 
     private Socket currentlyConnectingClient;
     private final Map<String, Socket> clients;
-    private int nextLockId;
     private final Map<Socket, ObjectOutputStream> clientOutputStreams;
     private final Map<Socket, ObjectInputStream> clientInputStreams;
     private final List<Thread> clientThreads;
+    private final List<Timer> clientPingTimers;
     private final Map<Integer, AtomicBoolean> messageLocks;
+
+    private int nextLockId;
 
     private GameSettings gameSettings;
     private Game game;
@@ -72,10 +74,13 @@ public class EriantysServer {
 
         //initialize client maps
         clients = new LinkedHashMap<>(4);
-        messageLocks = new HashMap<>(10);
         clientOutputStreams = new HashMap<>(4);
         clientInputStreams = new HashMap<>(4);
         clientThreads = new ArrayList<>(4);
+        clientPingTimers = new ArrayList<>(4);
+        messageLocks = new HashMap<>(10);
+
+        nextLockId = 0;
     }
 
     private void start() throws IOException, InterruptedException {
@@ -83,8 +88,17 @@ public class EriantysServer {
         running = true;
         System.out.println("\nServer started\nWaiting for the first player to join...");
 
-        //accept first connection
-        Socket firstClient = acceptConnection();
+        //accept the first connection
+        acceptConnection();
+        String firstClient;
+
+        synchronized(this) {
+
+            while(clients.size() == 0) wait();
+            firstClient = (String) clients.keySet().toArray()[0];
+            notifyAll();
+        }
+
         requestGameSettings(firstClient);
 
         synchronized (this) {
@@ -98,21 +112,23 @@ public class EriantysServer {
         //accept other connections
         for (int n = 1; n < gameSettings.numberOfPlayers; n++) {
 
-            Socket currentClient = acceptConnection();
+            acceptConnection();
+            String currentClient;
 
-            synchronized (clients) {
+            synchronized (this) {
 
-                while (clients.size() <= n) clients.wait();
+                while (clients.size() <= n) wait();
 
                 String[] playerUsernames = clients.keySet().toArray(new String[0]);
+                currentClient = playerUsernames[n];
                 sendToClient(new GameJoinedMessage(playerUsernames, gameSettings), currentClient);
 
-                for (Socket client : clients.values())
-                    if (client != currentClient)
+                for (String client : clients.keySet())
+                    if (!client.equals(currentClient))
                         sendToClient(new NewPlayerJoinedMessage(playerUsernames), client);
 
                 startPing(currentClient);
-                clients.notifyAll();
+                notifyAll();
             }
         }
 
@@ -146,17 +162,11 @@ public class EriantysServer {
         return client;
     }
 
-    private void requestGameSettings(Socket client) throws InterruptedException, IOException {
+    private void requestGameSettings(String clientUsername) throws InterruptedException, IOException {
 
-        synchronized(clients) {
-
-            while(clients.size() == 0) clients.wait();
-            ChooseGameSettingsMessage sent = new ChooseGameSettingsMessage();
-            sendToClient(sent, client);
-            //sent.waitForValidResponse();
-
-            clients.notifyAll();
-        }
+        ChooseGameSettingsMessage sent = new ChooseGameSettingsMessage();
+        sendToClient(sent, clientUsername);
+        sent.waitForValidResponse();
     }
 
     private void listenToClient(Socket client) {
@@ -164,6 +174,7 @@ public class EriantysServer {
         Thread thread = new Thread(() -> {
 
             ObjectInputStream clientInputStream = clientInputStreams.get(client);
+            String clientUsername = null;
             while(running) {
 
                 try {
@@ -171,19 +182,40 @@ public class EriantysServer {
                     Optional<ToServerMessage> message = readMessageFromClient(clientInputStream);
                     if(message.isPresent()) {
 
-                        System.out.println("Message received: " + message.get().getClass().getSimpleName());
+                        System.out.println("Message received from " + (clientUsername != null ? clientUsername : client) +
+                                           ": " + message.get().getClass().getSimpleName());
                         message.get().manageAndReply();
                     }
+
+                    if(clientUsername == null)
+                        for(String username : clients.keySet()) if(clients.get(username) == client) {
+
+                            clientUsername = username;
+                            break;
+                        }
                 }
                 catch(SocketException e) {
 
-                    running = false;
-                    System.out.println(client + " closed while listening");
+                    System.out.println("Could not listen to a closed socket: " + client +
+                                       (clientUsername != null ? (" (" + clientUsername + ")") : ""));
+
+                    try { if(running) shutdown(true); }
+                    catch(IOException ex) {
+
+                        running = false;
+                        ex.printStackTrace();
+                    }
                 }
                 catch(IOException | ClassNotFoundException e) {
 
-                    running = false;
                     e.printStackTrace();
+
+                    try { if(running) shutdown(true); }
+                    catch(IOException ex) {
+
+                        running = false;
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -205,28 +237,45 @@ public class EriantysServer {
         }
     }
 
-    public void sendToClient(Message message, Socket client) throws IOException {
+    private void sendToClient(ToClientMessage message, Socket client, String clientUsername) throws IOException {
 
-        ObjectOutputStream outputStream = clientOutputStreams.get(client);
+        if(client.isClosed()) return;
 
-        synchronized(outputStream) {
+        try {
 
-            outputStream.reset();
-            outputStream.writeObject(message);
-            outputStream.notify();
+            ObjectOutputStream outputStream = clientOutputStreams.get(client);
+
+            synchronized(outputStream) {
+
+                outputStream.reset();
+                outputStream.writeObject(message);
+                outputStream.notifyAll();
+            }
+
+            System.out.println("Message sent to " + (clientUsername != null ? clientUsername : client) +
+                               ": " + message.getClass().getSimpleName());
         }
+        catch(SocketException e) {
 
-        System.out.println("Message sent: " + message.getClass().getSimpleName());
+            System.out.println(client + (clientUsername != null ? (" (" + clientUsername + ")") : "") +
+                               " closed: couldn't send " + message.getClass().getSimpleName());
+            if(running) shutdown(true);
+        }
     }
 
-    public void sendToClient(Message message, String clientUsername) throws IOException {
+    public void sendToClient(ToClientMessage message, Socket client) throws IOException {
 
-        sendToClient(message, clients.get(clientUsername));
+        sendToClient(message, client, null);
     }
 
-    public void sendToAllClients(Message message) throws IOException {
+    public void sendToClient(ToClientMessage message, String clientUsername) throws IOException {
 
-        for(Socket client : clients.values()) sendToClient(message, client);
+        sendToClient(message, clients.get(clientUsername), clientUsername);
+    }
+
+    public void sendToAllClients(ToClientMessage message) throws IOException {
+
+        for(String username : clients.keySet()) sendToClient(message, clients.get(username), username);
     }
 
     public Socket getCurrentlyConnectingClient() {
@@ -239,27 +288,24 @@ public class EriantysServer {
         return !clients.containsKey(username);
     }
 
-    public void addClient(Socket clientSocket, String username) {
+    public synchronized void addClient(Socket clientSocket, String username) {
 
         if(clients.containsValue(clientSocket)) throw new RuntimeException("Client already connected");
 
-        synchronized(clients) {
+        clients.put(username, clientSocket);
+        System.out.println("Added client with username: " + username);
+        currentlyConnectingClient = null;
 
-            clients.put(username, clientSocket);
-            System.out.println("Added client with username: " + username);
-            currentlyConnectingClient = null;
-
-            clients.notify();
-        }
+        notifyAll();
     }
 
     public synchronized void addGameSettings(GameSettings gameSettings) {
 
         this.gameSettings = gameSettings;
-        notify();
+        notifyAll();
     }
 
-    private void startPing(Socket client){
+    private void startPing(String clientUsername) {
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -267,14 +313,15 @@ public class EriantysServer {
             public void run() {
                 try {
                     PingMessage sent = new PingMessage();
-                    sendToClient(sent, client);
+                    sendToClient(sent, clientUsername);
                     sent.waitForValidResponse();
 
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }, 0, 10000);
+        }, 0, 15000);
+        clientPingTimers.add(timer);
     }
 
     /**
@@ -334,7 +381,7 @@ public class EriantysServer {
 
         for (int n = 0; n < playerUsernames.length; n++)
             sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
-        System.out.println("Sent initial update");
+        System.out.println("Sending initial update");
     }
 
     public void setPerformedMoveMessage(PerformedMoveMessage moveMessage) {
@@ -342,26 +389,36 @@ public class EriantysServer {
         gameMode.setPerformedMoveMessage(moveMessage);
     }
 
-    public AtomicBoolean getLock(int lockId){
+    public AtomicBoolean getLock(int lockId) {
 
         return messageLocks.computeIfAbsent(lockId, k -> new AtomicBoolean());
     }
 
-    public int getNextLockId(){
+    public int getNextLockId() {
+
         nextLockId += 1;
         return nextLockId;
     }
 
-    public void removeLock(int lockId){
+    public void removeLock(int lockId) {
+
         messageLocks.remove(lockId);
     }
 
-    public void shutdown() throws IOException {
+    public void shutdown(boolean playerDisconnected) throws IOException {
 
         System.out.println("Shutting down");
 
         running = false;
+
+        if(playerDisconnected) sendToAllClients(new PlayerDisconnectedMessage());
+
         for (Thread thread : clientThreads) thread.interrupt();
+        for(Timer timer : clientPingTimers) {
+
+            timer.cancel();
+            timer.purge();
+        }
         for (Socket socket : clients.values()) socket.close();
         for (ObjectOutputStream outputStream : clientOutputStreams.values()) outputStream.close();
         for (ObjectInputStream inputStream : clientInputStreams.values()) inputStream.close();

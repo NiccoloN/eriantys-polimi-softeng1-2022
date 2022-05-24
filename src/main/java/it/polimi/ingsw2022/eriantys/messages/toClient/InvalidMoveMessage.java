@@ -10,21 +10,20 @@ import java.io.IOException;
  * It also specifies the reason.
  * @author Emanuele Musto
  */
-public class InvalidMoveMessage extends ToClientMessage{
+public class InvalidMoveMessage extends InvalidResponseMessage {
 
     private final String cause;
-    private final Message response, request;
 
-    public InvalidMoveMessage(Message response, Message request, String cause){
+    public InvalidMoveMessage(Message response, Message request, String cause) {
+
+        super(response, request);
         this.cause = cause;
-        this.response = response;
-        this.request = request;
     }
 
     @Override
     public void manageAndReply() throws IOException {
 
-        EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() +
-                ") was invalid for the request (" + request.getClass().getSimpleName() + ")." + cause);
+        EriantysClient.getInstance().log("Invalid move: " + cause);
+        request.manageAndReply();
     }
 }

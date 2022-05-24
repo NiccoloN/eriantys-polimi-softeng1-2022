@@ -13,7 +13,7 @@ import java.net.Socket;
  * This class represents a Move performed by a player
  * @author Emanuele Musto
  */
-public class PerformedMoveMessage extends ToServerMessage{
+public class PerformedMoveMessage extends ToServerMessage {
 
     public final Move move;
 

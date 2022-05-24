@@ -9,7 +9,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
-import it.polimi.ingsw2022.eriantys.messages.moves.MoveType;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 
 import java.io.IOException;
@@ -43,6 +42,14 @@ public class HelperSelection extends GameSceneState {
         getScene().getHintTextArea().setText("Select a helper card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↑ or w to select a character card");
         updateCLI();
+
+        ////////////////
+        try {
+            EriantysClient.getInstance().disconnect();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
