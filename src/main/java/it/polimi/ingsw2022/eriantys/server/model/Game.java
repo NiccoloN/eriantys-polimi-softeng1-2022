@@ -163,11 +163,13 @@ public class Game {
         return players;
     }
 
-    public void reorderPlayersBasedOnHelperCard() {
-        players.sort((p1, p2) -> p1.comparePriorityTo(p2));
+    public void sortPlayersBasedOnHelperCard() {
+
+        players.sort(Player::comparePriorityTo);
     }
 
     public void checkAndUpdateProfessor(PawnColor color) {
+
         SchoolDashboard winnerSchool = null;
 
         for (Player player : getPlayers()) {
@@ -221,17 +223,19 @@ public class Game {
     }
 
     public ColoredPawn getProfessor(PawnColor color) {
+
         ColoredPawn professor = professors.stream().filter(x -> x.color == color).findFirst().orElseThrow();
         professors.remove(professor);
         return professor;
     }
 
     public Player getPlayer(String username) {
-        return players.stream().filter(player -> player.username == username).findFirst().get();
+
+        return players.stream().filter(player -> Objects.equals(player.username, username)).findFirst().orElseThrow();
     }
 
-    public Player[] getPlayers() {
-        return players.toArray(new Player[0]);
+    public ArrayList<Player> getPlayers() {
+        return new ArrayList<>(players);
     }
 
     public Player getCurrentPlayer() {

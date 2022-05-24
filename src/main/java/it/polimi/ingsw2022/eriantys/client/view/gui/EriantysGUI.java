@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class EriantysGUI extends Application implements View {
@@ -53,7 +54,7 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void startGame(Player[] players, Mode gameMode) {
+    public void startGame(List<Player> players, Mode gameMode) {
 
         //TODO
     }

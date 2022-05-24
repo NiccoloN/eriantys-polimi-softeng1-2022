@@ -21,7 +21,6 @@ public class MoveStudent implements Move, Serializable {
     private final boolean toDining, toIsland;
     private final int islandIndex;
     private final PawnColor studentColor;
-    private ColoredPawn movedStudent;
 
 
     public MoveStudent(boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor) {
@@ -34,18 +33,17 @@ public class MoveStudent implements Move, Serializable {
 
     @Override
     public void apply(Game game, String playerUsername) {
-        movedStudent = game.getPlayer(playerUsername).getSchool().removeFromEntrance(studentColor);
+
+        ColoredPawn movedStudent = game.getPlayer(playerUsername).getSchool().removeFromEntrance(studentColor);
 
         if (toDining) {
+
             SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
             school.addToTable(movedStudent);
             game.checkAndUpdateProfessor(studentColor);
         }
 
-        if (toIsland) {
-            game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
-        }
-
+        if (toIsland) game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
     }
 
     @Override

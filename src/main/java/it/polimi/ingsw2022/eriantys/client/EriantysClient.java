@@ -17,6 +17,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
@@ -230,7 +231,7 @@ public class EriantysClient {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    public void startGame(Player[] players, Mode gameMode) {
+    public void startGame(List<Player> players, Mode gameMode) {
 
         view.startGame(players, gameMode);
     }

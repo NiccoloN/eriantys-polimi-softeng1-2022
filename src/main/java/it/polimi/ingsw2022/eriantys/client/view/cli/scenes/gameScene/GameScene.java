@@ -53,7 +53,7 @@ public class GameScene extends CLIScene {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    public GameScene(EriantysCLI cli, int width, int height, Player[] players, Mode gameMode) {
+    public GameScene(EriantysCLI cli, int width, int height, List<Player> players, Mode gameMode) {
 
         super(cli, width, height);
 
@@ -104,12 +104,12 @@ public class GameScene extends CLIScene {
         for(int n = 0; n < islands.length; n++) islands[n] = new IslandCLIComponent(n);
 
         //build cloud components
-        clouds = new ArrayList<>(players.length);
-        for(int n = 0; n < players.length; n++) clouds.add(new CloudCLIComponent(n));
+        clouds = new ArrayList<>(players.size());
+        for(int n = 0; n < players.size(); n++) clouds.add(new CloudCLIComponent(n));
 
         //build player dashboard components
-        this.players = new ArrayList<>(players.length);
-        for (int n = 0; n < players.length; n++) this.players.add(new PlayerStatusCLIComponent(players[n].username, players[n].team.ansiColor, n % 2 != 0, gameMode));
+        this.players = new ArrayList<>(players.size());
+        for (int n = 0; n < players.size(); n++) this.players.add(new PlayerStatusCLIComponent(players.get(n).username, players.get(n).team.ansiColor, n % 2 != 0, gameMode));
 
         //build text area components
         hintTextArea = new TextAreaCLIComponent(this.players.get(0).getWidth(), 15, "Hints");

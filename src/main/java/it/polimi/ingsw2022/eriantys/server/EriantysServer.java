@@ -327,8 +327,8 @@ public class EriantysServer {
      */
     private Update[] createInitialUpdates() {
 
-        Player[] players = game.getPlayers();
-        Update[] initUpdates = new Update[players.length];
+        List<Player> players = game.getPlayers();
+        Update[] initUpdates = new Update[players.size()];
 
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
         for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
@@ -336,14 +336,14 @@ public class EriantysServer {
         IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
         for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n, game.getBoard().getIsland(n));
 
-        CloudChange[] cloudChanges = new CloudChange[players.length];
+        CloudChange[] cloudChanges = new CloudChange[players.size()];
         for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
 
-        SchoolChange[] schoolChanges = new SchoolChange[players.length];
-        for (int n = 0; n < players.length; n++) schoolChanges[n] = new SchoolChange(players[n].getSchool());
+        SchoolChange[] schoolChanges = new SchoolChange[players.size()];
+        for (int n = 0; n < players.size(); n++) schoolChanges[n] = new SchoolChange(players.get(n).getSchool());
 
-        PlayerChange[] playerChanges = new PlayerChange[players.length];
-        for (int n = 0; n < players.length; n++) playerChanges[n] = new PlayerChange(players[n]);
+        PlayerChange[] playerChanges = new PlayerChange[players.size()];
+        for (int n = 0; n < players.size(); n++) playerChanges[n] = new PlayerChange(players.get(n));
 
         for (int n = 0; n < initUpdates.length; n++) {
 
@@ -355,9 +355,9 @@ public class EriantysServer {
             for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
         }
 
-        for (int n = 0; n < players.length; n++) {
+        for (int n = 0; n < players.size(); n++) {
 
-            Player player = players[n];
+            Player player = players.get(n);
 
             HelperCardsChange helperCardsChange = new HelperCardsChange();
             for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));

@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -52,7 +53,7 @@ public interface View {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    void startGame(Player[] players, Mode gameMode);
+    void startGame(List<Player> players, Mode gameMode);
 
     /**
      * Applies a given update to the game this view is showing

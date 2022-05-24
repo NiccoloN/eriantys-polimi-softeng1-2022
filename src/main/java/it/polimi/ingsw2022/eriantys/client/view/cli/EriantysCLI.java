@@ -303,7 +303,7 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame(Player[] players, Mode gameMode) {
+    public void startGame(List<Player>  players, Mode gameMode) {
 
         setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
     }

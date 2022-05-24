@@ -6,14 +6,15 @@ import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.IOException;
+import java.util.List;
 
 public class StartingGameMessage extends ToClientMessage {
 
-    private final Player[] players;
+    private final List<Player> players;
     private final Mode gameMode;
     private final Update update;
 
-    public StartingGameMessage(Player[] players, Mode gameMode, Update update) {
+    public StartingGameMessage(List<Player> players, Mode gameMode, Update update) {
 
         this.players = players;
         this.gameMode = gameMode;

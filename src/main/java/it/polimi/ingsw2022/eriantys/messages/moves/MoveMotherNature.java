@@ -24,7 +24,8 @@ public class MoveMotherNature implements Move, Serializable {
     }
 
     @Override
-    public void apply(Game game, String username) {
+    public void apply(Game game, String playerUsername) {
+
         oldIslandIndex = game.getBoard().getIslandIndex(game.getBoard().getMotherNatureIsland());
         int steps = islandIndex - oldIslandIndex;
         System.out.println("Steps: " + steps);

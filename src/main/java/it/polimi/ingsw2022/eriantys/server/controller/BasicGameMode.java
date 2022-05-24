@@ -4,9 +4,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
-import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
-import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
-import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseCloudRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseHelperCardRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
@@ -18,8 +16,6 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
-import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
-import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -46,25 +42,28 @@ public class BasicGameMode implements GameMode {
 
         while (!game.isGameEnding()) {
 
-            // fillCloudIslands();
-            for (Player player : game.getPlayers()) {
-                game.setCurrentPlayer(player); // Maybe it's useless
-                chooseHelperCard(player.username);
-            }
+            if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
+                game.setInfluenceCalculator(new InfluenceCalculatorBasic());
 
-            game.reorderPlayersBasedOnHelperCard();
+            fillCloudIslands();
 
             for (Player player : game.getPlayers()) {
 
                 game.setCurrentPlayer(player);
+                chooseHelperCard(player.username);
+            }
 
-                for (int studentMove = 0; studentMove < 3; studentMove++) {
+            game.sortPlayersBasedOnHelperCard();
 
+            for (Player player : game.getPlayers()) {
+
+                game.setCurrentPlayer(player);
+                for (int studentMove = 0; studentMove < 3; studentMove++)
                     chooseAndMoveStudent(player.username);
-                }
 
                 moveMotherNature(player.username);
                 checkIslandInfluence();
+                chooseCloud(player.username);
             }
         }
     }
@@ -73,7 +72,7 @@ public class BasicGameMode implements GameMode {
 
         Update update = new Update();
 
-        for (int cloudIndex = 0; cloudIndex < game.getPlayers().length; cloudIndex++) {
+        for (int cloudIndex = 0; cloudIndex < game.getPlayers().size(); cloudIndex++) {
 
             CloudTile cloud = game.getBoard().getCloud(cloudIndex);
 
@@ -94,17 +93,21 @@ public class BasicGameMode implements GameMode {
         server.sendToClient(new MoveRequestMessage(new ChooseHelperCardRequest()), playerUsername);
 
         synchronized (this) {
+
             while (performedMoveMessage == null) this.wait();
-            if (!(performedMoveMessage.move instanceof ChooseHelperCard)) {
-                // TODO: send InvalidMoveMessage
+
+            try{
+
+                performedMoveMessage.move.apply(game, playerUsername);
+                server.sendToClient(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)), playerUsername);
+                //TODO check for last played cards
+            }
+            catch(NoSuchElementException e) {
+
+                server.sendToClient(new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.previousMessage,
+                        "No card of the given index found in hand"), playerUsername);
             }
 
-            try{ performedMoveMessage.move.apply(game, playerUsername); }
-            catch(NoSuchElementException e){
-                //TODO : send InvalidMoveMessage
-            }
-
-            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;
             notifyAll();
         }
@@ -118,20 +121,16 @@ public class BasicGameMode implements GameMode {
 
             while (performedMoveMessage == null) this.wait();
 
-            if (!(performedMoveMessage.move instanceof MoveStudent)) {
+            try{
 
-                server.sendToClient(new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.previousMessage,
-                        "the user is required to move a student"), playerUsername);
+                performedMoveMessage.move.apply(game, playerUsername);
+                server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             }
-
-            try{ performedMoveMessage.move.apply(game, playerUsername); }
             catch(Exception e) {
 
                 server.sendToClient(new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.previousMessage,
-                        "a student of the selected color is not available in your school dashboard"), playerUsername);
+                        "No student of the selected color is not available in school dashboard"), playerUsername);
             }
-
-            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;
             notifyAll();
         }
@@ -146,78 +145,76 @@ public class BasicGameMode implements GameMode {
 
             while (performedMoveMessage == null) this.wait();
 
-            if (!(performedMoveMessage.move instanceof MoveMotherNature)) {
-                // TODO: send InvalidMoveMessage
-            }
-
             performedMoveMessage.move.apply(game, playerUsername);
+            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             //TODO controllo mossa
 
-            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
             performedMoveMessage = null;
             notifyAll();
         }
     }
 
     private void checkIslandInfluence() throws IOException {
+
         CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
 
-        Optional<Team> dominantTeam = new InfluenceCalculatorBasic().calculateInfluence(
-                new ArrayList<>(Arrays.asList(game.getPlayers())),
+        Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence(
+                game.getPlayers(),
                 motherNatureIsland,
                 game.getCurrentPlayer());
 
-        // If there is a dominant team, find its leader and check the towers
-        if (dominantTeam.isPresent()) {
-            updateTower(dominantTeam.get(), motherNatureIsland);
-        }
+        //If there is a dominant team, find its leader and check the towers
+        if (dominantTeam.isPresent()) updateTowers(dominantTeam.get(), motherNatureIsland);
     }
 
-    private void updateTower(Team dominantTeam, CompoundIslandTile island) throws IOException {
+    private void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
+
+        Update update = new Update();
+
         int islandSize = island.getNumberOfTiles();
 
         Player dominantTeamLeader = dominantTeam.getLeader();
-        Player currentControllingTeamLeader = null;
 
         // If there's a team controlling the island and it's not the new team who will control the island, remove the old tower
         if (island.getTeam().isPresent()) {
-            currentControllingTeamLeader = island.getTeam().get().getLeader();
-            for (int i = 0; i < islandSize; i++) {
-                currentControllingTeamLeader.getSchool().addTower();
-            }
-        }
-        for (int i = 0; i < islandSize; i++) {
-            dominantTeamLeader.getSchool().removeTower();
-            // TODO: check end of game
-        }
-        island.setTeam(dominantTeam);
-        //TODO: merge islands
 
-        UpdateMessage influenceUpdate = craftInfluenceUpdate(
-                island,
-                currentControllingTeamLeader,
-                dominantTeamLeader);
+            Player currentControllingTeamLeader = island.getTeam().get().getLeader();
+            for (int i = 0; i < islandSize; i++) currentControllingTeamLeader.getSchool().addTower();
 
-        server.sendToAllClients(influenceUpdate);
-    }
-
-    private UpdateMessage craftInfluenceUpdate(CompoundIslandTile island, Player currentTeamLeader, Player dominantTeamLeader) {
-        Update update = new Update();
-
-        IslandChange islandChange = new IslandChange(game.getBoard().getIslandIndex(island), island);
-        update.addChange(islandChange);
-
-        if (currentTeamLeader != null) {
-            SchoolChange oldSchoolChange = new SchoolChange(currentTeamLeader.getSchool());
+            SchoolChange oldSchoolChange = new SchoolChange(currentControllingTeamLeader.getSchool());
             update.addChange(oldSchoolChange);
         }
 
+        for (int i = 0; i < islandSize; i++) dominantTeamLeader.getSchool().removeTower();
         SchoolChange newSchoolChange = new SchoolChange(dominantTeamLeader.getSchool());
         update.addChange(newSchoolChange);
 
-        return new UpdateMessage(update);
+        island.setTeam(dominantTeam);
+        //TODO: merge islands
+        IslandChange islandChange = new IslandChange(game.getBoard().getIslandIndex(island), island);
+        update.addChange(islandChange);
+
+        //TODO: check end of game
+
+        server.sendToAllClients(new UpdateMessage(update));
     }
 
+    private void chooseCloud(String playerUsername) throws IOException, InterruptedException {
+
+        server.sendToClient(new MoveRequestMessage(new ChooseCloudRequest()), playerUsername);
+
+        synchronized (this) {
+
+            while (performedMoveMessage == null) this.wait();
+
+            performedMoveMessage.move.apply(game, playerUsername);
+            server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game, playerUsername)));
+            //TODO controllo mossa
+
+            performedMoveMessage = null;
+            notifyAll();
+        }
+    }
 
     public synchronized void setPerformedMoveMessage(PerformedMoveMessage performedMoveMessage) {
 

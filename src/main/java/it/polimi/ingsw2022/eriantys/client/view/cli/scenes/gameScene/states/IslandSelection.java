@@ -24,6 +24,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class IslandSelection extends GameSceneState {
 
+    private int steps;
     private int currentSelectedIndex;
     private IslandCLIComponent currentSelected;
     private boolean movingStudent;
@@ -66,6 +67,7 @@ public class IslandSelection extends GameSceneState {
     public void enter() {
 
         super.enter();
+        steps = 0;
         currentSelectedIndex = motherNatureIndex == -1 ? 0 : motherNatureIndex + 1;
         getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
@@ -110,26 +112,31 @@ public class IslandSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) {
 
-            do {
+            currentSelectedIndex++;
 
-                currentSelectedIndex++;
-                if (currentSelectedIndex > getScene().getNumberOfIslands() - 1) currentSelectedIndex = 0;
+            if(motherNatureIndex > -1) {
+
+                steps++;
+                if (steps > motherNatureMaxSteps) steps = 1;
+                currentSelectedIndex = motherNatureIndex + steps;
             }
-            while (motherNatureIndex > -1 &&
-                    (currentSelectedIndex < (motherNatureIndex + 1) % getScene().getNumberOfIslands() ||
-                            currentSelectedIndex > (motherNatureIndex + motherNatureMaxSteps) % getScene().getNumberOfIslands()));
+
+            currentSelectedIndex %= getScene().getNumberOfIslands();
         }
 
         else if (input.triggersAction(Action.LEFT)) {
 
-            do {
+            currentSelectedIndex--;
+            if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
 
-                currentSelectedIndex--;
-                if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
+            if(motherNatureIndex > -1) {
+
+                steps--;
+                if (steps < 1) steps = motherNatureMaxSteps;
+                currentSelectedIndex = motherNatureIndex + steps;
             }
-            while (motherNatureIndex > -1 &&
-                    (currentSelectedIndex < (motherNatureIndex + 1) % getScene().getNumberOfIslands() ||
-                            currentSelectedIndex > (motherNatureIndex + motherNatureMaxSteps) % getScene().getNumberOfIslands()));
+
+            currentSelectedIndex %= getScene().getNumberOfIslands();
         }
 
         updateCLI();

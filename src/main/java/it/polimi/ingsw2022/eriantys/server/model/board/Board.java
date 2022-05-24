@@ -61,7 +61,7 @@ public class Board {
         }
 
         motherNatureIslandIndex = 0;
-        islands.get(0).setMotherNature(true);
+        islands.get(motherNatureIslandIndex).setMotherNature(true);
     }
 
     /**
