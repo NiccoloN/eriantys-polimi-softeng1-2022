@@ -26,7 +26,7 @@ public class CloudTile implements Serializable {
      */
     public void addStudent(ColoredPawn student) {
 
-        if (students.size() >= 3) throw new RuntimeException("Maximum number of placed students already reached on this island");
+        if (students.size() >= 3) throw new RuntimeException("Maximum number of placed students already reached on this cloud");
         if (students.contains(student)) throw new RuntimeException("No duplicates allowed");
         students.add(student);
     }

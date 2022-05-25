@@ -1,11 +1,8 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
-import it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
-import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
-import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.Serializable;
 
@@ -24,16 +21,17 @@ public class MoveMotherNature implements Move, Serializable {
     }
 
     @Override
-    public void apply(Game game, String playerUsername) {
+    public String apply(Game game) {
 
         oldIslandIndex = game.getBoard().getIslandIndex(game.getBoard().getMotherNatureIsland());
         int steps = islandIndex - oldIslandIndex;
         System.out.println("Steps: " + steps);
         game.getBoard().moveMotherNature(steps);
+        return null;
     }
 
     @Override
-    public Update getUpdate(Game game, String playerUsername) {
+    public Update getUpdate(Game game) {
         Update update = new Update();
         IslandChange oldIslandChange = new IslandChange(oldIslandIndex, game.getBoard().getIsland(oldIslandIndex));
         IslandChange newIslandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));

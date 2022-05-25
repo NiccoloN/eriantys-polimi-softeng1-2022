@@ -206,14 +206,4 @@ public class PlayerStatusCLIComponent implements CLIComponent {
         this.lastHelperCLIComponent = lastHelperCLIComponent;
         setPosition(getX(), getY());
     }
-
-    public ArrayList<PawnColor> getEntranceColors(){
-
-        return statsCLIComponent.getEntranceColors();
-    }
-
-    public Map<PawnColor, Integer> getEntranceStudents() {
-
-        return statsCLIComponent.getEntranceStudents();
-    }
 }

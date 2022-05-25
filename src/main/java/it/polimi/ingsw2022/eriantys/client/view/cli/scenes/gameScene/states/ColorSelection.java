@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.ColorCLIComponent;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN;
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
@@ -24,10 +25,9 @@ public class ColorSelection extends GameSceneState {
      * @param cli   the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public ColorSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
+    public ColorSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super(cli, scene, requestMessage);
-        scene.setColors(scene.getPlayer().getEntranceColors());
     }
 
     @Override

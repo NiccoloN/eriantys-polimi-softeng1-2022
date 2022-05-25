@@ -8,5 +8,5 @@ public interface GameMode {
 
     void playGame() throws IOException, InterruptedException;
 
-    void setPerformedMoveMessage(PerformedMoveMessage moveMessage);
+    void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException;
 }

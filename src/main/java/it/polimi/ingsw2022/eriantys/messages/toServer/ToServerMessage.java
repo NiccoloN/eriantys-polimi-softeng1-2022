@@ -13,13 +13,13 @@ import java.io.IOException;
  */
 public abstract class ToServerMessage extends Message {
 
-    public final Message previousMessage;
     public final String clientUsername;
+    private final Message previousMessage;
 
     public ToServerMessage(Message previousMessage) {
 
-        this.previousMessage = previousMessage;
         clientUsername = EriantysClient.getInstance().getUsername();
+        this.previousMessage = previousMessage;
     }
 
     @Override
@@ -29,5 +29,10 @@ public abstract class ToServerMessage extends Message {
 
         if(previousMessage != null && !previousMessage.isValidResponse(this))
             server.sendToClient(new InvalidResponseMessage(this, previousMessage), clientUsername);
+    }
+
+    public Message getPreviousMessage() {
+
+        return previousMessage;
     }
 }

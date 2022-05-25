@@ -12,6 +12,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
@@ -41,7 +42,7 @@ public class CharacterSelection extends GameSceneState {
      * @param goBackAction the action that makes the game scene go back to the previous state if triggered
      */
 
-    public CharacterSelection(EriantysCLI cli, GameScene scene, Message requestMessage, GameSceneState prevState, Action goBackAction) {
+    public CharacterSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, GameSceneState prevState, Action goBackAction) {
 
         super(cli, scene, requestMessage);
 

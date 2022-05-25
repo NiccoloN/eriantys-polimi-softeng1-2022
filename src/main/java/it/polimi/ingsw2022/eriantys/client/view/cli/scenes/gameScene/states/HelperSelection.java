@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class HelperSelection extends GameSceneState {
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public HelperSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
+    public HelperSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super(cli, scene, requestMessage);
     }

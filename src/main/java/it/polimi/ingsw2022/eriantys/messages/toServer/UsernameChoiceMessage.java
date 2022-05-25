@@ -29,19 +29,19 @@ public class UsernameChoiceMessage extends ToServerMessage {
 
         if(clientUsername.length() < 1 || clientUsername.length() > 15) {
 
-            server.sendToClient(new InvalidUsernameMessage(this, previousMessage, true, false),
+            server.sendToClient(new InvalidUsernameMessage(this, getPreviousMessage(), true, false),
                     server.getCurrentlyConnectingClient());
         }
 
         else if(server.isAvailableUsername(clientUsername)) {
 
-            TimedMessage request = (TimedMessage) previousMessage;
+            TimedMessage request = (TimedMessage) getPreviousMessage();
             request.acceptResponse();
             server.addClient(server.getCurrentlyConnectingClient(), clientUsername);
             server.sendToClient(new AckMessage(), clientUsername);
         }
 
-        else server.sendToClient(new InvalidUsernameMessage(this, previousMessage,false, true),
+        else server.sendToClient(new InvalidUsernameMessage(this, getPreviousMessage(),false, true),
                     server.getCurrentlyConnectingClient());
     }
 }

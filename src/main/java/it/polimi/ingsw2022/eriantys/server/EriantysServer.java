@@ -382,9 +382,9 @@ public class EriantysServer {
         System.out.println("Sending initial update");
     }
 
-    public void setPerformedMoveMessage(PerformedMoveMessage moveMessage) {
+    public void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException {
 
-        gameMode.setPerformedMoveMessage(moveMessage);
+        gameMode.managePerformedMoveMessage(moveMessage);
     }
 
     public AtomicBoolean getLock(int lockId) {

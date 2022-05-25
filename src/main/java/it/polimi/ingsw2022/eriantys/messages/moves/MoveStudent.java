@@ -32,34 +32,33 @@ public class MoveStudent implements Move, Serializable {
     }
 
     @Override
-    public void apply(Game game, String playerUsername) {
+    public String apply(Game game) {
 
-        ColoredPawn movedStudent = game.getPlayer(playerUsername).getSchool().removeFromEntrance(studentColor);
+        ColoredPawn movedStudent = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
 
         if (toDining) {
 
-            SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
+            SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(movedStudent);
             game.checkAndUpdateProfessor(studentColor);
         }
 
         if (toIsland) game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
+        return null;
     }
 
     @Override
-    public Update getUpdate(Game game, String playerUsername) {
+    public Update getUpdate(Game game) {
 
         Update update = new Update();
 
         if (toIsland) {
+
             IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
             update.addChange(islandChange);
         }
 
-        // Updates all the schools due to the update professor
-        for (Player player : game.getPlayers()) {
-            update.addChange(new SchoolChange(player.getSchool()));
-        }
+        for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
 
         return(update);
     }

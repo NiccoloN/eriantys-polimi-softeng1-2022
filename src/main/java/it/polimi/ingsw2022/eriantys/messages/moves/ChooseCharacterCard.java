@@ -19,12 +19,13 @@ public class ChooseCharacterCard implements Move, Serializable {
     }
 
     @Override
-    public void apply(Game game, String playerUsername) {
+    public String apply(Game game) {
 
+        return null;
     }
 
     @Override
-    public Update getUpdate(Game game, String playerUsername) {
+    public Update getUpdate(Game game) {
         return null;
     }
 }

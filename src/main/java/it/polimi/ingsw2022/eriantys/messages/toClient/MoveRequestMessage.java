@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.messages.toClient;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
+import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
  * It specifies what kind of move through the enumeration MoveType
  * @author Emanuele Musto
  */
-public class MoveRequestMessage extends ToClientMessage {
+public class MoveRequestMessage extends TimedMessage {
 
     public final MoveRequest moveRequest;
 
@@ -28,5 +29,21 @@ public class MoveRequestMessage extends ToClientMessage {
     public void manageAndReply() throws IOException {
 
         EriantysClient.getInstance().requestMove(this);
+    }
+
+    @Override
+    public void waitForValidResponse() throws InterruptedException {
+
+        waitForValidResponse(30, () -> {
+
+            try {
+                System.out.println("Move response timeout");
+                EriantysServer.getInstance().shutdown(true);
+            }
+
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
