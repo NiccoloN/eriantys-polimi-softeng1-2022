@@ -359,7 +359,7 @@ public class EriantysServer {
 
             Player player = players.get(n);
 
-            HelperCardsChange helperCardsChange = new HelperCardsChange();
+            HelperCardsChange helperCardsChange = new HelperCardsChange(player.username);
             for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
             initUpdates[n].addChange(helperCardsChange);
         }

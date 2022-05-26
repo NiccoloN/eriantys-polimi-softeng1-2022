@@ -16,7 +16,7 @@ import java.io.Serializable;
  * If it's towards an island it specifies that island index.
  * @author Emanuele Musto
  */
-public class MoveStudent implements Move, Serializable {
+public class MoveStudent extends Move {
 
     private final boolean toDining, toIsland;
     private final int islandIndex;
@@ -32,7 +32,27 @@ public class MoveStudent implements Move, Serializable {
     }
 
     @Override
-    public String apply(Game game) {
+    public boolean isValid(Game game) {
+
+        SchoolDashboard school = game.getCurrentPlayer().getSchool();
+
+        if(school.countEntranceStudents(studentColor) <= 0) {
+
+            errorMessage = "There's no student of the selected color in your school entrance";
+            return false;
+        }
+
+        if(toDining && school.countTableStudents(studentColor) >= 10) {
+
+            errorMessage = "The table of the selected color is already full";
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void apply(Game game) {
 
         ColoredPawn movedStudent = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
 
@@ -44,7 +64,6 @@ public class MoveStudent implements Move, Serializable {
         }
 
         if (toIsland) game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
-        return null;
     }
 
     @Override

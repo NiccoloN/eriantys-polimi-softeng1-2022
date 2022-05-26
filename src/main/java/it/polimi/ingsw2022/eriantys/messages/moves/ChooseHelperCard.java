@@ -2,18 +2,19 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
-import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of a helper card by a player
  * @author Emanuele Musto
  */
-public class ChooseHelperCard implements Move, Serializable {
+public class ChooseHelperCard extends Move {
 
     private final int helperCardIndex;
 
@@ -23,32 +24,50 @@ public class ChooseHelperCard implements Move, Serializable {
     }
 
     @Override
-    public String apply(Game game) {
+    public boolean isValid(Game game) {
 
-        try {
+        Player player = game.getCurrentPlayer();
 
-            game.getCurrentPlayer().playHelperCard(helperCardIndex);
+        List<Integer> unplayableIndices = new ArrayList<>(3);
+        for(Player other : game.getPlayers())
+            if(other != player && other.getCurrentHelper() != null)
+                unplayableIndices.add(other.getCurrentHelper().index);
+
+        if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
+
+        if(unplayableIndices.contains(helperCardIndex)) {
+
+            errorMessage = "Cannot play this helper";
+            return false;
         }
-        catch (NoSuchElementException e) {
 
-            return "No card of the given index found in hand";
+        if(!player.hasHelper(helperCardIndex)) {
+
+            errorMessage = "No card of the given index found in hand";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    @Override
+    public void apply(Game game) {
+
+        game.getCurrentPlayer().playHelperCard(helperCardIndex);
     }
 
     @Override
     public Update getUpdate(Game game) {
 
         Update update = new Update();
-        HelperCardsChange change = new HelperCardsChange();
 
         Player player = game.getCurrentPlayer();
+
+        HelperCardsChange change = new HelperCardsChange(player.username);
         change.addHelperCards(player.getHelperCards());
-        change.setPlayedHelperCard(player.getCurrentHelper(), player.username);
+        change.setPlayedHelperCard(player.getCurrentHelper());
 
         update.addChange(change);
-        System.out.println("Crafted helper card update");
 
         return update;
     }

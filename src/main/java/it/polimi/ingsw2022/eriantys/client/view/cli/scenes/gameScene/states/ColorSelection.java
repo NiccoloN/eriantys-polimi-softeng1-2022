@@ -38,6 +38,7 @@ public class ColorSelection extends GameSceneState {
         getScene().getHintTextArea().setText("Select a color:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                              "Press ↑ or w to select a character card");
         for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
+        for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
         updateCLI();
     }
 

@@ -9,12 +9,13 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of one cloud by a player
  * @author Emanuele Musto
  */
-public class ChooseCloud implements Move, Serializable {
+public class ChooseCloud extends Move {
 
     int cloudIndex;
 
@@ -24,12 +25,23 @@ public class ChooseCloud implements Move, Serializable {
     }
 
     @Override
-    public String apply(Game game) {
+    public boolean isValid(Game game) {
+
+        if(game.getBoard().getCloud(cloudIndex).isEmpty()) {
+
+            errorMessage = "Cannot choose an empty cloud";
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void apply(Game game) {
 
         SchoolDashboard school = game.getCurrentPlayer().getSchool();
         List<ColoredPawn> students = game.getBoard().getCloud(cloudIndex).withdrawStudents();
         for (ColoredPawn student : students) school.addToEntrance(student);
-        return null;
     }
 
     @Override

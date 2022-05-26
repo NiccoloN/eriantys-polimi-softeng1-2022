@@ -61,8 +61,11 @@ public class CharacterSelection extends GameSceneState {
         prevSelected = null;
         getScene().getHintTextArea().setText("Select a character card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to return to your previous selection");
-        if(prevState instanceof ColorSelection)
+        if(prevState instanceof ColorSelection) {
+
             for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
+            for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
+        }
         updateCLI();
     }
 
@@ -73,8 +76,11 @@ public class CharacterSelection extends GameSceneState {
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
         getScene().getEffectTextArea().setText("");
-        if(prevState instanceof ColorSelection)
+        if(prevState instanceof ColorSelection) {
+
             for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
+            for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
+        }
     }
 
     @Override

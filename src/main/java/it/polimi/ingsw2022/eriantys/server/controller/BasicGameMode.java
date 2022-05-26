@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -21,7 +22,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.NoSuchElementException;
 
 public class BasicGameMode implements GameMode {
 
@@ -42,13 +42,8 @@ public class BasicGameMode implements GameMode {
             if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
                 game.setInfluenceCalculator(new InfluenceCalculatorBasic());
 
-            fillCloudIslands();
-
-            for (Player player : game.getPlayers()) {
-
-                game.setCurrentPlayer(player);
-                requestMove(new ChooseHelperCardRequest(), player.username);
-            }
+            fillClouds();
+            playHelpers();
 
             game.sortPlayersBasedOnHelperCard();
 
@@ -73,7 +68,7 @@ public class BasicGameMode implements GameMode {
         }
     }
 
-    private void fillCloudIslands() throws IOException {
+    private void fillClouds() throws IOException {
 
         Update update = new Update();
 
@@ -93,11 +88,23 @@ public class BasicGameMode implements GameMode {
         server.sendToAllClients(new UpdateMessage(update));
     }
 
-    private void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
+    private void playHelpers() throws IOException, InterruptedException {
 
-        MoveRequestMessage requestMessage = new MoveRequestMessage(request);
-        server.sendToClient(requestMessage, playerUsername);
-        requestMessage.waitForValidResponse();
+        for (Player player : game.getPlayers()) player.resetCurrentHelper();
+
+        List<Integer> unplayableIndices = new ArrayList<>(3);
+        for (Player player : game.getPlayers()) {
+
+            game.setCurrentPlayer(player);
+
+            unplayableIndices.clear();
+            for(Player other : game.getPlayers())
+                if(other != player && other.getCurrentHelper() != null)
+                    unplayableIndices.add(other.getCurrentHelper().index);
+
+            if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
+            requestMove(new ChooseHelperCardRequest(unplayableIndices), player.username);
+        }
     }
 
     private void checkIslandInfluence() throws IOException {
@@ -145,21 +152,28 @@ public class BasicGameMode implements GameMode {
         server.sendToAllClients(new UpdateMessage(update));
     }
 
-    public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException {
+    private void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
 
-            String error = performedMoveMessage.move.apply(game);
+        MoveRequestMessage requestMessage = new MoveRequestMessage(request);
+        server.sendToClient(requestMessage, playerUsername);
+        requestMessage.waitForValidResponse();
+    }
 
-            if (error == null) {
+    public synchronized void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException {
 
-                performedMoveMessage.getPreviousMessage().acceptResponse();
-                server.sendToAllClients(new UpdateMessage(performedMoveMessage.move.getUpdate(game)));
-                //TODO check for last played cards
-            }
-            else {
+        Move move = performedMoveMessage.move;
 
-                server.sendToClient(
-                        new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), error),
-                        game.getCurrentPlayer().username);
-            }
+        if (move.isValid(game)) {
+
+            move.apply(game);
+            server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
+            performedMoveMessage.getPreviousMessage().acceptResponse();
+        }
+        else {
+
+            server.sendToClient(
+                    new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
+                    game.getCurrentPlayer().username);
+        }
     }
 }
