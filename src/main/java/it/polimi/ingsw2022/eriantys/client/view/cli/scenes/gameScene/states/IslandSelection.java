@@ -11,6 +11,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -37,7 +38,7 @@ public class IslandSelection extends GameSceneState {
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
+    public IslandSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super(cli, scene, requestMessage);
         movingStudent = false;
@@ -49,14 +50,14 @@ public class IslandSelection extends GameSceneState {
         prompt.setSecondColor(GREEN);
     }
 
-    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, PawnColor studentColor) {
+    public IslandSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, PawnColor studentColor) {
 
         this(cli, scene, requestMessage);
         this.movingStudent = true;
         this.studentColor = studentColor;
     }
 
-    public IslandSelection(EriantysCLI cli, GameScene scene, Message requestMessage, int motherNatureMaxSteps) {
+    public IslandSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, int motherNatureMaxSteps) {
 
         this(cli, scene, requestMessage);
         this.motherNatureIndex = scene.getMotherNatureIslandIndex();
@@ -67,8 +68,8 @@ public class IslandSelection extends GameSceneState {
     public void enter() {
 
         super.enter();
-        steps = 0;
-        currentSelectedIndex = motherNatureIndex == -1 ? 0 : motherNatureIndex + 1;
+        steps = motherNatureIndex > -1 ? 1 : 0;
+        currentSelectedIndex = motherNatureIndex > -1 ? motherNatureIndex + steps : 0;
         getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
         updateCLI();

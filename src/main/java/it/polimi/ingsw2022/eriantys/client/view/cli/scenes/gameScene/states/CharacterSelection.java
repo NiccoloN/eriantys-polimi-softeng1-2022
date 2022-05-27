@@ -12,6 +12,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 
@@ -41,7 +42,7 @@ public class CharacterSelection extends GameSceneState {
      * @param goBackAction the action that makes the game scene go back to the previous state if triggered
      */
 
-    public CharacterSelection(EriantysCLI cli, GameScene scene, Message requestMessage, GameSceneState prevState, Action goBackAction) {
+    public CharacterSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, GameSceneState prevState, Action goBackAction) {
 
         super(cli, scene, requestMessage);
 
@@ -60,8 +61,11 @@ public class CharacterSelection extends GameSceneState {
         prevSelected = null;
         getScene().getHintTextArea().setText("Select a character card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to return to your previous selection");
-        if(prevState instanceof ColorSelection)
+        if(prevState instanceof ColorSelection) {
+
             for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
+            for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
+        }
         updateCLI();
     }
 
@@ -72,8 +76,11 @@ public class CharacterSelection extends GameSceneState {
         currentSelected.setColor(RESET);
         getScene().getHintTextArea().setText("");
         getScene().getEffectTextArea().setText("");
-        if(prevState instanceof ColorSelection)
+        if(prevState instanceof ColorSelection) {
+
             for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
+            for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
+        }
     }
 
     @Override

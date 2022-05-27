@@ -79,6 +79,7 @@ public class Player implements Serializable {
      * @return played card
      */
     public HelperCard playHelperCard(int index) {
+
         currentHelper = helperCards.stream().filter((x) -> x.index == index).findAny().orElseThrow();
         helperCards.remove(currentHelper);
         return currentHelper;
@@ -91,6 +92,16 @@ public class Player implements Serializable {
 
     public List<HelperCard> getHelperCards() {
         return new ArrayList<>(helperCards);
+    }
+
+    public boolean hasHelper(int index) {
+
+        return helperCards.stream().anyMatch((x) -> x.index == index);
+    }
+
+    public void resetCurrentHelper() {
+
+        currentHelper = null;
     }
 
     /**
@@ -150,6 +161,7 @@ public class Player implements Serializable {
     }
 
     public int comparePriorityTo(Player otherPlayer) {
+
         return this.getCurrentHelper().priority < otherPlayer.getCurrentHelper().priority ? -1 : 1;
     }
 }

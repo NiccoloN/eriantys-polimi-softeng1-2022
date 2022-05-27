@@ -359,7 +359,7 @@ public class EriantysServer {
 
             Player player = players.get(n);
 
-            HelperCardsChange helperCardsChange = new HelperCardsChange();
+            HelperCardsChange helperCardsChange = new HelperCardsChange(player.username);
             for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
             initUpdates[n].addChange(helperCardsChange);
         }
@@ -382,9 +382,9 @@ public class EriantysServer {
         System.out.println("Sending initial update");
     }
 
-    public void setPerformedMoveMessage(PerformedMoveMessage moveMessage) {
+    public void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException {
 
-        gameMode.setPerformedMoveMessage(moveMessage);
+        gameMode.managePerformedMoveMessage(moveMessage);
     }
 
     public AtomicBoolean getLock(int lockId) {

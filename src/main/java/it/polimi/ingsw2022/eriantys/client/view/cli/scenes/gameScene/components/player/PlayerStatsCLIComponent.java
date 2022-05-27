@@ -112,18 +112,4 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
         if (towers < 0 || towers > 9) throw new InvalidParameterException("Towers must be >= 0 and <= 9");
         this.towers = towers;
     }
-
-    public ArrayList<PawnColor> getEntranceColors(){
-
-        ArrayList<PawnColor> colors = new ArrayList<>();
-        for(PawnColor pawnColor : entranceStudents.keySet()) {
-
-            if(entranceStudents.get(pawnColor) > 0) colors.add(pawnColor);
-        }
-        return colors;
-    }
-
-    public Map<PawnColor, Integer> getEntranceStudents() {
-        return entranceStudents;
-    }
 }

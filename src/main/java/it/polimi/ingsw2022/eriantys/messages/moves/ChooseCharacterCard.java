@@ -9,22 +9,29 @@ import java.io.Serializable;
  * This class represents the choice of a Character by a player
  * @author Emanuele Musto
  */
-public class ChooseCharacterCard implements Move, Serializable {
+public class ChooseCharacterCard extends Move {
 
     int characterCardIndex;
 
     public ChooseCharacterCard(int characterCardIndex) {
 
-        this. characterCardIndex = characterCardIndex;
+        this.characterCardIndex = characterCardIndex;
     }
 
     @Override
-    public void apply(Game game, String playerUsername) {
+    public boolean isValid(Game game) {
+
+        return false;
+    }
+
+    @Override
+    public void apply(Game game) {
+
 
     }
 
     @Override
-    public Update getUpdate(Game game, String playerUsername) {
+    public Update getUpdate(Game game) {
         return null;
     }
 }

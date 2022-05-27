@@ -4,6 +4,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLICo
 
 import java.security.InvalidParameterException;
 
+import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
+
 /**
  * This class represents a helper card cli component
  * @author Niccolò Nicolosi
@@ -14,6 +16,7 @@ public class HelperCardCLIComponent extends BasicCLIComponent {
 
     private final int index;
     private final int priority, movement;
+    private boolean playable;
 
     /**
      * Constructs a helper card cli component with the given index, priority value and movement value
@@ -34,6 +37,8 @@ public class HelperCardCLIComponent extends BasicCLIComponent {
         if (movement < 0 || movement > 99) throw new InvalidParameterException("Movement must be between 1 and 99");
         this.movement = movement;
 
+        playable = true;
+
         buildRows();
     }
 
@@ -52,5 +57,16 @@ public class HelperCardCLIComponent extends BasicCLIComponent {
     public int getIndex() {
 
         return index;
+    }
+
+    public boolean isPlayable() {
+
+        return playable;
+    }
+
+    public void setPlayable(boolean playable) {
+
+        this.playable = playable;
+        setColor(playable ? RESET : RED);
     }
 }

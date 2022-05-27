@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.ColorCLIComponent;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN;
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
@@ -24,10 +25,9 @@ public class ColorSelection extends GameSceneState {
      * @param cli   the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public ColorSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
+    public ColorSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super(cli, scene, requestMessage);
-        scene.setColors(scene.getPlayer().getEntranceColors());
     }
 
     @Override
@@ -38,6 +38,7 @@ public class ColorSelection extends GameSceneState {
         getScene().getHintTextArea().setText("Select a color:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                              "Press ↑ or w to select a character card");
         for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
+        for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
         updateCLI();
     }
 

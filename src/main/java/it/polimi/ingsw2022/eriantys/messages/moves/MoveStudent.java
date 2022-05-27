@@ -16,7 +16,7 @@ import java.io.Serializable;
  * If it's towards an island it specifies that island index.
  * @author Emanuele Musto
  */
-public class MoveStudent implements Move, Serializable {
+public class MoveStudent extends Move {
 
     private final boolean toDining, toIsland;
     private final int islandIndex;
@@ -32,13 +32,33 @@ public class MoveStudent implements Move, Serializable {
     }
 
     @Override
-    public void apply(Game game, String playerUsername) {
+    public boolean isValid(Game game) {
 
-        ColoredPawn movedStudent = game.getPlayer(playerUsername).getSchool().removeFromEntrance(studentColor);
+        SchoolDashboard school = game.getCurrentPlayer().getSchool();
+
+        if(school.countEntranceStudents(studentColor) <= 0) {
+
+            errorMessage = "There's no student of the selected color in your school entrance";
+            return false;
+        }
+
+        if(toDining && school.countTableStudents(studentColor) >= 10) {
+
+            errorMessage = "The table of the selected color is already full";
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void apply(Game game) {
+
+        ColoredPawn movedStudent = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
 
         if (toDining) {
 
-            SchoolDashboard school = game.getPlayer(playerUsername).getSchool();
+            SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(movedStudent);
             game.checkAndUpdateProfessor(studentColor);
         }
@@ -47,19 +67,17 @@ public class MoveStudent implements Move, Serializable {
     }
 
     @Override
-    public Update getUpdate(Game game, String playerUsername) {
+    public Update getUpdate(Game game) {
 
         Update update = new Update();
 
         if (toIsland) {
+
             IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
             update.addChange(islandChange);
         }
 
-        // Updates all the schools due to the update professor
-        for (Player player : game.getPlayers()) {
-            update.addChange(new SchoolChange(player.getSchool()));
-        }
+        for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
 
         return(update);
     }

@@ -22,6 +22,6 @@ public class PongMessage extends ToServerMessage {
     public void manageAndReply() throws IOException {
 
         super.manageAndReply();
-        ((TimedMessage) previousMessage).acceptResponse();
+        ((TimedMessage) getPreviousMessage()).acceptResponse();
     }
 }

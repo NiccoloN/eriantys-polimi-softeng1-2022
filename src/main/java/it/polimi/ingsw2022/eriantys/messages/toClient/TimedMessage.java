@@ -8,7 +8,8 @@ public abstract class TimedMessage extends ToClientMessage {
 
     private final int lockId;
 
-    public TimedMessage(){
+    public TimedMessage() {
+
         lockId = EriantysServer.getInstance().getNextLockId();
     }
 

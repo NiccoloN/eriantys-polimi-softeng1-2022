@@ -5,17 +5,22 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.HelperSelection;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
+import java.util.List;
+
 public class ChooseHelperCardRequest extends MoveRequest {
 
-    public ChooseHelperCardRequest() {
+    private final List<Integer> unplayableIndices;
+
+    public ChooseHelperCardRequest(List<Integer> unplayableIndices) {
 
         super("Choose an helper card");
+        this.unplayableIndices = unplayableIndices;
     }
 
     @Override
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super.manage(cli, scene, requestMessage);
-        scene.setState(new HelperSelection(cli, scene, requestMessage));
+        scene.setState(new HelperSelection(cli, scene, requestMessage, unplayableIndices));
     }
 }

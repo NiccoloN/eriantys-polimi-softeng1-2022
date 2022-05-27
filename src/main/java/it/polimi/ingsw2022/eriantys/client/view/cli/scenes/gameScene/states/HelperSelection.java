@@ -9,9 +9,11 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 
 import java.io.IOException;
+import java.util.List;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -23,15 +25,17 @@ public class HelperSelection extends GameSceneState {
 
     private int currentSelectedIndex;
     private HelperCardCLIComponent currentSelected;
+    private final List<Integer> unplayableIndices;
 
     /**
      * Constructs a helper selection state
      * @param cli the cli to associate to this state
      * @param scene the game scene to associate to this state
      */
-    public HelperSelection(EriantysCLI cli, GameScene scene, Message requestMessage) {
+    public HelperSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, List<Integer> unplayableIndices) {
 
         super(cli, scene, requestMessage);
+        this.unplayableIndices = unplayableIndices;
     }
 
     @Override
@@ -39,6 +43,12 @@ public class HelperSelection extends GameSceneState {
 
         super.enter();
         currentSelectedIndex = 0;
+        for(int n = 0; n < getScene().getNumberOfHelpers(); n++) {
+
+            HelperCardCLIComponent helper = getScene().getHelper(n);
+            if(unplayableIndices.contains(helper.getIndex())) helper.setPlayable(false);
+        }
+
         getScene().getHintTextArea().setText("Select a helper card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↑ or w to select a character card");
         updateCLI();
@@ -48,7 +58,7 @@ public class HelperSelection extends GameSceneState {
     public void exit() {
 
         super.exit();
-        currentSelected.setColor(RESET);
+        for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setPlayable(true);
         getScene().getHintTextArea().setText("");
     }
 
@@ -71,11 +81,24 @@ public class HelperSelection extends GameSceneState {
             return;
         }
 
-        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) {
 
-        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfHelpers() - 1;
-        else if (currentSelectedIndex > getScene().getNumberOfHelpers() - 1) currentSelectedIndex = 0;
+            do {
+
+                currentSelectedIndex++;
+                if (currentSelectedIndex > getScene().getNumberOfHelpers() - 1) currentSelectedIndex = 0;
+            }
+            while(!getScene().getHelper(currentSelectedIndex).isPlayable());
+        }
+        else if (input.triggersAction(Action.LEFT)) {
+
+            do {
+
+                currentSelectedIndex--;
+                if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfHelpers() - 1;
+            }
+            while(!getScene().getHelper(currentSelectedIndex).isPlayable());
+        }
 
         updateCLI();
     }
