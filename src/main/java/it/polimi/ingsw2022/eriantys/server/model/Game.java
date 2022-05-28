@@ -174,7 +174,7 @@ public class Game {
 
         for (Player player : getPlayers()) {
             SchoolDashboard schoolDashboard = player.getSchool();
-            if (schoolDashboard.hasProfessor(color)) {
+            if (schoolDashboard.containsProfessor(color)) {
                 winnerSchool = schoolDashboard;
                 break;
             }

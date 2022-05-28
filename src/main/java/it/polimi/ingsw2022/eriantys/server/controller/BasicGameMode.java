@@ -11,6 +11,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
@@ -25,8 +26,8 @@ import java.util.*;
 
 public class BasicGameMode implements GameMode {
 
-    private final Game game;
-    private final EriantysServer server;
+    protected final Game game;
+    protected final EriantysServer server;
 
     public BasicGameMode(Game game) {
 
@@ -50,14 +51,9 @@ public class BasicGameMode implements GameMode {
             for (Player player : game.getPlayers()) {
 
                 game.setCurrentPlayer(player);
-                for (int studentMove = 0; studentMove < 3; studentMove++) {
 
-                    ArrayList<PawnColor> availableColors = new ArrayList<>();
-                    for(PawnColor color : PawnColor.values())
-                        if(player.getSchool().countEntranceStudents(color) > 0) availableColors.add(color);
-
-                    requestMove(new MoveStudentRequest(availableColors), player.username);
-                }
+                for (int studentMove = 0; studentMove < 3; studentMove++)
+                    requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors()), player.username);
 
                 requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
 
@@ -152,7 +148,7 @@ public class BasicGameMode implements GameMode {
         server.sendToAllClients(new UpdateMessage(update));
     }
 
-    private void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
+    protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
 
         MoveRequestMessage requestMessage = new MoveRequestMessage(request);
         server.sendToClient(requestMessage, playerUsername);
