@@ -38,7 +38,7 @@ public class ChooseGameSettingsMessage extends TimedMessage {
     @Override
     public void waitForValidResponse() throws InterruptedException {
 
-        waitForValidResponse(60, () -> {
+        waitForValidResponse(300, () -> {
             try {
                 System.out.println("Game settings response timeout");
                 EriantysServer.getInstance().shutdown(true);

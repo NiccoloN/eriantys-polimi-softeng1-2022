@@ -143,10 +143,16 @@ public class BasicGameMode implements GameMode {
         update.addChange(newSchoolChange);
 
         island.setTeam(dominantTeam);
-        //TODO: merge islands
-        IslandChange islandChange = new IslandChange(game.getBoard().getIslandIndex(island), island);
-        update.addChange(islandChange);
-
+        int mergeStatus = game.checkAndMergeIslands(island);
+        if (mergeStatus != 0) {
+            for (int islandIndex = 0; islandIndex < game.getBoard().getNumberOfIslands(); islandIndex++) {
+                update.addChange(
+                        new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex))
+                );
+            }
+        } else {
+            update.addChange(new IslandChange(game.getBoard().getIslandIndex(island), island));
+        }
         //TODO: check end of game
 
         server.sendToAllClients(new UpdateMessage(update));

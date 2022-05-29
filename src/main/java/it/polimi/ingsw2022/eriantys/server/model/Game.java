@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -200,6 +201,36 @@ public class Game {
                 winnerSchool.addProfessor(professor);
             }
         }
+    }
+
+    /**
+     * Checks if the selected island has to be merged with their neighbor islands.
+     * @param island
+     * @return integer representing the status of the merge
+     *      0: nothing has merged
+     *      1: next island is merged
+     *      -1: previous island is merged
+     *      2: both islands are merged
+     */
+    public int checkAndMergeIslands(CompoundIslandTile island) {
+        int wereSomeIslandsMerged = 0;
+        int islandIndex = board.getIslandIndex(island);
+        int nextIslandIndex = (islandIndex + 1) % board.getNumberOfIslands();
+        int previousIslandIndex = (islandIndex - 1) % board.getNumberOfIslands();
+
+        CompoundIslandTile nextIsland = board.getIsland(nextIslandIndex);
+        CompoundIslandTile previousIsland = board.getIsland(previousIslandIndex);
+
+        if (nextIsland.getTeam().equals(island.getTeam())) {
+            board.mergeIslands(islandIndex, nextIslandIndex);
+            wereSomeIslandsMerged = 1;
+        }
+
+        if (previousIsland.getTeam().equals(island.getTeam())) {
+            board.mergeIslands(islandIndex, previousIslandIndex);
+            wereSomeIslandsMerged = wereSomeIslandsMerged == 0 ? -1 : 2;
+        }
+        return wereSomeIslandsMerged;
     }
 
     public void calculatePoints() {
