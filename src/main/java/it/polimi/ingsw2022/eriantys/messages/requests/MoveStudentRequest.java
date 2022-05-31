@@ -32,6 +32,8 @@ public class MoveStudentRequest extends MoveRequest {
 
         super.manage(cli, scene, requestMessage);
         scene.setColors(availableColors);
-        scene.setState(new ColorSelection(cli, scene, requestMessage));
+
+        if (characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
+        else scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
     }
 }

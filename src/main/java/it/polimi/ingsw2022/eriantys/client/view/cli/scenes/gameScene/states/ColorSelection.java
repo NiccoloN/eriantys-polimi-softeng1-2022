@@ -19,6 +19,7 @@ public class ColorSelection extends GameSceneState {
 
     private int currentSelectedIndex;
     private ColorCLIComponent currentSelected;
+    private final int characterIndex;
 
     /**
      * Constructs a color selection state
@@ -28,6 +29,13 @@ public class ColorSelection extends GameSceneState {
     public ColorSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super(cli, scene, requestMessage);
+        characterIndex = 0;
+    }
+
+    public ColorSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, int characterIndex) {
+
+        super(cli, scene, requestMessage);
+        this.characterIndex = characterIndex;
     }
 
     @Override

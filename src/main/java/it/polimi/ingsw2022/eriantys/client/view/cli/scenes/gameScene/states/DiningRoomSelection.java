@@ -73,7 +73,7 @@ public class DiningRoomSelection extends GameSceneState {
         if(input.triggersAction(Action.SELECT)) {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
-                    new MoveStudent(true, false, -1, studentColor)));
+                    new MoveStudent(true, -1, studentColor)));
 
             getScene().setState(new ViewOnly(getCli(), getScene()));
             return;

@@ -37,6 +37,7 @@ public class Game {
     private boolean gameEnding;
 
     public Game(String[] playerUsernames) throws IOException {
+
         gameEnding = false;
         players = generatePlayers(playerUsernames);
         board = new Board(players);
@@ -111,6 +112,7 @@ public class Game {
      * @return the generated list of pawns
      */
     private List<ColoredPawn> generatePawns(int numberPerColor) {
+
         if (numberPerColor <= 0) {
             throw new RuntimeException("Invalid number of pawns");
         }
@@ -129,6 +131,7 @@ public class Game {
      * @return the generated list
      */
     private List<Player> generatePlayers(String[] playerUsernames) {
+
         final String errorMsg = String.format("Invalid number of players: must be >= %s and <= %s",
                 MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS);
 
@@ -220,6 +223,11 @@ public class Game {
 
     public CharacterCard getCharacter(int index) {
         return characters.get(index);
+    }
+
+    public CharacterCard getCharacterOfIndex(int index) {
+
+        return characters.stream().filter((x) -> x.index == index).findAny().orElseThrow();
     }
 
     public ColoredPawn getProfessor(PawnColor color) {

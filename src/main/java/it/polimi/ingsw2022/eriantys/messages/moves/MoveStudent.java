@@ -10,6 +10,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.Serializable;
+import java.util.NoSuchElementException;
 
 /**
  * This class represents the movement of a student. It can be to the dining table or to an island.
@@ -18,23 +19,39 @@ import java.io.Serializable;
  */
 public class MoveStudent extends Move {
 
-    private final boolean toDining, toIsland;
+    private int characterIndex;
+    private final boolean toDining;
     private final int islandIndex;
     private final PawnColor studentColor;
 
+    public MoveStudent(boolean toDining, int islandIndex, PawnColor studentColor) {
 
-    public MoveStudent(boolean toDining, boolean toIsland, int islandIndex, PawnColor studentColor) {
-
+        this.characterIndex = 0;
         this.toDining = toDining;
-        this.toIsland = toIsland;
         this.islandIndex = islandIndex;
         this.studentColor = studentColor;
+    }
+
+    public MoveStudent(boolean toDining, int islandIndex, PawnColor studentColor, int characterIndex) {
+
+        this(toDining, islandIndex, studentColor);
+        this.characterIndex = characterIndex;
     }
 
     @Override
     public boolean isValid(Game game) {
 
         SchoolDashboard school = game.getCurrentPlayer().getSchool();
+
+        if(characterIndex > 0) {
+
+            try { game.getCharacterOfIndex(characterIndex); }
+            catch (NoSuchElementException e) {
+
+                errorMessage = "There's no character of the given index on board";
+                return false;
+            }
+        }
 
         if(school.countEntranceStudents(studentColor) <= 0) {
 
@@ -54,16 +71,18 @@ public class MoveStudent extends Move {
     @Override
     public void apply(Game game) {
 
-        ColoredPawn movedStudent = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
+        ColoredPawn studentToMove = characterIndex > 0 ?
+                game.getCharacterOfIndex(characterIndex).getStudent(studentColor) :
+                game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
 
         if (toDining) {
 
             SchoolDashboard school = game.getCurrentPlayer().getSchool();
-            school.addToTable(movedStudent);
+            school.addToTable(studentToMove);
             game.checkAndUpdateProfessor(studentColor);
         }
 
-        if (toIsland) game.getBoard().getIsland(islandIndex).addStudent(movedStudent);
+        else game.getBoard().getIsland(islandIndex).addStudent(studentToMove);
     }
 
     @Override
@@ -71,7 +90,9 @@ public class MoveStudent extends Move {
 
         Update update = new Update();
 
-        if (toIsland) {
+        //TODO character card update
+
+        if (!toDining) {
 
             IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
             update.addChange(islandChange);

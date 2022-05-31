@@ -54,6 +54,11 @@ public class CharacterCard extends Card {
         return students.get(index);
     }
 
+    public ColoredPawn getStudent(PawnColor color) {
+
+        return students.stream().filter((x) -> x.color == color).findAny().orElseThrow();
+    }
+
     public void addStudent(ColoredPawn student) {
         students.add(student);
     }
