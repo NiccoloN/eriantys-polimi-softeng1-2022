@@ -1,9 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.controller;
 
-import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
@@ -33,6 +30,44 @@ public class BasicGameMode implements GameMode {
 
         this.game = game;
         server = EriantysServer.getInstance();
+    }
+
+    public Update[] createInitialUpdates() {
+
+        List<Player> players = game.getPlayers();
+        Update[] initUpdates = new Update[players.size()];
+
+        IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
+        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n, game.getBoard().getIsland(n));
+
+        CloudChange[] cloudChanges = new CloudChange[players.size()];
+        for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
+
+        SchoolChange[] schoolChanges = new SchoolChange[players.size()];
+        for (int n = 0; n < players.size(); n++) schoolChanges[n] = new SchoolChange(players.get(n).getSchool());
+
+        PlayerChange[] playerChanges = new PlayerChange[players.size()];
+        for (int n = 0; n < players.size(); n++) playerChanges[n] = new PlayerChange(players.get(n));
+
+        for (int n = 0; n < initUpdates.length; n++) {
+
+            initUpdates[n] = new Update();
+            for (IslandChange islandChange : islandChanges) initUpdates[n].addChange(islandChange);
+            for (CloudChange cloudChange : cloudChanges) initUpdates[n].addChange(cloudChange);
+            for (SchoolChange schoolChange : schoolChanges) initUpdates[n].addChange(schoolChange);
+            for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
+        }
+
+        for (int n = 0; n < players.size(); n++) {
+
+            Player player = players.get(n);
+
+            HelperCardsChange helperCardsChange = new HelperCardsChange(player.username);
+            for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
+            initUpdates[n].addChange(helperCardsChange);
+        }
+
+        return initUpdates;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class CharacterCard extends Card {
 
     private final List<ColoredPawn> students;
     private ColoredPawn pawnColor;
-    private int counter;
+    private int denyTilesNumber;
 
     CharacterCard(int index, String effect, int cost) {
 
@@ -27,7 +27,7 @@ public class CharacterCard extends Card {
 
         students = new ArrayList<>(4);
         pawnColor = null;
-        counter = 0;
+        denyTilesNumber = 0;
     }
 
     public int getCost() {
@@ -76,13 +76,18 @@ public class CharacterCard extends Card {
         return availableColors;
     }
 
-    public int getCounter() {
-        return counter;
+    public int getDenyTilesNumber() {
+        return denyTilesNumber;
     }
 
-    public void decrementCounter() {
+    public void decrementDenyTiles() {
 
-        if (counter == 0) throw new RuntimeException("Counter has a negative value");
-        this.counter--;
+        if (denyTilesNumber == 0) throw new RuntimeException("Number of deny tiles can't be negative");
+        this.denyTilesNumber--;
+    }
+
+    public void incrementDenyTiles() {
+        if (denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");
+        this.denyTilesNumber++;
     }
 }

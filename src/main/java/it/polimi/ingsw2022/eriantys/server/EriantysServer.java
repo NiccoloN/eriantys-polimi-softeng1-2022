@@ -322,51 +322,6 @@ public class EriantysServer {
         clientPingTimers.add(timer);
     }
 
-    /**
-     * @return an array of initial updates, one for each player
-     */
-    private Update[] createInitialUpdates() {
-
-        List<Player> players = game.getPlayers();
-        Update[] initUpdates = new Update[players.size()];
-
-        CharacterCardsChange characterCardsChange = new CharacterCardsChange();
-        for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
-
-        IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
-        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n, game.getBoard().getIsland(n));
-
-        CloudChange[] cloudChanges = new CloudChange[players.size()];
-        for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
-
-        SchoolChange[] schoolChanges = new SchoolChange[players.size()];
-        for (int n = 0; n < players.size(); n++) schoolChanges[n] = new SchoolChange(players.get(n).getSchool());
-
-        PlayerChange[] playerChanges = new PlayerChange[players.size()];
-        for (int n = 0; n < players.size(); n++) playerChanges[n] = new PlayerChange(players.get(n));
-
-        for (int n = 0; n < initUpdates.length; n++) {
-
-            initUpdates[n] = new Update();
-            initUpdates[n].addChange(characterCardsChange);
-            for (IslandChange islandChange : islandChanges) initUpdates[n].addChange(islandChange);
-            for (CloudChange cloudChange : cloudChanges) initUpdates[n].addChange(cloudChange);
-            for (SchoolChange schoolChange : schoolChanges) initUpdates[n].addChange(schoolChange);
-            for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
-        }
-
-        for (int n = 0; n < players.size(); n++) {
-
-            Player player = players.get(n);
-
-            HelperCardsChange helperCardsChange = new HelperCardsChange(player.username);
-            for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
-            initUpdates[n].addChange(helperCardsChange);
-        }
-
-        return initUpdates;
-    }
-
     private void createGame() throws IOException {
 
         String[] playerUsernames = clients.keySet().toArray(new String[0]);
@@ -374,7 +329,7 @@ public class EriantysServer {
         game = new Game(playerUsernames);
         gameMode = gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game);
 
-        Update[] initialUpdates = createInitialUpdates();
+        Update[] initialUpdates = gameMode.createInitialUpdates();
 
 
         for (int n = 0; n < playerUsernames.length; n++)
