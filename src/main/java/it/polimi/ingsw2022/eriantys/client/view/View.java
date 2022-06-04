@@ -8,6 +8,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -66,4 +67,10 @@ public interface View {
      * @param requestMessage the message containing a move request
      */
     void requestMove(MoveRequestMessage requestMessage);
+
+    /**
+     * Ends the game and shows winner team
+     * @param team winner team
+     */
+    void endGame(Team team);
 }

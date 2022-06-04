@@ -14,6 +14,7 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.*;
 import java.net.Socket;
@@ -234,6 +235,14 @@ public class EriantysClient {
     public void startGame(List<Player> players, Mode gameMode) {
 
         view.startGame(players, gameMode);
+    }
+
+    /**
+     * Asks the view to end the game
+     * @param team winning team
+     */
+    public void endGame(Team team) {
+        view.endGame(team);
     }
 
     /**

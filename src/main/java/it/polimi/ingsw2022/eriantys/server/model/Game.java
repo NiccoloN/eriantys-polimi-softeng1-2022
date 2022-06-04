@@ -11,6 +11,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -299,5 +300,25 @@ public class Game {
 
     public void setGameEnding() {
         this.gameEnding = true;
+    }
+
+    public Team checkWinner() {
+        Team winnerTeam = null;
+        int winnerTeamTowers = -1;
+        for (Team team : Team.values()) {
+            int teamLeaderTowers = team.getLeader().getSchool().getTowers();
+            if (winnerTeam == null || teamLeaderTowers <= winnerTeamTowers) {
+                if (teamLeaderTowers == winnerTeamTowers) {
+                    if (team.getLeader().getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors()) {
+                        winnerTeam = team;
+                        winnerTeamTowers = teamLeaderTowers;
+                    }
+                } else {
+                    winnerTeam = team;
+                    winnerTeamTowers = teamLeaderTowers;
+                }
+            }
+        }
+        return winnerTeam;
     }
 }

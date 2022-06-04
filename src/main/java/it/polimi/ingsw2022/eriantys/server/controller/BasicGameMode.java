@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
+import it.polimi.ingsw2022.eriantys.messages.toClient.GameEndedMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
@@ -21,6 +22,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.*;
 
 public class BasicGameMode implements GameMode {
@@ -66,6 +68,7 @@ public class BasicGameMode implements GameMode {
                 requestMove(new ChooseCloudRequest(), player.username);
             }
         }
+        endGame();
     }
 
     private void fillClouds() throws IOException {
@@ -77,7 +80,10 @@ public class BasicGameMode implements GameMode {
             CloudTile cloud = game.getBoard().getCloud(cloudIndex);
 
             for (int i = 0; i < 3; i++) {
-
+                if (game.getStudentsBag().isEmpty()) {
+                    game.setGameEnding();
+                    return;
+                }
                 ColoredPawn student = game.getStudentsBag().extractRandomStudent();
                 cloud.addStudent(student);
             }
@@ -104,6 +110,9 @@ public class BasicGameMode implements GameMode {
 
             if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
             requestMove(new ChooseHelperCardRequest(unplayableIndices), player.username);
+            if (game.getCurrentPlayer().getNumberOfHelpers() == 0) {
+                game.setGameEnding();
+            }
         }
     }
 
@@ -138,7 +147,14 @@ public class BasicGameMode implements GameMode {
             update.addChange(oldSchoolChange);
         }
 
-        for (int i = 0; i < islandSize; i++) dominantTeamLeader.getSchool().removeTower();
+        for (int i = 0; i < islandSize; i++) {
+            dominantTeamLeader.getSchool().removeTower();
+            if (dominantTeamLeader.getSchool().getTowers() == 0) {
+                game.setGameEnding();
+                endGame();
+                return;
+            }
+        }
         SchoolChange newSchoolChange = new SchoolChange(dominantTeamLeader.getSchool());
         update.addChange(newSchoolChange);
 
@@ -153,7 +169,10 @@ public class BasicGameMode implements GameMode {
         } else {
             update.addChange(new IslandChange(game.getBoard().getIslandIndex(island), island));
         }
-        //TODO: check end of game
+        if (game.getBoard().getNumberOfIslands() <= 3) {
+            game.setGameEnding();
+            endGame();
+        }
 
         server.sendToAllClients(new UpdateMessage(update));
     }
@@ -181,5 +200,10 @@ public class BasicGameMode implements GameMode {
                     new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
                     game.getCurrentPlayer().username);
         }
+    }
+
+    private void endGame() throws IOException {
+        Team winnerTeam = game.checkWinner();
+        server.sendToAllClients(new GameEndedMessage(winnerTeam));
     }
 }
