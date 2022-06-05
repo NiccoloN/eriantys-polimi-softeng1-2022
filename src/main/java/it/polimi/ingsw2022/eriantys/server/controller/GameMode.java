@@ -14,5 +14,5 @@ public interface GameMode {
      */
     Update[] createInitialUpdates();
 
-    void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException;
+    void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException, InterruptedException;
 }

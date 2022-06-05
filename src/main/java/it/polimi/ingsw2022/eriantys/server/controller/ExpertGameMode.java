@@ -2,7 +2,13 @@ package it.polimi.ingsw2022.eriantys.server.controller;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
+import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
+import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBonus;
@@ -46,24 +52,32 @@ public class ExpertGameMode extends BasicGameMode {
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
         for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
 
-        for (int n = 0; n < initialUpdate.length; n++) {
+        for (Update update : initialUpdate) {
 
-            initialUpdate[n].addChange(characterCardsChange);
+            update.addChange(characterCardsChange);
         }
 
         return(initialUpdate);
     }
 
-    //funzione che verrà chiamata dalla move ChooseCharacter in apply() che probabilmente dovrà creare un thread
-    //dato che il controller sarà nella waitForResponse() di un'altra mossa
-    private void playCharacter(CharacterCard characterCard) throws IOException, InterruptedException {
+    private void playCharacter(PerformedMoveMessage characterMoveMessage) throws IOException, InterruptedException {
 
-        switch(characterCard.index) {
+        ChooseCharacterCard move = (ChooseCharacterCard) characterMoveMessage.move;
+        int cardIndex = move.characterCardIndex;
+        CharacterCard characterCard = null;
+
+        if(cardIndex >= 1 && cardIndex <= 12) characterCard = game.getCharacterOfIndex(move.characterCardIndex);
+
+        switch(cardIndex) {
 
             case 1:
-                requestMove(new MoveStudentRequest(characterCard.index, characterCard.getStudentsColors()), game.getCurrentPlayer().username);
+                requestMove(new MoveStudentRequest(
+                            characterCard.index,
+                            characterCard.getStudentsColors(),
+                            "Move a student from the character card to an island")
+                        , game.getCurrentPlayer().username);
                 characterCard.addStudent(game.getStudentsBag().extractRandomStudent());
-                //TODO mandare change della character card (CharacterChange da modificare)
+                characterCard.incrementCost();
                 break;
             case 2:
                 //TODO dare professori al current player anche se ha lo stesso numero di studenti, sia subito che
@@ -71,7 +85,7 @@ public class ExpertGameMode extends BasicGameMode {
                 // chiamando la funzione che fa l'update dei professori che deve tenere conto di questo boolean)
                 break;
             case 3:
-                //TODO mandare richiesta di selezione di un'isola (MoveRequest da creare) e rievere una SelectIsland
+                //TODO mandare richiesta di selezione di un'isola (MoveRequest da creare) e ricevere una SelectIsland
                 // (Move da creare) che conterrà l'indice dell'isola scelta. Successivamente chiamare il calcolo
                 // dell'influence sull'isola scelta
                 break;
@@ -115,7 +129,30 @@ public class ExpertGameMode extends BasicGameMode {
                 //TODO mandare una richiesta di selezione colore (Request da creare). Muovere 3 studenti del colore
                 // selezionato dalla dining room di ogni studente alla bag
                 break;
-            default: //TODO mandare invalidMove
+            default:
+                server.sendToClient(new InvalidMoveMessage
+                        (characterMoveMessage, characterMoveMessage.getPreviousMessage(), "The chosen character card does not exist."),
+                        game.getCurrentPlayer().username);
         }
+    }
+
+    @Override
+    public synchronized void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
+
+        if(performedMoveMessage.move instanceof ChooseCharacterCard){
+
+            MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
+            ChooseCharacterCard move = (ChooseCharacterCard) performedMoveMessage.move;
+
+            if (move.isValid(game)) {
+
+                previousMessage.acceptResponse();
+                playCharacter(performedMoveMessage);
+                server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
+            }
+
+            server.sendToClient(previousMessage, game.getCurrentPlayer().username);
+        }
+        else super.managePerformedMoveMessage(performedMoveMessage);
     }
 }

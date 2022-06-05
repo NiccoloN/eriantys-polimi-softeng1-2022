@@ -20,9 +20,9 @@ public class MoveStudentRequest extends MoveRequest {
         characterIndex = 0;
     }
 
-    public MoveStudentRequest(int characterIndex, List<PawnColor> availableColors) {
+    public MoveStudentRequest(int characterIndex, List<PawnColor> availableColors, String promptSentence) {
 
-        super("Move a student from the character card to an island");
+        super(promptSentence);
         this.availableColors = availableColors;
         this.characterIndex = characterIndex;
     }

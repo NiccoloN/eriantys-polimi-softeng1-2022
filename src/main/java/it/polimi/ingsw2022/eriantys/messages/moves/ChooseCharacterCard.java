@@ -1,6 +1,10 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
+import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 
 import java.io.Serializable;
@@ -11,7 +15,7 @@ import java.io.Serializable;
  */
 public class ChooseCharacterCard extends Move {
 
-    int characterCardIndex;
+    public final int characterCardIndex;
 
     public ChooseCharacterCard(int characterCardIndex) {
 
@@ -21,17 +25,26 @@ public class ChooseCharacterCard extends Move {
     @Override
     public boolean isValid(Game game) {
 
-        return false;
+        return game.getCurrentPlayer().getCoins() >= game.getCharacterOfIndex(characterCardIndex).getCost();
     }
 
     @Override
     public void apply(Game game) {
-
-
     }
 
     @Override
     public Update getUpdate(Game game) {
-        return null;
+
+        Update update = new Update();
+
+        CharacterCardsChange change = new CharacterCardsChange();
+
+        for(int i=0; i<game.getNumberOfCharacters(); i++){
+            change.addCharacterCard(game.getCharacter(i));
+        }
+
+        update.addChange(change);
+
+        return update;
     }
 }

@@ -215,7 +215,7 @@ public class BasicGameMode implements GameMode {
         requestMessage.waitForValidResponse();
     }
 
-    public synchronized void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException {
+    public synchronized void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
         Move move = performedMoveMessage.move;
 
