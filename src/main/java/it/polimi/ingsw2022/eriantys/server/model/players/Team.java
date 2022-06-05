@@ -12,21 +12,27 @@ import java.util.List;
  */
 public enum Team implements Serializable {
 
-    WHITE(AnsiCodes.WHITE_BRIGHT),
-    BLACK(AnsiCodes.BLACK_BRIGHT),
-    GRAY(AnsiCodes.WHITE);
+    WHITE(AnsiCodes.WHITE_BRIGHT, "White"),
+    BLACK(AnsiCodes.BLACK_BRIGHT, "Black"),
+    GRAY(AnsiCodes.WHITE, "Gray");
 
     public final String ansiColor;
     private final List<Player> players;
+    private final String teamName;
 
     /**
      * Initializes the list of player with initial capacity equal to 2
      * @param ansiColor the ansi color of this team to use in the cli
      */
-    Team(String ansiColor) {
+    Team(String ansiColor, String teamName) {
 
         this.ansiColor = ansiColor;
         players = new ArrayList<>(2);
+        this.teamName = teamName;
+    }
+
+    public String getTeamName() {
+        return teamName;
     }
 
     /**

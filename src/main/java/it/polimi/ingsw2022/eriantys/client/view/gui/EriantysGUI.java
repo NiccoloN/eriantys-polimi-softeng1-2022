@@ -7,6 +7,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -69,5 +70,10 @@ public class EriantysGUI extends Application implements View {
     public void requestMove(MoveRequestMessage requestMessage) {
 
         //TODO
+    }
+
+    @Override
+    public void endGame(Team team) {
+
     }
 }

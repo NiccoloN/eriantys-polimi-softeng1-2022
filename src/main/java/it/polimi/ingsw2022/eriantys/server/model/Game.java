@@ -305,17 +305,23 @@ public class Game {
     public Team checkWinner() {
         Team winnerTeam = null;
         int winnerTeamTowers = -1;
-        for (Team team : Team.values()) {
-            int teamLeaderTowers = team.getLeader().getSchool().getTowers();
-            if (winnerTeam == null || teamLeaderTowers <= winnerTeamTowers) {
-                if (teamLeaderTowers == winnerTeamTowers) {
-                    if (team.getLeader().getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors()) {
-                        winnerTeam = team;
-                        winnerTeamTowers = teamLeaderTowers;
+        for (Player player : getPlayers()) {
+            int playerTowers = player.getSchool().getTowers();
+
+            if (winnerTeam == null && player.isTeamLeader) {
+                winnerTeam = player.team;
+                winnerTeamTowers = playerTowers;
+            }
+
+            if (player.isTeamLeader && playerTowers <= winnerTeamTowers) {
+                if (playerTowers == winnerTeamTowers) {
+                    if (player.getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors()) {
+                        winnerTeam = player.team;
+                        winnerTeamTowers = playerTowers;
                     }
                 } else {
-                    winnerTeam = team;
-                    winnerTeamTowers = teamLeaderTowers;
+                    winnerTeam = player.team;
+                    winnerTeamTowers = playerTowers;
                 }
             }
         }
