@@ -25,11 +25,13 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class IslandSelection extends GameSceneState {
 
-    private int steps;
     private int currentSelectedIndex;
     private IslandCLIComponent currentSelected;
+
+    private int steps;
     private boolean movingStudent;
     private PawnColor studentColor;
+    private int characterIndex;
     private int motherNatureIndex;
     private int motherNatureMaxSteps;
 
@@ -42,6 +44,8 @@ public class IslandSelection extends GameSceneState {
 
         super(cli, scene, requestMessage);
         movingStudent = false;
+        studentColor = null;
+        characterIndex = 0;
         motherNatureIndex = -1;
         motherNatureMaxSteps = -1;
 
@@ -55,6 +59,12 @@ public class IslandSelection extends GameSceneState {
         this(cli, scene, requestMessage);
         this.movingStudent = true;
         this.studentColor = studentColor;
+    }
+
+    public IslandSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, PawnColor studentColor, int characterIndex) {
+
+        this(cli, scene, requestMessage, studentColor);
+        this.characterIndex = characterIndex;
     }
 
     public IslandSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, int motherNatureMaxSteps) {
@@ -103,9 +113,11 @@ public class IslandSelection extends GameSceneState {
             EriantysClient client = EriantysClient.getInstance();
 
             if(!movingStudent) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                        new MoveMotherNature(currentSelected.getIndex())));
+                            new MoveMotherNature(currentSelected.getIndex())));
+            else if (characterIndex > 0) client.sendToServer(new PerformedMoveMessage(requestMessage,
+                    new MoveStudent(false, currentSelected.getIndex(), studentColor)));
             else client.sendToServer(new PerformedMoveMessage(requestMessage,
-                        new MoveStudent(false, true, currentSelected.getIndex(), studentColor)));
+                        new MoveStudent(false, currentSelected.getIndex(), studentColor)));
 
             getScene().setState(new ViewOnly(getCli(), getScene()));
             return;

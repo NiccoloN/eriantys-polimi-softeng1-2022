@@ -4,7 +4,6 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -42,6 +41,13 @@ public class SchoolDashboard implements Serializable {
     }
 
     /**
+     * @return students contained in entrance
+     */
+    public List<ColoredPawn> getEntranceStudents() {
+        return new ArrayList<>(entranceStudents);
+    }
+
+    /**
      * @param color the color of students to count
      * @return the number of students of the given color currently placed at the entrance of this school
      */
@@ -63,11 +69,13 @@ public class SchoolDashboard implements Serializable {
         entranceStudents.add(student);
     }
 
-    /**
-     * @return students contained in entrance
-     */
-    public List<ColoredPawn> getEntranceStudents() {
-        return new ArrayList<>(entranceStudents);
+    public List<PawnColor> getAvailableEntranceColors() {
+
+        ArrayList<PawnColor> availableColors = new ArrayList<>();
+        for(PawnColor color : PawnColor.values())
+            if(entranceStudents.stream().anyMatch((x) -> x.color == color)) availableColors.add(color);
+
+        return availableColors;
     }
 
     /**
@@ -135,20 +143,6 @@ public class SchoolDashboard implements Serializable {
     public boolean containsProfessor(PawnColor color) {
 
         return professors.stream().anyMatch((x) -> x.color == color);
-    }
-
-    /**
-     * Checks if dashboard has a professor of a given color
-     * @param color color of the professor
-     * @return "true" if it has professor, "false" otherwise
-     */
-    public boolean hasProfessor(PawnColor color) {
-        for (ColoredPawn professor : professors) {
-            if (professor.color == color) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

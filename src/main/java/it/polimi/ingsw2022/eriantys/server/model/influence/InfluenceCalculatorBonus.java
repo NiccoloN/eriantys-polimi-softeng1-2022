@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class InfluenceCalculatorBonus extends InfluenceCalculatorBasic{
 
-    InfluenceCalculatorBonus(){ super(); }
+    public InfluenceCalculatorBonus(){ super(); }
 
     /**
      * Initializes the key as the players, and the influence as 0, except for the current player that gets the bonus

@@ -1,9 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.controller;
 
-import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
 import it.polimi.ingsw2022.eriantys.messages.toClient.GameEndedMessage;
@@ -12,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
@@ -27,13 +25,51 @@ import java.util.*;
 
 public class BasicGameMode implements GameMode {
 
-    private final Game game;
-    private final EriantysServer server;
+    protected final Game game;
+    protected final EriantysServer server;
 
     public BasicGameMode(Game game) {
 
         this.game = game;
         server = EriantysServer.getInstance();
+    }
+
+    public Update[] createInitialUpdates() {
+
+        List<Player> players = game.getPlayers();
+        Update[] initUpdates = new Update[players.size()];
+
+        IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
+        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n, game.getBoard().getIsland(n));
+
+        CloudChange[] cloudChanges = new CloudChange[players.size()];
+        for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
+
+        SchoolChange[] schoolChanges = new SchoolChange[players.size()];
+        for (int n = 0; n < players.size(); n++) schoolChanges[n] = new SchoolChange(players.get(n).getSchool());
+
+        PlayerChange[] playerChanges = new PlayerChange[players.size()];
+        for (int n = 0; n < players.size(); n++) playerChanges[n] = new PlayerChange(players.get(n));
+
+        for (int n = 0; n < initUpdates.length; n++) {
+
+            initUpdates[n] = new Update();
+            for (IslandChange islandChange : islandChanges) initUpdates[n].addChange(islandChange);
+            for (CloudChange cloudChange : cloudChanges) initUpdates[n].addChange(cloudChange);
+            for (SchoolChange schoolChange : schoolChanges) initUpdates[n].addChange(schoolChange);
+            for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
+        }
+
+        for (int n = 0; n < players.size(); n++) {
+
+            Player player = players.get(n);
+
+            HelperCardsChange helperCardsChange = new HelperCardsChange(player.username);
+            for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
+            initUpdates[n].addChange(helperCardsChange);
+        }
+
+        return initUpdates;
     }
 
     @Override
@@ -52,14 +88,9 @@ public class BasicGameMode implements GameMode {
             for (Player player : game.getPlayers()) {
 
                 game.setCurrentPlayer(player);
-                for (int studentMove = 0; studentMove < 3; studentMove++) {
 
-                    ArrayList<PawnColor> availableColors = new ArrayList<>();
-                    for(PawnColor color : PawnColor.values())
-                        if(player.getSchool().countEntranceStudents(color) > 0) availableColors.add(color);
-
-                    requestMove(new MoveStudentRequest(availableColors), player.username);
-                }
+                for (int studentMove = 0; studentMove < 3; studentMove++)
+                    requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors()), player.username);
 
                 requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
 
@@ -177,7 +208,7 @@ public class BasicGameMode implements GameMode {
         server.sendToAllClients(new UpdateMessage(update));
     }
 
-    private void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
+    protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
 
         MoveRequestMessage requestMessage = new MoveRequestMessage(request);
         server.sendToClient(requestMessage, playerUsername);

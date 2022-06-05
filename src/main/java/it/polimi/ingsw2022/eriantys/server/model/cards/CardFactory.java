@@ -80,6 +80,6 @@ public class CardFactory {
             throw new RuntimeException("Invalid index: helper cards' indices go from 1 to " + characterCardSamples.length);
 
         CharacterCard sample = characterCardSamples[index - 1];
-        return new CharacterCard(sample.index, null, sample.effect, sample.getCost()); //TODO skill factory
+        return new CharacterCard(sample.index, sample.effect, sample.getCost());
     }
 }

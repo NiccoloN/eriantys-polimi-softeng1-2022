@@ -11,11 +11,20 @@ import java.util.List;
 public class MoveStudentRequest extends MoveRequest {
 
     private final List<PawnColor> availableColors;
+    public final int characterIndex;
 
     public MoveStudentRequest(List<PawnColor> availableColors) {
 
         super("Move a student from your school's entrance to either an island or your dining room");
         this.availableColors = availableColors;
+        characterIndex = 0;
+    }
+
+    public MoveStudentRequest(int characterIndex, List<PawnColor> availableColors) {
+
+        super("Move a student from the character card to an island");
+        this.availableColors = availableColors;
+        this.characterIndex = characterIndex;
     }
 
     @Override
@@ -23,6 +32,8 @@ public class MoveStudentRequest extends MoveRequest {
 
         super.manage(cli, scene, requestMessage);
         scene.setColors(availableColors);
-        scene.setState(new ColorSelection(cli, scene, requestMessage));
+
+        if (characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
+        else scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
     }
 }
