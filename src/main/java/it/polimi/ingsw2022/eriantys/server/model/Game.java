@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -10,6 +11,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -202,6 +204,36 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if the selected island has to be merged with their neighbor islands.
+     * @param island
+     * @return integer representing the status of the merge
+     *      0: nothing has merged
+     *      1: next island is merged
+     *      -1: previous island is merged
+     *      2: both islands are merged
+     */
+    public int checkAndMergeIslands(CompoundIslandTile island) {
+        int wereSomeIslandsMerged = 0;
+        int islandIndex = board.getIslandIndex(island);
+        int nextIslandIndex = (islandIndex + 1) % board.getNumberOfIslands();
+        int previousIslandIndex = (islandIndex - 1) % board.getNumberOfIslands();
+
+        CompoundIslandTile nextIsland = board.getIsland(nextIslandIndex);
+        CompoundIslandTile previousIsland = board.getIsland(previousIslandIndex);
+
+        if (nextIsland.getTeam().equals(island.getTeam())) {
+            board.mergeIslands(islandIndex, nextIslandIndex);
+            wereSomeIslandsMerged = 1;
+        }
+
+        if (previousIsland.getTeam().equals(island.getTeam())) {
+            board.mergeIslands(islandIndex, previousIslandIndex);
+            wereSomeIslandsMerged = wereSomeIslandsMerged == 0 ? -1 : 2;
+        }
+        return wereSomeIslandsMerged;
+    }
+
     public void calculatePoints() {
         // TODO: implement it
     }
@@ -268,5 +300,31 @@ public class Game {
 
     public void setGameEnding() {
         this.gameEnding = true;
+    }
+
+    public Team checkWinner() {
+        Team winnerTeam = null;
+        int winnerTeamTowers = -1;
+        for (Player player : getPlayers()) {
+            int playerTowers = player.getSchool().getTowers();
+
+            if (winnerTeam == null && player.isTeamLeader) {
+                winnerTeam = player.team;
+                winnerTeamTowers = playerTowers;
+            }
+
+            if (player.isTeamLeader && playerTowers <= winnerTeamTowers) {
+                if (playerTowers == winnerTeamTowers) {
+                    if (player.getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors()) {
+                        winnerTeam = player.team;
+                        winnerTeamTowers = playerTowers;
+                    }
+                } else {
+                    winnerTeam = player.team;
+                    winnerTeamTowers = playerTowers;
+                }
+            }
+        }
+        return winnerTeam;
     }
 }

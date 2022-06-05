@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.endGameScene.EndGameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
@@ -17,6 +18,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -306,6 +308,11 @@ public class EriantysCLI implements View {
     public void startGame(List<Player>  players, Mode gameMode) {
 
         setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
+    }
+
+    @Override
+    public void endGame(Team winningTeam) {
+        setScene(new EndGameScene(this, currentScene.getWidth(), currentScene.getHeight(), winningTeam));
     }
 
     @Override

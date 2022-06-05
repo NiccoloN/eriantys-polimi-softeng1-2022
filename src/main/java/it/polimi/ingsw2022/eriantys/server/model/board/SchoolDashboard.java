@@ -125,6 +125,9 @@ public class SchoolDashboard implements Serializable {
         return table.remove(table.size() - 1);
     }
 
+    public int countProfessors() {
+        return professors.size();
+    }
     /**
      * @param color the color of the professor to check for
      * @return whether the professor of the given color is in this school
