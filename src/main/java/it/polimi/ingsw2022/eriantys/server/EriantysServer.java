@@ -339,7 +339,12 @@ public class EriantysServer {
 
     public void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException {
 
-        gameMode.managePerformedMoveMessage(moveMessage);
+        try{
+            gameMode.managePerformedMoveMessage(moveMessage);
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public AtomicBoolean getLock(int lockId) {

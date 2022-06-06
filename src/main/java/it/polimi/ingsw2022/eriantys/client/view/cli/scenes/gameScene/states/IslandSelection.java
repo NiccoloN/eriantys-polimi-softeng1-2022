@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -114,8 +115,7 @@ public class IslandSelection extends GameSceneState {
 
             if(!movingStudent) client.sendToServer(new PerformedMoveMessage(requestMessage,
                             new MoveMotherNature(currentSelected.getIndex())));
-            else if (characterIndex > 0) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                    new MoveStudent(false, currentSelected.getIndex(), studentColor)));
+            else if (characterIndex > 0) manageCharacters(client);
             else client.sendToServer(new PerformedMoveMessage(requestMessage,
                         new MoveStudent(false, currentSelected.getIndex(), studentColor)));
 
@@ -153,6 +153,14 @@ public class IslandSelection extends GameSceneState {
         }
 
         updateCLI();
+    }
+
+    private void manageCharacters(EriantysClient client) throws IOException {
+
+        if(studentColor != null) client.sendToServer(new PerformedMoveMessage(requestMessage,
+                new MoveStudent(false, currentSelected.getIndex(), studentColor)));
+        else client.sendToServer(new PerformedMoveMessage(requestMessage,
+                new ChooseIsland(currentSelected.getIndex(), characterIndex)));
     }
 
     private void updateCLI() {

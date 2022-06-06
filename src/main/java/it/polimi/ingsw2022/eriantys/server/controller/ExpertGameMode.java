@@ -3,7 +3,6 @@ package it.polimi.ingsw2022.eriantys.server.controller;
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
-import it.polimi.ingsw2022.eriantys.messages.moves.Move;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -12,7 +11,6 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBonus;
-import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoTowers;
 
 import java.io.IOException;
@@ -22,6 +20,8 @@ public class ExpertGameMode extends BasicGameMode {
     public ExpertGameMode(Game game) {
 
         super(game);
+
+        game.resetCharacterUses();
 
         for(int i=0; i<game.getNumberOfCharacters(); i++){
 
@@ -60,6 +60,13 @@ public class ExpertGameMode extends BasicGameMode {
         return(initialUpdate);
     }
 
+    @Override
+    public void playRound() throws IOException, InterruptedException {
+
+        game.resetCharacterUses();
+        super.playRound();
+    }
+
     private void playCharacter(PerformedMoveMessage characterMoveMessage) throws IOException, InterruptedException {
 
         ChooseCharacterCard move = (ChooseCharacterCard) characterMoveMessage.move;
@@ -76,8 +83,8 @@ public class ExpertGameMode extends BasicGameMode {
                             characterCard.getStudentsColors(),
                             "Move a student from the character card to an island")
                         , game.getCurrentPlayer().username);
-                characterCard.addStudent(game.getStudentsBag().extractRandomStudent());
-                characterCard.incrementCost();
+
+                characterMoveMessage.move.apply(game);
                 break;
             case 2:
                 //TODO dare professori al current player anche se ha lo stesso numero di studenti, sia subito che
@@ -140,6 +147,7 @@ public class ExpertGameMode extends BasicGameMode {
     public synchronized void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
         if(performedMoveMessage.move instanceof ChooseCharacterCard){
+
 
             MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
             ChooseCharacterCard move = (ChooseCharacterCard) performedMoveMessage.move;

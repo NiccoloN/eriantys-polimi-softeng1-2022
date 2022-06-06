@@ -19,6 +19,6 @@ public class ChooseIslandRequest extends MoveRequest {
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
         super.manage(cli, scene, requestMessage);
-        //scene.setState(new IslandSelection(cli, scene, requestMessage, ));
+        scene.setState(new IslandSelection(cli, scene, requestMessage, null, characterCardIndex));
     }
 }

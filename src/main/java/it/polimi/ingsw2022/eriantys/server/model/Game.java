@@ -36,6 +36,7 @@ public class Game {
     private InfluenceCalculator influenceCalculator;
     private final List<Player> players;
     private Player currentPlayer;
+    private final Map<String, Integer> characterUses = new HashMap<>(4);
     private boolean gameEnding;
 
     public Game(String[] playerUsernames) throws IOException {
@@ -53,6 +54,21 @@ public class Game {
         fillSchools();
         chooseCharacters();
         assignHelpers();
+    }
+
+    public void resetCharacterUses(){
+
+        for(Player player : players) characterUses.put(player.username, 0);
+    }
+
+    public void incrementCharacterUses(String username){
+
+        characterUses.put(username, characterUses.get(username)+1);
+    }
+
+    public int getCharacterUses(String username){
+
+        return characterUses.get(username);
     }
 
     private void placeFirstStudents() {
