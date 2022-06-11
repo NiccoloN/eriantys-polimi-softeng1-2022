@@ -52,8 +52,7 @@ public class IslandChange implements Change, Serializable {
                     cliIsland.setTower(islandTile.hasTower());
                     cliIsland.setIndex(compoundIslandIndex);
 
-                    String teamColor = island.getTeam().isPresent() ? island.getTeam().get().ansiColor : RESET;
-                    cliIsland.setTeamColor(teamColor);
+                    if(island.getTeam().isPresent()) cliIsland.setTeamColor(island.getTeam().get().ansiColor);
                 }
                 n--;
             }

@@ -133,7 +133,8 @@ public class CompoundIslandTile implements Serializable {
     void setMotherNature(boolean motherNature) {
 
         this.motherNature = motherNature;
-        tiles.get(0).setMotherNature(motherNature);
+        if(motherNature) tiles.get(0).setMotherNature(true);
+        else for(IslandTile tile : tiles) tile.setMotherNature(false);
     }
 
     public boolean isDenied() {

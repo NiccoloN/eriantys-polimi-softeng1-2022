@@ -34,8 +34,8 @@ public class IslandCLIComponent extends BasicCLIComponent {
         super(WIDTH, HEIGHT);
 
         color     = DEFAULT_COLOR;
-        teamColor = DEFAULT_COLOR;
-        
+        teamColor = YELLOW_BRIGHT;
+
         setIndex(index);
 
         tower = false;
@@ -105,7 +105,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
      * @param teamAnsiColor the new team color
      */
     public void setTeamColor(String teamAnsiColor) {
-        
+
         teamColor = teamAnsiColor;
     }
 

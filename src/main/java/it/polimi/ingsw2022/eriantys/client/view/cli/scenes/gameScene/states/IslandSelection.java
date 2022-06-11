@@ -8,7 +8,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -29,7 +28,6 @@ public class IslandSelection extends GameSceneState {
     private int currentSelectedIndex;
     private IslandCLIComponent currentSelected;
 
-    private int steps;
     private boolean movingStudent;
     private PawnColor studentColor;
     private int characterIndex;
@@ -79,9 +77,12 @@ public class IslandSelection extends GameSceneState {
     public void enter() {
 
         super.enter();
-        steps = motherNatureIndex > -1 ? 1 : 0;
-        currentSelectedIndex = motherNatureIndex > -1 ? motherNatureIndex + steps : 0;
-        currentSelectedIndex %= getScene().getNumberOfIslands();
+        currentSelectedIndex = 0;
+        if(motherNatureIndex > -1) {
+
+            currentSelectedIndex = motherNatureIndex;
+            stepForwardMotherNature();
+        }
         getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
         updateCLI();
@@ -127,40 +128,62 @@ public class IslandSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) {
 
-            currentSelectedIndex++;
-
             if(motherNatureIndex > -1) {
 
-                steps++;
-                if (steps > motherNatureMaxSteps) steps = 1;
-                currentSelectedIndex = motherNatureIndex + steps;
+                if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps)
+                    currentSelectedIndex = motherNatureIndex;
+                stepForwardMotherNature();
             }
 
-            currentSelectedIndex %= getScene().getNumberOfIslands();
+            else currentSelectedIndex++;
         }
 
         else if (input.triggersAction(Action.LEFT)) {
 
-            currentSelectedIndex--;
-            if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfIslands() - 1;
-
             if(motherNatureIndex > -1) {
 
-                steps--;
-                if (steps < 1) steps = motherNatureMaxSteps;
-                currentSelectedIndex = motherNatureIndex + steps;
+                if (currentSelectedIndex - 1 < motherNatureIndex + 1) {
+
+                    currentSelectedIndex = motherNatureIndex;
+                    for(int n = 0; n < motherNatureMaxSteps + 1; n++) stepForwardMotherNature();
+                }
+                stepBackwardsMotherNature();
             }
 
-            currentSelectedIndex %= getScene().getNumberOfIslands();
+            else currentSelectedIndex--;
         }
 
         updateCLI();
     }
 
+    private void stepForwardMotherNature() {
+
+        int prevSelectedIndex = currentSelectedIndex;
+        do { currentSelectedIndex++; }
+        while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
+              getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
+    }
+
+    private void stepBackwardsMotherNature() {
+
+        int prevSelectedIndex = currentSelectedIndex;
+        do { currentSelectedIndex--; }
+        while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
+              getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
+    }
+
+    private int modValue(int index) {
+
+        int modValue = index;
+        int mod = getScene().getNumberOfIslands();
+        while(modValue < 0) modValue += mod;
+        return modValue % mod;
+    }
+
     private void updateCLI() {
 
         if (currentSelected != null) currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
-        currentSelected = getScene().getIsland(currentSelectedIndex);
+        currentSelected = getScene().getIsland(modValue(currentSelectedIndex));
         currentSelected.setColor(GREEN);
         prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f - 1, currentSelected.getFrameY() - 1);
     }

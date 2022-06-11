@@ -85,6 +85,9 @@ public class Board {
         CompoundIslandTile island2 = getIsland(resultingIndex == index1 ? index2 : index1);
         island1.mergeWithIsland(island2);
         islands.remove(island2);
+
+        motherNatureIslandIndex--;
+        if(motherNatureIslandIndex < 0) motherNatureIslandIndex = islands.size() - 1;
     }
 
     /**
