@@ -46,7 +46,11 @@ public class HelperSelection extends GameSceneState {
         for(int n = 0; n < getScene().getNumberOfHelpers(); n++) {
 
             HelperCardCLIComponent helper = getScene().getHelper(n);
-            if(unplayableIndices.contains(helper.getIndex())) helper.setPlayable(false);
+            if(unplayableIndices.contains(helper.getIndex())) {
+
+                helper.setPlayable(false);
+                if(n == currentSelectedIndex) currentSelectedIndex++;
+            }
         }
 
         getScene().getHintTextArea().setText("Select a helper card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
