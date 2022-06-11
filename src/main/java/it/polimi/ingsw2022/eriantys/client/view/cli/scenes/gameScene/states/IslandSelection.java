@@ -130,8 +130,12 @@ public class IslandSelection extends GameSceneState {
 
             if(motherNatureIndex > -1) {
 
-                if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps)
+                EriantysClient.getInstance().log(currentSelectedIndex + "");
+                if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps) {
+
                     currentSelectedIndex = motherNatureIndex;
+                    EriantysClient.getInstance().log(currentSelectedIndex + "");
+                }
                 stepForwardMotherNature();
             }
 
@@ -142,10 +146,12 @@ public class IslandSelection extends GameSceneState {
 
             if(motherNatureIndex > -1) {
 
+                EriantysClient.getInstance().log(currentSelectedIndex + "");
                 if (currentSelectedIndex - 1 < motherNatureIndex + 1) {
 
                     currentSelectedIndex = motherNatureIndex;
                     for(int n = 0; n < motherNatureMaxSteps + 1; n++) stepForwardMotherNature();
+                    EriantysClient.getInstance().log(currentSelectedIndex + "");
                 }
                 stepBackwardsMotherNature();
             }
