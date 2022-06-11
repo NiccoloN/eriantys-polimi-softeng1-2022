@@ -32,7 +32,7 @@ public class MoveMotherNature extends Move {
 
         int maxSteps = game.getCurrentPlayer().getCurrentHelper().movement;
         int steps = 0;
-        while((oldIslandIndex + steps) % 12 != islandIndex) {
+        while((oldIslandIndex + steps) % game.getBoard().getNumberOfIslands() != islandIndex) {
 
             steps++;
             if(steps > maxSteps) {
