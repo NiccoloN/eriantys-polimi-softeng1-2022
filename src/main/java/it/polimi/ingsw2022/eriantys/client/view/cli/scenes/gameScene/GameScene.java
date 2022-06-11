@@ -316,7 +316,8 @@ public class GameScene extends CLIScene {
 
     public int getMotherNatureIslandIndex() {
 
-        IslandCLIComponent island = Arrays.stream(islands).filter(IslandCLIComponent::hasMother).findAny().orElseThrow();
-        return island.getIndex();
+        for(int n = 0; n < islands.length; n++)
+            if(islands[n].hasMother()) return n;
+        throw new NoSuchElementException();
     }
 }
