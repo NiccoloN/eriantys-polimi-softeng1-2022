@@ -11,8 +11,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLICompone
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -20,7 +18,6 @@ import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-import java.security.InvalidParameterException;
 import java.util.*;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
@@ -30,6 +27,8 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * @author Niccolò Nicolosi
  */
 public class GameScene extends CLIScene {
+
+    public final Mode gameMode;
 
     private CLIComponent prompt;
     private final BasicCLIComponent title;
@@ -56,6 +55,8 @@ public class GameScene extends CLIScene {
     public GameScene(EriantysCLI cli, int width, int height, List<Player> players, Mode gameMode) {
 
         super(cli, width, height);
+
+        this.gameMode = gameMode;
 
         //build title component
         title = new BasicCLIComponent(73, AsciiArts.getTitleString().split("\n"));
