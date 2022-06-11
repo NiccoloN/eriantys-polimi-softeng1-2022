@@ -9,13 +9,12 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
-import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
@@ -141,9 +140,8 @@ public class BasicGameMode implements GameMode {
 
             if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
             requestMove(new ChooseHelperCardRequest(unplayableIndices), player.username);
-            if (game.getCurrentPlayer().getNumberOfHelpers() == 0) {
-                game.setGameEnding();
-            }
+
+            if (game.getCurrentPlayer().getNumberOfHelpers() == 0) game.setGameEnding();
         }
     }
 
@@ -179,6 +177,7 @@ public class BasicGameMode implements GameMode {
         }
 
         for (int i = 0; i < islandSize; i++) {
+
             dominantTeamLeader.getSchool().removeTower();
             if (dominantTeamLeader.getSchool().getTowers() == 0) {
                 game.setGameEnding();
@@ -190,22 +189,40 @@ public class BasicGameMode implements GameMode {
         update.addChange(newSchoolChange);
 
         island.setTeam(dominantTeam);
-        int mergeStatus = game.checkAndMergeIslands(island);
-        if (mergeStatus != 0) {
-            for (int islandIndex = 0; islandIndex < game.getBoard().getNumberOfIslands(); islandIndex++) {
-                update.addChange(
-                        new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex))
-                );
-            }
-        } else {
-            update.addChange(new IslandChange(game.getBoard().getIslandIndex(island), island));
-        }
+        IslandChange islandChange = checkForMerge(island);
+        update.addChange(islandChange);
+
+        server.sendToAllClients(new UpdateMessage(update));
+
         if (game.getBoard().getNumberOfIslands() <= 3) {
+
             game.setGameEnding();
             endGame();
         }
+    }
 
-        server.sendToAllClients(new UpdateMessage(update));
+    private IslandChange checkForMerge(CompoundIslandTile island) {
+
+        IslandChange change = null;
+
+        Board board = game.getBoard();
+        int islandIndex = board.getIslandIndex(island);
+        int nextIslandIndex = (islandIndex + 1) % board.getNumberOfIslands();
+        int previousIslandIndex = islandIndex - 1;
+        if(previousIslandIndex < 0) previousIslandIndex = board.getNumberOfIslands() - 1;
+
+        CompoundIslandTile nextIsland = board.getIsland(nextIslandIndex);
+        CompoundIslandTile previousIsland = board.getIsland(previousIslandIndex);
+
+        if (nextIsland.getTeam().equals(island.getTeam())) board.mergeIslands(islandIndex, nextIslandIndex);
+        if (previousIsland.getTeam().equals(island.getTeam())) {
+
+            board.mergeIslands(islandIndex, previousIslandIndex);
+            change = new IslandChange(previousIslandIndex, previousIsland);
+        }
+
+        if(change == null) change = new IslandChange(islandIndex, island);
+        return change;
     }
 
     protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {

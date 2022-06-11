@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.messages.changes;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
@@ -34,22 +35,33 @@ public class IslandChange implements Change, Serializable {
     @Override
     public void apply(GameScene scene) {
 
-        int islandTileIndex = 0;
-
+        int oldIndex = 0;
         for(int n = 0; n < scene.getNumberOfIslands(); n++) {
 
-            IslandCLIComponent cliIsland = scene.getIsland(n);
-            if(cliIsland.getIndex() == compoundIslandIndex) {
+            if(scene.getIsland(n).getIndex() == compoundIslandIndex) {
 
-                IslandTile islandTile = island.getTile(islandTileIndex);
-                islandTileIndex++;
+                for(int i = 0; i < island.getNumberOfTiles(); i++, n++) {
 
-                for(PawnColor color : PawnColor.values()) cliIsland.setStudents(color, islandTile.countStudents(color));
-                cliIsland.setMother(islandTile.hasMotherNature());
-                cliIsland.setTower(islandTile.hasTower());
+                    IslandCLIComponent cliIsland = scene.getIsland((n) % scene.getNumberOfIslands());
+                    oldIndex = cliIsland.getIndex();
 
-                String teamColor = island.getTeam().isPresent() ? island.getTeam().get().ansiColor : RESET;
-                cliIsland.setTeamColor(teamColor);
+                    IslandTile islandTile = island.getTile(i);
+
+                    for(PawnColor color : PawnColor.values()) cliIsland.setStudents(color, islandTile.countStudents(color));
+                    cliIsland.setMother(islandTile.hasMotherNature());
+                    cliIsland.setTower(islandTile.hasTower());
+                    cliIsland.setIndex(compoundIslandIndex);
+
+                    String teamColor = island.getTeam().isPresent() ? island.getTeam().get().ansiColor : RESET;
+                    cliIsland.setTeamColor(teamColor);
+                }
+                n--;
+            }
+
+            else if(scene.getIsland(n).getIndex() > compoundIslandIndex && oldIndex > compoundIslandIndex) {
+
+                IslandCLIComponent cliIsland = scene.getIsland(n);
+                cliIsland.setIndex(cliIsland.getIndex() - (oldIndex - compoundIslandIndex));
             }
         }
     }

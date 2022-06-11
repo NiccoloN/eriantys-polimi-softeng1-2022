@@ -44,14 +44,20 @@ public class CloudCLIComponent extends BasicCLIComponent {
 
     private void buildRows() {
 
+        int red = students.get(PawnColor.RED);
+        int green = students.get(PawnColor.GREEN);
+        int yellow = students.get(PawnColor.YELLOW);
+        int blue = students.get(PawnColor.BLUE);
+        int pink = students.get(PawnColor.PINK);
+
         setRow(0, color + "  _____  " + RESET);
         setRow(1, color + " (     ) " + RESET);
         setRow(2,color + "( " +
-                 PawnColor.RED.ansiForegroundColor + students.get(PawnColor.RED) +
-                 PawnColor.GREEN.ansiForegroundColor + students.get(PawnColor.GREEN) +
-                 PawnColor.YELLOW.ansiForegroundColor + students.get(PawnColor.YELLOW) +
-                 PawnColor.BLUE.ansiForegroundColor + students.get(PawnColor.BLUE) +
-                 PawnColor.PINK.ansiForegroundColor + students.get(PawnColor.PINK) +
+                 PawnColor.RED.ansiForegroundColor + (red == 0 ? " " : red) +
+                 PawnColor.GREEN.ansiForegroundColor + (green == 0 ? " " : green) +
+                 PawnColor.YELLOW.ansiForegroundColor + (yellow == 0 ? " " : yellow) +
+                 PawnColor.BLUE.ansiForegroundColor + (blue == 0 ? " " : blue) +
+                 PawnColor.PINK.ansiForegroundColor + (pink == 0 ? " " : pink) +
                  color + " )" + RESET);
         setRow(3, color + " (_____) " + RESET);
         setRow(4, RESET + "    " + String.format("%01d", index) + "    ");

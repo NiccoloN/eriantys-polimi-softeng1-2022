@@ -81,6 +81,7 @@ public class IslandSelection extends GameSceneState {
         super.enter();
         steps = motherNatureIndex > -1 ? 1 : 0;
         currentSelectedIndex = motherNatureIndex > -1 ? motherNatureIndex + steps : 0;
+        currentSelectedIndex %= getScene().getNumberOfIslands();
         getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
         updateCLI();

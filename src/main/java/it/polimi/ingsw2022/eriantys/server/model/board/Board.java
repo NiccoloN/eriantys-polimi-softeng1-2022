@@ -73,11 +73,16 @@ public class Board {
      * @throws RuntimeException if any island tile is part of both the islands
      */
     public void mergeIslands(int index1, int index2) {
+
         if (index1 > islands.size() - 1 || index2 > islands.size() - 1) throw new RuntimeException("Index are out of bounds");
         if (index1 == index2) throw new RuntimeException("Cannot merge an island with itself");
         if (Math.abs(index1 - index2) != 1 && Math.abs(index1 - index2) != islands.size() - 1) throw new RuntimeException("Cannot merge not adjacent islands");
-        CompoundIslandTile island1 = getIsland(Math.min(index1, index2));
-        CompoundIslandTile island2 = getIsland(Math.max(index1, index2));
+
+        int resultingIndex = index1;
+        if((index1 - 1) % islands.size() == index2) resultingIndex = index2;
+
+        CompoundIslandTile island1 = getIsland(resultingIndex);
+        CompoundIslandTile island2 = getIsland(resultingIndex == index1 ? index2 : index1);
         island1.mergeWithIsland(island2);
         islands.remove(island2);
     }
@@ -122,16 +127,12 @@ public class Board {
         return islands.get(index);
     }
 
-    public int getIslandIndex(CompoundIslandTile lookingForIsland) {
-        int islandIndex = 0;
-        for (CompoundIslandTile island : islands) {
-            if (island != lookingForIsland) {
-                islandIndex++;
-            } else {
+    public int getIslandIndex(CompoundIslandTile island) {
+
+        for(int islandIndex = 0; islandIndex < islands.size(); islandIndex++)
+            if(islands.get(islandIndex) == island)
                 return islandIndex;
-            }
-        }
-        throw new RuntimeException("Island not found");
+        throw new NoSuchElementException("Island not found");
     }
 
     /**

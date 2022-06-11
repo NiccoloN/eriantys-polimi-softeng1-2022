@@ -14,7 +14,7 @@ public enum Team implements Serializable {
 
     WHITE(AnsiCodes.WHITE_BRIGHT, "White"),
     BLACK(AnsiCodes.BLACK_BRIGHT, "Black"),
-    GRAY(AnsiCodes.WHITE, "Gray");
+    GRAY(AnsiCodes.CYAN_BRIGHT, "Cyan");
 
     public final String ansiColor;
     private final List<Player> players;

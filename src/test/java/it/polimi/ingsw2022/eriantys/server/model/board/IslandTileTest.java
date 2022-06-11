@@ -65,18 +65,6 @@ class IslandTileTest {
     }
 
     @Test
-    void removeStudent() {
-
-        ColoredPawn student = new ColoredPawn(PawnColor.RED);
-        tile.addStudent(new ColoredPawn(PawnColor.RED));
-        tile.addStudent(new ColoredPawn(PawnColor.YELLOW));
-        tile.addStudent(student);
-        assertEquals(tile.removeStudent(), student);
-        assertFalse(tile.containsStudent(student));
-        assertEquals(2, tile.countStudents());
-    }
-
-    @Test
     void hasTower_AddTower() {
         assertFalse(tile.hasTower());
         tile.addTower();

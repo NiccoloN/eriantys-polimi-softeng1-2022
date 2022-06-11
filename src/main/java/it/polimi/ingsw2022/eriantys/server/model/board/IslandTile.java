@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -54,7 +55,7 @@ public class IslandTile implements Serializable {
     /**
      * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
      * @param student the student to place
-     * @throws RuntimeException if the given student is already in this tile
+     * @throws RuntimeException if the given student is already placed on this tile
      */
     void addStudent(ColoredPawn student) {
 
@@ -63,15 +64,25 @@ public class IslandTile implements Serializable {
     }
 
     /**
-     * Removes the last placed student from this tile
-     * @return the removed student
-     * @throws IndexOutOfBoundsException if no students are placed on this tile
+     * Places the given colored pawns onto this tile. Only pawns that represent students should be placed on an island tile
+     * @param students the list of students to place
+     * @throws RuntimeException if any of the given students is already placed on this tile
      */
-    ColoredPawn removeStudent() {
+    void addStudents(Collection<ColoredPawn> students) {
 
-        return students.remove(students.size() - 1);
+        for(ColoredPawn student : students) addStudent(student);
     }
 
+    /**
+     * Removes all the students from this tile
+     * @return a list containing the removed students
+     */
+    List<ColoredPawn> removeAllStudents() {
+
+        List<ColoredPawn> removed = new ArrayList<>(students);
+        students.clear();
+        return removed;
+    }
 
     /**
      * @return whether mother nature is currently on this specific tile of an island
