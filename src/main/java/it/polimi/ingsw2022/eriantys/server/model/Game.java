@@ -1,4 +1,5 @@
 package it.polimi.ingsw2022.eriantys.server.model;
+import it.polimi.ingsw2022.eriantys.messages.requests.CharactersColorOrigin;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
@@ -36,7 +37,11 @@ public class Game {
     private InfluenceCalculator influenceCalculator;
     private final List<Player> players;
     private Player currentPlayer;
+
+    //TODO mettere un boolean nel player
     private final Map<String, Integer> characterUses = new HashMap<>(4);
+    private final Map<CharactersColorOrigin, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
+    private boolean abortMessageReceived = false;
     private boolean gameEnding;
 
     public Game(String[] playerUsernames) throws IOException {
@@ -54,21 +59,6 @@ public class Game {
         fillSchools();
         chooseCharacters();
         assignHelpers();
-    }
-
-    public void resetCharacterUses(){
-
-        for(Player player : players) characterUses.put(player.username, 0);
-    }
-
-    public void incrementCharacterUses(String username){
-
-        characterUses.put(username, characterUses.get(username)+1);
-    }
-
-    public int getCharacterUses(String username){
-
-        return characterUses.get(username);
     }
 
     private void placeFirstStudents() {
@@ -114,7 +104,9 @@ public class Game {
 
         List<CharacterCard> characterCards = new ArrayList<>(12);
         for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
-        for(int n = 0; n < 3; n++) characters.add(characterCards.remove((int) (Math.random() * characterCards.size())));
+        for(int n = 0; n < 3; n++) characters.add(characterCards.remove( 0
+                //(int) (Math.random() * characterCards.size())
+                ));
     }
 
     private void assignHelpers() throws IOException {
@@ -189,7 +181,7 @@ public class Game {
         players.sort(Player::comparePriorityTo);
     }
 
-    public void checkAndUpdateProfessor(PawnColor color) {
+    public void checkAndUpdateProfessor(PawnColor color, boolean characterCardUsage) {
 
         SchoolDashboard winnerSchool = null;
 
@@ -211,21 +203,31 @@ public class Game {
             if (winnerSchool == null) return;
         }
 
-        for (Player player : getPlayers()) {
-            SchoolDashboard school = player.getSchool();
-            if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
-                ColoredPawn professor;
-                professor = winnerSchool.removeProfessor(color);
+        if(!characterCardUsage){
+            for (Player player : getPlayers()) {
+                SchoolDashboard school = player.getSchool();
+                if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
+                    ColoredPawn professor;
+                    professor = winnerSchool.removeProfessor(color);
 
-                winnerSchool = school;
-                winnerSchool.addProfessor(professor);
+                    winnerSchool = school;
+                    winnerSchool.addProfessor(professor);
+                }
             }
         }
+        else {
+            SchoolDashboard currentPlayerSchool = currentPlayer.getSchool();
+            if(!currentPlayerSchool.equals(winnerSchool) && currentPlayerSchool.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
+                ColoredPawn professor = winnerSchool.removeProfessor(color);
+                currentPlayerSchool.addProfessor(professor);
+            }
+        }
+
     }
 
     /**
      * Checks if the selected island has to be merged with their neighbor islands.
-     * @param island
+     * @param island the selected island
      * @return integer representing the status of the merge
      *      0: nothing has merged
      *      1: next island is merged
@@ -314,9 +316,21 @@ public class Game {
         return influenceCalculator;
     }
 
-    public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) {
-        this.influenceCalculator = influenceCalculator;
-    }
+    public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) { this.influenceCalculator = influenceCalculator; }
+
+    public void resetCharacterUses(){ for(Player player : players) characterUses.put(player.username, 0); }
+
+    public void incrementCharacterUses(String username){ characterUses.put(username, characterUses.get(username)+1); }
+
+    public int getCharacterUses(String username){ return characterUses.get(username); }
+    public void resetExchanges() { exchangesCausedByCharacters.clear(); }
+
+    public void setExchanges(CharactersColorOrigin origin, PawnColor color) { exchangesCausedByCharacters.put(origin, color); }
+
+    public PawnColor getExchange(CharactersColorOrigin origin) { return exchangesCausedByCharacters.get(origin); }
+
+    public void setAbortMessageReceived(boolean value) { abortMessageReceived = value; }
+    public boolean getAbortMessageReceived() { return abortMessageReceived; }
 
     public boolean isGameEnding() {
         return  gameEnding;

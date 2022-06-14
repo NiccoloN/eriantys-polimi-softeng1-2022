@@ -10,7 +10,7 @@ public class ChooseIslandRequest extends MoveRequest {
 
     public final int characterCardIndex;
 
-    public ChooseIslandRequest(String promptSentence, int characterCardIndex) {
+    public ChooseIslandRequest(int characterCardIndex, String promptSentence) {
         super(promptSentence);
         this.characterCardIndex = characterCardIndex;
     }

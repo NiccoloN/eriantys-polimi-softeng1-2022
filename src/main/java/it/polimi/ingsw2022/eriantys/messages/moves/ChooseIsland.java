@@ -46,6 +46,7 @@ public class ChooseIsland extends Move{
                 game.getInfluenceCalculator().calculateInfluence(game.getPlayers(),game.getBoard().getIsland(compoundIslandIndex), game.getCurrentPlayer());
                 break;
             case 5:
+                game.getCharacterOfIndex(characterCardIndex).decrementDenyTiles();
                 game.getBoard().getIsland(compoundIslandIndex).incrementNumberOfDenyCards();
                 break;
             default: break;

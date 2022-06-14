@@ -22,7 +22,9 @@ public class InvalidResponseMessage extends ToClientMessage {
     @Override
     public void manageAndReply() throws IOException {
 
-        EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() +
-                           ") was invalid for the request (" + request.getClass().getSimpleName() + ")");
+        if(response != null && request != null) {
+            EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() +
+                    ") was invalid for the request (" + request.getClass().getSimpleName() + ")");
+        }
     }
 }

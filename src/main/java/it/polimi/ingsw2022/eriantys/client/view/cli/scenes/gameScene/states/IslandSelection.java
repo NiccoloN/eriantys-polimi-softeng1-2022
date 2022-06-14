@@ -158,7 +158,7 @@ public class IslandSelection extends GameSceneState {
     private void manageCharacters(EriantysClient client) throws IOException {
 
         if(studentColor != null) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                new MoveStudent(false, currentSelected.getIndex(), studentColor)));
+                new MoveStudent(false, currentSelected.getIndex(), studentColor, characterIndex)));
         else client.sendToServer(new PerformedMoveMessage(requestMessage,
                 new ChooseIsland(currentSelected.getIndex(), characterIndex)));
     }

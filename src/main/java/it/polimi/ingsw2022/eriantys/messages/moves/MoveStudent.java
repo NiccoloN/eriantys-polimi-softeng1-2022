@@ -53,7 +53,7 @@ public class MoveStudent extends Move {
             }
         }
 
-        if(school.countEntranceStudents(studentColor) <= 0) {
+        else if(school.countEntranceStudents(studentColor) <= 0) {
 
             errorMessage = "There's no student of the selected color in your school entrance";
             return false;
@@ -79,7 +79,7 @@ public class MoveStudent extends Move {
 
             SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(studentToMove);
-            game.checkAndUpdateProfessor(studentColor);
+            game.checkAndUpdateProfessor(studentColor,false);
         }
 
         else game.getBoard().getIsland(islandIndex).addStudent(studentToMove);
