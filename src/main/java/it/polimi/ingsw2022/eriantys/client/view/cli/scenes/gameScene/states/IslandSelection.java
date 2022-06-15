@@ -128,32 +128,13 @@ public class IslandSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) {
 
-            if(motherNatureIndex > -1) {
-
-                int compoundIslands = getScene().getIsland(11).getIndex() + 1;
-                if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps ||
-                    currentSelectedIndex + 1 > motherNatureIndex + compoundIslands)
-                    currentSelectedIndex = motherNatureIndex;
-                stepForwardMotherNature();
-            }
-
+            if(motherNatureIndex > -1) stepForwardMotherNature();
             else currentSelectedIndex++;
         }
 
         else if (input.triggersAction(Action.LEFT)) {
 
-            if(motherNatureIndex > -1) {
-
-                int compoundIslands = getScene().getIsland(11).getIndex() + 1;
-                if (currentSelectedIndex - 1 < motherNatureIndex + 1 ||
-                    currentSelectedIndex - 1 < motherNatureIndex + 1 - compoundIslands) {
-
-                    currentSelectedIndex = motherNatureIndex;
-                    for(int n = 0; n < motherNatureMaxSteps; n++) stepForwardMotherNature();
-                }
-                else stepBackwardsMotherNature();
-            }
-
+            if(motherNatureIndex > -1) stepBackwardsMotherNature();
             else currentSelectedIndex--;
         }
 
@@ -162,18 +143,53 @@ public class IslandSelection extends GameSceneState {
 
     private void stepForwardMotherNature() {
 
+        int compoundIslands = getScene().getIsland(11).getIndex() + 1;
+        int motherCompoundIndex = getScene().getIsland(getScene().getMotherNatureIslandIndex()).getIndex();
+
+        if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps) currentSelectedIndex = motherNatureIndex;
+
         int prevSelectedIndex = currentSelectedIndex;
-        do { currentSelectedIndex++; }
-        while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
+        do {
+
+            currentSelectedIndex++;
+            if(currentSelectedIndex > motherNatureIndex + compoundIslands) currentSelectedIndex = motherNatureIndex;
+        }
+        while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() == motherCompoundIndex ||
+              getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
               getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
     }
 
     private void stepBackwardsMotherNature() {
 
-        int prevSelectedIndex = currentSelectedIndex;
-        do { currentSelectedIndex--; }
-        while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
-              getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
+        int compoundIslands = getScene().getIsland(11).getIndex() + 1;
+        int motherCompoundIndex = getScene().getIsland(getScene().getMotherNatureIslandIndex()).getIndex();
+
+        int motherCompoundSize = 0;
+
+        int currentIndex = motherNatureIndex;
+        while(getScene().getIsland(currentIndex).getIndex() == motherCompoundIndex) {
+
+            motherCompoundSize++;
+            currentIndex++;
+        }
+
+        if (currentSelectedIndex - 1 < motherNatureIndex + motherCompoundSize) {
+
+            currentSelectedIndex = motherNatureIndex;
+            for(int n = 0; n < motherNatureMaxSteps; n++) {
+
+                stepForwardMotherNature();
+                if(getScene().getIsland(modValue(currentSelectedIndex + 1)).getIndex() == motherCompoundIndex) break;
+            }
+        }
+
+        else {
+
+            int prevSelectedIndex = currentSelectedIndex;
+            do { currentSelectedIndex--; }
+            while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
+                  getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
+        }
     }
 
     private int modValue(int index) {

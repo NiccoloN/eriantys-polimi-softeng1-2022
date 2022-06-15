@@ -209,6 +209,7 @@ public class BasicGameMode implements GameMode {
         CompoundIslandTile nextIsland = board.getIsland(nextIslandIndex);
         if (nextIsland.getTeam().equals(island.getTeam())) board.mergeIslands(islandIndex, nextIslandIndex);
 
+        islandIndex = island.getIndex();
         int previousIslandIndex = islandIndex - 1;
         if(previousIslandIndex < 0) previousIslandIndex = board.getNumberOfIslands() - 1;
         CompoundIslandTile previousIsland = board.getIsland(previousIslandIndex);
