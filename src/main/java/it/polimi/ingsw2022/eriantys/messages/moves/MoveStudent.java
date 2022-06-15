@@ -71,9 +71,13 @@ public class MoveStudent extends Move {
     @Override
     public void apply(Game game) {
 
-        ColoredPawn studentToMove = characterIndex > 0 ?
-                game.getCharacterOfIndex(characterIndex).getStudent(studentColor) :
-                game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
+        ColoredPawn studentToMove;
+
+        if(characterIndex > 0) {
+            studentToMove = game.getCharacterOfIndex(characterIndex).getStudent(studentColor);
+            game.getCharacterOfIndex(characterIndex).removeStudent(studentToMove);
+        }
+        else studentToMove = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
 
         if (toDining) {
 
