@@ -38,8 +38,7 @@ public class BasicGameMode implements GameMode {
         List<Player> players = game.getPlayers();
         Update[] initUpdates = new Update[players.size()];
 
-        IslandChange[] islandChanges = new IslandChange[game.getBoard().getNumberOfIslands()];
-        for (int n = 0; n < islandChanges.length; n++) islandChanges[n] = new IslandChange(n, game.getBoard().getIsland(n));
+        IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
 
         CloudChange[] cloudChanges = new CloudChange[players.size()];
         for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
@@ -53,7 +52,7 @@ public class BasicGameMode implements GameMode {
         for (int n = 0; n < initUpdates.length; n++) {
 
             initUpdates[n] = new Update();
-            for (IslandChange islandChange : islandChanges) initUpdates[n].addChange(islandChange);
+            initUpdates[n].addChange(islandChange);
             for (CloudChange cloudChange : cloudChanges) initUpdates[n].addChange(cloudChange);
             for (SchoolChange schoolChange : schoolChanges) initUpdates[n].addChange(schoolChange);
             for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
@@ -91,7 +90,7 @@ public class BasicGameMode implements GameMode {
                 for (int studentMove = 0; studentMove < 3; studentMove++)
                     requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors()), player.username);
 
-                requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
+                requestMove(new MoveMotherNatureRequest(/*player.getCurrentHelper().movement*/12/*TODO*/), player.username);
 
                 checkIslandInfluence();
 
@@ -203,10 +202,8 @@ public class BasicGameMode implements GameMode {
 
     private IslandChange checkForMerge(CompoundIslandTile island) {
 
-        IslandChange change = null;
-
         Board board = game.getBoard();
-        int islandIndex = board.getIslandIndex(island);
+        int islandIndex = island.getIndex();
 
         int nextIslandIndex = (islandIndex + 1) % board.getNumberOfIslands();
         CompoundIslandTile nextIsland = board.getIsland(nextIslandIndex);
@@ -215,14 +212,9 @@ public class BasicGameMode implements GameMode {
         int previousIslandIndex = islandIndex - 1;
         if(previousIslandIndex < 0) previousIslandIndex = board.getNumberOfIslands() - 1;
         CompoundIslandTile previousIsland = board.getIsland(previousIslandIndex);
-        if (previousIsland.getTeam().equals(island.getTeam())) {
+        if (previousIsland.getTeam().equals(island.getTeam())) board.mergeIslands(islandIndex, previousIslandIndex);
 
-            board.mergeIslands(islandIndex, previousIslandIndex);
-            change = new IslandChange(previousIslandIndex, previousIsland);
-        }
-
-        if(change == null) change = new IslandChange(islandIndex, island);
-        return change;
+        return new IslandChange(board.getIslandTiles());
     }
 
     protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {

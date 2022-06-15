@@ -15,13 +15,13 @@ class CompoundIslandTileTest {
 
     @BeforeEach
     void setup() {
-        compoundIsland = new CompoundIslandTile();
+        compoundIsland = new CompoundIslandTile(0);
     }
 
     @Test
     void mergeWithIsland() {
         assertThrows(RuntimeException.class, () -> compoundIsland.mergeWithIsland(compoundIsland));
-        final CompoundIslandTile newCompoundIsland = new CompoundIslandTile();
+        final CompoundIslandTile newCompoundIsland = new CompoundIslandTile(0);
         compoundIsland.mergeWithIsland(newCompoundIsland);
     }
 

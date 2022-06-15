@@ -22,17 +22,19 @@ public class CompoundIslandTile implements Serializable {
     private Team team;
     private boolean motherNature;
     private boolean denied;
+    private int index;
 
     /**
      * Constructs an island made of a single island tile
      */
-    public CompoundIslandTile() {
+    public CompoundIslandTile(int index) {
 
         tiles = new ArrayList<>();
         tiles.add(new IslandTile());
         team = null;
         motherNature = false;
         denied = false;
+        setIndex(index);
     }
 
     /**
@@ -110,12 +112,12 @@ public class CompoundIslandTile implements Serializable {
      * @throws InvalidParameterException if team is null
      */
     public void setTeam(Team team) {
+
         if (denied) throw new RuntimeException("Cannot set a new controller team on a denied island");
         if (team == null) throw new InvalidParameterException("Team cannot be null");
+
         this.team = team;
-        for (IslandTile tile : tiles) {
-            tile.addTower();
-        }
+        for (IslandTile tile : tiles) tile.setTeam(team);
     }
 
     /**
@@ -157,5 +159,16 @@ public class CompoundIslandTile implements Serializable {
     public int countTowers() {
 
         return tiles.size() == 1 ? (tiles.get(0).hasTower() ? 1 : 0) : tiles.size();
+    }
+
+    public int getIndex() {
+
+        return index;
+    }
+
+    public void setIndex(int index) {
+
+        this.index = index;
+        for(IslandTile tile : tiles) tile.setIndex(index);
     }
 }

@@ -63,13 +63,4 @@ class IslandTileTest {
         assertTrue(tile.containsStudent(student2));
         assertTrue(tile.containsStudent(student));
     }
-
-    @Test
-    void hasTower_AddTower() {
-        assertFalse(tile.hasTower());
-        tile.addTower();
-        assertTrue(tile.hasTower());
-        tile.addTower();
-        assertTrue(tile.hasTower());
-    }
 }

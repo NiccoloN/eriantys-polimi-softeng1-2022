@@ -94,7 +94,7 @@ public class MoveStudent extends Move {
 
         if (!toDining) {
 
-            IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
+            IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
             update.addChange(islandChange);
         }
 

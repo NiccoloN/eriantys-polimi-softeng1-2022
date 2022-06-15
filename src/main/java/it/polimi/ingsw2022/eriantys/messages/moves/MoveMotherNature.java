@@ -23,14 +23,14 @@ public class MoveMotherNature extends Move {
     @Override
     public boolean isValid(Game game) {
 
-        oldIslandIndex = game.getBoard().getIslandIndex(game.getBoard().getMotherNatureIsland());
+        oldIslandIndex = game.getBoard().getMotherNatureIsland().getIndex();
         if(oldIslandIndex == islandIndex) {
 
             errorMessage = "Mother nature must move of at least 1 step";
             return false;
         }
 
-        int maxSteps = game.getCurrentPlayer().getCurrentHelper().movement;
+        /*int maxSteps = game.getCurrentPlayer().getCurrentHelper().movement;
         int steps = 0;
         while((oldIslandIndex + steps) % game.getBoard().getNumberOfIslands() != islandIndex) {
 
@@ -40,7 +40,7 @@ public class MoveMotherNature extends Move {
                 errorMessage = "Cannot move mother nature of more than " + maxSteps + " steps";
                 return false;
             }
-        }
+        }*/ //TODO uncomment
 
         return true;
     }
@@ -48,7 +48,7 @@ public class MoveMotherNature extends Move {
     @Override
     public void apply(Game game) {
 
-        oldIslandIndex = game.getBoard().getIslandIndex(game.getBoard().getMotherNatureIsland());
+        oldIslandIndex = game.getBoard().getMotherNatureIsland().getIndex();
         int steps = islandIndex - oldIslandIndex;
         game.getBoard().moveMotherNature(steps);
     }
@@ -57,12 +57,8 @@ public class MoveMotherNature extends Move {
     public Update getUpdate(Game game) {
 
         Update update = new Update();
-        IslandChange oldIslandChange = new IslandChange(oldIslandIndex, game.getBoard().getIsland(oldIslandIndex));
-        IslandChange newIslandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
-
-        update.addChange(oldIslandChange);
-        update.addChange(newIslandChange);
-        System.out.println("Crafted island update");
+        IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
+        update.addChange(islandChange);
 
         return update;
     }

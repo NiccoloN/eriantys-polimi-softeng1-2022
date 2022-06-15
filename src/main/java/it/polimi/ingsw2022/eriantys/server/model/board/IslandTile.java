@@ -2,11 +2,13 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents an island tile: the smallest piece that forms an island.
@@ -19,12 +21,16 @@ public class IslandTile implements Serializable {
     private final List<ColoredPawn> students;
     private boolean motherNature;
     private boolean tower;
+    private Team team;
+    private int index;
 
     IslandTile() {
 
         students = new ArrayList<>();
         motherNature = false;
         tower = false;
+        team = null;
+        index = 0;
     }
 
     /**
@@ -109,10 +115,25 @@ public class IslandTile implements Serializable {
         return tower;
     }
 
-    /**
-     * Places a tower onto this tile. Once a tower is placed, it cannot be removed.
-     */
-    void addTower() {
+    public Optional<Team> getTeam() {
+
+        if(team != null) return Optional.of(team);
+        return Optional.empty();
+    }
+
+    public void setTeam(Team team) {
+
+        this.team = team;
         tower = true;
+    }
+
+    public int getIndex() {
+
+        return index;
+    }
+
+    public void setIndex(int index) {
+
+        this.index = index;
     }
 }

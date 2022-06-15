@@ -17,6 +17,7 @@ import java.util.*;
 public class Board {
 
     private final List<CompoundIslandTile> islands;
+    private final List<IslandTile> islandTiles;
     private final List<CloudTile> clouds;
     private final List<SchoolDashboard> schools;
     private int motherNatureIslandIndex;
@@ -32,11 +33,13 @@ public class Board {
         if (players.size() > 4) throw new RuntimeException("Too many players");
 
         islands = new ArrayList<>(12);
-        for (int n = 0; n < 12; n ++) islands.add(new CompoundIslandTile());
+        for(int n = 0; n < 12; n ++) islands.add(new CompoundIslandTile(n));
+        islandTiles = new ArrayList<>(12);
+        for(int n = 0; n < 12; n++) islandTiles.add(islands.get(n).getTile(0));
         clouds = new ArrayList<>(players.size());
-        for (int n = 0; n < players.size(); n++) clouds.add(new CloudTile());
+        for(int n = 0; n < players.size(); n++) clouds.add(new CloudTile());
         schools = new ArrayList<>(players.size());
-        for (int n = 0; n < players.size(); n++) {
+        for(int n = 0; n < players.size(); n++) {
 
             Player player = players.get(n);
 
@@ -68,23 +71,29 @@ public class Board {
      * Merges the given islands into a single bigger island. The given islands must be adjacent
      * @param index1 the index of the first island to merge
      * @param index2 the index of the second island to merge
+     * @throws IndexOutOfBoundsException if either index1 or index2 is out of bounds
      * @throws RuntimeException if the given islands are the same island
      * @throws RuntimeException if the given islands are not adjacent
      * @throws RuntimeException if any island tile is part of both the islands
      */
     public void mergeIslands(int index1, int index2) {
 
-        if (index1 > islands.size() - 1 || index2 > islands.size() - 1) throw new RuntimeException("Index are out of bounds");
+        if (index1 > islands.size() - 1) throw new IndexOutOfBoundsException("Index" + index1 + "out of bounds");
+        if (index2 > islands.size() - 1) throw new IndexOutOfBoundsException("Index" + index2 + "out of bounds");
         if (index1 == index2) throw new RuntimeException("Cannot merge an island with itself");
         if (Math.abs(index1 - index2) != 1 && Math.abs(index1 - index2) != islands.size() - 1) throw new RuntimeException("Cannot merge not adjacent islands");
 
         int resultingIndex = index1;
-        if((index1 - 1) % islands.size() == index2) resultingIndex = index2;
+        int index1Previous = index1 - 1;
+        if(index1Previous < 0) index1Previous = islands.size() - 1;
+        if(index1Previous % islands.size() == index2) resultingIndex = index2;
 
         CompoundIslandTile island1 = getIsland(resultingIndex);
         CompoundIslandTile island2 = getIsland(resultingIndex == index1 ? index2 : index1);
         island1.mergeWithIsland(island2);
         islands.remove(island2);
+
+        for(int n = 0; n < islands.size(); n++) islands.get(n).setIndex(n);
 
         motherNatureIslandIndex--;
         if(motherNatureIslandIndex < 0) motherNatureIslandIndex = islands.size() - 1;
@@ -130,12 +139,14 @@ public class Board {
         return islands.get(index);
     }
 
-    public int getIslandIndex(CompoundIslandTile island) {
+    public int getNumberOfIslandTiles() {
 
-        for(int islandIndex = 0; islandIndex < islands.size(); islandIndex++)
-            if(islands.get(islandIndex) == island)
-                return islandIndex;
-        throw new NoSuchElementException("Island not found");
+        return islandTiles.size();
+    }
+
+    public List<IslandTile> getIslandTiles() {
+
+        return new ArrayList<>(islandTiles);
     }
 
     /**
