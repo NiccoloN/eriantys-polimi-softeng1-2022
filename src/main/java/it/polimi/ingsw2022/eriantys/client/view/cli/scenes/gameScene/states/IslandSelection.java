@@ -130,7 +130,9 @@ public class IslandSelection extends GameSceneState {
 
             if(motherNatureIndex > -1) {
 
-                if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps)
+                int compoundIslands = getScene().getIsland(11).getIndex();
+                if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps ||
+                    currentSelectedIndex + 1 > motherNatureIndex + compoundIslands)
                     currentSelectedIndex = motherNatureIndex;
                 stepForwardMotherNature();
             }
