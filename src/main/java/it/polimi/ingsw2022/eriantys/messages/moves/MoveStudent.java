@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.PlayerChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
@@ -92,6 +93,7 @@ public class MoveStudent extends Move {
 
             SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(studentToMove);
+            if(game.getCurrentPlayer().checkCoins(studentToMove)) game.getCurrentPlayer().addCoin();
             game.checkAndUpdateProfessor(studentColor,false);
         }
 
@@ -110,6 +112,7 @@ public class MoveStudent extends Move {
         }
 
         for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
+        update.addChange(new PlayerChange(game.getCurrentPlayer()));
 
         return(update);
     }

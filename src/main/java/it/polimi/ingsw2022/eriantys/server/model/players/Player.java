@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.server.model.players;
 
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -173,5 +174,11 @@ public class Player implements Serializable {
     public int comparePriorityTo(Player otherPlayer) {
 
         return this.getCurrentHelper().priority < otherPlayer.getCurrentHelper().priority ? -1 : 1;
+    }
+
+    public boolean checkCoins(ColoredPawn student) {
+
+        int numberOfStudents = school.countTableStudents(student.color);
+        return numberOfStudents == 3 || numberOfStudents == 6 || numberOfStudents == 9;
     }
 }

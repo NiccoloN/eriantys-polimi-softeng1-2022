@@ -7,12 +7,14 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 public class MoveMotherNatureRequest extends MoveRequest {
 
-    private final int motherNatureMaxSteps;
+    public final int motherNatureMaxSteps;
+    private static boolean additionalSteps = false;
 
     public MoveMotherNatureRequest(int maxMotherNatureMaxSteps) {
 
         super("Choose how many steps mother nature will take");
-        this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
+        if(!additionalSteps) this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
+        else this.motherNatureMaxSteps = maxMotherNatureMaxSteps + 2;
     }
 
     @Override
@@ -20,5 +22,9 @@ public class MoveMotherNatureRequest extends MoveRequest {
 
         super.manage(cli, scene, requestMessage);
         scene.setState(new IslandSelection(cli, scene, requestMessage, motherNatureMaxSteps));
+    }
+
+    public static void setAdditionalSteps(boolean additionalSteps) {
+        MoveMotherNatureRequest.additionalSteps = additionalSteps;
     }
 }

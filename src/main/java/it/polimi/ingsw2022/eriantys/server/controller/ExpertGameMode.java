@@ -2,18 +2,17 @@ package it.polimi.ingsw2022.eriantys.server.controller;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
-import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
-import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
-import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
-import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.moves.*;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
@@ -22,8 +21,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class ExpertGameMode extends BasicGameMode {
-
-    private boolean additionalMotherNatureSteps = false;
 
     public ExpertGameMode(Game game) {
 
@@ -80,6 +77,7 @@ public class ExpertGameMode extends BasicGameMode {
 
         super.playTurn(player);
         game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+        MoveMotherNatureRequest.setAdditionalSteps(false);
     }
 
     private void playCharacter(int cardIndex) throws IOException, InterruptedException {
@@ -107,7 +105,7 @@ public class ExpertGameMode extends BasicGameMode {
 
                 break;
             case 4:
-                additionalMotherNatureSteps = true;
+                MoveMotherNatureRequest.setAdditionalSteps(true);
                 break;
             case 5:
                 requestMove(new ChooseIslandRequest(
@@ -141,11 +139,12 @@ public class ExpertGameMode extends BasicGameMode {
                                     game.getCurrentPlayer().username );
 
                             game.getCharacterOfIndex(cardIndex).addStudent(
-                                    game.getCurrentPlayer().getSchool().removeFromTable(game.getExchange(ColoredPawnOriginDestination.ENTRANCE))
+                                    game.getCurrentPlayer().getSchool().removeFromEntrance(game.getExchange(ColoredPawnOriginDestination.ENTRANCE))
                             );
-                            game.getCurrentPlayer().getSchool().addToEntrance(
-                                    game.getCharacterOfIndex(cardIndex).getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER))
-                            );
+
+                            ColoredPawn temp = game.getCharacterOfIndex(cardIndex).getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER));
+                            game.getCharacterOfIndex(cardIndex).removeStudent(temp);
+                            game.getCurrentPlayer().getSchool().addToEntrance(temp);
 
                             ChooseColor makeUpdate = new ChooseColor(null, cardIndex, null);
 
@@ -260,27 +259,28 @@ public class ExpertGameMode extends BasicGameMode {
                             player.getSchool().getAvailableEntranceColors(),
                             List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
                     player.username);
-            //TODO checkCoins();
         }
     }
 
     @Override
-    public void requestMotherNature(Player player) throws IOException, InterruptedException {
+    protected void checkIslandInfluence() throws IOException {
 
-        if(additionalMotherNatureSteps) {
-            requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement + 2), player.username);
+        CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
+
+        if(motherNatureIsland.getNumberOfDenyCards() > 0) {
+
+            motherNatureIsland.decrementNumberOfDenyCards();
+            game.getCharacterOfIndex(5).incrementDenyTiles();
         }
-        else super.requestMotherNature(player);
-
-        additionalMotherNatureSteps = false;
+        else super.checkIslandInfluence();
     }
 
     @Override
     public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
-        if(performedMoveMessage.move instanceof ChooseCharacterCard) {
+        MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
 
-            MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
+        if(performedMoveMessage.move instanceof ChooseCharacterCard) {
 
             ChooseCharacterCard move = (ChooseCharacterCard) performedMoveMessage.move;
 
@@ -298,12 +298,24 @@ public class ExpertGameMode extends BasicGameMode {
                                 game.getCurrentPlayer().username);
                     }
 
-                    requestMove(previousMessage.moveRequest, game.getCurrentPlayer().username);
+                    if(previousMessage.moveRequest instanceof MoveMotherNatureRequest) {
+                        requestMotherNature(game.getCurrentPlayer());
+                    }
+                    else requestMove(previousMessage.moveRequest, game.getCurrentPlayer().username);
                     previousMessage.acceptResponse();
 
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
+            }).start();
+        }
+        else if(performedMoveMessage.move instanceof Abort) {
+            new Thread( () -> {
+                if(performedMoveMessage.move.isValid(game)) {
+
+                    performedMoveMessage.move.apply(game);
+                }
+                previousMessage.acceptResponse();
             }).start();
         }
         else super.managePerformedMoveMessage(performedMoveMessage);

@@ -12,6 +12,7 @@ import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
@@ -115,7 +116,7 @@ public class IslandSelection extends GameSceneState {
             EriantysClient client = EriantysClient.getInstance();
 
             if(!movingStudent) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                            new MoveMotherNature(currentSelected.getIndex())));
+                            new MoveMotherNature(currentSelected.getIndex(), ((MoveMotherNatureRequest) requestMessage.moveRequest).motherNatureMaxSteps)));
             else if (characterIndex > 0) manageCharacters(client);
             else client.sendToServer(new PerformedMoveMessage(requestMessage,
                         new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere ,currentSelected.getIndex(), studentColor)));

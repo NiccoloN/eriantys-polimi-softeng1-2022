@@ -73,7 +73,7 @@ public class ColorSelection extends GameSceneState {
 
         EriantysClient client = EriantysClient.getInstance();
 
-        if(characterIndex == 7 || characterIndex == 10 && input.triggersAction(Action.ESC)) {
+        if((characterIndex == 7 || characterIndex == 10) && input.triggersAction(Action.ESC)) {
 
             client.sendToServer(new AbortMessage(requestMessage, new Abort()));
             return;
