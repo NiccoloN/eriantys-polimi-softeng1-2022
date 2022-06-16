@@ -36,9 +36,6 @@ public class Game {
     private InfluenceCalculator influenceCalculator;
     private final List<Player> players;
     private Player currentPlayer;
-
-    //TODO mettere un boolean nel player
-    private final Map<String, Integer> characterUses = new HashMap<>(4);
     private int characterIsland;
     private final Map<ColoredPawnOriginDestination, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
     private boolean abortMessageReceived = false;
@@ -318,11 +315,8 @@ public class Game {
 
     public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) { this.influenceCalculator = influenceCalculator; }
 
-    public void resetCharacterUses(){ for(Player player : players) characterUses.put(player.username, 0); }
+    public void resetCharacterUses(){ for(Player player : players) player.setCharacterUsed(false); }
 
-    public void incrementCharacterUses(String username){ characterUses.put(username, characterUses.get(username)+1); }
-
-    public int getCharacterUses(String username){ return characterUses.get(username); }
     public void resetExchanges() { exchangesCausedByCharacters.clear(); }
 
     public void setExchanges(ColoredPawnOriginDestination origin, PawnColor color) { exchangesCausedByCharacters.put(origin, color); }

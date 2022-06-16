@@ -29,7 +29,7 @@ public class ChooseCharacterCard extends Move {
 
         return characterCardIndex >= 1 && characterCardIndex <= 12 &&
                 game.getCurrentPlayer().getCoins() >= game.getCharacterOfIndex(characterCardIndex).getCost() &&
-                game.getCharacterUses(game.getCurrentPlayer().username) == 0;
+                !game.getCurrentPlayer().isCharacterUsed();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ChooseCharacterCard extends Move {
 
         game.getCurrentPlayer().payCoins(characterCard.getCost());
         characterCard.incrementCost();
-        game.incrementCharacterUses(game.getCurrentPlayer().username);
+        game.getCurrentPlayer().setCharacterUsed(true);
 
         switch(characterCardIndex) {
 

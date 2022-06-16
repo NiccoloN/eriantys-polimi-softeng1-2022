@@ -41,6 +41,8 @@ public class Player implements Serializable {
     private final List<HelperCard> helperCards;
     private transient SchoolDashboard school;
 
+    private boolean characterUsed = false;
+
     /**
      * Initializes the player adding it to a team and associating it to a mage
      * @param team the team of the player
@@ -158,6 +160,14 @@ public class Player implements Serializable {
 
         if (this.school != null) throw new RuntimeException("Player already associated to a school");
         this.school = school;
+    }
+
+    public boolean isCharacterUsed() {
+        return characterUsed;
+    }
+
+    public void setCharacterUsed(boolean characterUsed) {
+        this.characterUsed = characterUsed;
     }
 
     public int comparePriorityTo(Player otherPlayer) {

@@ -72,22 +72,19 @@ public class BasicGameMode implements GameMode {
     @Override
     public void playGame() throws IOException, InterruptedException {
 
-        while (!game.isGameEnding()) {
-
-            if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
-                game.setInfluenceCalculator(new InfluenceCalculatorBasic());
-
-            fillClouds();
-            playHelpers();
-
-            game.sortPlayersBasedOnHelperCard();
-
-            playRound();
-        }
+        while (!game.isGameEnding()) playRound();
         endGame();
     }
 
     protected void playRound() throws IOException, InterruptedException {
+
+        if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
+            game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+
+        fillClouds();
+        playHelpers();
+
+        game.sortPlayersBasedOnHelperCard();
 
         for (Player player : game.getPlayers()) {
             playTurn(player);
