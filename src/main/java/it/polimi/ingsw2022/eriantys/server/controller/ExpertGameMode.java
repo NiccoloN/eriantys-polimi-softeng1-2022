@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
@@ -15,6 +16,7 @@ import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
 import java.util.*;
@@ -98,6 +100,11 @@ public class ExpertGameMode extends BasicGameMode {
                         cardIndex,
                         "Select the island on which influence will be calculated."),
                         game.getCurrentPlayer().username);
+
+                Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence
+                        (game.getPlayers(),game.getBoard().getIsland(game.getCharacterIsland()), game.getCurrentPlayer());
+                if(dominantTeam.isPresent()) updateTowers(dominantTeam.get(), game.getBoard().getIsland(game.getCharacterIsland()));
+
                 break;
             case 4:
                 additionalMotherNatureSteps = true;

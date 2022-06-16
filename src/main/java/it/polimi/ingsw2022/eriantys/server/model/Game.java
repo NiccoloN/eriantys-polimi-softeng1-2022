@@ -39,6 +39,7 @@ public class Game {
 
     //TODO mettere un boolean nel player
     private final Map<String, Integer> characterUses = new HashMap<>(4);
+    private int characterIsland;
     private final Map<ColoredPawnOriginDestination, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
     private boolean abortMessageReceived = false;
     private boolean gameEnding;
@@ -330,6 +331,10 @@ public class Game {
 
     public void setAbortMessageReceived(boolean value) { abortMessageReceived = value; }
     public boolean getAbortMessageReceived() { return abortMessageReceived; }
+
+    public int getCharacterIsland() { return characterIsland; }
+
+    public void setCharacterIsland(int characterIsland) { this.characterIsland = characterIsland; }
 
     public boolean isGameEnding() {
         return  gameEnding;

@@ -2,8 +2,13 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+
+import java.util.Optional;
 
 public class ChooseIsland extends Move{
 
@@ -43,7 +48,7 @@ public class ChooseIsland extends Move{
         switch(characterCardIndex) {
 
             case 3:
-                game.getInfluenceCalculator().calculateInfluence(game.getPlayers(),game.getBoard().getIsland(compoundIslandIndex), game.getCurrentPlayer());
+                game.setCharacterIsland(compoundIslandIndex);
                 break;
             case 5:
                 game.getCharacterOfIndex(characterCardIndex).decrementDenyTiles();
@@ -62,14 +67,19 @@ public class ChooseIsland extends Move{
         switch(characterCardIndex) {
 
             case 3:
-                islandChange = new IslandChange(compoundIslandIndex, game.getBoard().getIsland(compoundIslandIndex));
-                update.addChange(islandChange);
+                for(int i=0; i<game.getBoard().getNumberOfIslands(); i++) {
+                    islandChange = new IslandChange(i, game.getBoard().getIsland(i));
+                    update.addChange(islandChange);
+                }
+                update.addChange(new SchoolChange(game.getCurrentPlayer().getSchool()));
                 break;
             case 5:
-                islandChange = new IslandChange(compoundIslandIndex, game.getBoard().getIsland(compoundIslandIndex));
+                for(int i=0; i<game.getBoard().getNumberOfIslands(); i++) {
+                    islandChange = new IslandChange(i, game.getBoard().getIsland(i));
+                    update.addChange(islandChange);
+                }
                 CharacterCardsChange characterCardsChange = new CharacterCardsChange();
                 for(int i=0; i<game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
-                update.addChange(islandChange);
                 update.addChange(characterCardsChange);
                 break;
             default: break;

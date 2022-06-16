@@ -178,7 +178,7 @@ public class BasicGameMode implements GameMode {
         if (dominantTeam.isPresent()) updateTowers(dominantTeam.get(), motherNatureIsland);
     }
 
-    private void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
+    protected void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
 
         Update update = new Update();
 

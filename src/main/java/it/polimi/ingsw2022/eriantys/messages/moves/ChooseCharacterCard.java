@@ -9,8 +9,7 @@ import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBo
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoTowers;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
-
-import java.io.Serializable;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 /**
  * This class represents the choice of a Character by a player
@@ -68,6 +67,9 @@ public class ChooseCharacterCard extends Move {
 
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
         PlayerChange playerChange = new PlayerChange(game.getCurrentPlayer());
+
+        if(characterCardIndex == 2) {
+            for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool())); }
 
         for(int i=0; i<game.getNumberOfCharacters(); i++){
             characterCardsChange.addCharacterCard(game.getCharacter(i));
