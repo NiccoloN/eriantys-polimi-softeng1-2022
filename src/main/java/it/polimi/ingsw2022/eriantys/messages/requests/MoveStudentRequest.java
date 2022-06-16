@@ -12,19 +12,22 @@ public class MoveStudentRequest extends MoveRequest {
 
     private final List<PawnColor> availableColors;
     public final int characterIndex;
+    public final List<ColoredPawnOriginDestination> toWhere;
 
-    public MoveStudentRequest(List<PawnColor> availableColors) {
+    public MoveStudentRequest(List<PawnColor> availableColors, List<ColoredPawnOriginDestination> toWhere) {
 
         super("Move a student from your school's entrance to either an island or your dining room");
         this.availableColors = availableColors;
         characterIndex = 0;
+        this.toWhere = toWhere;
     }
 
-    public MoveStudentRequest(int characterIndex, List<PawnColor> availableColors, String promptSentence) {
+    public MoveStudentRequest(int characterIndex, List<PawnColor> availableColors, List<ColoredPawnOriginDestination> toWhere, String promptSentence) {
 
         super(promptSentence);
         this.availableColors = availableColors;
         this.characterIndex = characterIndex;
+        this.toWhere = toWhere;
     }
 
     @Override

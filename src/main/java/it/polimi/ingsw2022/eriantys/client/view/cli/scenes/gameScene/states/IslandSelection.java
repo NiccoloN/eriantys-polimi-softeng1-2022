@@ -8,10 +8,11 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
@@ -117,7 +118,7 @@ public class IslandSelection extends GameSceneState {
                             new MoveMotherNature(currentSelected.getIndex())));
             else if (characterIndex > 0) manageCharacters(client);
             else client.sendToServer(new PerformedMoveMessage(requestMessage,
-                        new MoveStudent(false, currentSelected.getIndex(), studentColor)));
+                        new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere ,currentSelected.getIndex(), studentColor)));
 
             getScene().setState(new ViewOnly(getCli(), getScene()));
             return;
@@ -158,7 +159,7 @@ public class IslandSelection extends GameSceneState {
     private void manageCharacters(EriantysClient client) throws IOException {
 
         if(studentColor != null) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                new MoveStudent(false, currentSelected.getIndex(), studentColor, characterIndex)));
+                new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, currentSelected.getIndex(), studentColor, characterIndex)));
         else client.sendToServer(new PerformedMoveMessage(requestMessage,
                 new ChooseIsland(currentSelected.getIndex(), characterIndex)));
     }

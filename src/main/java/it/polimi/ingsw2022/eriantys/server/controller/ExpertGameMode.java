@@ -87,9 +87,10 @@ public class ExpertGameMode extends BasicGameMode {
 
             case 1:
                 requestMove(new MoveStudentRequest(
-                            characterCard.index,
-                            characterCard.getStudentsColors(),
-                            "Move a student from the character card to an island")
+                                characterCard.index,
+                                characterCard.getStudentsColors(),
+                                List.of(ColoredPawnOriginDestination.ISLAND),
+                                "Move a student from the character card to an island")
                         , game.getCurrentPlayer().username);
                 break;
             case 3:
@@ -116,7 +117,7 @@ public class ExpertGameMode extends BasicGameMode {
                                         (
                                                 cardIndex,
                                                 characterCard.getStudentsColors(),
-                                                CharactersColorOrigin.FROM_CHARACTER,
+                                                ColoredPawnOriginDestination.CHARACTER,
                                     "Select a student from the character card, or press ESC to stop the effect."
                                         ),
                                 game.getCurrentPlayer().username);
@@ -127,16 +128,16 @@ public class ExpertGameMode extends BasicGameMode {
                                             (
                                                     cardIndex,
                                                     game.getCurrentPlayer().getSchool().getAvailableEntranceColors(),
-                                                    CharactersColorOrigin.FROM_ENTRANCE,
+                                                    ColoredPawnOriginDestination.ENTRANCE,
                                                     "Select now a student from your school entrance."
                                             ),
                                     game.getCurrentPlayer().username );
 
                             game.getCharacterOfIndex(cardIndex).addStudent(
-                                    game.getCurrentPlayer().getSchool().removeFromTable(game.getExchange(CharactersColorOrigin.FROM_ENTRANCE))
+                                    game.getCurrentPlayer().getSchool().removeFromTable(game.getExchange(ColoredPawnOriginDestination.ENTRANCE))
                             );
                             game.getCurrentPlayer().getSchool().addToEntrance(
-                                    game.getCharacterOfIndex(cardIndex).getStudent(game.getExchange(CharactersColorOrigin.FROM_CHARACTER))
+                                    game.getCharacterOfIndex(cardIndex).getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER))
                             );
 
                             ChooseColor makeUpdate = new ChooseColor(null, cardIndex, null);
@@ -168,7 +169,7 @@ public class ExpertGameMode extends BasicGameMode {
                                         (
                                                 cardIndex,
                                                 game.getCurrentPlayer().getSchool().getAvailableTableColors(),
-                                                CharactersColorOrigin.FROM_TABLE,
+                                                ColoredPawnOriginDestination.TABLE,
                                                 "Select a student from the student tables of your school, or press ESC to stop the effect."
                                         ),
                                 game.getCurrentPlayer().username);
@@ -179,14 +180,14 @@ public class ExpertGameMode extends BasicGameMode {
                                             (
                                                     cardIndex,
                                                     game.getCurrentPlayer().getSchool().getAvailableEntranceColors(),
-                                                    CharactersColorOrigin.FROM_ENTRANCE,
+                                                    ColoredPawnOriginDestination.ENTRANCE,
                                                     "Select now a student from your school entrance."
                                             ),
                                     game.getCurrentPlayer().username);
 
                             try {
                                 game.getCurrentPlayer().getSchool().addToTable(game.getCurrentPlayer().getSchool().removeFromEntrance(
-                                        game.getExchange(CharactersColorOrigin.FROM_ENTRANCE)));
+                                        game.getExchange(ColoredPawnOriginDestination.ENTRANCE)));
                             } catch (RuntimeException e) {
                                 server.sendToClient(new InvalidMoveMessage
                                         (null, null, "Already reached maximum students in the table"), game.getCurrentPlayer().username);
@@ -194,7 +195,7 @@ public class ExpertGameMode extends BasicGameMode {
                             }
 
                             game.getCurrentPlayer().getSchool().addToEntrance(game.getCurrentPlayer().getSchool().removeFromTable(
-                                    game.getExchange(CharactersColorOrigin.FROM_TABLE)));
+                                    game.getExchange(ColoredPawnOriginDestination.TABLE)));
 
                             ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
 
@@ -212,13 +213,13 @@ public class ExpertGameMode extends BasicGameMode {
                                 (
                                         cardIndex,
                                         game.getCharacterOfIndex(cardIndex).getStudentsColors(),
-                                        CharactersColorOrigin.FROM_CHARACTER,
+                                        ColoredPawnOriginDestination.CHARACTER,
                                         "Select a student from the character card."
                                 ),
                         game.getCurrentPlayer().username);
 
                 game.getCurrentPlayer().getSchool().addToTable(game.getCharacterOfIndex(cardIndex).getStudent(
-                        game.getExchange(CharactersColorOrigin.FROM_CHARACTER)));
+                        game.getExchange(ColoredPawnOriginDestination.CHARACTER)));
 
                 ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
                 server.sendToAllClients(new UpdateMessage(chooseColorUpdate.getUpdate(game)));
@@ -236,7 +237,7 @@ public class ExpertGameMode extends BasicGameMode {
                                 ),
                         game.getCurrentPlayer().username);
 
-                MoveStudent moveStudentUpdate = new MoveStudent(false, 0, null);
+                MoveStudent moveStudentUpdate = new MoveStudent(ColoredPawnOriginDestination.TABLE, null, 0, null);
                 server.sendToAllClients(new UpdateMessage(moveStudentUpdate.getUpdate(game)));
                 break;
         }
@@ -247,7 +248,11 @@ public class ExpertGameMode extends BasicGameMode {
 
         for (int studentMove = 0; studentMove < 3; studentMove++) {
 
-            requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors()), player.username);
+            requestMove(new MoveStudentRequest
+                    (
+                            player.getSchool().getAvailableEntranceColors(),
+                            List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+                    player.username);
             //TODO checkCoins();
         }
     }

@@ -110,7 +110,9 @@ public class BasicGameMode implements GameMode {
     protected void requestStudents(Player player) throws IOException, InterruptedException {
 
         for (int studentMove = 0; studentMove < 3; studentMove++)
-            requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors()), player.username);
+            requestMove(new MoveStudentRequest
+                    (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+                    player.username);
     }
 
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {

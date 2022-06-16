@@ -1,5 +1,5 @@
 package it.polimi.ingsw2022.eriantys.server.model;
-import it.polimi.ingsw2022.eriantys.messages.requests.CharactersColorOrigin;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
@@ -12,7 +12,6 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -40,7 +39,7 @@ public class Game {
 
     //TODO mettere un boolean nel player
     private final Map<String, Integer> characterUses = new HashMap<>(4);
-    private final Map<CharactersColorOrigin, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
+    private final Map<ColoredPawnOriginDestination, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
     private boolean abortMessageReceived = false;
     private boolean gameEnding;
 
@@ -325,9 +324,9 @@ public class Game {
     public int getCharacterUses(String username){ return characterUses.get(username); }
     public void resetExchanges() { exchangesCausedByCharacters.clear(); }
 
-    public void setExchanges(CharactersColorOrigin origin, PawnColor color) { exchangesCausedByCharacters.put(origin, color); }
+    public void setExchanges(ColoredPawnOriginDestination origin, PawnColor color) { exchangesCausedByCharacters.put(origin, color); }
 
-    public PawnColor getExchange(CharactersColorOrigin origin) { return exchangesCausedByCharacters.get(origin); }
+    public PawnColor getExchange(ColoredPawnOriginDestination origin) { return exchangesCausedByCharacters.get(origin); }
 
     public void setAbortMessageReceived(boolean value) { abortMessageReceived = value; }
     public boolean getAbortMessageReceived() { return abortMessageReceived; }

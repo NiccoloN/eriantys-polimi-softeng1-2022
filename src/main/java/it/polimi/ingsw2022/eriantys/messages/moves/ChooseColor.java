@@ -1,10 +1,9 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
-import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
-import it.polimi.ingsw2022.eriantys.messages.requests.CharactersColorOrigin;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
@@ -15,9 +14,9 @@ public class ChooseColor extends Move{
 
     private final PawnColor chosenColor;
     private final int characterCardIndex;
-    private final CharactersColorOrigin fromWhere;
+    private final ColoredPawnOriginDestination fromWhere;
 
-    public ChooseColor(PawnColor chosenColor, int characterCardIndex, CharactersColorOrigin fromWhere) {
+    public ChooseColor(PawnColor chosenColor, int characterCardIndex, ColoredPawnOriginDestination fromWhere) {
 
         this.chosenColor = chosenColor;
         this.characterCardIndex = characterCardIndex;
@@ -30,11 +29,11 @@ public class ChooseColor extends Move{
         switch(characterCardIndex) {
 
             case 7:
-                if(fromWhere.equals(CharactersColorOrigin.FROM_CHARACTER)) {
+                if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) {
                     errorMessage = "The chosen color isn't available on the character card";
                     return game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor);
                 }
-                else if(fromWhere.equals(CharactersColorOrigin.FROM_ENTRANCE)) {
+                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
                     errorMessage = "The chosen color isn't available on school entrance.";
                     return game.getPlayer(game.getCurrentPlayer().username).getSchool().getAvailableEntranceColors().contains(chosenColor);
                 }
@@ -44,11 +43,11 @@ public class ChooseColor extends Move{
                 }
 
             case 10:
-                if(fromWhere.equals(CharactersColorOrigin.FROM_TABLE)) {
+                if(fromWhere.equals(ColoredPawnOriginDestination.TABLE)) {
                     errorMessage = "The chosen color isn't available on the students' table";
                     return game.getPlayer(game.getCurrentPlayer().username).getSchool().countTableStudents(chosenColor) > 0;
                 }
-                else if(fromWhere.equals(CharactersColorOrigin.FROM_ENTRANCE)) {
+                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
                     errorMessage = "The chosen color isn't available on school entrance.";
                     return game.getPlayer(game.getCurrentPlayer().username).getSchool().getAvailableEntranceColors().contains(chosenColor);
                 }
@@ -60,7 +59,7 @@ public class ChooseColor extends Move{
             case 12:
                 return true;
             case 11:
-                if(fromWhere.equals(CharactersColorOrigin.FROM_CHARACTER)) {
+                if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) {
                     errorMessage = "The chosen color isn't available on the character card";
                     return game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor);
                 }
@@ -80,22 +79,22 @@ public class ChooseColor extends Move{
         switch(characterCardIndex) {
 
             case 7:
-                if(fromWhere.equals(CharactersColorOrigin.FROM_CHARACTER))
-                    game.setExchanges(CharactersColorOrigin.FROM_CHARACTER, chosenColor);
-                else if(fromWhere.equals(CharactersColorOrigin.FROM_ENTRANCE))
-                    game.setExchanges(CharactersColorOrigin.FROM_ENTRANCE, chosenColor);
+                if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER))
+                    game.setExchanges(ColoredPawnOriginDestination.CHARACTER, chosenColor);
+                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE))
+                    game.setExchanges(ColoredPawnOriginDestination.ENTRANCE, chosenColor);
                 break;
             case 9:
                 game.setInfluenceCalculator(new InfluenceCalculatorNoColor(chosenColor));
                 break;
             case 10:
-                if(fromWhere.equals(CharactersColorOrigin.FROM_TABLE))
-                    game.setExchanges(CharactersColorOrigin.FROM_TABLE, chosenColor);
-                else if(fromWhere.equals(CharactersColorOrigin.FROM_ENTRANCE))
-                    game.setExchanges(CharactersColorOrigin.FROM_ENTRANCE, chosenColor);
+                if(fromWhere.equals(ColoredPawnOriginDestination.TABLE))
+                    game.setExchanges(ColoredPawnOriginDestination.TABLE, chosenColor);
+                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE))
+                    game.setExchanges(ColoredPawnOriginDestination.ENTRANCE, chosenColor);
                 break;
             case 11:
-                game.setExchanges(CharactersColorOrigin.FROM_CHARACTER, chosenColor);
+                game.setExchanges(ColoredPawnOriginDestination.CHARACTER, chosenColor);
             case 12:
                 for(Player player : game.getPlayers()) {
 

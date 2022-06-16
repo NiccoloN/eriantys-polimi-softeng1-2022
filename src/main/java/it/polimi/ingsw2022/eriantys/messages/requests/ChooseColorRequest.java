@@ -9,11 +9,11 @@ import java.util.List;
 
 public class ChooseColorRequest extends MoveRequest {
 
-    public final CharactersColorOrigin fromWhere;
+    public final ColoredPawnOriginDestination fromWhere;
     private final List<PawnColor> availableColors;
     public final int characterCardIndex;
 
-    public ChooseColorRequest(int characterCardIndex, List<PawnColor> availableColors, CharactersColorOrigin fromWhere, String promptSentence) {
+    public ChooseColorRequest(int characterCardIndex, List<PawnColor> availableColors, ColoredPawnOriginDestination fromWhere, String promptSentence) {
 
         super(promptSentence);
         this.characterCardIndex = characterCardIndex;
