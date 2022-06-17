@@ -21,6 +21,7 @@ import java.util.*;
  * @author Francesco Melegati
  */
 public class Game {
+
     // Predefined game values
     public static final int NUMBER_OF_STUDENTS_PER_COLOR = 26;
     public static final int NUMBER_OF_PROFESSORS_PER_COLOR = 1;
@@ -220,10 +221,6 @@ public class Game {
 
     }
 
-    public void calculatePoints() {
-        // TODO: implement it
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -292,6 +289,7 @@ public class Game {
     public PawnColor getExchange(ColoredPawnOriginDestination origin) { return exchangesCausedByCharacters.get(origin); }
 
     public void setAbortMessageReceived(boolean value) { abortMessageReceived = value; }
+
     public boolean getAbortMessageReceived() { return abortMessageReceived; }
 
     public int getCharacterIsland() { return characterIsland; }
