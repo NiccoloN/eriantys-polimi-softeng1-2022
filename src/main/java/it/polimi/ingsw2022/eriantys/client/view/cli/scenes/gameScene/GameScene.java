@@ -13,6 +13,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
@@ -29,6 +30,8 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 public class GameScene extends CLIScene {
 
     public final Mode gameMode;
+
+    private List<CompoundIslandTile> compoundIslands;
 
     private CLIComponent prompt;
     private final BasicCLIComponent title;
@@ -175,6 +178,11 @@ public class GameScene extends CLIScene {
             if (decorativeCloud.getX() < - decorativeCloud.getWidth()) decorativeCloud.setX(getWidth());
             else if (decorativeCloud.getX() > getWidth()) decorativeCloud.setX(- decorativeCloud.getWidth());
         }
+    }
+
+    public void setCompoundIslands(List<CompoundIslandTile> compoundIslands) {
+
+        this.compoundIslands = compoundIslands;
     }
 
     public void setHelpers(List<HelperCard> helperCards) {

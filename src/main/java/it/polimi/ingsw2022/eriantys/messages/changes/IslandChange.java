@@ -19,16 +19,19 @@ import java.util.List;
  */
 public class IslandChange implements Change, Serializable {
 
+    private final List<CompoundIslandTile> islands;
     private final List<IslandTile> islandTiles;
 
-    public IslandChange(List<IslandTile> islandTiles) {
+    public IslandChange(List<CompoundIslandTile> islands, List<IslandTile> islandTiles) {
 
+        this.islands = islands;
         this.islandTiles = islandTiles;
     }
 
     @Override
     public void apply(GameScene scene) {
 
+        scene.setCompoundIslands(islands);
         for(int n = 0; n < islandTiles.size(); n++) setCliIslandTile(scene.getIsland(n), islandTiles.get(n));
     }
 

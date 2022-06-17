@@ -34,13 +34,14 @@ public class BasicGameMode implements GameMode {
 
     public Update[] createInitialUpdates() {
 
+        Board board = game.getBoard();
         List<Player> players = game.getPlayers();
         Update[] initUpdates = new Update[players.size()];
 
-        IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
+        IslandChange islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
 
         CloudChange[] cloudChanges = new CloudChange[players.size()];
-        for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, game.getBoard().getCloud(n));
+        for (int n = 0; n < cloudChanges.length; n++) cloudChanges[n] = new CloudChange(n, board.getCloud(n));
 
         SchoolChange[] schoolChanges = new SchoolChange[players.size()];
         for (int n = 0; n < players.size(); n++) schoolChanges[n] = new SchoolChange(players.get(n).getSchool());
@@ -231,7 +232,7 @@ public class BasicGameMode implements GameMode {
         CompoundIslandTile previousIsland = board.getIsland(previousIslandIndex);
         if (previousIsland.getTeam().equals(island.getTeam())) board.mergeIslands(islandIndex, previousIslandIndex);
 
-        return new IslandChange(board.getIslandTiles());
+        return new IslandChange(board.getIslands(), board.getIslandTiles());
     }
 
     protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {

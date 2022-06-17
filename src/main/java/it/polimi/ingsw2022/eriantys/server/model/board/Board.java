@@ -136,9 +136,9 @@ public class Board {
         return islands.get(index);
     }
 
-    public int getNumberOfIslandTiles() {
+    public List<CompoundIslandTile> getIslands() {
 
-        return islandTiles.size();
+        return new ArrayList<>(islands);
     }
 
     public List<IslandTile> getIslandTiles() {
@@ -155,5 +155,4 @@ public class Board {
 
         return clouds.get(index);
     }
-
 }

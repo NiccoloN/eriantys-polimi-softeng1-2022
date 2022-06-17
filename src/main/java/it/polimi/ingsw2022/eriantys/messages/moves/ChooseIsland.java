@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
@@ -63,19 +64,20 @@ public class ChooseIsland extends Move{
 
         Update update = new Update();
         IslandChange islandChange;
+        Board board = game.getBoard();
 
         switch(characterCardIndex) {
 
             case 3:
 
-                islandChange = new IslandChange(game.getBoard().getIslandTiles());
+                islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
                 update.addChange(islandChange);
 
                 update.addChange(new SchoolChange(game.getCurrentPlayer().getSchool()));
                 break;
             case 5:
 
-                islandChange = new IslandChange(game.getBoard().getIslandTiles());
+                islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
                 update.addChange(islandChange);
 
                 CharacterCardsChange characterCardsChange = new CharacterCardsChange();

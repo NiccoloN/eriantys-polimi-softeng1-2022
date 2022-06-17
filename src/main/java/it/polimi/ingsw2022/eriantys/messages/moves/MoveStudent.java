@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
@@ -103,11 +104,12 @@ public class MoveStudent extends Move {
     @Override
     public Update getUpdate(Game game) {
 
+        Board board = game.getBoard();
         Update update = new Update();
 
         if (destination!= ColoredPawnOriginDestination.TABLE) {
 
-            IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
+            IslandChange islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
             update.addChange(islandChange);
         }
 

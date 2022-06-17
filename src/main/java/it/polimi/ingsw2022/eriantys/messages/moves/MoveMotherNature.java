@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 
 import java.io.Serializable;
 
@@ -58,8 +59,9 @@ public class MoveMotherNature extends Move {
     @Override
     public Update getUpdate(Game game) {
 
+        Board board = game.getBoard();
         Update update = new Update();
-        IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
+        IslandChange islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
         update.addChange(islandChange);
 
         return update;
