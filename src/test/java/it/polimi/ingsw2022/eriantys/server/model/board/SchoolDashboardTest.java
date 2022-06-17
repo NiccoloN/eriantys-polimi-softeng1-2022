@@ -60,8 +60,6 @@ class SchoolDashboardTest {
         schoolDashboard.addToTable(student);
         assertThrows(RuntimeException.class, () -> schoolDashboard.addToTable(student));
         schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE));
-        assertEquals(1, schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE)));
-        assertEquals(0, schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE)));
         schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE));
         schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE));
         schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE));

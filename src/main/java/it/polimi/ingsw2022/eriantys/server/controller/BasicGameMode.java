@@ -114,7 +114,7 @@ public class BasicGameMode implements GameMode {
 
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {
 
-        requestMove(new MoveMotherNatureRequest(/*TODO player.getCurrentHelper().movement*/12), player.username);
+        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
     }
 
     private void fillClouds() throws IOException {

@@ -94,7 +94,6 @@ public class MoveStudent extends Move {
 
             SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(studentToMove);
-            if(game.getCurrentPlayer().checkCoins(studentToMove)) game.getCurrentPlayer().addCoin();
             game.checkAndUpdateProfessor(studentColor,false);
         }
 
