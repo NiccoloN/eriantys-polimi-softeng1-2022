@@ -27,9 +27,12 @@ public class ChooseCharacterCard extends Move {
     @Override
     public boolean isValid(Game game) {
 
-        return characterCardIndex >= 1 && characterCardIndex <= 12 &&
+        boolean validParameters = characterCardIndex >= 1 && characterCardIndex <= 12 &&
                 game.getCurrentPlayer().getCoins() >= game.getCharacterOfIndex(characterCardIndex).getCost() &&
                 !game.getCurrentPlayer().isCharacterUsed();
+
+        if(characterCardIndex == 10) return validParameters && !game.getCurrentPlayer().getSchool().getAvailableTableColors().isEmpty();
+        else return validParameters;
     }
 
     @Override
@@ -56,7 +59,6 @@ public class ChooseCharacterCard extends Move {
             case 8:
                 game.setInfluenceCalculator(new InfluenceCalculatorBonus());
                 break;
-            default: break;
         }
     }
 

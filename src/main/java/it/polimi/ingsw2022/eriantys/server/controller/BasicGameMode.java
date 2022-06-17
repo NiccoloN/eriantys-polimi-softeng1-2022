@@ -95,7 +95,7 @@ public class BasicGameMode implements GameMode {
 
         game.setCurrentPlayer(player);
 
-        requestStudents(player);
+        for(int studentMove = 0; studentMove < 3; studentMove++) requestStudent(player);
 
         requestMotherNature(player);
 
@@ -104,12 +104,11 @@ public class BasicGameMode implements GameMode {
         requestMove(new ChooseCloudRequest(), player.username);
     }
 
-    protected void requestStudents(Player player) throws IOException, InterruptedException {
+    protected void requestStudent(Player player) throws IOException, InterruptedException {
 
-        for (int studentMove = 0; studentMove < 3; studentMove++)
-            requestMove(new MoveStudentRequest
-                    (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
-                    player.username);
+        requestMove(new MoveStudentRequest
+                        (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+                player.username);
     }
 
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {

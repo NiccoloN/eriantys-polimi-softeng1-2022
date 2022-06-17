@@ -45,7 +45,7 @@ public class ChooseColor extends Move{
             case 10:
                 if(fromWhere.equals(ColoredPawnOriginDestination.TABLE)) {
                     errorMessage = "The chosen color isn't available on the students' table";
-                    return game.getPlayer(game.getCurrentPlayer().username).getSchool().countTableStudents(chosenColor) > 0;
+                    return game.getCurrentPlayer().getSchool().countTableStudents(chosenColor) > 0;
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
                     errorMessage = "The chosen color isn't available on school entrance.";
@@ -95,6 +95,7 @@ public class ChooseColor extends Move{
                 break;
             case 11:
                 game.setExchanges(ColoredPawnOriginDestination.CHARACTER, chosenColor);
+                break;
             case 12:
                 for(Player player : game.getPlayers()) {
 
@@ -107,7 +108,6 @@ public class ChooseColor extends Move{
                     }
                 }
                 break;
-            default: break;
         }
     }
 
@@ -117,24 +117,20 @@ public class ChooseColor extends Move{
         Update update = new Update();
 
         CharacterCardsChange characterCardsChange;
-        SchoolChange schoolChange;
 
         switch(characterCardIndex) {
 
             case 7:
                 characterCardsChange = new CharacterCardsChange();
-                schoolChange = new SchoolChange(game.getCurrentPlayer().getSchool());
                 for(int i=0; i<game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
                 update.addChange(characterCardsChange);
-                update.addChange(schoolChange);
+                update.addChange(new SchoolChange(game.getCurrentPlayer().getSchool()));
                 break;
             case 10:
-            case 12:
             case 11:
-                schoolChange = new SchoolChange(game.getCurrentPlayer().getSchool());
-                update.addChange(schoolChange);
+            case 12:
+                for(Player player : game.getPlayers()) update.addChange(new SchoolChange(game.getPlayer(player.username).getSchool()));
                 break;
-            default: break;
         }
 
         return update;

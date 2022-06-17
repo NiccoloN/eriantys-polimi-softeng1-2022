@@ -6,7 +6,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.ColorCLIComponent;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.Abort;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest;
@@ -75,7 +74,7 @@ public class ColorSelection extends GameSceneState {
 
         if((characterIndex == 7 || characterIndex == 10) && input.triggersAction(Action.ESC)) {
 
-            client.sendToServer(new AbortMessage(requestMessage, new Abort()));
+            client.sendToServer(new PerformedMoveMessage(requestMessage, new Abort()));
             return;
         }
 

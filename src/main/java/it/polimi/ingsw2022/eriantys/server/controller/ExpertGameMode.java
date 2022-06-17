@@ -203,6 +203,8 @@ public class ExpertGameMode extends BasicGameMode {
                             game.getCurrentPlayer().getSchool().addToEntrance(game.getCurrentPlayer().getSchool().removeFromTable(
                                     game.getExchange(ColoredPawnOriginDestination.TABLE)));
 
+                            for(PawnColor color: PawnColor.values()) game.checkAndUpdateProfessor(color, false);
+
                             ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
 
                             server.sendToAllClients(new UpdateMessage(chooseColorUpdate.getUpdate(game)));
@@ -224,8 +226,12 @@ public class ExpertGameMode extends BasicGameMode {
                                 ),
                         game.getCurrentPlayer().username);
 
-                game.getCurrentPlayer().getSchool().addToTable(game.getCharacterOfIndex(cardIndex).getStudent(
-                        game.getExchange(ColoredPawnOriginDestination.CHARACTER)));
+                CharacterCard tempCharacter = game.getCharacterOfIndex(cardIndex);
+                ColoredPawn temp = tempCharacter.getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER));
+                tempCharacter.removeStudent(temp);
+                game.getCurrentPlayer().getSchool().addToTable(temp);
+
+                for(PawnColor color: PawnColor.values()) game.checkAndUpdateProfessor(color, false);
 
                 ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
                 server.sendToAllClients(new UpdateMessage(chooseColorUpdate.getUpdate(game)));
@@ -246,19 +252,6 @@ public class ExpertGameMode extends BasicGameMode {
                 MoveStudent moveStudentUpdate = new MoveStudent(ColoredPawnOriginDestination.TABLE, null, 0, null);
                 server.sendToAllClients(new UpdateMessage(moveStudentUpdate.getUpdate(game)));
                 break;
-        }
-    }
-
-    @Override
-    protected void requestStudents(Player player) throws IOException, InterruptedException {
-
-        for (int studentMove = 0; studentMove < 3; studentMove++) {
-
-            requestMove(new MoveStudentRequest
-                    (
-                            player.getSchool().getAvailableEntranceColors(),
-                            List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
-                    player.username);
         }
     }
 
@@ -301,6 +294,7 @@ public class ExpertGameMode extends BasicGameMode {
                     if(previousMessage.moveRequest instanceof MoveMotherNatureRequest) {
                         requestMotherNature(game.getCurrentPlayer());
                     }
+                    else if(previousMessage.moveRequest instanceof MoveStudentRequest) requestStudent(game.getCurrentPlayer());
                     else requestMove(previousMessage.moveRequest, game.getCurrentPlayer().username);
                     previousMessage.acceptResponse();
 

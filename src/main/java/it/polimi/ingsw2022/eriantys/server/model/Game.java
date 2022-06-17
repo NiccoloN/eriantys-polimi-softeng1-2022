@@ -101,7 +101,7 @@ public class Game {
 
         List<CharacterCard> characterCards = new ArrayList<>(12);
         for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
-        for(int n = 0; n < 3; n++) characters.add(characterCards.remove( 6
+        for(int n = 0; n < 3; n++) characters.add(characterCards.remove( 9
                 //(int) (Math.random() * characterCards.size())
                 ));
     }
@@ -178,7 +178,7 @@ public class Game {
         players.sort(Player::comparePriorityTo);
     }
 
-    public void checkAndUpdateProfessor(PawnColor color, boolean characterCardUsage) {
+    public void checkAndUpdateProfessor(PawnColor color, boolean greaterAndEqual) {
 
         SchoolDashboard winnerSchool = null;
 
@@ -200,7 +200,7 @@ public class Game {
             if (winnerSchool == null) return;
         }
 
-        if(!characterCardUsage){
+        if(!greaterAndEqual){
             for (Player player : getPlayers()) {
                 SchoolDashboard school = player.getSchool();
                 if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {

@@ -13,10 +13,10 @@ import java.util.List;
 public class CharacterCard extends Card {
 
     public final String effect;
+    private final int initialCost;
     private int cost;
 
     private final List<ColoredPawn> students;
-    private ColoredPawn pawnColor;
     private int denyTilesNumber;
 
     CharacterCard(int index, String effect, int cost) {
@@ -24,9 +24,9 @@ public class CharacterCard extends Card {
         super(index);
         this.effect = effect;
         this.cost = cost;
+        initialCost = cost;
 
         students = new ArrayList<>(4);
-        pawnColor = null;
         denyTilesNumber = 0;
     }
 
@@ -35,15 +35,7 @@ public class CharacterCard extends Card {
     }
 
     public void incrementCost() {
-        this.cost = this.cost + 1;
-    }
-
-    public ColoredPawn getPawnColor() {
-        return pawnColor;
-    }
-
-    public void setPawnColor(ColoredPawn pawnColor) {
-        this.pawnColor = pawnColor;
+        if(initialCost == cost) this.cost = this.cost + 1;
     }
 
     public int getStudentsNumber() {
