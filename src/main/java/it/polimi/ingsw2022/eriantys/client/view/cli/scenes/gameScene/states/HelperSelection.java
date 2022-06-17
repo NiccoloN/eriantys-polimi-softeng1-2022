@@ -11,6 +11,7 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +47,11 @@ public class HelperSelection extends GameSceneState {
         for(int n = 0; n < getScene().getNumberOfHelpers(); n++) {
 
             HelperCardCLIComponent helper = getScene().getHelper(n);
-            if(unplayableIndices.contains(helper.getIndex())) helper.setPlayable(false);
+            if(unplayableIndices.contains(helper.getIndex())) {
+
+                helper.setPlayable(false);
+                if(n == currentSelectedIndex) currentSelectedIndex++;
+            }
         }
 
         getScene().getHintTextArea().setText("Select a helper card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
@@ -66,7 +71,7 @@ public class HelperSelection extends GameSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
 
-        if(input.triggersAction(Action.UP)) {
+        if(input.triggersAction(Action.UP) && getScene().gameMode == Mode.EXPERT) {
 
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;

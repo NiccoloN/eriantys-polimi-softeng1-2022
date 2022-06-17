@@ -107,7 +107,7 @@ public class MoveStudent extends Move {
 
         if (destination!= ColoredPawnOriginDestination.TABLE) {
 
-            IslandChange islandChange = new IslandChange(islandIndex, game.getBoard().getIsland(islandIndex));
+            IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
             update.addChange(islandChange);
         }
 

@@ -21,17 +21,19 @@ public class CompoundIslandTile implements Serializable {
     private Team team;
     private boolean motherNature;
     private int numberOfDenyCards;
+    private int index;
 
     /**
      * Constructs an island made of a single island tile
      */
-    public CompoundIslandTile() {
+    public CompoundIslandTile(int index) {
 
         tiles = new ArrayList<>();
         tiles.add(new IslandTile());
         team = null;
         motherNature = false;
         numberOfDenyCards = 0;
+        setIndex(index);
     }
 
     /**
@@ -53,10 +55,16 @@ public class CompoundIslandTile implements Serializable {
      * @throws RuntimeException if the given island contains any tile that is already part of this island
      */
     public void mergeWithIsland(CompoundIslandTile island) {
-        for (IslandTile tile : island.tiles) {
+
+        ArrayList<ColoredPawn> students = new ArrayList<>();
+        for(IslandTile tile : tiles) students.addAll(tile.removeAllStudents());
+        for(IslandTile tile : island.tiles) {
+
             if (tiles.contains(tile)) throw new RuntimeException("No duplicates allowed");
+            students.addAll(tile.removeAllStudents());
+            tiles.add(tile);
         }
-        tiles.addAll(island.tiles);
+        tiles.get(0).addStudents(students);
     }
 
     /**
@@ -64,9 +72,7 @@ public class CompoundIslandTile implements Serializable {
      */
     public int countStudents() {
 
-        int count = 0;
-        for (IslandTile tile : tiles) count += tile.countStudents();
-        return count;
+        return tiles.get(0).countStudents();
     }
 
     /**
@@ -75,9 +81,7 @@ public class CompoundIslandTile implements Serializable {
      */
     public int countStudents(PawnColor color) {
 
-        int count = 0;
-        for (IslandTile tile : tiles) count += tile.countStudents(color);
-        return count;
+        return tiles.get(0).countStudents(color);
     }
 
     /**
@@ -87,39 +91,9 @@ public class CompoundIslandTile implements Serializable {
      */
     public void addStudent(ColoredPawn student) {
 
-        for (IslandTile tile : tiles) if (tile.containsStudent(student)) throw new RuntimeException("No duplicates allowed");
-        tiles.get(tiles.size() - 1).addStudent(student);
-        distributeStudents();
-    }
-
-    /**
-     * Distributes the students placed on this island equally among all of its tiles
-     */
-    private void distributeStudents() {
-        
-        int studentsNum = countStudents();
-        int studentsPerTile = studentsNum / tiles.size();
-        int carry = studentsNum - studentsPerTile;
-
-        int n = 0;
-        
-        for (IslandTile overcrowdedTile : tiles) {
-            
-            if (carry > 0 && overcrowdedTile.countStudents() == studentsPerTile + 1) carry--;
-            else while (overcrowdedTile.countStudents() > studentsPerTile) {
-                
-                while (n < tiles.size()) {
-
-                    IslandTile needingTile = tiles.get(n);
-                    if (needingTile.countStudents() < studentsPerTile) {
-
-                        needingTile.addStudent(overcrowdedTile.removeStudent());
-                        break;
-                    }
-                    n++;
-                }
-            }
-        }
+        IslandTile tile = tiles.get(0);
+        if (tile.containsStudent(student)) throw new RuntimeException("No duplicates allowed");
+        tile.addStudent(student);
     }
 
     /**
@@ -137,12 +111,12 @@ public class CompoundIslandTile implements Serializable {
      * @throws InvalidParameterException if team is null
      */
     public void setTeam(Team team) {
-        if (numberOfDenyCards>0) throw new RuntimeException("Cannot set a new controller team on a denied island");
+      
+        if (numberOfDenyCards > 0) throw new RuntimeException("Cannot set a new controller team on a denied island");
         if (team == null) throw new InvalidParameterException("Team cannot be null");
+
         this.team = team;
-        for (IslandTile tile : tiles) {
-            tile.addTower();
-        }
+        for (IslandTile tile : tiles) tile.setTeam(team);
     }
 
     /**
@@ -160,7 +134,8 @@ public class CompoundIslandTile implements Serializable {
     void setMotherNature(boolean motherNature) {
 
         this.motherNature = motherNature;
-        tiles.get(0).setMotherNature(motherNature);
+        if(motherNature) tiles.get(0).setMotherNature(true);
+        else for(IslandTile tile : tiles) tile.setMotherNature(false);
     }
 
     public int getNumberOfDenyCards() {
@@ -194,5 +169,16 @@ public class CompoundIslandTile implements Serializable {
     public int countTowers() {
 
         return tiles.size() == 1 ? (tiles.get(0).hasTower() ? 1 : 0) : tiles.size();
+    }
+
+    public int getIndex() {
+
+        return index;
+    }
+
+    public void setIndex(int index) {
+
+        this.index = index;
+        for(IslandTile tile : tiles) tile.setIndex(index);
     }
 }

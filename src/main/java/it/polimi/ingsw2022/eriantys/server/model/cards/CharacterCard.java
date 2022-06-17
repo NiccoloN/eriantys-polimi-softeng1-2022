@@ -55,6 +55,15 @@ public class CharacterCard extends Card {
         students.remove(student);
     }
 
+    /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently on this card
+     */
+    public int countStudents(PawnColor color) {
+
+        return (int) students.stream().filter((x) -> x.color == color).count();
+    }
+
     public List<PawnColor> getStudentsColors() {
 
         ArrayList<PawnColor> availableColors = new ArrayList<>();
@@ -75,6 +84,7 @@ public class CharacterCard extends Card {
     }
 
     public void incrementDenyTiles() {
+
         if (denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");
         this.denyTilesNumber++;
     }
