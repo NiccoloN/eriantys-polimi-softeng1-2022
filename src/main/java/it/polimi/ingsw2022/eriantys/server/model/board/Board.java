@@ -78,8 +78,6 @@ public class Board {
      */
     public void mergeIslands(int index1, int index2) {
 
-        if (index1 > islands.size() - 1) throw new IndexOutOfBoundsException("Index" + index1 + " out of bounds");
-        if (index2 > islands.size() - 1) throw new IndexOutOfBoundsException("Index" + index2 + " out of bounds");
         if (index1 == index2) throw new RuntimeException("Cannot merge an island with itself");
         if (Math.abs(index1 - index2) != 1 && Math.abs(index1 - index2) != islands.size() - 1) throw new RuntimeException("Cannot merge not adjacent islands");
 
@@ -95,8 +93,7 @@ public class Board {
 
         for(int n = 0; n < islands.size(); n++) islands.get(n).setIndex(n);
 
-        motherNatureIslandIndex--;
-        if(motherNatureIslandIndex < 0) motherNatureIslandIndex = islands.size() - 1;
+        motherNatureIslandIndex = island1.getIndex();
     }
 
     /**

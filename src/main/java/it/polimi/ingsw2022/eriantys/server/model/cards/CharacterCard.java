@@ -38,18 +38,6 @@ public class CharacterCard extends Card {
         this.cost = this.cost + 1;
     }
 
-    public ColoredPawn getPawnColor() {
-        return pawnColor;
-    }
-
-    public void setPawnColor(ColoredPawn pawnColor) {
-        this.pawnColor = pawnColor;
-    }
-
-    public int getStudentsNumber() {
-        return students.size();
-    }
-
     public ColoredPawn getStudent(int index) {
         return students.get(index);
     }
@@ -65,6 +53,15 @@ public class CharacterCard extends Card {
 
     public void removeStudent(ColoredPawn student) {
         students.remove(student);
+    }
+
+    /**
+     * @param color the color of students to count
+     * @return the number of students of the given color currently on this card
+     */
+    public int countStudents(PawnColor color) {
+
+        return (int) students.stream().filter((x) -> x.color == color).count();
     }
 
     public List<PawnColor> getStudentsColors() {
@@ -87,6 +84,7 @@ public class CharacterCard extends Card {
     }
 
     public void incrementDenyTiles() {
+
         if (denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");
         this.denyTilesNumber++;
     }

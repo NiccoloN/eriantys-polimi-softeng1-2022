@@ -161,9 +161,7 @@ public class IslandSelection extends GameSceneState {
 
     private void stepBackwardsMotherNature() {
 
-        int compoundIslands = getScene().getIsland(11).getIndex() + 1;
         int motherCompoundIndex = getScene().getIsland(getScene().getMotherNatureIslandIndex()).getIndex();
-
         int motherCompoundSize = 0;
 
         int currentIndex = motherNatureIndex;
@@ -182,7 +180,6 @@ public class IslandSelection extends GameSceneState {
                 if(getScene().getIsland(modValue(currentSelectedIndex + 1)).getIndex() == motherCompoundIndex) break;
             }
         }
-
         else {
 
             int prevSelectedIndex = currentSelectedIndex;

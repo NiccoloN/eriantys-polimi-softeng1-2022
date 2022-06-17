@@ -196,14 +196,12 @@ public class GameScene extends CLIScene {
         if (characters == null) characters = new ArrayList<>(characterCards.size());
         else characters.clear();
 
-        for(CharacterCard card : characterCards)
-            characters.add(new CharacterCardCLIComponent(card.index, card.effect, card.getCost()));
+        for(CharacterCard card : characterCards) characters.add(new CharacterCardCLIComponent(card));
 
         //arrange character cards in a row below the islands
         int charactersY = islands[5].getFrameY() + islands[5].getHeight() + 2;
         for(int n = 0; n < characters.size(); n++) characters.get(n).setPosition(
                 getWidth() / 2f - (characters.get(0).getWidth() * characters.size() + characters.size() - 2) / 2f + (characters.get(0).getWidth() + 1) * n, charactersY);
-
     }
 
     public void setColors(List<PawnColor> colors) {
