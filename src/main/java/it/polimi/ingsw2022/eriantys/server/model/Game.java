@@ -303,6 +303,7 @@ public class Game {
     }
 
     public void setGameEnding() {
+
         this.gameEnding = true;
     }
 
@@ -310,20 +311,26 @@ public class Game {
 
         Team winnerTeam = null;
         int winnerTeamTowers = -1;
+
         for (Player player : getPlayers()) {
+
             int playerTowers = player.getSchool().getTowers();
 
             if (winnerTeam == null && player.isTeamLeader) {
+
                 winnerTeam = player.team;
                 winnerTeamTowers = playerTowers;
             }
 
             if (player.isTeamLeader && playerTowers <= winnerTeamTowers) {
+
                 if (playerTowers == winnerTeamTowers) {
+
                     if (player.getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors())
                         winnerTeam = player.team;
                 }
                 else winnerTeam = player.team;
+
                 winnerTeamTowers = playerTowers;
             }
         }

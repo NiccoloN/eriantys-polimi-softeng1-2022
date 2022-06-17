@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -14,11 +15,10 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 class SchoolTablesCLIComponent extends BasicCLIComponent {
 
     public static final int WIDTH = 33, HEIGHT = 8;
-    private static final int NICKNAME_MAX_CHARS = 15;
 
     private String color;
     private String nickname;
-    private Mode gameMode;
+    private final Mode gameMode;
     private final Map<PawnColor, Boolean> professors;
     private final Map<PawnColor, Integer> tableStudents;
 
@@ -96,7 +96,8 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
     void setNickname(String nickname) {
 
         if (nickname.length() == 0) throw new InvalidParameterException("Nickname must be at least 1 character");
-        if (nickname.length() > NICKNAME_MAX_CHARS) throw new InvalidParameterException("Nickname must be at most" + NICKNAME_MAX_CHARS + " characters");
+        if (nickname.length() > EriantysServer.MAX_USERNAME_LENGTH)
+            throw new InvalidParameterException("Nickname must be at most " + EriantysServer.MAX_USERNAME_LENGTH + " characters");
         this.nickname = nickname;
     }
 

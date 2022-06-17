@@ -33,7 +33,7 @@ public class MoveMotherNature extends Move {
             return false;
         }
 
-        /*int steps = 0;
+        int steps = 0;
         while((oldIslandIndex + steps) % game.getBoard().getNumberOfIslands() != islandIndex) {
 
             steps++;
@@ -42,7 +42,7 @@ public class MoveMotherNature extends Move {
                 errorMessage = "Cannot move mother nature of more than " + motherNatureMaxSteps + " steps";
                 return false;
             }
-        }*/ //TODO uncomment
+        }
 
         return true;
     }

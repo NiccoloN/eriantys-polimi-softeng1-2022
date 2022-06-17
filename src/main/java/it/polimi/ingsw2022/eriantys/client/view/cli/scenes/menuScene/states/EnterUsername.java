@@ -8,6 +8,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
+import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -72,7 +73,8 @@ public class EnterUsername extends MenuSceneState {
                 String prevText = textArea.getText();
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
-            else if (c >= 32 && c <= 126 && username.length() < 20) textArea.appendText(String.valueOf(c));
+            else if (c >= 32 && c <= 126 && username.length() < EriantysServer.MAX_USERNAME_LENGTH)
+                textArea.appendText(String.valueOf(c));
 
             username = textArea.getText();
         }

@@ -25,11 +25,13 @@ public class BasicGameMode implements GameMode {
 
     protected final Game game;
     protected final EriantysServer server;
+    private boolean endGameNow;
 
     public BasicGameMode(Game game) {
 
         this.game = game;
         server = EriantysServer.getInstance();
+        endGameNow = false;
     }
 
     public Update[] createInitialUpdates() {
@@ -73,7 +75,7 @@ public class BasicGameMode implements GameMode {
     @Override
     public void playGame() throws IOException, InterruptedException {
 
-        while (!game.isGameEnding()) playRound();
+        while (!game.isGameEnding() && !endGameNow) playRound();
         endGame();
     }
 
@@ -87,9 +89,7 @@ public class BasicGameMode implements GameMode {
 
         game.sortPlayersBasedOnHelperCard();
 
-        for (Player player : game.getPlayers()) {
-            playTurn(player);
-        }
+        for (Player player : game.getPlayers()) playTurn(player);
     }
 
     protected void playTurn(Player player) throws IOException, InterruptedException {
@@ -102,7 +102,7 @@ public class BasicGameMode implements GameMode {
 
         checkIslandInfluence();
 
-        requestMove(new ChooseCloudRequest(), player.username);
+        if(!game.isGameEnding()) requestMove(new ChooseCloudRequest(), player.username);
     }
 
     protected void requestStudent(Player player) throws IOException, InterruptedException {
@@ -114,7 +114,7 @@ public class BasicGameMode implements GameMode {
 
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {
 
-        requestMove(new MoveMotherNatureRequest(/*TODO player.getCurrentHelper().movement*/12), player.username);
+        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
     }
 
     private void fillClouds() throws IOException {
@@ -126,10 +126,13 @@ public class BasicGameMode implements GameMode {
             CloudTile cloud = game.getBoard().getCloud(cloudIndex);
 
             for (int i = 0; i < 3; i++) {
+
                 if (game.getStudentsBag().isEmpty()) {
+
                     game.setGameEnding();
-                    return;
+                    break;
                 }
+
                 ColoredPawn student = game.getStudentsBag().extractRandomStudent();
                 cloud.addStudent(student);
             }
@@ -196,7 +199,9 @@ public class BasicGameMode implements GameMode {
 
             dominantTeamLeader.getSchool().removeTower();
             if (dominantTeamLeader.getSchool().getTowers() == 0) {
+
                 game.setGameEnding();
+                endGameNow = true;
                 endGame();
                 return;
             }
@@ -213,6 +218,7 @@ public class BasicGameMode implements GameMode {
         if (game.getBoard().getNumberOfIslands() <= 3) {
 
             game.setGameEnding();
+            endGameNow = true;
             endGame();
         }
     }
@@ -237,9 +243,12 @@ public class BasicGameMode implements GameMode {
 
     protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
 
-        MoveRequestMessage requestMessage = new MoveRequestMessage(request);
-        server.sendToClient(requestMessage, playerUsername);
-        requestMessage.waitForValidResponse();
+        if(!endGameNow) {
+
+            MoveRequestMessage requestMessage = new MoveRequestMessage(request);
+            server.sendToClient(requestMessage, playerUsername);
+            requestMessage.waitForValidResponse();
+        }
     }
 
     public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
@@ -263,6 +272,7 @@ public class BasicGameMode implements GameMode {
     }
 
     private void endGame() throws IOException {
+
         Team winnerTeam = game.checkWinner();
         server.sendToAllClients(new GameEndedMessage(winnerTeam));
     }

@@ -18,6 +18,7 @@ import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.*;
 
@@ -40,6 +41,7 @@ public class GameScene extends CLIScene {
     private final AnimatedCLIComponent[] decorativeClouds;
     private final TextAreaCLIComponent hintTextArea;
     private final TextAreaCLIComponent effectTextArea;
+    private final WinnerMessageCLIComponent winnerMessage;
     private final IslandCLIComponent[] islands;
     private final List<CloudCLIComponent> clouds;
     private final List<PlayerStatusCLIComponent> players;
@@ -103,6 +105,9 @@ public class GameScene extends CLIScene {
             decorativeClouds[n] = decorativeCloud;
         }
 
+        winnerMessage = new WinnerMessageCLIComponent();
+        winnerMessage.setHidden(true);
+
         //build island components
         islands = new IslandCLIComponent[12];
         for(int n = 0; n < islands.length; n++) islands[n] = new IslandCLIComponent(n);
@@ -148,6 +153,8 @@ public class GameScene extends CLIScene {
         int textAreasY = players.get(players.size() - 1).getFrameY() + players.get(0).getHeight() + 1;
         hintTextArea.setPosition(getWidth() - hintTextArea.getWidth(), textAreasY);
         effectTextArea.setPosition(0, textAreasY);
+
+        winnerMessage.setPosition(getWidth() / 2f - winnerMessage.getWidth() / 2f, getHeight() / 2f - winnerMessage.getHeight() / 2f - 1);
 
         islands[0].setPosition(2 + getWidth() / 2f, offsetY);
         islands[1].setPosition(2 + getWidth() / 2f + islands[0].getWidth(), offsetY + islands[0].getHeight() / 2f);
@@ -198,6 +205,7 @@ public class GameScene extends CLIScene {
         hintTextArea.printToFrame(frame);
         effectTextArea.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
+        winnerMessage.printToFrame(frame);
     }
 
     public List<CompoundIslandTile> getCompoundIslands() {
@@ -330,5 +338,11 @@ public class GameScene extends CLIScene {
         for(int n = 0; n < islands.length; n++)
             if(islands[n].hasMother()) return n;
         throw new NoSuchElementException();
+    }
+
+    public void setWinner(Team winnerTeam) {
+
+        winnerMessage.setWinnerTeam(winnerTeam);
+        winnerMessage.setHidden(false);
     }
 }

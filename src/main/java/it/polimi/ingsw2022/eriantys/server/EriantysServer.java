@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EriantysServer {
 
     public static final int PORT_NUMBER = 65000;
+    public static final int MAX_USERNAME_LENGTH = 20;
 
     public static void launch(String[] args) throws IOException, InterruptedException {
 

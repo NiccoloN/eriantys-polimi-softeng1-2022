@@ -3,8 +3,6 @@ package it.polimi.ingsw2022.eriantys.client.view.cli;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.endGameScene.EndGameScene;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername;
@@ -305,14 +303,17 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame(List<Player>  players, Mode gameMode) {
+    public void startGame(List<Player> players, Mode gameMode) {
 
+        for(Player player : players) player.team.addPlayer(player);
         setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
     }
 
     @Override
-    public void endGame(Team winningTeam) {
-        setScene(new EndGameScene(this, currentScene.getWidth(), currentScene.getHeight(), winningTeam));
+    public void endGame(Team winnerTeam) {
+
+        if(gameScene != null) gameScene.setWinner(winnerTeam);
+        else throw new RuntimeException("GameScene must be initialized in order to apply an update");
     }
 
     @Override

@@ -12,9 +12,9 @@ import java.util.List;
  */
 public enum Team implements Serializable {
 
-    WHITE(AnsiCodes.WHITE_BRIGHT, "White"),
-    BLACK(AnsiCodes.BLACK_BRIGHT, "Black"),
-    GRAY(AnsiCodes.CYAN_BRIGHT, "Cyan");
+    WHITE(AnsiCodes.WHITE_BRIGHT, "WHITE"),
+    BLACK(AnsiCodes.BLACK_BRIGHT, "BLACK"),
+    GRAY(AnsiCodes.CYAN_BRIGHT, "CYAN");
 
     public final String ansiColor;
     private final List<Player> players;

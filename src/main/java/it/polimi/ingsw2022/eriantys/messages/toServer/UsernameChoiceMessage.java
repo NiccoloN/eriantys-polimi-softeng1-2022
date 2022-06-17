@@ -27,7 +27,7 @@ public class UsernameChoiceMessage extends ToServerMessage {
 
         EriantysServer server = EriantysServer.getInstance();
 
-        if(clientUsername.length() < 1 || clientUsername.length() > 15) {
+        if(clientUsername.length() < 1 || clientUsername.length() > EriantysServer.MAX_USERNAME_LENGTH) {
 
             server.sendToClient(new InvalidUsernameMessage(this, getPreviousMessage(), true, false),
                     server.getCurrentlyConnectingClient());
