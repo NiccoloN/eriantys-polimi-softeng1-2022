@@ -198,13 +198,7 @@ public class BasicGameMode implements GameMode {
         for (int i = 0; i < islandSize; i++) {
 
             dominantTeamLeader.getSchool().removeTower();
-            if (dominantTeamLeader.getSchool().getTowers() == 0) {
-
-                game.setGameEnding();
-                endGameNow = true;
-                endGame();
-                return;
-            }
+            if (dominantTeamLeader.getSchool().getTowers() == 0) break;
         }
         SchoolChange newSchoolChange = new SchoolChange(dominantTeamLeader.getSchool());
         update.addChange(newSchoolChange);
@@ -214,6 +208,14 @@ public class BasicGameMode implements GameMode {
         update.addChange(islandChange);
 
         server.sendToAllClients(new UpdateMessage(update));
+
+        if (dominantTeamLeader.getSchool().getTowers() == 0) {
+
+            game.setGameEnding();
+            endGameNow = true;
+            endGame();
+            return;
+        }
 
         if (game.getBoard().getNumberOfIslands() <= 3) {
 
