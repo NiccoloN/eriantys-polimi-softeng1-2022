@@ -168,7 +168,7 @@ public class IslandSelection extends GameSceneState {
         int motherCompoundSize = 0;
 
         int currentIndex = motherNatureIndex;
-        while(getScene().getIsland(currentIndex).getIndex() == motherCompoundIndex) {
+        while(getScene().getIsland(modValue(currentIndex)).getIndex() == motherCompoundIndex) {
 
             motherCompoundSize++;
             currentIndex++;
