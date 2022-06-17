@@ -116,18 +116,17 @@ public class SchoolDashboard implements Serializable {
     /**
      * Places a colored pawn at the table of the corresponding color. Only pawns that represent students should be placed with this method
      * @param student the student to place
-     * @return the coins obtained by placing the student
      * @throws RuntimeException if the table of the corresponding color already contains 9 or more students
      * @throws RuntimeException if the given student is already at the table of its color
      */
-    public int addToTable(ColoredPawn student) {
+    public void addToTable(ColoredPawn student) {
 
         List<ColoredPawn> table = studentsTables.get(student.color);
         if (table.size() >= 9) throw new RuntimeException("Maximum number of students at the " + student.color + " table already reached");
         if (table.contains(student)) throw new RuntimeException("No duplicates allowed");
         table.add(student);
 
-        return table.size() % 3 == 0 ? 1 : 0;
+        if(table.size() % 3 == 0) player.addCoin();
     }
 
     /**

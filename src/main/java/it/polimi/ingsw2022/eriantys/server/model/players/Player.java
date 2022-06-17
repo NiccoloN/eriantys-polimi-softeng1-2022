@@ -175,10 +175,4 @@ public class Player implements Serializable {
 
         return this.getCurrentHelper().priority < otherPlayer.getCurrentHelper().priority ? -1 : 1;
     }
-
-    public boolean checkCoins(ColoredPawn student) {
-
-        int numberOfStudents = school.countTableStudents(student.color);
-        return numberOfStudents == 3 || numberOfStudents == 6 || numberOfStudents == 9;
-    }
 }
