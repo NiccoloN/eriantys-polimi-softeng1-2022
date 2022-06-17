@@ -67,17 +67,17 @@ public class ChooseIsland extends Move{
         switch(characterCardIndex) {
 
             case 3:
-                for(int i=0; i<game.getBoard().getNumberOfIslands(); i++) {
-                    islandChange = new IslandChange(i, game.getBoard().getIsland(i));
-                    update.addChange(islandChange);
-                }
+
+                islandChange = new IslandChange(game.getBoard().getIslandTiles());
+                update.addChange(islandChange);
+
                 update.addChange(new SchoolChange(game.getCurrentPlayer().getSchool()));
                 break;
             case 5:
-                for(int i=0; i<game.getBoard().getNumberOfIslands(); i++) {
-                    islandChange = new IslandChange(i, game.getBoard().getIsland(i));
-                    update.addChange(islandChange);
-                }
+
+                islandChange = new IslandChange(game.getBoard().getIslandTiles());
+                update.addChange(islandChange);
+
                 CharacterCardsChange characterCardsChange = new CharacterCardsChange();
                 for(int i=0; i<game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
                 update.addChange(characterCardsChange);
