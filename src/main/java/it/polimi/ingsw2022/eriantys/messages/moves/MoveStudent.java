@@ -1,15 +1,17 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.PlayerChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-import java.io.Serializable;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -20,21 +22,23 @@ import java.util.NoSuchElementException;
 public class MoveStudent extends Move {
 
     private int characterIndex;
-    private final boolean toDining;
+    private final List<ColoredPawnOriginDestination> toWhere;
+    private final ColoredPawnOriginDestination destination;
     private final int islandIndex;
     private final PawnColor studentColor;
 
-    public MoveStudent(boolean toDining, int islandIndex, PawnColor studentColor) {
+    public MoveStudent(ColoredPawnOriginDestination destination, List<ColoredPawnOriginDestination> toWhere, int islandIndex, PawnColor studentColor) {
 
         this.characterIndex = 0;
-        this.toDining = toDining;
+        this.destination = destination;
+        this.toWhere = toWhere;
         this.islandIndex = islandIndex;
         this.studentColor = studentColor;
     }
 
-    public MoveStudent(boolean toDining, int islandIndex, PawnColor studentColor, int characterIndex) {
+    public MoveStudent(ColoredPawnOriginDestination destination, List<ColoredPawnOriginDestination> toWhere, int islandIndex, PawnColor studentColor, int characterIndex) {
 
-        this(toDining, islandIndex, studentColor);
+        this(destination, toWhere, islandIndex, studentColor);
         this.characterIndex = characterIndex;
     }
 
@@ -53,15 +57,21 @@ public class MoveStudent extends Move {
             }
         }
 
-        if(school.countEntranceStudents(studentColor) <= 0) {
+        else if(school.countEntranceStudents(studentColor) <= 0) {
 
             errorMessage = "There's no student of the selected color in your school entrance";
             return false;
         }
 
-        if(toDining && school.countTableStudents(studentColor) >= 10) {
+        if(destination == ColoredPawnOriginDestination.TABLE && school.countTableStudents(studentColor) >= 10) {
 
             errorMessage = "The table of the selected color is already full";
+            return false;
+        }
+
+        if(!toWhere.contains(destination)) {
+
+            errorMessage = "The chosen destination is not possible for the current move";
             return false;
         }
 
@@ -71,15 +81,20 @@ public class MoveStudent extends Move {
     @Override
     public void apply(Game game) {
 
-        ColoredPawn studentToMove = characterIndex > 0 ?
-                game.getCharacterOfIndex(characterIndex).getStudent(studentColor) :
-                game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
+        ColoredPawn studentToMove;
 
-        if (toDining) {
+        if(characterIndex > 0) {
+            studentToMove = game.getCharacterOfIndex(characterIndex).getStudent(studentColor);
+            game.getCharacterOfIndex(characterIndex).removeStudent(studentToMove);
+        }
+        else studentToMove = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
+
+        if (destination == ColoredPawnOriginDestination.TABLE) {
 
             SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(studentToMove);
-            game.checkAndUpdateProfessor(studentColor);
+            if(game.getCurrentPlayer().checkCoins(studentToMove)) game.getCurrentPlayer().addCoin();
+            game.checkAndUpdateProfessor(studentColor,false);
         }
 
         else game.getBoard().getIsland(islandIndex).addStudent(studentToMove);
@@ -90,15 +105,14 @@ public class MoveStudent extends Move {
 
         Update update = new Update();
 
-        //TODO character card update
-
-        if (!toDining) {
+        if (destination!= ColoredPawnOriginDestination.TABLE) {
 
             IslandChange islandChange = new IslandChange(game.getBoard().getIslandTiles());
             update.addChange(islandChange);
         }
 
         for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
+        update.addChange(new PlayerChange(game.getCurrentPlayer()));
 
         return(update);
     }

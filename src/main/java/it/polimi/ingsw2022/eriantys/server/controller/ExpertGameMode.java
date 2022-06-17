@@ -2,20 +2,35 @@ package it.polimi.ingsw2022.eriantys.server.controller;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
-import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
+import it.polimi.ingsw2022.eriantys.messages.moves.*;
+import it.polimi.ingsw2022.eriantys.messages.requests.*;
+import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
-import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBonus;
-import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor;
-import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoTowers;
+import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
+import java.util.*;
 
+/**
+ * This class represents the expert mode of the game, it includes coins and characters.
+ * @author Emanuele Musto
+ */
 public class ExpertGameMode extends BasicGameMode {
 
     public ExpertGameMode(Game game) {
 
         super(game);
+
+        game.resetCharacterUses();
 
         for(int i=0; i<game.getNumberOfCharacters(); i++){
 
@@ -28,7 +43,7 @@ public class ExpertGameMode extends BasicGameMode {
                     for(int k=0; k<4; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
                     break;
                 case 5:
-                    for(int k=0; k<4; k++) currentCharacter.incrementDenyTiles();
+                    for(int k=0; k<5; k++) currentCharacter.incrementDenyTiles();
                     break;
                 case 7:
                     for(int k=0; k<6; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
@@ -46,76 +61,261 @@ public class ExpertGameMode extends BasicGameMode {
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
         for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
 
-        for (int n = 0; n < initialUpdate.length; n++) {
+        for (Update update : initialUpdate) {
 
-            initialUpdate[n].addChange(characterCardsChange);
+            update.addChange(characterCardsChange);
         }
 
         return(initialUpdate);
     }
 
-    //funzione che verrà chiamata dalla move ChooseCharacter in apply() che probabilmente dovrà creare un thread
-    //dato che il controller sarà nella waitForResponse() di un'altra mossa
-    private void playCharacter(CharacterCard characterCard) throws IOException, InterruptedException {
+    @Override
+    public void playRound() throws IOException, InterruptedException {
 
-        switch(characterCard.index) {
+        game.resetCharacterUses();
+        super.playRound();
+    }
+
+    @Override
+    public void playTurn(Player player) throws IOException, InterruptedException {
+
+        super.playTurn(player);
+        game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+        MoveMotherNatureRequest.setAdditionalSteps(false);
+    }
+
+    private void playCharacter(int cardIndex) throws IOException, InterruptedException {
+
+        CharacterCard characterCard = game.getCharacterOfIndex(cardIndex);
+        switch(cardIndex) {
 
             case 1:
-                requestMove(new MoveStudentRequest(characterCard.index, characterCard.getStudentsColors()), game.getCurrentPlayer().username);
-                characterCard.addStudent(game.getStudentsBag().extractRandomStudent());
-                //TODO mandare change della character card (CharacterChange da modificare)
-                break;
-            case 2:
-                //TODO dare professori al current player anche se ha lo stesso numero di studenti, sia subito che
-                // quando muove nuovi studenti in dining room (Si può fare settando un boolean in game e successivamente
-                // chiamando la funzione che fa l'update dei professori che deve tenere conto di questo boolean)
+                requestMove(new MoveStudentRequest(
+                                characterCard.index,
+                                characterCard.getStudentsColors(),
+                                List.of(ColoredPawnOriginDestination.ISLAND),
+                                "Move a student from the character card to an island")
+                        , game.getCurrentPlayer().username);
                 break;
             case 3:
-                //TODO mandare richiesta di selezione di un'isola (MoveRequest da creare) e rievere una SelectIsland
-                // (Move da creare) che conterrà l'indice dell'isola scelta. Successivamente chiamare il calcolo
-                // dell'influence sull'isola scelta
+                requestMove(new ChooseIslandRequest(
+                        cardIndex,
+                        "Select the island on which influence will be calculated."),
+                        game.getCurrentPlayer().username);
+
+                Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence
+                        (game.getPlayers(),game.getBoard().getIsland(game.getCharacterIsland()), game.getCurrentPlayer());
+                if(dominantTeam.isPresent()) updateTowers(dominantTeam.get(), game.getBoard().getIsland(game.getCharacterIsland()));
+
                 break;
             case 4:
-                //TODO aggiungere 2 ai max step mandati nella request MoveMotherNature in questo turno
+                MoveMotherNatureRequest.setAdditionalSteps(true);
                 break;
             case 5:
-                //TODO mandare richiesta di selezione di un'isola (MoveRequest da creare) e rievere una SelectIsland
-                // (Move da creare) che conterrà l'indice dell'isola scelta. Successivamente settare come denied
-                // l'isola scelta
-                break;
-            case 6:
-                game.setInfluenceCalculator(new InfluenceCalculatorNoTowers());
+                requestMove(new ChooseIslandRequest(
+                                cardIndex,
+                                "Select the island on which putting the deny card."),
+                        game.getCurrentPlayer().username);
                 break;
             case 7:
-                //TODO (per 3 volte) mandare 2 richieste di selezione colore (Request da creare).
-                // Successivamente a ogni 2 richieste scambiare uno studente del primo colore selezionato che si trova
-                // sulla carta con uno del secondo colore selezionato che si trova nell'entrance. Se si riceve
-                // un messaggio di abort si smette di richiedere
-                break;
-            case 8:
-                game.setInfluenceCalculator(new InfluenceCalculatorBonus());
+                for(int i=0; i<3 ; i++) {
+
+                    if(!game.getAbortMessageReceived()) {
+                        requestMove(
+                                new ChooseColorRequest
+                                        (
+                                                cardIndex,
+                                                characterCard.getStudentsColors(),
+                                                ColoredPawnOriginDestination.CHARACTER,
+                                    "Select a student from the character card, or press ESC to stop the effect."
+                                        ),
+                                game.getCurrentPlayer().username);
+
+                        if(!game.getAbortMessageReceived()) {
+                            requestMove(
+                                    new ChooseColorRequest
+                                            (
+                                                    cardIndex,
+                                                    game.getCurrentPlayer().getSchool().getAvailableEntranceColors(),
+                                                    ColoredPawnOriginDestination.ENTRANCE,
+                                                    "Select now a student from your school entrance."
+                                            ),
+                                    game.getCurrentPlayer().username );
+
+                            game.getCharacterOfIndex(cardIndex).addStudent(
+                                    game.getCurrentPlayer().getSchool().removeFromEntrance(game.getExchange(ColoredPawnOriginDestination.ENTRANCE))
+                            );
+
+                            ColoredPawn temp = game.getCharacterOfIndex(cardIndex).getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER));
+                            game.getCharacterOfIndex(cardIndex).removeStudent(temp);
+                            game.getCurrentPlayer().getSchool().addToEntrance(temp);
+
+                            ChooseColor makeUpdate = new ChooseColor(null, cardIndex, null);
+
+                            server.sendToAllClients(new UpdateMessage(makeUpdate.getUpdate(game)));
+                            game.resetExchanges();
+                        }
+                    }
+                }
+
+                game.setAbortMessageReceived(false);
                 break;
             case 9:
-                //TODO mandare una richiesta di selezione colore (Request da creare).
-                // game.setInfluenceCalculator(new InfluenceCalculatorNoColor( colore selezionato ));
+                requestMove(new ChooseColorRequest
+                        (
+                                cardIndex,
+                                List.of(PawnColor.values()),
+                                null,
+                                "Select a color that will not be considered during this turn's influence calculation."
+                        ), game.getCurrentPlayer().username);
                 break;
             case 10:
-                //TODO (per 2 volte) mandare 2 richieste di selezione colore (Request da creare).
-                // Successivamente a ogni 2 richieste scambiare uno studente del primo colore selezionato che si trova
-                // nell'entrance con uno del secondo colore selezionato che si trova nella dining room. Se si riceve
-                // un messaggio di abort si smette di richiedere
+                for(int i=0; i<2 ; i++) {
+
+                    if (!game.getAbortMessageReceived()) {
+
+                        requestMove(
+                                new ChooseColorRequest
+                                        (
+                                                cardIndex,
+                                                game.getCurrentPlayer().getSchool().getAvailableTableColors(),
+                                                ColoredPawnOriginDestination.TABLE,
+                                                "Select a student from the student tables of your school, or press ESC to stop the effect."
+                                        ),
+                                game.getCurrentPlayer().username);
+
+                        if (!game.getAbortMessageReceived()) {
+                            requestMove(
+                                    new ChooseColorRequest
+                                            (
+                                                    cardIndex,
+                                                    game.getCurrentPlayer().getSchool().getAvailableEntranceColors(),
+                                                    ColoredPawnOriginDestination.ENTRANCE,
+                                                    "Select now a student from your school entrance."
+                                            ),
+                                    game.getCurrentPlayer().username);
+
+                            try {
+                                game.getCurrentPlayer().getSchool().addToTable(game.getCurrentPlayer().getSchool().removeFromEntrance(
+                                        game.getExchange(ColoredPawnOriginDestination.ENTRANCE)));
+                            } catch (RuntimeException e) {
+                                server.sendToClient(new InvalidMoveMessage
+                                        (null, null, "Already reached maximum students in the table"), game.getCurrentPlayer().username);
+                                return;
+                            }
+
+                            game.getCurrentPlayer().getSchool().addToEntrance(game.getCurrentPlayer().getSchool().removeFromTable(
+                                    game.getExchange(ColoredPawnOriginDestination.TABLE)));
+
+                            for(PawnColor color: PawnColor.values()) game.checkAndUpdateProfessor(color, false);
+
+                            ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
+
+                            server.sendToAllClients(new UpdateMessage(chooseColorUpdate.getUpdate(game)));
+                            game.resetExchanges();
+                        }
+                    }
+                }
+
+                game.setAbortMessageReceived(false);
                 break;
             case 11:
-                //TODO mandare richiesta di MoveStudent dalla carta alla dining room (request da modificare)
-                //requestMove(new MoveStudentRequest(characterCard.index, characterCard.getStudentsColors()), game.getCurrentPlayer().username);
-                characterCard.addStudent(game.getStudentsBag().extractRandomStudent());
-                //TODO mandare change del character (da modificare)
+                requestMove(
+                        new ChooseColorRequest
+                                (
+                                        cardIndex,
+                                        game.getCharacterOfIndex(cardIndex).getStudentsColors(),
+                                        ColoredPawnOriginDestination.CHARACTER,
+                                        "Select a student from the character card."
+                                ),
+                        game.getCurrentPlayer().username);
+
+                CharacterCard tempCharacter = game.getCharacterOfIndex(cardIndex);
+                ColoredPawn temp = tempCharacter.getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER));
+                tempCharacter.removeStudent(temp);
+                game.getCurrentPlayer().getSchool().addToTable(temp);
+
+                for(PawnColor color: PawnColor.values()) game.checkAndUpdateProfessor(color, false);
+
+                ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
+                server.sendToAllClients(new UpdateMessage(chooseColorUpdate.getUpdate(game)));
+
+                game.resetExchanges();
                 break;
             case 12:
-                //TODO mandare una richiesta di selezione colore (Request da creare). Muovere 3 studenti del colore
-                // selezionato dalla dining room di ogni studente alla bag
+                requestMove(
+                        new ChooseColorRequest
+                                (
+                                        cardIndex,
+                                        List.of(PawnColor.values()),
+                                        null,
+                                        "Select a color."
+                                ),
+                        game.getCurrentPlayer().username);
+
+                MoveStudent moveStudentUpdate = new MoveStudent(ColoredPawnOriginDestination.TABLE, null, 0, null);
+                server.sendToAllClients(new UpdateMessage(moveStudentUpdate.getUpdate(game)));
                 break;
-            default: //TODO mandare invalidMove
         }
+    }
+
+    @Override
+    protected void checkIslandInfluence() throws IOException {
+
+        CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
+
+        if(motherNatureIsland.getNumberOfDenyCards() > 0) {
+
+            motherNatureIsland.decrementNumberOfDenyCards();
+            game.getCharacterOfIndex(5).incrementDenyTiles();
+        }
+        else super.checkIslandInfluence();
+    }
+
+    @Override
+    public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
+
+        MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
+
+        if(performedMoveMessage.move instanceof ChooseCharacterCard) {
+
+            ChooseCharacterCard move = (ChooseCharacterCard) performedMoveMessage.move;
+
+            new Thread(() -> {
+                try {
+                    if (move.isValid(game)) {
+
+                        playCharacter(move.characterCardIndex);
+                        performedMoveMessage.move.apply(game);
+                        server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
+                    }
+                    else {
+                        server.sendToClient(
+                                new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), "The chosen character card does not exist."),
+                                game.getCurrentPlayer().username);
+                    }
+
+                    if(previousMessage.moveRequest instanceof MoveMotherNatureRequest) {
+                        requestMotherNature(game.getCurrentPlayer());
+                    }
+                    else if(previousMessage.moveRequest instanceof MoveStudentRequest) requestStudent(game.getCurrentPlayer());
+                    else requestMove(previousMessage.moveRequest, game.getCurrentPlayer().username);
+                    previousMessage.acceptResponse();
+
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+        else if(performedMoveMessage.move instanceof Abort) {
+            new Thread( () -> {
+                if(performedMoveMessage.move.isValid(game)) {
+
+                    performedMoveMessage.move.apply(game);
+                }
+                previousMessage.acceptResponse();
+            }).start();
+        }
+        else super.managePerformedMoveMessage(performedMoveMessage);
     }
 }

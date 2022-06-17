@@ -1,4 +1,5 @@
 package it.polimi.ingsw2022.eriantys.server.model;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
@@ -11,7 +12,6 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
 import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -36,6 +36,9 @@ public class Game {
     private InfluenceCalculator influenceCalculator;
     private final List<Player> players;
     private Player currentPlayer;
+    private int characterIsland;
+    private final Map<ColoredPawnOriginDestination, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
+    private boolean abortMessageReceived = false;
     private boolean gameEnding;
 
     public Game(String[] playerUsernames) throws IOException {
@@ -98,7 +101,7 @@ public class Game {
 
         List<CharacterCard> characterCards = new ArrayList<>(12);
         for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
-        for(int n = 0; n < 3; n++) characters.add(characterCards.remove((int) (Math.random() * characterCards.size())));
+        for(int n = 0; n < 3; n++) characters.add(characterCards.remove( (int) (Math.random() * characterCards.size())));
     }
 
     private void assignHelpers() throws IOException {
@@ -173,7 +176,7 @@ public class Game {
         players.sort(Player::comparePriorityTo);
     }
 
-    public void checkAndUpdateProfessor(PawnColor color) {
+    public void checkAndUpdateProfessor(PawnColor color, boolean greaterAndEqual) {
 
         SchoolDashboard winnerSchool = null;
 
@@ -195,16 +198,26 @@ public class Game {
             if (winnerSchool == null) return;
         }
 
-        for (Player player : getPlayers()) {
-            SchoolDashboard school = player.getSchool();
-            if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
-                ColoredPawn professor;
-                professor = winnerSchool.removeProfessor(color);
+        if(!greaterAndEqual){
+            for (Player player : getPlayers()) {
+                SchoolDashboard school = player.getSchool();
+                if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
+                    ColoredPawn professor;
+                    professor = winnerSchool.removeProfessor(color);
 
-                winnerSchool = school;
-                winnerSchool.addProfessor(professor);
+                    winnerSchool = school;
+                    winnerSchool.addProfessor(professor);
+                }
             }
         }
+        else {
+            SchoolDashboard currentPlayerSchool = currentPlayer.getSchool();
+            if(!currentPlayerSchool.equals(winnerSchool) && currentPlayerSchool.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
+                ColoredPawn professor = winnerSchool.removeProfessor(color);
+                currentPlayerSchool.addProfessor(professor);
+            }
+        }
+
     }
 
     public void calculatePoints() {
@@ -268,9 +281,22 @@ public class Game {
         return influenceCalculator;
     }
 
-    public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) {
-        this.influenceCalculator = influenceCalculator;
-    }
+    public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) { this.influenceCalculator = influenceCalculator; }
+
+    public void resetCharacterUses(){ for(Player player : players) player.setCharacterUsed(false); }
+
+    public void resetExchanges() { exchangesCausedByCharacters.clear(); }
+
+    public void setExchanges(ColoredPawnOriginDestination origin, PawnColor color) { exchangesCausedByCharacters.put(origin, color); }
+
+    public PawnColor getExchange(ColoredPawnOriginDestination origin) { return exchangesCausedByCharacters.get(origin); }
+
+    public void setAbortMessageReceived(boolean value) { abortMessageReceived = value; }
+    public boolean getAbortMessageReceived() { return abortMessageReceived; }
+
+    public int getCharacterIsland() { return characterIsland; }
+
+    public void setCharacterIsland(int characterIsland) { this.characterIsland = characterIsland; }
 
     public boolean isGameEnding() {
         return  gameEnding;

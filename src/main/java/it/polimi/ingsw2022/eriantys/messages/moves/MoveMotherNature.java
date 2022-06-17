@@ -12,12 +12,14 @@ import java.io.Serializable;
  */
 public class MoveMotherNature extends Move {
 
-    int islandIndex;
-    int oldIslandIndex;
+    private final int islandIndex;
+    private int oldIslandIndex;
+    private final int motherNatureMaxSteps;
 
-    public MoveMotherNature(int islandIndex) {
+    public MoveMotherNature(int islandIndex, int motherNatureMaxSteps) {
 
         this.islandIndex = islandIndex;
+        this.motherNatureMaxSteps = motherNatureMaxSteps;
     }
 
     @Override
@@ -29,18 +31,18 @@ public class MoveMotherNature extends Move {
             errorMessage = "Mother nature must move of at least 1 step";
             return false;
         }
-
-        /*int maxSteps = game.getCurrentPlayer().getCurrentHelper().movement;
+      
+        int maxSteps = game.getCurrentPlayer().getCurrentHelper().movement;
         int steps = 0;
         while((oldIslandIndex + steps) % game.getBoard().getNumberOfIslands() != islandIndex) {
 
             steps++;
-            if(steps > maxSteps) {
+            if(steps > motherNatureMaxSteps) {
 
-                errorMessage = "Cannot move mother nature of more than " + maxSteps + " steps";
+                errorMessage = "Cannot move mother nature of more than " + motherNatureMaxSteps + " steps";
                 return false;
             }
-        }*/ //TODO uncomment
+        }
 
         return true;
     }

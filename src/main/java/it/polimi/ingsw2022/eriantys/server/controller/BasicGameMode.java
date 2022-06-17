@@ -19,7 +19,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 
 public class BasicGameMode implements GameMode {
@@ -73,31 +72,48 @@ public class BasicGameMode implements GameMode {
     @Override
     public void playGame() throws IOException, InterruptedException {
 
-        while (!game.isGameEnding()) {
-
-            if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
-                game.setInfluenceCalculator(new InfluenceCalculatorBasic());
-
-            fillClouds();
-            playHelpers();
-
-            game.sortPlayersBasedOnHelperCard();
-
-            for (Player player : game.getPlayers()) {
-
-                game.setCurrentPlayer(player);
-
-                for (int studentMove = 0; studentMove < 3; studentMove++)
-                    requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors()), player.username);
-
-                requestMove(new MoveMotherNatureRequest(/*player.getCurrentHelper().movement*/12/*TODO*/), player.username);
-
-                checkIslandInfluence();
-
-                requestMove(new ChooseCloudRequest(), player.username);
-            }
-        }
+        while (!game.isGameEnding()) playRound();
         endGame();
+    }
+
+    protected void playRound() throws IOException, InterruptedException {
+
+        if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
+            game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+
+        fillClouds();
+        playHelpers();
+
+        game.sortPlayersBasedOnHelperCard();
+
+        for (Player player : game.getPlayers()) {
+            playTurn(player);
+        }
+    }
+
+    protected void playTurn(Player player) throws IOException, InterruptedException {
+
+        game.setCurrentPlayer(player);
+
+        for(int studentMove = 0; studentMove < 3; studentMove++) requestStudent(player);
+
+        requestMotherNature(player);
+
+        checkIslandInfluence();
+
+        requestMove(new ChooseCloudRequest(), player.username);
+    }
+
+    protected void requestStudent(Player player) throws IOException, InterruptedException {
+
+        requestMove(new MoveStudentRequest
+                        (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+                player.username);
+    }
+
+    protected void requestMotherNature(Player player) throws IOException, InterruptedException {
+
+        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
     }
 
     private void fillClouds() throws IOException {
@@ -144,7 +160,7 @@ public class BasicGameMode implements GameMode {
         }
     }
 
-    private void checkIslandInfluence() throws IOException {
+     protected void checkIslandInfluence() throws IOException {
 
         CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
 
@@ -157,7 +173,7 @@ public class BasicGameMode implements GameMode {
         if (dominantTeam.isPresent()) updateTowers(dominantTeam.get(), motherNatureIsland);
     }
 
-    private void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
+    protected void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
 
         Update update = new Update();
 
@@ -165,7 +181,7 @@ public class BasicGameMode implements GameMode {
 
         Player dominantTeamLeader = dominantTeam.getLeader();
 
-        // If there's a team controlling the island and it's not the new team who will control the island, remove the old tower
+        // If there's a team controlling the island ,and it's not the new team who will control the island, remove the old tower
         if (island.getTeam().isPresent()) {
 
             Player currentControllingTeamLeader = island.getTeam().get().getLeader();
@@ -225,21 +241,23 @@ public class BasicGameMode implements GameMode {
         requestMessage.waitForValidResponse();
     }
 
-    public synchronized void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException {
+    public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
-        Move move = performedMoveMessage.move;
+        synchronized (this) {
+            Move move = performedMoveMessage.move;
 
-        if (move.isValid(game)) {
+            if (move.isValid(game)) {
 
-            move.apply(game);
-            server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
-            performedMoveMessage.getPreviousMessage().acceptResponse();
-        }
-        else {
+                move.apply(game);
+                server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
+                performedMoveMessage.getPreviousMessage().acceptResponse();
+            }
+            else {
 
-            server.sendToClient(
-                    new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
-                    game.getCurrentPlayer().username);
+                server.sendToClient(
+                        new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
+                        game.getCurrentPlayer().username);
+            }
         }
     }
 

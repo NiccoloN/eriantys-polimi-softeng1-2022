@@ -78,6 +78,15 @@ public class SchoolDashboard implements Serializable {
         return availableColors;
     }
 
+    public List<PawnColor> getAvailableTableColors() {
+
+        ArrayList<PawnColor> availableColors = new ArrayList<>();
+        for(PawnColor color : PawnColor.values())
+            if(countTableStudents(color)>0) availableColors.add(color);
+
+        return availableColors;
+    }
+
     /**
      * Removes the given student from the entrance of this school, if present
      * @param student the student to remove
