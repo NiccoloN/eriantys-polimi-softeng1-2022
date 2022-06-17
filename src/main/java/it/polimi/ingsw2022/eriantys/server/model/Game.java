@@ -57,15 +57,6 @@ public class Game {
         fillSchools();
         chooseCharacters();
         assignHelpers();
-
-        board.mergeIslands(0, 1);
-        board.mergeIslands(0, 1);
-        board.mergeIslands(0, 1);
-        board.mergeIslands(0, 1);
-        board.mergeIslands(0, 1);
-        board.mergeIslands(0, 1);
-        board.getIsland(0).setTeam(Team.WHITE);
-        for(int n = 0; n < 7; n++)Team.WHITE.getLeader().getSchool().removeTower();
     }
 
     private void placeFirstStudents() {
