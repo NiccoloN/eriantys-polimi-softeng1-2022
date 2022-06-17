@@ -1,6 +1,5 @@
 package it.polimi.ingsw2022.eriantys.messages.changes;
 
-import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
@@ -8,8 +7,6 @@ import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

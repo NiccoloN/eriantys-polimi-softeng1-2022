@@ -180,6 +180,31 @@ public class GameScene extends CLIScene {
         }
     }
 
+    @Override
+    public void printToFrame(Frame frame) {
+
+        updateDecorativeCloudsPositions();
+
+        skyBackground.printToFrame(frame);
+        for(AnimatedCLIComponent decorativeCloud : decorativeClouds) decorativeCloud.printToFrame(frame);
+        title.printToFrame(frame);
+        line.printToFrame(frame);
+        for(IslandCLIComponent island : islands) island.printToFrame(frame);
+        for(CloudCLIComponent cloud : clouds) cloud.printToFrame(frame);
+        for(PlayerStatusCLIComponent player : players) player.printToFrame(frame);
+        if(helpers != null) for(HelperCardCLIComponent helper : helpers) helper.printToFrame(frame);
+        if(characters != null) for(CharacterCardCLIComponent character : characters) character.printToFrame(frame);
+        if(colors != null) for(BasicCLIComponent color : colors) color.printToFrame(frame);
+        hintTextArea.printToFrame(frame);
+        effectTextArea.printToFrame(frame);
+        if(prompt != null) prompt.printToFrame(frame);
+    }
+
+    public List<CompoundIslandTile> getCompoundIslands() {
+
+        return compoundIslands;
+    }
+
     public void setCompoundIslands(List<CompoundIslandTile> compoundIslands) {
 
         this.compoundIslands = compoundIslands;
@@ -223,26 +248,6 @@ public class GameScene extends CLIScene {
         for(int n = 0; n < this.colors.size(); n++) this.colors.get(n).setPosition(
                 getWidth() / 2f - (this.colors.get(0).getWidth() * this.colors.size() + this.colors.size() - 2) / 2f + (this.colors.get(0).getWidth() + 1) * n,
                 getHeight() - this.colors.get(0).getHeight() - 3);
-    }
-
-    @Override
-    public void printToFrame(Frame frame) {
-
-        updateDecorativeCloudsPositions();
-        
-        skyBackground.printToFrame(frame);
-        for(AnimatedCLIComponent decorativeCloud : decorativeClouds) decorativeCloud.printToFrame(frame);
-        title.printToFrame(frame);
-        line.printToFrame(frame);
-        for(IslandCLIComponent island : islands) island.printToFrame(frame);
-        for(CloudCLIComponent cloud : clouds) cloud.printToFrame(frame);
-        for(PlayerStatusCLIComponent player : players) player.printToFrame(frame);
-        if(helpers != null) for(HelperCardCLIComponent helper : helpers) helper.printToFrame(frame);
-        if(characters != null) for(CharacterCardCLIComponent character : characters) character.printToFrame(frame);
-        if(colors != null) for(BasicCLIComponent color : colors) color.printToFrame(frame);
-        hintTextArea.printToFrame(frame);
-        effectTextArea.printToFrame(frame);
-        if(prompt != null) prompt.printToFrame(frame);
     }
 
     public void setPrompt(CLIComponent prompt) {

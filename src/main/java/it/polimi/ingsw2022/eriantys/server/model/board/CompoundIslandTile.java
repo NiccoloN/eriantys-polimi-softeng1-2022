@@ -19,7 +19,6 @@ public class CompoundIslandTile implements Serializable {
 
     private final List<IslandTile> tiles;
     private Team team;
-    private boolean motherNature;
     private int numberOfDenyCards;
     private int index;
 
@@ -31,7 +30,6 @@ public class CompoundIslandTile implements Serializable {
         tiles = new ArrayList<>();
         tiles.add(new IslandTile());
         team = null;
-        motherNature = false;
         numberOfDenyCards = 0;
         setIndex(index);
     }
@@ -124,7 +122,7 @@ public class CompoundIslandTile implements Serializable {
      */
     public boolean hasMotherNature() {
 
-        return motherNature;
+        return tiles.stream().anyMatch(IslandTile::hasMotherNature);
     }
 
     /**
@@ -133,7 +131,6 @@ public class CompoundIslandTile implements Serializable {
      */
     void setMotherNature(boolean motherNature) {
 
-        this.motherNature = motherNature;
         if(motherNature) tiles.get(0).setMotherNature(true);
         else for(IslandTile tile : tiles) tile.setMotherNature(false);
     }

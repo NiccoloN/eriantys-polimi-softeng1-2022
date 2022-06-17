@@ -17,9 +17,11 @@ import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.IOException;
+import java.util.List;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -35,8 +37,9 @@ public class IslandSelection extends GameSceneState {
     private boolean movingStudent;
     private PawnColor studentColor;
     private int characterIndex;
-    private int motherNatureIndex;
+    private int motherNatureCompoundIndex;
     private int motherNatureMaxSteps;
+    private int motherNatureSteps;
 
     /**
      * Constructs an island selection state
@@ -48,9 +51,10 @@ public class IslandSelection extends GameSceneState {
         super(cli, scene, requestMessage);
         movingStudent = false;
         studentColor = null;
-        characterIndex = 0;
-        motherNatureIndex = -1;
-        motherNatureMaxSteps = -1;
+        characterIndex            = 0;
+        motherNatureCompoundIndex = -1;
+        motherNatureMaxSteps      = -1;
+        motherNatureSteps = -1;
 
         prompt = new BlinkingCLIComponent(2, new String[] {"VV"});
         prompt.setFirstColor(GREEN_BRIGHT);
@@ -73,8 +77,8 @@ public class IslandSelection extends GameSceneState {
     public IslandSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, int motherNatureMaxSteps) {
 
         this(cli, scene, requestMessage);
-        this.motherNatureIndex = scene.getMotherNatureIslandIndex();
-        this.motherNatureMaxSteps = motherNatureMaxSteps;
+        this.motherNatureCompoundIndex = scene.getCompoundIslands().stream().filter(CompoundIslandTile::hasMotherNature).findAny().orElseThrow().getIndex();
+        this.motherNatureMaxSteps      = motherNatureMaxSteps;
     }
 
     @Override
@@ -82,11 +86,13 @@ public class IslandSelection extends GameSceneState {
 
         super.enter();
         currentSelectedIndex = 0;
-        if(motherNatureIndex > -1) {
+        if(motherNatureCompoundIndex > -1) {
 
-            currentSelectedIndex = motherNatureIndex;
-            stepForwardMotherNature();
+            currentSelectedIndex = getScene().getMotherNatureIslandIndex();
+            motherNatureSteps = 1;
+            updateSelectedIndex();
         }
+
         getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
                                       "Press ↓ or s to select a character card");
         updateCLI();
@@ -131,71 +137,57 @@ public class IslandSelection extends GameSceneState {
 
         if (input.triggersAction(Action.RIGHT)) {
 
-            if(motherNatureIndex > -1) stepForwardMotherNature();
-            else currentSelectedIndex++;
+            if(motherNatureCompoundIndex > -1) {
+
+                motherNatureSteps++;
+                updateSelectedIndex();
+            }
+            else currentSelectedIndex = modValue(currentSelectedIndex + 1, getScene().getNumberOfIslands());
         }
 
         else if (input.triggersAction(Action.LEFT)) {
 
-            if(motherNatureIndex > -1) stepBackwardsMotherNature();
-            else currentSelectedIndex--;
+            if(motherNatureCompoundIndex > -1) {
+
+                motherNatureSteps--;
+                updateSelectedIndex();
+            }
+            else currentSelectedIndex = modValue(currentSelectedIndex - 1, getScene().getNumberOfIslands());
+
         }
 
         updateCLI();
     }
 
-    private void stepForwardMotherNature() {
+    private void updateSelectedIndex() {
 
-        int compoundIslands = getScene().getIsland(11).getIndex() + 1;
-        int motherCompoundIndex = getScene().getIsland(getScene().getMotherNatureIslandIndex()).getIndex();
+        List<CompoundIslandTile> compoundIslands = getScene().getCompoundIslands();
 
-        if (currentSelectedIndex + 1 > motherNatureIndex + motherNatureMaxSteps) currentSelectedIndex = motherNatureIndex;
+        if(motherNatureSteps > Math.min(motherNatureMaxSteps, compoundIslands.size() - 1)) motherNatureSteps = 1;
+        else if(motherNatureSteps < 1) motherNatureSteps = Math.min(motherNatureMaxSteps, compoundIslands.size() - 1);
 
-        int prevSelectedIndex = currentSelectedIndex;
-        do {
+        int compoundIndex = modValue(motherNatureCompoundIndex + motherNatureSteps, compoundIslands.size());
 
-            currentSelectedIndex++;
-            if(currentSelectedIndex > motherNatureIndex + compoundIslands) currentSelectedIndex = motherNatureIndex;
-        }
-        while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() == motherCompoundIndex ||
-              getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
-              getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
-    }
+        for(int n = 0; n < getScene().getNumberOfIslands(); n++) {
 
-    private void stepBackwardsMotherNature() {
+            if(getScene().getIsland(n).getIndex() == compoundIndex) {
 
-        int motherCompoundIndex = getScene().getIsland(getScene().getMotherNatureIslandIndex()).getIndex();
-        int motherCompoundSize = 0;
+                int prevCliIndex = modValue(n - 1, getScene().getNumberOfIslands());
+                while(getScene().getIsland(prevCliIndex).getIndex() == compoundIndex) {
 
-        int currentIndex = motherNatureIndex;
-        while(getScene().getIsland(modValue(currentIndex)).getIndex() == motherCompoundIndex) {
+                    n = prevCliIndex;
+                    prevCliIndex = modValue(n - 1, getScene().getNumberOfIslands());
+                }
 
-            motherCompoundSize++;
-            currentIndex++;
-        }
-
-        if (currentSelectedIndex - 1 < motherNatureIndex + motherCompoundSize) {
-
-            currentSelectedIndex = motherNatureIndex;
-            for(int n = 0; n < motherNatureMaxSteps; n++) {
-
-                stepForwardMotherNature();
-                if(getScene().getIsland(modValue(currentSelectedIndex + 1)).getIndex() == motherCompoundIndex) break;
+                currentSelectedIndex = n;
+                break;
             }
         }
-        else {
-
-            int prevSelectedIndex = currentSelectedIndex;
-            do { currentSelectedIndex--; }
-            while(getScene().getIsland(modValue(currentSelectedIndex)).getIndex() ==
-                  getScene().getIsland(modValue(prevSelectedIndex)).getIndex());
-        }
     }
 
-    private int modValue(int index) {
+    private int modValue(int index, int mod) {
 
         int modValue = index;
-        int mod = getScene().getNumberOfIslands();
         while(modValue < 0) modValue += mod;
         return modValue % mod;
     }
@@ -211,7 +203,7 @@ public class IslandSelection extends GameSceneState {
     private void updateCLI() {
 
         if (currentSelected != null) currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
-        currentSelected = getScene().getIsland(modValue(currentSelectedIndex));
+        currentSelected = getScene().getIsland(currentSelectedIndex);
         currentSelected.setColor(GREEN);
         prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f - 1, currentSelected.getFrameY() - 1);
     }
