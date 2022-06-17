@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.server.model.players;
 
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class Player implements Serializable {
     private HelperCard currentHelper;
     private final List<HelperCard> helperCards;
     private transient SchoolDashboard school;
+
+    private boolean characterUsed = false;
 
     /**
      * Initializes the player adding it to a team and associating it to a mage
@@ -160,8 +163,22 @@ public class Player implements Serializable {
         this.school = school;
     }
 
+    public boolean isCharacterUsed() {
+        return characterUsed;
+    }
+
+    public void setCharacterUsed(boolean characterUsed) {
+        this.characterUsed = characterUsed;
+    }
+
     public int comparePriorityTo(Player otherPlayer) {
 
         return this.getCurrentHelper().priority < otherPlayer.getCurrentHelper().priority ? -1 : 1;
+    }
+
+    public boolean checkCoins(ColoredPawn student) {
+
+        int numberOfStudents = school.countTableStudents(student.color);
+        return numberOfStudents == 3 || numberOfStudents == 6 || numberOfStudents == 9;
     }
 }

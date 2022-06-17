@@ -7,7 +7,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class CompoundIslandTile implements Serializable {
     private final List<IslandTile> tiles;
     private Team team;
     private boolean motherNature;
-    private boolean denied;
+    private int numberOfDenyCards;
 
     /**
      * Constructs an island made of a single island tile
@@ -32,7 +31,7 @@ public class CompoundIslandTile implements Serializable {
         tiles.add(new IslandTile());
         team = null;
         motherNature = false;
-        denied = false;
+        numberOfDenyCards = 0;
     }
 
     /**
@@ -138,7 +137,7 @@ public class CompoundIslandTile implements Serializable {
      * @throws InvalidParameterException if team is null
      */
     public void setTeam(Team team) {
-        if (denied) throw new RuntimeException("Cannot set a new controller team on a denied island");
+        if (numberOfDenyCards>0) throw new RuntimeException("Cannot set a new controller team on a denied island");
         if (team == null) throw new InvalidParameterException("Team cannot be null");
         this.team = team;
         for (IslandTile tile : tiles) {
@@ -164,18 +163,29 @@ public class CompoundIslandTile implements Serializable {
         tiles.get(0).setMotherNature(motherNature);
     }
 
-    public boolean isDenied() {
+    public int getNumberOfDenyCards() {
 
-        return denied;
+        return numberOfDenyCards;
     }
 
     /**
-     * Sets whether this island is denied. A denied island cannot change its controller team
-     * @param denied true to deny this island, false to make it not-denied
+     * Adds deny card to the island. A denied island cannot change its controller team.
+     * @throws RuntimeException if someone tries to put more than four deny cards on the island.
      */
-    public void setDenied(boolean denied) {
+    public void incrementNumberOfDenyCards() {
 
-        this.denied = denied;
+        if(numberOfDenyCards >= 4) throw new RuntimeException("There cannot be more than 4 deny cards on an island.");
+        else numberOfDenyCards += 1;
+    }
+
+    /**
+     * Removes deny card to the island.
+     * @throws RuntimeException if someone tries to remove deny card when there are none on the island.
+     */
+    public void decrementNumberOfDenyCards() {
+
+        if(numberOfDenyCards <= 0) throw new RuntimeException("There cannot be a negative number of deny cards on a island.");
+        else numberOfDenyCards -= 1;
     }
 
     /**

@@ -97,7 +97,6 @@ public class CharacterSelection extends GameSceneState {
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
                     new ChooseCharacterCard(currentSelected.getIndex())));
 
-            getScene().setState(prevState);
             return;
         }
 

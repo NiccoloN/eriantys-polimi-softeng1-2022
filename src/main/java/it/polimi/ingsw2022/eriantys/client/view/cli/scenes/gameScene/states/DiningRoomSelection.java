@@ -6,8 +6,9 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
@@ -73,7 +74,7 @@ public class DiningRoomSelection extends GameSceneState {
         if(input.triggersAction(Action.SELECT)) {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
-                    new MoveStudent(true, -1, studentColor)));
+                    new MoveStudent(ColoredPawnOriginDestination.TABLE, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, -1, studentColor)));
 
             getScene().setState(new ViewOnly(getCli(), getScene()));
             return;

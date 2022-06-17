@@ -3,7 +3,6 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
-import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +34,7 @@ class CompoundIslandTileTest {
     @Test
     void setTeam() {
         compoundIsland.setTeam(Team.BLACK);
-        compoundIsland.setDenied(true);
+        compoundIsland.incrementNumberOfDenyCards();
         assertThrows(RuntimeException.class, () -> compoundIsland.setTeam(Team.GRAY));
     }
 }
