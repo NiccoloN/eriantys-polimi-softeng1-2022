@@ -27,7 +27,7 @@ public class CharacterCard extends Card {
         initialCost = cost;
 
         students = new ArrayList<>(4);
-        denyTilesNumber = 0;
+        denyTilesNumber = -1;
     }
 
     public int getCost() {
@@ -36,10 +36,6 @@ public class CharacterCard extends Card {
 
     public void incrementCost() {
         if(initialCost == cost) this.cost = this.cost + 1;
-    }
-
-    public int getStudentsNumber() {
-        return students.size();
     }
 
     public ColoredPawn getStudent(int index) {

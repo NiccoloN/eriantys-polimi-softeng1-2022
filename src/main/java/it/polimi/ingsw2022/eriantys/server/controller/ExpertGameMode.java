@@ -20,6 +20,10 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class represents the expert mode of the game, it includes coins and characters.
+ * @author Emanuele Musto
+ */
 public class ExpertGameMode extends BasicGameMode {
 
     public ExpertGameMode(Game game) {
@@ -39,7 +43,7 @@ public class ExpertGameMode extends BasicGameMode {
                     for(int k=0; k<4; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
                     break;
                 case 5:
-                    for(int k=0; k<4; k++) currentCharacter.incrementDenyTiles();
+                    for(int k=0; k<5; k++) currentCharacter.incrementDenyTiles();
                     break;
                 case 7:
                     for(int k=0; k<6; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
