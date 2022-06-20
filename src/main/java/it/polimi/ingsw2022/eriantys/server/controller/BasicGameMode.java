@@ -22,6 +22,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * This class represents the basic mode of the game. It's the controller in the MVC pattern, manages rounds, player turns,
+ * requests for moves, updates, and controls.
+ * @author Francesco Melegati Maccari
+ * @author Niccolò Nicolosi
+ * @author Emanuele Musto
+ */
+
 public class BasicGameMode implements GameMode, Serializable {
 
     protected final Game game;
@@ -75,6 +83,12 @@ public class BasicGameMode implements GameMode, Serializable {
         return initUpdates;
     }
 
+    /**
+     * This method is called by the server when everything is ready for the game to start the first round, and lasts
+     * until the game ending.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     @Override
     public void playGame() throws IOException, InterruptedException {
 
@@ -82,6 +96,13 @@ public class BasicGameMode implements GameMode, Serializable {
         endGame();
     }
 
+    /**
+     * Represents a round, made of planning phase and action phase.
+     * The planning phase consists in filling the clouds with students, and the choice of the helper card by the players.
+     * The action phase is represented by a turn.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     protected void playRound() throws IOException, InterruptedException {
 
         if (currentGamePhase == GamePhase.STARTING_ROUND) {
@@ -113,6 +134,10 @@ public class BasicGameMode implements GameMode, Serializable {
         }
     }
 
+    /**
+     * Fills the cloud with three students each and sends the update to the clients.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     private void fillClouds() throws IOException {
 
         Update update = new Update();
@@ -139,6 +164,11 @@ public class BasicGameMode implements GameMode, Serializable {
         server.sendToAllClients(new UpdateMessage(update));
     }
 
+    /**
+     * Asks every player to choose a helper card, and manages the unplayable ones when already chosen by precedent players.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     private void playHelpers() throws IOException, InterruptedException {
 
         for(Player player : game.getPlayers()) player.resetCurrentHelper();
@@ -166,6 +196,15 @@ public class BasicGameMode implements GameMode, Serializable {
         }
     }
 
+    /**
+     * Represents a turn, or the action phase.
+     * It consists of the choice of the helper card, the movement of three students from entrance to either island or
+     * dashboard, and the choice of a cloud.
+     * @param player the player playing the turn.
+     * @param playerIndex the index representing the order in the turns.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     protected void playTurn(Player player, int playerIndex) throws IOException, InterruptedException {
 
         if (currentGamePhase == GamePhase.MOVING_STUDENTS) {
@@ -202,6 +241,12 @@ public class BasicGameMode implements GameMode, Serializable {
         }
     }
 
+    /**
+     * Request a player to move one student.
+     * @param player the player that will have to move a student.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     protected void requestStudent(Player player) throws IOException, InterruptedException {
 
         requestMove(new MoveStudentRequest
@@ -209,11 +254,22 @@ public class BasicGameMode implements GameMode, Serializable {
                 player.getUsername());
     }
 
+    /**
+     * Request a player to move mother nature.
+     * @param player the player that will have to move mother nature.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {
 
         requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.getUsername());
     }
 
+    /**
+     * Uses the influence calculator to check the island influence, and to get the dominant team.
+     * It also sends the update when there is a dominant team.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
      protected void checkIslandInfluence() throws IOException {
 
         CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
@@ -227,6 +283,14 @@ public class BasicGameMode implements GameMode, Serializable {
         if (dominantTeam.isPresent()) updateTowers(dominantTeam.get(), motherNatureIsland);
     }
 
+    /**
+     * Updates the towers of the island when the influence calculator find a dominant team.
+     * If there is a new dominant team, removes the old tower (if present) and adds it to the old team,
+     * and place a tower from the dashboard of the dominant team.
+     * @param dominantTeam the team with the most influence on the given island.
+     * @param island the given island where influence was calculated.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     protected void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
 
         Update update = new Update();
@@ -275,6 +339,12 @@ public class BasicGameMode implements GameMode, Serializable {
         }
     }
 
+    /**
+     * Checks if the given island will be merged with the adjacent ones.
+     * An island is merged with another adjacent if after the influence calculation both of them are owned by the same team.
+     * @param island the island that can possibly be merged with other islands.
+     * @return the island change that will be on the update after the merge.
+     */
     private IslandChange checkForMerge(CompoundIslandTile island) {
 
         Board board = game.getBoard();
@@ -293,6 +363,13 @@ public class BasicGameMode implements GameMode, Serializable {
         return new IslandChange(board.getIslands(), board.getIslandTiles());
     }
 
+    /**
+     * Sends a move request message to a player, and waits for a valid response.
+     * @param request the move request to send.
+     * @param playerUsername the username of the player that will receive the move request.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     protected void requestMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
 
         if(!endGameNow) {
@@ -323,6 +400,10 @@ public class BasicGameMode implements GameMode, Serializable {
         }
     }
 
+    /**
+     * Ends the game, sending to all players the winner team.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     private void endGame() throws IOException {
 
         Team winnerTeam = game.checkWinner();

@@ -27,6 +27,11 @@ import java.util.*;
  */
 public class ExpertGameMode extends BasicGameMode {
 
+    /**
+     * Initializes the controller in expert mode, using the basic and adding the initialization of characters.
+     * @param game the model and all the game's data.
+     * @param initializeCharacters if true characters are initialized. It's false only when a game is loaded from a save.
+     */
     public ExpertGameMode(Game game, boolean initializeCharacters) {
 
         super(game);
@@ -69,6 +74,7 @@ public class ExpertGameMode extends BasicGameMode {
         return(initialUpdates);
     }
 
+
     @Override
     public void playRound() throws IOException, InterruptedException {
 
@@ -91,6 +97,13 @@ public class ExpertGameMode extends BasicGameMode {
         }
     }
 
+    /**
+     * This method is called when the client sends a character card move. Based on the index, the right requests and
+     * character effects will take place.
+     * @param cardIndex the index of the character card used by the player.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     private void playCharacter(int cardIndex) throws IOException, InterruptedException {
 
         CharacterCard characterCard = game.getCharacterOfIndex(cardIndex);

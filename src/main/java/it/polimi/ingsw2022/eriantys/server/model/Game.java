@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * This class represents the game instance.
+ * This class represents the game instance, and contains all the data of the game.
  * @author Francesco Melegati
  */
 public class Game implements Serializable {
@@ -71,6 +71,10 @@ public class Game implements Serializable {
         assignHelpers();
     }
 
+    /**
+     * When the game start, this method is called to place a student for every island
+     * except the one with mother nature and the one opposite to it.
+     */
     private void placeFirstStudents() {
 
         int colorCounter;
@@ -95,12 +99,19 @@ public class Game implements Serializable {
                 board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
     }
 
+    /**
+     * Adds every student pawn to the student bag.
+     * @see StudentsBag
+     */
     private void fillStudentsBag() {
 
         for(ColoredPawn student : students) studentsBag.addStudent(student);
         students.clear();
     }
 
+    /**
+     * Adds seven student pawns to the entrance of every player's school.
+     */
     private void fillSchools() {
 
         for (Player player : players) {
@@ -110,6 +121,11 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Chooses randomly three of the possible twelve characters of the game.
+     * @throws IOException when the path to the json file containing information regarding characters is wrong
+     * or can't be accessed.
+     */
     private void chooseCharacters() throws IOException {
 
         List<CharacterCard> characterCards = new ArrayList<>(12);
@@ -117,6 +133,11 @@ public class Game implements Serializable {
         for(int n = 0; n < 3; n++) characters.add(characterCards.remove( (int) (Math.random() * characterCards.size())));
     }
 
+    /**
+     * Gives to every player ten helper cards to use during the game.
+     * @throws IOException when the path to the json file containing information regarding helpers is wrong
+     * or can't be accessed.
+     */
     private void assignHelpers() throws IOException {
 
         for(Player player : players)
@@ -192,11 +213,24 @@ public class Game implements Serializable {
         return players;
     }
 
+    /**
+     * Based on the index of the helper cards chosen by the players, this method decides on which order the players will play.
+     */
     public void sortPlayersBasedOnHelperCard() {
 
         players.sort(Player::comparePriorityTo);
     }
 
+    /**
+     * This method is called whenever a student is moved to the school dashboard.
+     * For every color, the player with the most students on the school dashboard gets the professor of that color.
+     * Therefore, this method is used to check whether the movement of a student causes a movement of the professor of
+     * the same color, and if true, moves the professor from one place to another.
+     * @param color the color of the student moved.
+     * @param greaterAndEqual if true it's enough to reach the same number of student of the player with the professor
+     *                        in order to get the professor (effect caused by a character), if false the number of student
+     *                        need to be greater than the number of student of the player with the professor.
+     */
     public void checkAndUpdateProfessor(PawnColor color, boolean greaterAndEqual) {
 
         SchoolDashboard winnerSchool = null;
@@ -315,6 +349,10 @@ public class Game implements Serializable {
         this.influenceCalculator = influenceCalculator;
     }
 
+    /**
+     * Resets the usages of characters of every player. It's called at the beginning of every round, and it's used to
+     * let one player use a character maximum once every round.
+     */
     public void resetCharacterUses() {
         for(Player player : players) player.setCharacterUsed(false);
     }
@@ -357,6 +395,11 @@ public class Game implements Serializable {
         this.gameEnding = true;
     }
 
+    /**
+     * Check who is the winner team when the game ends.
+     * The winner team is the team with the higher number of placed towers in the islands.
+     * @return the winner team.
+     */
     public Team checkWinner() {
 
         Team winnerTeam = null;

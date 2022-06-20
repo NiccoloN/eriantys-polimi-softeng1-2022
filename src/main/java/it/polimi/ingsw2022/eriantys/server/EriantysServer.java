@@ -20,6 +20,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * This class represents an instance of a server. It's used to start and manage the connection with clients, to set
+ * the game settings, and to send and receive messages.
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
@@ -38,6 +40,9 @@ public class EriantysServer implements Serializable {
 
     private static EriantysServer instance;
 
+    /**
+     * Creates a single instance of the server.
+     */
     private static void createInstance() throws IOException {
 
         instance = new EriantysServer();
@@ -83,6 +88,13 @@ public class EriantysServer implements Serializable {
         nextLockId = 0;
     }
 
+    /**
+     * Starts the server and allow for clients to connect to it.
+     * Requests the game settings and username to the first client to connect. To the other clients only the username,
+     * and lets them wait in a lobby.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread is interrupted.
+     */
     private void start() throws IOException, InterruptedException {
 
         running = true;
@@ -150,6 +162,12 @@ public class EriantysServer implements Serializable {
         saveFile.delete();
     }
 
+    /**
+     * Accepts the connection of one client, initializes the input and output streams, notifies the client of the
+     * successful connection, and sends a message asking for the username.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     */
     private void acceptConnection() throws IOException, InterruptedException {
 
         //accept a connection
@@ -172,6 +190,12 @@ public class EriantysServer implements Serializable {
         sent.waitForValidResponse();
     }
 
+    /**
+     * Sends a request message for the game settings (number of players and game mode).
+     * @param clientUsername the username of the player that will receive the request.
+     * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     private void requestGameSettings(String clientUsername) throws InterruptedException, IOException {
 
         ChooseGameSettingsMessage sent = new ChooseGameSettingsMessage();
@@ -179,6 +203,12 @@ public class EriantysServer implements Serializable {
         sent.waitForValidResponse();
     }
 
+    /**
+     * Creates a thread for every client that connects to the server.
+     * In the thread, while the server is running, it listens to clients and receives every message sent by them.
+     * When a message is received, the server manage and reply accordingly based on the message received.
+     * @param client the socket of the client successfully connected to the server.
+     */
     private void listenToClient(Socket client) {
 
         Thread thread = new Thread(() -> {
@@ -234,6 +264,13 @@ public class EriantysServer implements Serializable {
         thread.start();
     }
 
+    /**
+     * Reads from the input stream of one client.
+     * @param clientInputStream the input stream to read from.
+     * @return an optional containing a message if present, or nothing otherwise.
+     * @throws IOException when input stream throws an exception (while reading a message from client).
+     * @throws ClassNotFoundException when the object read from the stream is not of a java class of the program.
+     */
     private Optional<ToServerMessage> readMessageFromClient(ObjectInputStream clientInputStream) throws IOException, ClassNotFoundException {
 
         try {
@@ -247,6 +284,13 @@ public class EriantysServer implements Serializable {
         }
     }
 
+    /**
+     * Sends a message to one client.
+     * @param message the message to send.
+     * @param client the socket of the client that will receive the message.
+     * @param clientUsername the player's username associated to the client.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     private void sendToClient(ToClientMessage message, Socket client, String clientUsername) throws IOException {
 
         if(client.isClosed()) return;
@@ -273,16 +317,33 @@ public class EriantysServer implements Serializable {
         }
     }
 
+    /**
+     * Sends a message to the client knowing only the socket.
+     * @param message the message to send.
+     * @param client the socket of the client that will receive the message.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     public void sendToClient(ToClientMessage message, Socket client) throws IOException {
 
         sendToClient(message, client, null);
     }
 
+    /**
+     * Sends a message to the client knowing only the player's username.
+     * @param message the message to send.
+     * @param clientUsername the player's username associated to the client.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     public void sendToClient(ToClientMessage message, String clientUsername) throws IOException {
 
         sendToClient(message, clients.get(clientUsername), clientUsername);
     }
 
+    /**
+     * Sends a message to every client.
+     * @param message the message to send.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     public void sendToAllClients(ToClientMessage message) throws IOException {
 
         for(String username : clients.keySet()) sendToClient(message, clients.get(username), username);
@@ -293,11 +354,20 @@ public class EriantysServer implements Serializable {
         return currentlyConnectingClient;
     }
 
+    /**
+     * @param username the chosen username.
+     * @return false if the username is already used by someone.
+     */
     public boolean isAvailableUsername(String username) {
 
         return !clients.containsKey(username);
     }
 
+    /**
+     * Saves the socket and username in the server.
+     * @param clientSocket the socket of the client.
+     * @param username the username of the player.
+     */
     public synchronized void addClient(Socket clientSocket, String username) {
 
         if(clients.containsValue(clientSocket)) throw new RuntimeException("Client already connected");
@@ -309,12 +379,20 @@ public class EriantysServer implements Serializable {
         notifyAll();
     }
 
+    /**
+     * Saves the game settings chosen by the first player connecting to the server.
+     * @param gameSettings the chosen game settings.
+     */
     public synchronized void addGameSettings(GameSettings gameSettings) {
 
         this.gameSettings = gameSettings;
         notifyAll();
     }
 
+    /**
+     * Starts a series of ping (one every 15 seconds) messages to check for disconnections.
+     * @param clientUsername the player's username to send the pings to.
+     */
     private void startPing(String clientUsername) {
 
         Timer timer = new Timer();
@@ -337,6 +415,14 @@ public class EriantysServer implements Serializable {
         clientPingTimers.add(timer);
     }
 
+    /**
+     * Creates an instance of the game and one of the controller (basic or expert game mode) when every player needed is connected.
+     * It also sends the initial update to everyone.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     * @see Game
+     * @see BasicGameMode
+     * @see ExpertGameMode
+     */
     private void createGame() throws IOException {
 
         System.out.println("Creating a new game");
@@ -353,6 +439,10 @@ public class EriantysServer implements Serializable {
         System.out.println("Sending initial update");
     }
 
+    /**
+     * Loads a game previously saved when the first player decides to resume the last game.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     private void loadGame() throws IOException {
 
         System.out.println("Loading the game");
@@ -375,6 +465,11 @@ public class EriantysServer implements Serializable {
         System.out.println("Sending initial update");
     }
 
+    /**
+     * Calls the controller whenever a message containing a move from the client arrives.
+     * @param moveMessage the move message arrived from one client.
+     * @throws IOException when output stream throws an exception (while sending a message to client).
+     */
     public void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException {
 
         try{
@@ -387,22 +482,39 @@ public class EriantysServer implements Serializable {
         }
     }
 
+    /**
+     * Gets (or creates if not present) a lockId used for synchronization by the applicant.
+     * @param lockId the requested lockId.
+     * @return the lock associated with the lockId.
+     */
     public AtomicBoolean getMessageLock(int lockId) {
 
         return messageLocks.computeIfAbsent(lockId, k -> new AtomicBoolean());
     }
 
+    /**
+     * @return the next available lock id.
+     */
     public int getNextMessageLockId() {
 
         nextLockId += 1;
         return nextLockId;
     }
 
+    /**
+     * Removes a lock when the user doesn't need it anymore.
+     * @param lockId the lock id to remove.
+     */
     public void removeMessageLock(int lockId) {
 
         messageLocks.remove(lockId);
     }
 
+    /**
+     * Saves in a file the current game, the current state of the controller, and every information when a client disconnects
+     * and the game stops. The game can then be resumed later, when someone connects again.
+     * @throws IOException when output stream throws an exception.
+     */
     public void saveGame() throws IOException {
 
         File saveFile = new File(SAVE_FILE_PATH);
@@ -426,6 +538,10 @@ public class EriantysServer implements Serializable {
         objectOutputStream.close();
     }
 
+    /**
+     * Retrieves from a file the previously saved game.
+     * @throws IOException when output stream throws an exception.
+     */
     private void loadSave() throws IOException {
 
         System.out.println("Loading a game save");
@@ -457,6 +573,11 @@ public class EriantysServer implements Serializable {
         objectInputStream.close();
     }
 
+    /**
+     * Disconnects every client, interrupt every thread, closes sockets and server.
+     * @param playerDisconnected true if the shutdown is caused by a player disconnecting.
+     * @throws IOException when output stream or the socket throws an exception.
+     */
     public void shutdown(boolean playerDisconnected) throws IOException {
 
         System.out.println("Shutting down");
