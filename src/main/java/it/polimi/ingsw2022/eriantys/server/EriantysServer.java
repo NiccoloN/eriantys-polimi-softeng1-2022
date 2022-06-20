@@ -28,6 +28,7 @@ public class EriantysServer implements Serializable {
 
     public static final int PORT_NUMBER = 65000;
     public static final int MAX_USERNAME_LENGTH = 20;
+    public static final String SAVE_FILE_PATH = "save";
 
     public static void launch(String[] args) throws IOException, InterruptedException {
 
@@ -338,21 +339,23 @@ public class EriantysServer implements Serializable {
 
     private void createGame() throws IOException {
 
+        System.out.println("Creating a new game");
+
         String[] playerUsernames = clients.keySet().toArray(new String[0]);
 
         game = new Game(playerUsernames);
-        gameMode = gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game);
+        gameMode = gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game, true);
 
         Update[] initialUpdates = gameMode.createInitialUpdates();
 
         for (int n = 0; n < playerUsernames.length; n++)
-            sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
+            sendToClient(new StartingGameMessage(game.getPlayersStartOrder(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
         System.out.println("Sending initial update");
     }
 
     private void loadGame() throws IOException {
 
-        System.out.println("Loading the game...");
+        System.out.println("Loading the game");
 
         game = loadedSave.game;
 
@@ -361,14 +364,14 @@ public class EriantysServer implements Serializable {
 
         for(int n = 0; n < playerUsernames.size(); n++) players.get(n).setUsername(playerUsernames.get(n));
 
-        gameMode = loadedSave.gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game);
+        gameMode = loadedSave.gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game, false);
         gameMode.setCurrentGamePhase(loadedSave.gameMode.getCurrentGamePhase());
         gameMode.setEndGameNow(loadedSave.gameMode.getEndGameNow());
 
         Update[] initialUpdates = gameMode.createInitialUpdates();
 
         for (int n = 0; n < playerUsernames.size(); n++)
-            sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames.get(n)));
+            sendToClient(new StartingGameMessage(game.getPlayersStartOrder(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames.get(n)));
         System.out.println("Sending initial update");
     }
 
@@ -402,12 +405,12 @@ public class EriantysServer implements Serializable {
 
     public void saveGame() throws IOException {
 
-        File saveFile = new File("save");
+        File saveFile = new File(SAVE_FILE_PATH);
         saveFile.createNewFile();
         FileOutputStream outputStream = new FileOutputStream(saveFile);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-        System.out.println("Saving the game...");
+        System.out.println("Saving the game");
         try {
 
             objectOutputStream.writeObject(this);
@@ -425,12 +428,12 @@ public class EriantysServer implements Serializable {
 
     private void loadSave() throws IOException {
 
-        System.out.println("Loading a game save...");
+        System.out.println("Loading a game save");
 
         FileInputStream inputStream;
         try {
 
-            inputStream = new FileInputStream("save");
+            inputStream = new FileInputStream(SAVE_FILE_PATH);
         }
         catch (FileNotFoundException e) {
 

@@ -26,7 +26,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
     protected final Game game;
     protected final EriantysServer server;
-    private GamePhase currentGamePhase;
+    protected GamePhase currentGamePhase;
     private boolean endGameNow;
 
     public BasicGameMode(Game game) {
@@ -40,7 +40,7 @@ public class BasicGameMode implements GameMode, Serializable {
     public Update[] createInitialUpdates() {
 
         Board board = game.getBoard();
-        List<Player> players = game.getPlayers();
+        List<Player> players = game.getPlayersStartOrder();
         Update[] initUpdates = new Update[players.size()];
 
         IslandChange islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
@@ -63,13 +63,13 @@ public class BasicGameMode implements GameMode, Serializable {
             for (PlayerChange playerChange : playerChanges) initUpdates[n].addChange(playerChange);
         }
 
-        for (int n = 0; n < players.size(); n++) {
-
-            Player player = players.get(n);
+        for(Player player : players) {
 
             HelperCardsChange helperCardsChange = new HelperCardsChange(player.getUsername());
             for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
-            initUpdates[n].addChange(helperCardsChange);
+            helperCardsChange.setPlayedHelperCard(player.getCurrentHelper());
+
+            for(Update initUpdate : initUpdates) initUpdate.addChange(helperCardsChange);
         }
 
         return initUpdates;

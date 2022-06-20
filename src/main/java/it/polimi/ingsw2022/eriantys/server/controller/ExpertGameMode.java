@@ -27,29 +27,32 @@ import java.util.*;
  */
 public class ExpertGameMode extends BasicGameMode {
 
-    public ExpertGameMode(Game game) {
+    public ExpertGameMode(Game game, boolean initializeCharacters) {
 
         super(game);
 
-        game.resetCharacterUses();
+        if(initializeCharacters) {
 
-        for(int i=0; i<game.getNumberOfCharacters(); i++){
+            game.resetCharacterUses();
 
-            CharacterCard currentCharacter = game.getCharacter(i);
+            for(int i=0; i<game.getNumberOfCharacters(); i++) {
 
-            switch(currentCharacter.index) {
+                CharacterCard currentCharacter = game.getCharacter(i);
 
-                case 1:
-                case 11:
-                    for(int k=0; k<4; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
-                    break;
-                case 5:
-                    for(int k=0; k<5; k++) currentCharacter.incrementDenyTiles();
-                    break;
-                case 7:
-                    for(int k=0; k<6; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
-                    break;
-                default: break;
+                switch(currentCharacter.index) {
+
+                    case 1:
+                    case 11:
+                        for(int k=0; k<4; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
+                        break;
+                    case 5:
+                        for(int k=0; k<5; k++) currentCharacter.incrementDenyTiles();
+                        break;
+                    case 7:
+                        for(int k=0; k<6; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
+                        break;
+                    default: break;
+                }
             }
         }
     }
@@ -57,24 +60,19 @@ public class ExpertGameMode extends BasicGameMode {
     @Override
     public Update[] createInitialUpdates() {
 
-        Update[] initialUpdate = super.createInitialUpdates();
+        Update[] initialUpdates = super.createInitialUpdates();
 
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
         for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
+        for (Update update : initialUpdates) update.addChange(characterCardsChange);
 
-        for (Update update : initialUpdate) {
-
-            update.addChange(characterCardsChange);
-        }
-
-        return(initialUpdate);
+        return(initialUpdates);
     }
 
     @Override
     public void playRound() throws IOException, InterruptedException {
 
-        //TODO persistenza
-        game.resetCharacterUses();
+        if (currentGamePhase == GamePhase.STARTING_ROUND) game.resetCharacterUses();
         super.playRound();
     }
 
@@ -82,8 +80,15 @@ public class ExpertGameMode extends BasicGameMode {
     public void playTurn(Player player, int playerIndex) throws IOException, InterruptedException {
 
         super.playTurn(player, playerIndex);
-        game.setInfluenceCalculator(new InfluenceCalculatorBasic());
-        MoveMotherNatureRequest.setAdditionalSteps(false);
+
+        if (currentGamePhase == GamePhase.MOVING_STUDENTS || currentGamePhase == GamePhase.STARTING_ROUND) {
+
+            if(!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
+                game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+
+            MoveMotherNatureRequest.setAdditionalSteps(false);
+            server.saveGame();
+        }
     }
 
     private void playCharacter(int cardIndex) throws IOException, InterruptedException {
@@ -96,8 +101,8 @@ public class ExpertGameMode extends BasicGameMode {
                                 characterCard.index,
                                 characterCard.getStudentsColors(),
                                 List.of(ColoredPawnOriginDestination.ISLAND),
-                                "Move a student from the character card to an island")
-                        , game.getCurrentPlayer().getUsername());
+                                "Move a student from the character card to an island"),
+                        game.getCurrentPlayer().getUsername());
                 break;
             case 3:
                 requestMove(new ChooseIslandRequest(
@@ -120,11 +125,10 @@ public class ExpertGameMode extends BasicGameMode {
                         game.getCurrentPlayer().getUsername());
                 break;
             case 7:
-                for(int i=0; i<3 ; i++) {
+                for(int i = 0; i < 3; i++) {
 
                     if(!game.getAbortMessageReceived()) {
-                        requestMove(
-                                new ChooseColorRequest
+                        requestMove(new ChooseColorRequest
                                         (
                                                 cardIndex,
                                                 characterCard.getStudentsColors(),
@@ -134,8 +138,7 @@ public class ExpertGameMode extends BasicGameMode {
                                 game.getCurrentPlayer().getUsername());
 
                         if(!game.getAbortMessageReceived()) {
-                            requestMove(
-                                    new ChooseColorRequest
+                            requestMove(new ChooseColorRequest
                                             (
                                                     cardIndex,
                                                     game.getCurrentPlayer().getSchool().getAvailableEntranceColors(),
@@ -310,11 +313,10 @@ public class ExpertGameMode extends BasicGameMode {
             }).start();
         }
         else if(performedMoveMessage.move instanceof Abort) {
-            new Thread( () -> {
-                if(performedMoveMessage.move.isValid(game)) {
 
-                    performedMoveMessage.move.apply(game);
-                }
+            new Thread( () -> {
+
+                if(performedMoveMessage.move.isValid(game)) performedMoveMessage.move.apply(game);
                 previousMessage.acceptResponse();
             }).start();
         }
