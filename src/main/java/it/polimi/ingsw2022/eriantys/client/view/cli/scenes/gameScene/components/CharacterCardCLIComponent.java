@@ -3,12 +3,10 @@ package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
@@ -58,7 +56,17 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
         setRow(2, color + "|   o   |" + RESET);
         setRow(3, color + "|__(_)__|" + RESET);
 
-        if(!students.isEmpty()) {
+        boolean anyStudent = false;
+        for(PawnColor color : PawnColor.values()) {
+
+            if(students.get(color) > 0) {
+
+                anyStudent = true;
+                break;
+            }
+        }
+
+        if(anyStudent) {
 
             int red = students.get(PawnColor.RED);
             int green = students.get(PawnColor.GREEN);
@@ -74,7 +82,8 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
                       PawnColor.PINK.ansiForegroundColor + (pink == 0 ? " " : pink)
                       + RESET + color + " |" + RESET);
         }
-        else setRow(4, color + "|   " + (denyTiles < 0 ? " " : denyTiles) + "   |" + RESET);
+        else setRow(4, color + "| " + RED_BRIGHT + (denyTiles > 0 ? "X" : " ") + (denyTiles > 1 ? "X" : " ") +
+                       " " + (denyTiles > 2 ? "X" : " ") + (denyTiles > 3 ? "X" : " ") + color + " |" + RESET);
 
         setRow(5, color + "|_______|" + RESET);
     }

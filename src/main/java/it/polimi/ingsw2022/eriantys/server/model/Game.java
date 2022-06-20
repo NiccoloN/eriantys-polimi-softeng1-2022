@@ -114,9 +114,7 @@ public class Game implements Serializable {
 
         List<CharacterCard> characterCards = new ArrayList<>(12);
         for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
-        for(int n = 0; n < 3; n++) characters.add(characterCards.remove(
-                4//(int) (Math.random() * characterCards.size())
-        ));
+        for(int n = 0; n < 3; n++) characters.add(characterCards.remove(/*(int) (Math.random() * characterCards.size())*/4));
     }
 
     private void assignHelpers() throws IOException {
