@@ -276,6 +276,8 @@ public class ExpertGameMode extends BasicGameMode {
 
             Update update = new Update();
             update.addChange(new IslandChange(game.getBoard().getIslands(), game.getBoard().getIslandTiles()));
+            CharacterCardsChange characterCardsChange = new CharacterCardsChange();
+            for(int i=0; i<game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
             server.sendToAllClients(new UpdateMessage(update));
         }
         else super.checkIslandInfluence();
