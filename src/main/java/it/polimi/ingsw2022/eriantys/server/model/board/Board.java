@@ -1,10 +1,8 @@
 package it.polimi.ingsw2022.eriantys.server.model.board;
 
-import it.polimi.ingsw2022.eriantys.server.model.Game;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -14,7 +12,7 @@ import java.util.*;
  * @see CloudTile
  * @see SchoolDashboard
  */
-public class Board {
+public class Board implements Serializable {
 
     private final List<CompoundIslandTile> islands;
     private final List<IslandTile> islandTiles;

@@ -67,9 +67,9 @@ public class WinnerMessageCLIComponent extends AnimatedCLIComponent {
 
             List<Player> winners = winnerTeam.getPlayers();
 
-            setRow(5, buildWinnerRow(winners.get(0).username, 1, (getWidth() + 1) % colors.length));
+            setRow(5, buildWinnerRow(winners.get(0).getUsername(), 1, (getWidth() + 1) % colors.length));
             setRow(6, winners.size() > 1 ?
-                      buildWinnerRow(winners.get(1).username, 0, (getWidth() + 2) % colors.length) :
+                      buildWinnerRow(winners.get(1).getUsername(), 0, (getWidth() + 2) % colors.length) :
                       colors[0] + "|*" + color +
                       " ".repeat(EriantysServer.MAX_USERNAME_LENGTH + 2)
                       + colors[(getWidth() + 2) % colors.length] + "*|" + RESET);

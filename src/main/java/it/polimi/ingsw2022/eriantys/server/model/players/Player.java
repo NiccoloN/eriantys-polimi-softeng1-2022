@@ -18,11 +18,6 @@ import java.util.NoSuchElementException;
 public class Player implements Serializable {
 
     /**
-     * The username of the player
-     */
-    public final String username;
-
-    /**
      * The mage associated to the player
      */
     public final Mage mage;
@@ -37,10 +32,11 @@ public class Player implements Serializable {
      */
     public final boolean isTeamLeader;
 
+    private String username;
     private int coins;
     private HelperCard currentHelper;
     private final List<HelperCard> helperCards;
-    private transient SchoolDashboard school;
+    private SchoolDashboard school;
 
     private boolean characterUsed = false;
 
@@ -61,6 +57,16 @@ public class Player implements Serializable {
 
         helperCards = new ArrayList<>(10);
         coins = 1;
+    }
+
+    public String getUsername() {
+
+        return username;
+    }
+
+    public void setUsername(String username) {
+
+        this.username = username;
     }
 
     /**

@@ -10,7 +10,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
  * without considering the contribution of students of a specific color
  * @author Emanuele Musto
  */
-public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic{
+public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic {
 
     private final PawnColor ignoredColor;
 

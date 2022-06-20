@@ -12,11 +12,20 @@ import java.util.Arrays;
  */
 public class GameSettings implements Serializable {
 
+    public final boolean loadGame;
     public final int numberOfPlayers;
     public final Mode gameMode;
 
+    public GameSettings() {
+
+        loadGame = true;
+        numberOfPlayers = 0;
+        gameMode = null;
+    }
+
     public GameSettings(int numberOfPlayers, Mode gameMode) {
 
+        loadGame = true;
         this.numberOfPlayers = numberOfPlayers;
         this.gameMode = gameMode;
     }

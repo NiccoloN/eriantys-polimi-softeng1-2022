@@ -10,7 +10,7 @@ public abstract class TimedMessage extends ToClientMessage {
 
     public TimedMessage() {
 
-        lockId = EriantysServer.getInstance().getNextLockId();
+        lockId = EriantysServer.getInstance().getNextMessageLockId();
     }
 
     public abstract void waitForValidResponse() throws InterruptedException;
@@ -18,19 +18,19 @@ public abstract class TimedMessage extends ToClientMessage {
     protected void waitForValidResponse(int timeout, Runnable timeoutTask) throws InterruptedException {
 
         EriantysServer server = EriantysServer.getInstance();
-        AtomicBoolean lock = server.getLock(lockId);
+        AtomicBoolean lock = server.getMessageLock(lockId);
 
         synchronized (lock) {
             lock.wait(timeout * 1000L);
             if(!lock.get()) timeoutTask.run();
-            server.removeLock(lockId);
+            server.removeMessageLock(lockId);
             lock.notifyAll();
         }
     }
 
     public void acceptResponse() {
 
-        AtomicBoolean lock = EriantysServer.getInstance().getLock(lockId);
+        AtomicBoolean lock = EriantysServer.getInstance().getMessageLock(lockId);
 
         synchronized (lock) {
             lock.set(true);

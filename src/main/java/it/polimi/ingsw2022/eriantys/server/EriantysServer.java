@@ -12,10 +12,7 @@ import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -27,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
  */
-public class EriantysServer {
+public class EriantysServer implements Serializable {
 
     public static final int PORT_NUMBER = 65000;
     public static final int MAX_USERNAME_LENGTH = 20;
@@ -50,15 +47,15 @@ public class EriantysServer {
         return instance;
     }
 
-    private final ServerSocket serverSocket;
+    private transient final ServerSocket serverSocket;
 
-    private Socket currentlyConnectingClient;
-    private final Map<String, Socket> clients;
-    private final Map<Socket, ObjectOutputStream> clientOutputStreams;
-    private final Map<Socket, ObjectInputStream> clientInputStreams;
-    private final List<Thread> clientThreads;
-    private final List<Timer> clientPingTimers;
-    private final Map<Integer, AtomicBoolean> messageLocks;
+    private transient Socket currentlyConnectingClient;
+    private transient final Map<String, Socket> clients;
+    private transient final Map<Socket, ObjectOutputStream> clientOutputStreams;
+    private transient final Map<Socket, ObjectInputStream> clientInputStreams;
+    private transient final List<Thread> clientThreads;
+    private transient final List<Timer> clientPingTimers;
+    private transient final Map<Integer, AtomicBoolean> messageLocks;
 
     private int nextLockId;
 
@@ -66,6 +63,8 @@ public class EriantysServer {
     private Game game;
     private GameMode gameMode;
     private boolean running;
+
+    private EriantysServer loadedSave;
 
     private EriantysServer() throws IOException {
 
@@ -104,6 +103,13 @@ public class EriantysServer {
         synchronized (this) {
 
             while (gameSettings == null) wait();
+
+            if (gameSettings.loadGame) {
+
+                loadSave();
+                if (loadedSave != null) gameSettings = loadedSave.gameSettings;
+            }
+
             sendToClient(new GameJoinedMessage(clients.keySet().toArray(new String[0]), gameSettings), firstClient);
             startPing(firstClient);
             notifyAll();
@@ -132,10 +138,15 @@ public class EriantysServer {
             }
         }
 
-        //initialize game
-        createGame();
+        if (loadedSave == null) createGame();   //initialize new game
+        else loadGame();                        //load game
+
         //Start controller
         gameMode.playGame();
+
+        System.out.println("Game ended: deleting save file");
+        File saveFile = new File("save");
+        saveFile.delete();
     }
 
     private void acceptConnection() throws IOException, InterruptedException {
@@ -158,7 +169,6 @@ public class EriantysServer {
         TimedMessage sent = new ChooseUsernameMessage();
         sendToClient(sent, client);
         sent.waitForValidResponse();
-
     }
 
     private void requestGameSettings(String clientUsername) throws InterruptedException, IOException {
@@ -310,12 +320,15 @@ public class EriantysServer {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+
                 try {
+
                     PingMessage sent = new PingMessage();
                     sendToClient(sent, clientUsername);
                     sent.waitForValidResponse();
+                }
+                catch (IOException | InterruptedException e) {
 
-                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -332,36 +345,113 @@ public class EriantysServer {
 
         Update[] initialUpdates = gameMode.createInitialUpdates();
 
-
         for (int n = 0; n < playerUsernames.length; n++)
             sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
+        System.out.println("Sending initial update");
+    }
+
+    private void loadGame() throws IOException {
+
+        System.out.println("Loading the game...");
+
+        game = loadedSave.game;
+
+        List<Player> players = game.getPlayersStartOrder();
+        List<String> playerUsernames = new ArrayList<>(clients.keySet());
+
+        for(int n = 0; n < playerUsernames.size(); n++) players.get(n).setUsername(playerUsernames.get(n));
+
+        gameMode = loadedSave.gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game);
+        gameMode.setCurrentGamePhase(loadedSave.gameMode.getCurrentGamePhase());
+        gameMode.setEndGameNow(loadedSave.gameMode.getEndGameNow());
+
+        Update[] initialUpdates = gameMode.createInitialUpdates();
+
+        for (int n = 0; n < playerUsernames.size(); n++)
+            sendToClient(new StartingGameMessage(game.getPlayers(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames.get(n)));
         System.out.println("Sending initial update");
     }
 
     public void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException {
 
         try{
+
             gameMode.managePerformedMoveMessage(moveMessage);
-        } catch(InterruptedException e) {
+        }
+        catch(InterruptedException e) {
+
             e.printStackTrace();
         }
-
     }
 
-    public AtomicBoolean getLock(int lockId) {
+    public AtomicBoolean getMessageLock(int lockId) {
 
         return messageLocks.computeIfAbsent(lockId, k -> new AtomicBoolean());
     }
 
-    public int getNextLockId() {
+    public int getNextMessageLockId() {
 
         nextLockId += 1;
         return nextLockId;
     }
 
-    public void removeLock(int lockId) {
+    public void removeMessageLock(int lockId) {
 
         messageLocks.remove(lockId);
+    }
+
+    public void saveGame() throws IOException {
+
+        File saveFile = new File("save");
+        saveFile.createNewFile();
+        FileOutputStream outputStream = new FileOutputStream(saveFile);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+        System.out.println("Saving the game...");
+        try {
+
+            objectOutputStream.writeObject(this);
+        }
+        catch (IOException e) {
+
+            e.printStackTrace();
+            System.out.println("Could not save the game");
+            return;
+        }
+        System.out.println("Game saved");
+
+        objectOutputStream.close();
+    }
+
+    private void loadSave() throws IOException {
+
+        System.out.println("Loading a game save...");
+
+        FileInputStream inputStream;
+        try {
+
+            inputStream = new FileInputStream("save");
+        }
+        catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+            System.out.println("No save file found");
+            return;
+        }
+
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+        try {
+
+            loadedSave = (EriantysServer) objectInputStream.readObject();
+        }
+        catch (ClassNotFoundException e) {
+
+            System.out.println("Wrong save format");
+        }
+        System.out.println("Game loaded");
+
+        objectInputStream.close();
     }
 
     public void shutdown(boolean playerDisconnected) throws IOException {

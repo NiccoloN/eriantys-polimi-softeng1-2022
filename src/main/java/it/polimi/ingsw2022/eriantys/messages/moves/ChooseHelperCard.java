@@ -63,7 +63,7 @@ public class ChooseHelperCard extends Move {
 
         Player player = game.getCurrentPlayer();
 
-        HelperCardsChange change = new HelperCardsChange(player.username);
+        HelperCardsChange change = new HelperCardsChange(player.getUsername());
         change.addHelperCards(player.getHelperCards());
         change.setPlayedHelperCard(player.getCurrentHelper());
 

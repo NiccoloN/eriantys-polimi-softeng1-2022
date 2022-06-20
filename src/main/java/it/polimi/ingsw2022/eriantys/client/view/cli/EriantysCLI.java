@@ -305,7 +305,6 @@ public class EriantysCLI implements View {
     @Override
     public void startGame(List<Player> players, Mode gameMode) {
 
-        for(Player player : players) player.team.addPlayer(player);
         setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
     }
 

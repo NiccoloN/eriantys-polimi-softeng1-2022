@@ -18,8 +18,9 @@ class PlayerTest {
     @BeforeEach
     void setUp() {
 
-        Team.WHITE.reset();
-        player = new Player("", Team.WHITE, Mage.MAGE_1);
+        //TODO
+        //Team.WHITE.reset();
+        //player = new Player("", Team.WHITE, Mage.MAGE_1);
     }
 
     @Test

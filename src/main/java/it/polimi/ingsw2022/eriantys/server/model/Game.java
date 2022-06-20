@@ -1,7 +1,7 @@
 package it.polimi.ingsw2022.eriantys.server.model;
+import it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
-import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
@@ -14,13 +14,14 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * This class represents the game instance.
  * @author Francesco Melegati
  */
-public class Game {
+public class Game implements Serializable {
 
     // Predefined game values
     public static final int NUMBER_OF_STUDENTS_PER_COLOR = 26;
@@ -31,26 +32,37 @@ public class Game {
     private final Board board;
     private final List<ColoredPawn> students;
     private final StudentsBag studentsBag;
-    private ColoredPawn studentToMove;
     private final List<ColoredPawn> professors;
     private final List<CharacterCard> characters;
     private InfluenceCalculator influenceCalculator;
+    private final List<Player> playersStartOrder;
     private final List<Player> players;
+    private final Map<String, Team> teams;
     private Player currentPlayer;
     private int characterIsland;
-    private final Map<ColoredPawnOriginDestination, PawnColor> exchangesCausedByCharacters = new HashMap<>(3);
-    private boolean abortMessageReceived = false;
+    private final Map<ColoredPawnOriginDestination, PawnColor> exchangesCausedByCharacters;
+    private boolean abortMessageReceived;
     private boolean gameEnding;
 
     public Game(String[] playerUsernames) throws IOException {
 
-        gameEnding = false;
+        teams = new HashMap<>(3);
+        teams.put("WHITE", new Team(AnsiCodes.WHITE, "WHITE"));
+        teams.put("BLACK", new Team(AnsiCodes.BLACK_BRIGHT, "BLACK"));
+        teams.put("CYAN", new Team(AnsiCodes.CYAN, "CYAN"));
+
         players = generatePlayers(playerUsernames);
+        playersStartOrder = new ArrayList<>(players);
+
         board = new Board(players);
         students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
         professors = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
         studentsBag = new StudentsBag();
         characters = new ArrayList<>(3);
+
+        exchangesCausedByCharacters = new HashMap<>(3);
+        abortMessageReceived = false;
+        gameEnding = false;
 
         placeFirstStudents();
         fillStudentsBag();
@@ -119,12 +131,13 @@ public class Game {
      */
     private List<ColoredPawn> generatePawns(int numberPerColor) {
 
-        if (numberPerColor <= 0) {
-            throw new RuntimeException("Invalid number of pawns");
-        }
+        if (numberPerColor <= 0) throw new RuntimeException("Invalid number of pawns");
+
         List<ColoredPawn> studentsList = new ArrayList<>();
         for (PawnColor color : PawnColor.values()) {
+
             for (int numberOfPawns = 0; numberOfPawns < numberPerColor; numberOfPawns++) {
+
                 studentsList.add(new ColoredPawn(color));
             }
         }
@@ -144,24 +157,31 @@ public class Game {
         final int numberOfPlayers = playerUsernames.length;
 
         if (numberOfPlayers > MAX_NUMBER_OF_PLAYERS || numberOfPlayers < MIN_NUMBER_OF_PLAYERS) {
+
             throw new RuntimeException(errorMsg);
         }
+
         List<Player> players = new ArrayList<>();
         Mage[] mageNames = Mage.values();
         Team team;
         for (int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
+
             if (numberOfPlayers == 2 || numberOfPlayers == 4) {
-                team = playerNumber % 2 == 0 ? Team.WHITE : Team.BLACK;
-            } else {
+
+                team = playerNumber % 2 == 0 ? getTeam("WHITE") : getTeam("BLACK");
+            }
+            else {
+
                 switch (playerNumber) {
+
                     case 0:
-                        team = Team.WHITE;
+                        team = getTeam("WHITE");
                         break;
                     case 1:
-                        team = Team.BLACK;
+                        team = getTeam("BLACK");
                         break;
                     case 2:
-                        team = Team.GRAY;
+                        team = getTeam("CYAN");
                         break;
                     default:
                         throw new RuntimeException(errorMsg);
@@ -182,6 +202,7 @@ public class Game {
         SchoolDashboard winnerSchool = null;
 
         for (Player player : getPlayers()) {
+
             SchoolDashboard schoolDashboard = player.getSchool();
             if (schoolDashboard.containsProfessor(color)) {
                 winnerSchool = schoolDashboard;
@@ -190,8 +211,11 @@ public class Game {
         }
 
         if (winnerSchool == null) {
+
             for (Player player : players) {
+
                 if (player.getSchool().countTableStudents(color) > 0) {
+
                     player.getSchool().addProfessor(getProfessor(color));
                     winnerSchool = player.getSchool();
                 }
@@ -199,10 +223,13 @@ public class Game {
             if (winnerSchool == null) return;
         }
 
-        if(!greaterAndEqual){
+        if(!greaterAndEqual) {
+
             for (Player player : getPlayers()) {
+
                 SchoolDashboard school = player.getSchool();
                 if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
+
                     ColoredPawn professor;
                     professor = winnerSchool.removeProfessor(color);
 
@@ -212,13 +239,15 @@ public class Game {
             }
         }
         else {
+
             SchoolDashboard currentPlayerSchool = currentPlayer.getSchool();
-            if(!currentPlayerSchool.equals(winnerSchool) && currentPlayerSchool.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
+            if(!currentPlayerSchool.equals(winnerSchool) &&
+                    currentPlayerSchool.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
+
                 ColoredPawn professor = winnerSchool.removeProfessor(color);
                 currentPlayerSchool.addProfessor(professor);
             }
         }
-
     }
 
     public Board getBoard() {
@@ -249,13 +278,24 @@ public class Game {
         return professor;
     }
 
+    public Team getTeam(String teamName) {
+
+        Team team = teams.get(teamName);
+        if (team == null) throw new NoSuchElementException();
+        return team;
+    }
+
     public Player getPlayer(String username) {
 
-        return players.stream().filter(player -> Objects.equals(player.username, username)).findFirst().orElseThrow();
+        return players.stream().filter(player -> Objects.equals(player.getUsername(), username)).findFirst().orElseThrow();
     }
 
     public ArrayList<Player> getPlayers() {
         return new ArrayList<>(players);
+    }
+
+    public List<Player> getPlayersStartOrder() {
+        return new ArrayList<>(playersStartOrder);
     }
 
     public Player getCurrentPlayer() {
@@ -266,42 +306,54 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
 
-    public ColoredPawn getStudentToMove() {
-        return studentToMove;
-    }
-
-    public void setStudentToMove(ColoredPawn studentToMove) {
-        this.studentToMove = studentToMove;
-    }
-
     public InfluenceCalculator getInfluenceCalculator() {
         return influenceCalculator;
     }
 
-    public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) { this.influenceCalculator = influenceCalculator; }
+    public void setInfluenceCalculator(InfluenceCalculator influenceCalculator) {
 
-    public void resetCharacterUses(){ for(Player player : players) player.setCharacterUsed(false); }
+        this.influenceCalculator = influenceCalculator;
+    }
 
-    public void resetExchanges() { exchangesCausedByCharacters.clear(); }
+    public void resetCharacterUses() {
+        for(Player player : players) player.setCharacterUsed(false);
+    }
 
-    public void setExchanges(ColoredPawnOriginDestination origin, PawnColor color) { exchangesCausedByCharacters.put(origin, color); }
+    public void resetExchanges() {
+        exchangesCausedByCharacters.clear();
+    }
 
-    public PawnColor getExchange(ColoredPawnOriginDestination origin) { return exchangesCausedByCharacters.get(origin); }
+    public void setExchanges(ColoredPawnOriginDestination origin, PawnColor color) {
 
-    public void setAbortMessageReceived(boolean value) { abortMessageReceived = value; }
+        exchangesCausedByCharacters.put(origin, color);
+    }
 
-    public boolean getAbortMessageReceived() { return abortMessageReceived; }
+    public PawnColor getExchange(ColoredPawnOriginDestination origin) {
 
-    public int getCharacterIsland() { return characterIsland; }
+        return exchangesCausedByCharacters.get(origin);
+    }
 
-    public void setCharacterIsland(int characterIsland) { this.characterIsland = characterIsland; }
+    public void setAbortMessageReceived(boolean value) {
+        abortMessageReceived = value;
+    }
+
+    public boolean getAbortMessageReceived() {
+        return abortMessageReceived;
+    }
+
+    public int getCharacterIsland() {
+        return characterIsland;
+    }
+
+    public void setCharacterIsland(int characterIsland) {
+        this.characterIsland = characterIsland;
+    }
 
     public boolean isGameEnding() {
         return  gameEnding;
     }
 
     public void setGameEnding() {
-
         this.gameEnding = true;
     }
 

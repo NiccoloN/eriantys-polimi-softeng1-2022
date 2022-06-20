@@ -19,18 +19,21 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
-public class BasicGameMode implements GameMode {
+public class BasicGameMode implements GameMode, Serializable {
 
     protected final Game game;
     protected final EriantysServer server;
+    private GamePhase currentGamePhase;
     private boolean endGameNow;
 
     public BasicGameMode(Game game) {
 
         this.game = game;
         server = EriantysServer.getInstance();
+        currentGamePhase = GamePhase.STARTING_ROUND;
         endGameNow = false;
     }
 
@@ -64,7 +67,7 @@ public class BasicGameMode implements GameMode {
 
             Player player = players.get(n);
 
-            HelperCardsChange helperCardsChange = new HelperCardsChange(player.username);
+            HelperCardsChange helperCardsChange = new HelperCardsChange(player.getUsername());
             for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
             initUpdates[n].addChange(helperCardsChange);
         }
@@ -81,40 +84,33 @@ public class BasicGameMode implements GameMode {
 
     protected void playRound() throws IOException, InterruptedException {
 
-        if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
-            game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+        if (currentGamePhase == GamePhase.STARTING_ROUND) {
 
-        fillClouds();
-        playHelpers();
+            if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
+                game.setInfluenceCalculator(new InfluenceCalculatorBasic());
 
-        game.sortPlayersBasedOnHelperCard();
+            fillClouds();
 
-        for (Player player : game.getPlayers()) playTurn(player);
-    }
+            currentGamePhase = GamePhase.PLAYING_HELPERS;
+            game.setCurrentPlayer(game.getPlayers().get(0));
+            server.saveGame();
+        }
 
-    protected void playTurn(Player player) throws IOException, InterruptedException {
+        if (currentGamePhase == GamePhase.PLAYING_HELPERS) {
 
-        game.setCurrentPlayer(player);
+            playHelpers();
+            game.sortPlayersBasedOnHelperCard();
 
-        for(int studentMove = 0; studentMove < 3; studentMove++) requestStudent(player);
+            currentGamePhase = GamePhase.MOVING_STUDENTS;
+            game.setCurrentPlayer(game.getPlayers().get(0));
+            server.saveGame();
+        }
 
-        requestMotherNature(player);
+        for (int n = 0; n < game.getPlayers().size(); n++) {
 
-        checkIslandInfluence();
-
-        if(!game.isGameEnding()) requestMove(new ChooseCloudRequest(), player.username);
-    }
-
-    protected void requestStudent(Player player) throws IOException, InterruptedException {
-
-        requestMove(new MoveStudentRequest
-                        (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
-                player.username);
-    }
-
-    protected void requestMotherNature(Player player) throws IOException, InterruptedException {
-
-        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.username);
+            Player player = game.getPlayers().get(n);
+            if (game.getCurrentPlayer() == player) playTurn(player, n);
+        }
     }
 
     private void fillClouds() throws IOException {
@@ -145,23 +141,75 @@ public class BasicGameMode implements GameMode {
 
     private void playHelpers() throws IOException, InterruptedException {
 
-        for (Player player : game.getPlayers()) player.resetCurrentHelper();
-
         List<Integer> unplayableIndices = new ArrayList<>(3);
-        for (Player player : game.getPlayers()) {
+        for (int n = 0; n < game.getPlayers().size(); n++) {
 
-            game.setCurrentPlayer(player);
+            Player player = game.getPlayers().get(n);
 
-            unplayableIndices.clear();
-            for(Player other : game.getPlayers())
-                if(other != player && other.getCurrentHelper() != null)
-                    unplayableIndices.add(other.getCurrentHelper().index);
+            if (game.getCurrentPlayer() == player) {
 
-            if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
-            requestMove(new ChooseHelperCardRequest(unplayableIndices), player.username);
+                unplayableIndices.clear();
+                for(Player other : game.getPlayers())
+                    if(other != player && other.getCurrentHelper() != null)
+                        unplayableIndices.add(other.getCurrentHelper().index);
 
-            if (game.getCurrentPlayer().getNumberOfHelpers() == 0) game.setGameEnding();
+                if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
+                requestMove(new ChooseHelperCardRequest(unplayableIndices), player.getUsername());
+
+                if (game.getCurrentPlayer().getNumberOfHelpers() == 0) game.setGameEnding();
+
+                game.setCurrentPlayer(n + 1 < game.getPlayers().size() ? game.getPlayers().get(n + 1) : null);
+                server.saveGame();
+            }
         }
+    }
+
+    protected void playTurn(Player player, int playerIndex) throws IOException, InterruptedException {
+
+        if (currentGamePhase == GamePhase.MOVING_STUDENTS) {
+
+            for(int studentMove = 0; studentMove < 3; studentMove++) requestStudent(player);
+            currentGamePhase = GamePhase.MOVING_MOTHER_NATURE;
+            server.saveGame();
+        }
+
+        if (currentGamePhase == GamePhase.MOVING_MOTHER_NATURE) {
+
+            requestMotherNature(player);
+            checkIslandInfluence();
+            currentGamePhase = GamePhase.CHOOSING_CLOUD;
+            server.saveGame();
+        }
+
+        if(currentGamePhase == GamePhase.CHOOSING_CLOUD && !game.isGameEnding()) {
+
+            requestMove(new ChooseCloudRequest(), player.getUsername());
+
+            if (playerIndex + 1 < game.getPlayers().size()) {
+
+                currentGamePhase = GamePhase.MOVING_STUDENTS;
+                game.setCurrentPlayer(game.getPlayers().get(playerIndex + 1));
+                server.saveGame();
+            }
+            else {
+
+                currentGamePhase = GamePhase.STARTING_ROUND;
+                game.setCurrentPlayer(null);
+                server.saveGame();
+            }
+        }
+    }
+
+    protected void requestStudent(Player player) throws IOException, InterruptedException {
+
+        requestMove(new MoveStudentRequest
+                        (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+                player.getUsername());
+    }
+
+    protected void requestMotherNature(Player player) throws IOException, InterruptedException {
+
+        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.getUsername());
     }
 
      protected void checkIslandInfluence() throws IOException {
@@ -268,7 +316,7 @@ public class BasicGameMode implements GameMode {
 
                 server.sendToClient(
                         new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
-                        game.getCurrentPlayer().username);
+                        game.getCurrentPlayer().getUsername());
             }
         }
     }
@@ -277,5 +325,21 @@ public class BasicGameMode implements GameMode {
 
         Team winnerTeam = game.checkWinner();
         server.sendToAllClients(new GameEndedMessage(winnerTeam));
+    }
+
+    public GamePhase getCurrentGamePhase() {
+        return currentGamePhase;
+    }
+
+    public void setCurrentGamePhase(GamePhase currentGamePhase) {
+        this.currentGamePhase = currentGamePhase;
+    }
+
+    public boolean getEndGameNow() {
+        return endGameNow;
+    }
+
+    public void setEndGameNow(boolean endGameNow) {
+        this.endGameNow = endGameNow;
     }
 }

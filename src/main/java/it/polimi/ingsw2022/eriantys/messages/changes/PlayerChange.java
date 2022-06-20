@@ -17,7 +17,7 @@ public class PlayerChange implements Change, Serializable {
 
     public String getUsername() {
 
-        return player.username;
+        return player.getUsername();
     }
 
     public int getCoins() {
@@ -28,7 +28,7 @@ public class PlayerChange implements Change, Serializable {
     @Override
     public void apply(GameScene scene) {
 
-        PlayerStatusCLIComponent cliPlayer = scene.getPlayer(player.username);
+        PlayerStatusCLIComponent cliPlayer = scene.getPlayer(player.getUsername());
 
         cliPlayer.setCoins(player.getCoins());
     }

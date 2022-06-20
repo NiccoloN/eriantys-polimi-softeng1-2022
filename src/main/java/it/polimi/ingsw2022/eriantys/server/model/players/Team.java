@@ -10,11 +10,7 @@ import java.util.List;
  * This enumeration represents the teams of the game. Every team should contain from 0 to 2 players
  * @author Emanuele Musto
  */
-public enum Team implements Serializable {
-
-    WHITE(AnsiCodes.WHITE_BRIGHT, "WHITE"),
-    BLACK(AnsiCodes.BLACK_BRIGHT, "BLACK"),
-    GRAY(AnsiCodes.CYAN_BRIGHT, "CYAN");
+public class Team implements Serializable {
 
     public final String ansiColor;
     private final List<Player> players;
@@ -24,7 +20,7 @@ public enum Team implements Serializable {
      * Initializes the list of player with initial capacity equal to 2
      * @param ansiColor the ansi color of this team to use in the cli
      */
-    Team(String ansiColor, String teamName) {
+    public Team(String ansiColor, String teamName) {
 
         this.ansiColor = ansiColor;
         players = new ArrayList<>(2);
@@ -49,9 +45,9 @@ public enum Team implements Serializable {
     }
 
     public Player getLeader() {
-        for (Player player : players) {
+
+        for (Player player : players)
             if (player.isTeamLeader) return player;
-        }
         throw new RuntimeException("No team leader found");
     }
 

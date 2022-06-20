@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model.pawns;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * This class represents a bag of student pawns. It can be used to store, add, and randomly extract students
  * @author Emanuele Musto
  */
-public class StudentsBag {
+public class StudentsBag implements Serializable {
 
     private final List<ColoredPawn> students;
 

@@ -15,4 +15,12 @@ public interface GameMode {
     Update[] createInitialUpdates();
 
     void managePerformedMoveMessage(PerformedMoveMessage moveMessage) throws IOException, InterruptedException;
+
+    GamePhase getCurrentGamePhase();
+
+    void setCurrentGamePhase(GamePhase currentGamePhase);
+
+    boolean getEndGameNow();
+
+    void setEndGameNow(boolean endGameNow);
 }

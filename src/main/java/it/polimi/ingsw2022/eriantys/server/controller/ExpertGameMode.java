@@ -18,6 +18,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -72,14 +73,15 @@ public class ExpertGameMode extends BasicGameMode {
     @Override
     public void playRound() throws IOException, InterruptedException {
 
+        //TODO persistenza
         game.resetCharacterUses();
         super.playRound();
     }
 
     @Override
-    public void playTurn(Player player) throws IOException, InterruptedException {
+    public void playTurn(Player player, int playerIndex) throws IOException, InterruptedException {
 
-        super.playTurn(player);
+        super.playTurn(player, playerIndex);
         game.setInfluenceCalculator(new InfluenceCalculatorBasic());
         MoveMotherNatureRequest.setAdditionalSteps(false);
     }
@@ -95,13 +97,13 @@ public class ExpertGameMode extends BasicGameMode {
                                 characterCard.getStudentsColors(),
                                 List.of(ColoredPawnOriginDestination.ISLAND),
                                 "Move a student from the character card to an island")
-                        , game.getCurrentPlayer().username);
+                        , game.getCurrentPlayer().getUsername());
                 break;
             case 3:
                 requestMove(new ChooseIslandRequest(
                         cardIndex,
                         "Select the island on which influence will be calculated."),
-                        game.getCurrentPlayer().username);
+                        game.getCurrentPlayer().getUsername());
 
                 Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence
                         (game.getPlayers(),game.getBoard().getIsland(game.getCharacterIsland()), game.getCurrentPlayer());
@@ -115,7 +117,7 @@ public class ExpertGameMode extends BasicGameMode {
                 requestMove(new ChooseIslandRequest(
                                 cardIndex,
                                 "Select the island on which putting the deny card."),
-                        game.getCurrentPlayer().username);
+                        game.getCurrentPlayer().getUsername());
                 break;
             case 7:
                 for(int i=0; i<3 ; i++) {
@@ -129,7 +131,7 @@ public class ExpertGameMode extends BasicGameMode {
                                                 ColoredPawnOriginDestination.CHARACTER,
                                     "Select a student from the character card, or press ESC to stop the effect."
                                         ),
-                                game.getCurrentPlayer().username);
+                                game.getCurrentPlayer().getUsername());
 
                         if(!game.getAbortMessageReceived()) {
                             requestMove(
@@ -140,7 +142,7 @@ public class ExpertGameMode extends BasicGameMode {
                                                     ColoredPawnOriginDestination.ENTRANCE,
                                                     "Select now a student from your school entrance."
                                             ),
-                                    game.getCurrentPlayer().username );
+                                    game.getCurrentPlayer().getUsername() );
 
                             game.getCharacterOfIndex(cardIndex).addStudent(
                                     game.getCurrentPlayer().getSchool().removeFromEntrance(game.getExchange(ColoredPawnOriginDestination.ENTRANCE))
@@ -167,7 +169,7 @@ public class ExpertGameMode extends BasicGameMode {
                                 List.of(PawnColor.values()),
                                 null,
                                 "Select a color that will not be considered during this turn's influence calculation."
-                        ), game.getCurrentPlayer().username);
+                        ), game.getCurrentPlayer().getUsername());
                 break;
             case 10:
                 for(int i=0; i<2 ; i++) {
@@ -182,7 +184,7 @@ public class ExpertGameMode extends BasicGameMode {
                                                 ColoredPawnOriginDestination.TABLE,
                                                 "Select a student from the student tables of your school, or press ESC to stop the effect."
                                         ),
-                                game.getCurrentPlayer().username);
+                                game.getCurrentPlayer().getUsername());
 
                         if (!game.getAbortMessageReceived()) {
                             requestMove(
@@ -193,14 +195,14 @@ public class ExpertGameMode extends BasicGameMode {
                                                     ColoredPawnOriginDestination.ENTRANCE,
                                                     "Select now a student from your school entrance."
                                             ),
-                                    game.getCurrentPlayer().username);
+                                    game.getCurrentPlayer().getUsername());
 
                             try {
                                 game.getCurrentPlayer().getSchool().addToTable(game.getCurrentPlayer().getSchool().removeFromEntrance(
                                         game.getExchange(ColoredPawnOriginDestination.ENTRANCE)));
                             } catch (RuntimeException e) {
                                 server.sendToClient(new InvalidMoveMessage
-                                        (null, null, "Already reached maximum students in the table"), game.getCurrentPlayer().username);
+                                        (null, null, "Already reached maximum students in the table"), game.getCurrentPlayer().getUsername());
                                 return;
                             }
 
@@ -228,7 +230,7 @@ public class ExpertGameMode extends BasicGameMode {
                                         ColoredPawnOriginDestination.CHARACTER,
                                         "Select a student from the character card."
                                 ),
-                        game.getCurrentPlayer().username);
+                        game.getCurrentPlayer().getUsername());
 
                 CharacterCard tempCharacter = game.getCharacterOfIndex(cardIndex);
                 ColoredPawn temp = tempCharacter.getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER));
@@ -251,7 +253,7 @@ public class ExpertGameMode extends BasicGameMode {
                                         null,
                                         "Select a color."
                                 ),
-                        game.getCurrentPlayer().username);
+                        game.getCurrentPlayer().getUsername());
 
                 MoveStudent moveStudentUpdate = new MoveStudent(ColoredPawnOriginDestination.TABLE, null, 0, null);
                 server.sendToAllClients(new UpdateMessage(moveStudentUpdate.getUpdate(game)));
@@ -292,14 +294,14 @@ public class ExpertGameMode extends BasicGameMode {
                     else {
                         server.sendToClient(
                                 new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), "The chosen character card does not exist."),
-                                game.getCurrentPlayer().username);
+                                game.getCurrentPlayer().getUsername());
                     }
 
                     if(previousMessage.moveRequest instanceof MoveMotherNatureRequest) {
                         requestMotherNature(game.getCurrentPlayer());
                     }
                     else if(previousMessage.moveRequest instanceof MoveStudentRequest) requestStudent(game.getCurrentPlayer());
-                    else requestMove(previousMessage.moveRequest, game.getCurrentPlayer().username);
+                    else requestMove(previousMessage.moveRequest, game.getCurrentPlayer().getUsername());
                     previousMessage.acceptResponse();
 
                 } catch (IOException | InterruptedException e) {

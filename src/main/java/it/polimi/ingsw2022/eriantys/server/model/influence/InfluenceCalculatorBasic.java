@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * plus the number of towers on the same island if controlled by the same team as the player
  * @author Emanuele Musto
  */
-public class InfluenceCalculatorBasic implements InfluenceCalculator{
+public class InfluenceCalculatorBasic implements InfluenceCalculator, Serializable {
 
     protected final Map<Player, Integer> playersInfluence;
 
