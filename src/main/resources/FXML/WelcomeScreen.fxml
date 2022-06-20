@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw2022.eriantys.client.view.gui.Lobby.LobbyController">
+   <children>
+      <Text layoutX="244.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Eriantys" />
+      <Button layoutX="261.0" layoutY="209.0" mnemonicParsing="false" onAction="#startGame" text="Start game" />
+   </children>
+</AnchorPane>

@@ -9,8 +9,10 @@ import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -29,9 +31,8 @@ public class EriantysGUI extends Application implements View {
 
         stage.setTitle("Eriantys");
 
-        StackPane stackPane = new StackPane();
-        Scene scene = new Scene(stackPane, 800, 600);
-
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/WelcomeScreen.fxml"));
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
