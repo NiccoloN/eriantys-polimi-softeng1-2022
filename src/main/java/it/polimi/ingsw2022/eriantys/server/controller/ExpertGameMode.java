@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.server.controller;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
+import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.moves.*;
 import it.polimi.ingsw2022.eriantys.messages.requests.*;
@@ -272,6 +273,10 @@ public class ExpertGameMode extends BasicGameMode {
 
             motherNatureIsland.decrementNumberOfDenyTiles();
             game.getCharacterOfIndex(5).incrementDenyTiles();
+
+            Update update = new Update();
+            update.addChange(new IslandChange(game.getBoard().getIslands(), game.getBoard().getIslandTiles()));
+            server.sendToAllClients(new UpdateMessage(update));
         }
         else super.checkIslandInfluence();
     }
