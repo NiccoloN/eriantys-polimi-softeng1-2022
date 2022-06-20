@@ -1,7 +1,9 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
+import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
@@ -23,6 +25,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
     private String teamColor;
     private int index;
     private boolean tower, mother;
+    private int denyTiles;
     private final Map<PawnColor, Integer> students;
 
     /**
@@ -40,6 +43,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
 
         tower = false;
         mother = false;
+        denyTiles = 0;
         
         students = new HashMap<>(5);
         for(PawnColor color : PawnColor.values()) students.put(color, 0);
@@ -56,7 +60,13 @@ public class IslandCLIComponent extends BasicCLIComponent {
         int pink = students.get(PawnColor.PINK);
         
         setRow(0, teamColor + "   ________   " + RESET);
-        setRow(1, teamColor + "  /   " + (tower ? UNDERLINED + "II" : "  ") + RESET + teamColor + "   \\  " + RESET);
+        setRow(1, teamColor + "  / " +
+                  (denyTiles >= 1 ? RED_BRIGHT + "X" + RESET : " ") +
+                  teamColor + (denyTiles >= 2 ? RED_BRIGHT + "X" + RESET : " ") +
+                  (tower ? UNDERLINED + "II" : "  ") + RESET +
+                  teamColor  + (denyTiles >= 3 ? RED_BRIGHT + "X" + RESET : " ") +
+                  teamColor + (denyTiles >= 4 ? RED_BRIGHT + "X" + RESET : " ") +
+                  teamColor + " \\  " + RESET);
         setRow(2, teamColor + " / " +
                   PawnColor.RED.ansiForegroundColor + (red == 0 ? "  " : String.format("%02d", red)) + "    " +
                   PawnColor.GREEN.ansiForegroundColor + (green == 0 ? "  " : String.format("%02d", green)) + teamColor + " \\ " + RESET);
@@ -133,6 +143,12 @@ public class IslandCLIComponent extends BasicCLIComponent {
     public void setMother(boolean mother) {
 
         this.mother = mother;
+    }
+
+    public void setDenyTiles(int denyTiles) {
+
+        if(denyTiles < 0 || denyTiles > 4) throw new InvalidParameterException("DenyTiles must be between 0 and 4");
+        this.denyTiles = denyTiles;
     }
 
     /**

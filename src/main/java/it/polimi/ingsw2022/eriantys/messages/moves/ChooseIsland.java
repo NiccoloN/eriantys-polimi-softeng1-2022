@@ -53,7 +53,7 @@ public class ChooseIsland extends Move{
                 break;
             case 5:
                 game.getCharacterOfIndex(characterCardIndex).decrementDenyTiles();
-                game.getBoard().getIsland(compoundIslandIndex).incrementNumberOfDenyCards();
+                game.getBoard().getIsland(compoundIslandIndex).incrementNumberOfDenyTiles();
                 break;
             default: break;
         }

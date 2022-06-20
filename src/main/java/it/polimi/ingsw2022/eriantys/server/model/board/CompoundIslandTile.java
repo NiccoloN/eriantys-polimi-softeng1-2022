@@ -19,7 +19,6 @@ public class CompoundIslandTile implements Serializable {
 
     private final List<IslandTile> tiles;
     private Team team;
-    private int numberOfDenyCards;
     private int index;
 
     /**
@@ -30,7 +29,6 @@ public class CompoundIslandTile implements Serializable {
         tiles = new ArrayList<>();
         tiles.add(new IslandTile());
         team = null;
-        numberOfDenyCards = 0;
         setIndex(index);
     }
 
@@ -54,14 +52,23 @@ public class CompoundIslandTile implements Serializable {
      */
     public void mergeWithIsland(CompoundIslandTile island) {
 
+        int denyTiles = 0;
         ArrayList<ColoredPawn> students = new ArrayList<>();
-        for(IslandTile tile : tiles) students.addAll(tile.removeAllStudents());
+        for(IslandTile tile : tiles) {
+
+            students.addAll(tile.removeAllStudents());
+            denyTiles += tile.getNumberOfDenyTiles();
+            tile.setNumberOfDenyTiles(0);
+        }
         for(IslandTile tile : island.tiles) {
 
             if (tiles.contains(tile)) throw new RuntimeException("No duplicates allowed");
             students.addAll(tile.removeAllStudents());
+            denyTiles += tile.getNumberOfDenyTiles();
+            tile.setNumberOfDenyTiles(0);
             tiles.add(tile);
         }
+        tiles.get(0).setNumberOfDenyTiles(denyTiles);
         tiles.get(0).addStudents(students);
     }
 
@@ -110,7 +117,7 @@ public class CompoundIslandTile implements Serializable {
      */
     public void setTeam(Team team) {
       
-        if (numberOfDenyCards > 0) throw new RuntimeException("Cannot set a new controller team on a denied island");
+        if (getNumberOfDenyTiles() > 0) throw new RuntimeException("Cannot set a new controller team on a denied island");
         if (team == null) throw new InvalidParameterException("Team cannot be null");
 
         this.team = team;
@@ -135,29 +142,31 @@ public class CompoundIslandTile implements Serializable {
         else for(IslandTile tile : tiles) tile.setMotherNature(false);
     }
 
-    public int getNumberOfDenyCards() {
+    public int getNumberOfDenyTiles() {
 
-        return numberOfDenyCards;
+        return tiles.get(0).getNumberOfDenyTiles();
     }
 
     /**
-     * Adds deny card to the island. A denied island cannot change its controller team.
-     * @throws RuntimeException if someone tries to put more than four deny cards on the island.
+     * Adds deny tile to the island. A denied island cannot change its controller team.
+     * @throws RuntimeException if someone tries to put more than four deny tiles on the island.
      */
-    public void incrementNumberOfDenyCards() {
+    public void incrementNumberOfDenyTiles() {
 
-        if(numberOfDenyCards >= 4) throw new RuntimeException("There cannot be more than 4 deny cards on an island.");
-        else numberOfDenyCards += 1;
+        IslandTile tile = tiles.get(0);
+        if(tile.getNumberOfDenyTiles() >= 4) throw new RuntimeException("Cannot increment deny tiles");
+        tile.setNumberOfDenyTiles(tile.getNumberOfDenyTiles() + 1);
     }
 
     /**
-     * Removes deny card to the island.
-     * @throws RuntimeException if someone tries to remove deny card when there are none on the island.
+     * Removes deny tile to the island.
+     * @throws RuntimeException if someone tries to remove deny tile when there are none on the island.
      */
-    public void decrementNumberOfDenyCards() {
+    public void decrementNumberOfDenyTiles() {
 
-        if(numberOfDenyCards <= 0) throw new RuntimeException("There cannot be a negative number of deny cards on a island.");
-        else numberOfDenyCards -= 1;
+        IslandTile tile = tiles.get(0);
+        if(tile.getNumberOfDenyTiles() <= 0) throw new RuntimeException("Cannot decrement deny tiles");
+        tile.setNumberOfDenyTiles(tile.getNumberOfDenyTiles() - 1);
     }
 
     /**

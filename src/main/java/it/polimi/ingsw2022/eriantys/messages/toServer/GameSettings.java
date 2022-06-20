@@ -1,8 +1,10 @@
 package it.polimi.ingsw2022.eriantys.messages.toServer;
 
+import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -12,16 +14,28 @@ import java.util.Arrays;
  */
 public class GameSettings implements Serializable {
 
+    public final boolean loadGame;
     public final int numberOfPlayers;
     public final Mode gameMode;
 
+    public GameSettings() {
+
+        loadGame = true;
+        numberOfPlayers = 0;
+        gameMode = null;
+    }
+
     public GameSettings(int numberOfPlayers, Mode gameMode) {
 
+        loadGame = false;
         this.numberOfPlayers = numberOfPlayers;
         this.gameMode = gameMode;
     }
 
     public boolean isValid() {
+
+        File saveFile = new File(EriantysServer.SAVE_FILE_PATH);
+        if (loadGame && saveFile.exists()) return true;
 
         boolean valid = true;
         if (numberOfPlayers < Game.MIN_NUMBER_OF_PLAYERS || numberOfPlayers > Game.MAX_NUMBER_OF_PLAYERS) valid = false;

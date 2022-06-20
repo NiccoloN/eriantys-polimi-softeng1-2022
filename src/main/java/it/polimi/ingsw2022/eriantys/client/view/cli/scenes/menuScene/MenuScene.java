@@ -32,6 +32,8 @@ public class MenuScene extends CLIScene {
     private final CLIComponent enterServerIpPrompt;
     private final TextAreaCLIComponent textArea;
     private final CLIComponent panel;
+    private final CLIComponent newGameOption;
+    private final CLIComponent loadGameOption;
     private final CLIComponent selectNumberOfPlayersPrompt;
     private final CLIComponent[] playerNumbers;
     private final CLIComponent selectGameModePrompt;
@@ -115,6 +117,14 @@ public class MenuScene extends CLIScene {
         panel = new BasicCLIComponent(panelWidth, panelRows);
         panel.setHidden(true);
 
+        loadGameOption = new BasicCLIComponent(9, new String[] {"Load game"});
+        loadGameOption.setColor(RESET);
+        loadGameOption.setHidden(true);
+
+        newGameOption = new BasicCLIComponent(8, new String[] {"New game"});
+        newGameOption.setColor(RESET);
+        newGameOption.setHidden(true);
+
         selectNumberOfPlayersPrompt = new BasicCLIComponent(28, new String[] {"Select the number of players"});
         selectNumberOfPlayersPrompt.setColor(RESET);
         selectNumberOfPlayersPrompt.setHidden(true);
@@ -163,6 +173,10 @@ public class MenuScene extends CLIScene {
         textArea.setPosition(getWidth() / 2f - textArea.getWidth() / 2f, enterUsernamePrompt.getFrameY() + 2);
 
         panel.setPosition(getWidth() / 2f - panel.getWidth() / 2f, startPrompt.getY());
+
+        loadGameOption.setPosition(getWidth() / 2f - loadGameOption.getWidth() / 2f, panel.getY() + 4);
+        newGameOption.setPosition(getWidth() / 2f - newGameOption.getWidth() / 2f, panel.getY() + 6);
+
         selectNumberOfPlayersPrompt.setPosition(getWidth() / 2f - selectNumberOfPlayersPrompt.getWidth() / 2f, panel.getY() + 2);
         selectGameModePrompt.setPosition(getWidth() / 2f - selectGameModePrompt.getWidth() / 2f, panel.getY() + 2);
 
@@ -200,6 +214,8 @@ public class MenuScene extends CLIScene {
         if (connectingLabel != null) connectingLabel.printToFrame(frame);
         enterUsernamePrompt.printToFrame(frame);
         enterServerIpPrompt.printToFrame(frame);
+        loadGameOption.printToFrame(frame);
+        newGameOption.printToFrame(frame);
         selectNumberOfPlayersPrompt.printToFrame(frame);
         selectGameModePrompt.printToFrame(frame);
         textArea.printToFrame(frame);
@@ -239,7 +255,6 @@ public class MenuScene extends CLIScene {
 
         this.connectingLabel = connectingLabel;
         connectingLabel.setPosition(getWidth() / 2f - connectingLabel.getWidth() / 2f, startPrompt.getY());
-
     }
 
     public CLIComponent getPanel() {
@@ -255,6 +270,16 @@ public class MenuScene extends CLIScene {
     public CLIComponent getEnterServerIpPrompt() {
 
         return enterServerIpPrompt;
+    }
+
+    public CLIComponent getNewGameOption() {
+
+        return newGameOption;
+    }
+
+    public CLIComponent getLoadGameOption() {
+
+        return loadGameOption;
     }
 
     public CLIComponent getSelectNumberOfPlayersPrompt() {

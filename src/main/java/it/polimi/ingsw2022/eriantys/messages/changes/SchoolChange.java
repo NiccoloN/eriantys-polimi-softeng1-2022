@@ -3,7 +3,6 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
@@ -20,7 +19,7 @@ public class SchoolChange implements Change, Serializable {
     @Override
     public void apply(GameScene scene) {
 
-        PlayerStatusCLIComponent player = scene.getPlayer(schoolDashboard.player.username);
+        PlayerStatusCLIComponent player = scene.getPlayer(schoolDashboard.player.getUsername());
 
         for (PawnColor color : PawnColor.values()) {
 

@@ -1,15 +1,11 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
-import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Niccolò Nicolosi
@@ -24,10 +20,6 @@ public class ChooseGameSettingsMessage extends TimedMessage {
         validResponses.add(AbortMessage.class);
     }
 
-    public ChooseGameSettingsMessage() {
-        super();
-    }
-
     @Override
     public void manageAndReply() throws IOException {
 
@@ -39,10 +31,14 @@ public class ChooseGameSettingsMessage extends TimedMessage {
     public void waitForValidResponse() throws InterruptedException {
 
         waitForValidResponse(300, () -> {
+
             try {
+
                 System.out.println("Game settings response timeout");
                 EriantysServer.getInstance().shutdown(true);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
+
                 e.printStackTrace();
             }
         });

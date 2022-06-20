@@ -35,7 +35,7 @@ public class ChooseColor extends Move{
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
                     errorMessage = "The chosen color isn't available on school entrance.";
-                    return game.getPlayer(game.getCurrentPlayer().username).getSchool().getAvailableEntranceColors().contains(chosenColor);
+                    return game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor);
                 }
                 else {
                     errorMessage = "Invalid parameters.";
@@ -49,7 +49,7 @@ public class ChooseColor extends Move{
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
                     errorMessage = "The chosen color isn't available on school entrance.";
-                    return game.getPlayer(game.getCurrentPlayer().username).getSchool().getAvailableEntranceColors().contains(chosenColor);
+                    return game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor);
                 }
                 else {
                     errorMessage = "Invalid parameters.";
@@ -129,7 +129,7 @@ public class ChooseColor extends Move{
             case 10:
             case 11:
             case 12:
-                for(Player player : game.getPlayers()) update.addChange(new SchoolChange(game.getPlayer(player.username).getSchool()));
+                for(Player player : game.getPlayers()) update.addChange(new SchoolChange(game.getPlayer(player.getUsername()).getSchool()));
                 break;
         }
 

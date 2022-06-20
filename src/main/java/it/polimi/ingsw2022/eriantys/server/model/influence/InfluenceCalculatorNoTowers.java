@@ -8,7 +8,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
  * though without considering the contribution of towers
  * @author Emanuele Musto
  */
-public class InfluenceCalculatorNoTowers extends InfluenceCalculatorBasic{
+public class InfluenceCalculatorNoTowers extends InfluenceCalculatorBasic {
     /**
      * Doesn't consider the towers' influence
      * @param player one of the players

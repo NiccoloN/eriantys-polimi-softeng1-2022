@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Emanuele Musto
  * @see InfluenceCalculatorBasic
  */
-public class InfluenceCalculatorBonus extends InfluenceCalculatorBasic{
+public class InfluenceCalculatorBonus extends InfluenceCalculatorBasic {
 
     public InfluenceCalculatorBonus(){ super(); }
 

@@ -118,7 +118,7 @@ public class GameScene extends CLIScene {
 
         //build player dashboard components
         this.players = new ArrayList<>(players.size());
-        for (int n = 0; n < players.size(); n++) this.players.add(new PlayerStatusCLIComponent(players.get(n).username, players.get(n).team.ansiColor, n % 2 != 0, gameMode));
+        for (int n = 0; n < players.size(); n++) this.players.add(new PlayerStatusCLIComponent(players.get(n).getUsername(), players.get(n).team.ansiColor, n % 2 != 0, gameMode));
 
         //build text area components
         hintTextArea = new TextAreaCLIComponent(this.players.get(0).getWidth(), 15, "Hints");
@@ -196,12 +196,18 @@ public class GameScene extends CLIScene {
         for(AnimatedCLIComponent decorativeCloud : decorativeClouds) decorativeCloud.printToFrame(frame);
         title.printToFrame(frame);
         line.printToFrame(frame);
+
         for(IslandCLIComponent island : islands) island.printToFrame(frame);
         for(CloudCLIComponent cloud : clouds) cloud.printToFrame(frame);
         for(PlayerStatusCLIComponent player : players) player.printToFrame(frame);
-        if(helpers != null) for(HelperCardCLIComponent helper : helpers) helper.printToFrame(frame);
-        if(characters != null) for(CharacterCardCLIComponent character : characters) character.printToFrame(frame);
-        if(colors != null) for(BasicCLIComponent color : colors) color.printToFrame(frame);
+
+        synchronized (this) {
+
+            if(helpers != null) for(HelperCardCLIComponent helper : helpers) helper.printToFrame(frame);
+            if(characters != null) for(CharacterCardCLIComponent character : characters) character.printToFrame(frame);
+            if(colors != null) for(BasicCLIComponent color : colors) color.printToFrame(frame);
+        }
+
         hintTextArea.printToFrame(frame);
         effectTextArea.printToFrame(frame);
         if(prompt != null) prompt.printToFrame(frame);
@@ -218,7 +224,7 @@ public class GameScene extends CLIScene {
         this.compoundIslands = compoundIslands;
     }
 
-    public void setHelpers(List<HelperCard> helperCards) {
+    public synchronized void setHelpers(List<HelperCard> helperCards) {
 
         if (helpers == null) helpers = new ArrayList<>(helperCards.size());
         else helpers.clear();
@@ -232,7 +238,7 @@ public class GameScene extends CLIScene {
                 getHeight() - helpers.get(0).getHeight() - 1);
     }
 
-    public void setCharacters(List<CharacterCard> characterCards) {
+    public synchronized void setCharacters(List<CharacterCard> characterCards) {
 
         if (characters == null) characters = new ArrayList<>(characterCards.size());
         else characters.clear();
@@ -245,7 +251,7 @@ public class GameScene extends CLIScene {
                 getWidth() / 2f - (characters.get(0).getWidth() * characters.size() + characters.size() - 2) / 2f + (characters.get(0).getWidth() + 1) * n, charactersY);
     }
 
-    public void setColors(List<PawnColor> colors) {
+    public synchronized void setColors(List<PawnColor> colors) {
 
         if(this.colors == null) this.colors = new ArrayList<>(colors.size());
         else this.colors.clear();

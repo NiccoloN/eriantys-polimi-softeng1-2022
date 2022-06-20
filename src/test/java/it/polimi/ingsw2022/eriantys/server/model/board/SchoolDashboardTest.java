@@ -19,11 +19,13 @@ class SchoolDashboardTest {
 
     @BeforeEach
     void setUp() {
-        Team.WHITE.reset();
+
+        //TODO
+        /*Team.WHITE.reset();
         Team.BLACK.reset();
         int numberOfTowers = 8;
         Player player = new Player("player1", Team.BLACK, Mage.MAGE_1);
-        this.schoolDashboard = new SchoolDashboard(player, numberOfTowers);
+        this.schoolDashboard = new SchoolDashboard(player, numberOfTowers);*/
     }
 
     @Test

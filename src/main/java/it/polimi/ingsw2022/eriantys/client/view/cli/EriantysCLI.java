@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername;
+import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LoadOrCreateGame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
@@ -292,7 +293,7 @@ public class EriantysCLI implements View {
     public void askGameSettings(Message requestMessage) {
 
         if(!(currentScene instanceof MenuScene)) throw new RuntimeException("The current scene must be a MenuScene to ask for game settings");
-        currentScene.setState(new NumberOfPlayersSelection(this, (MenuScene) currentScene, requestMessage));
+        currentScene.setState(new LoadOrCreateGame(this, (MenuScene) currentScene, requestMessage));
     }
 
     @Override
@@ -305,7 +306,6 @@ public class EriantysCLI implements View {
     @Override
     public void startGame(List<Player> players, Mode gameMode) {
 
-        for(Player player : players) player.team.addPlayer(player);
         setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
     }
 

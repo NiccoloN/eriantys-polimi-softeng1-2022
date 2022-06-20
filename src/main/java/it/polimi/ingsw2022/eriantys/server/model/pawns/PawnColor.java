@@ -2,11 +2,13 @@ package it.polimi.ingsw2022.eriantys.server.model.pawns;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes;
 
+import java.io.Serializable;
+
 /**
  * This class represents the five possible colors of the pawns used in the game and the associated names
  * @author Emanuele Musto
  */
-public enum PawnColor {
+public enum PawnColor implements Serializable {
 
     YELLOW(AnsiCodes.YELLOW, AnsiCodes.YELLOW_BACKGROUND),
     BLUE(AnsiCodes.BLUE_BRIGHT, AnsiCodes.BLUE_BACKGROUND_BRIGHT),

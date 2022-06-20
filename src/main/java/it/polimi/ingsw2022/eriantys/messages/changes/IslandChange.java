@@ -38,6 +38,7 @@ public class IslandChange implements Change, Serializable {
         cliIsland.setMother(islandTile.hasMotherNature());
         cliIsland.setTower(islandTile.hasTower());
         cliIsland.setIndex(islandTile.getIndex());
+        cliIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
         if(islandTile.getTeam().isPresent()) cliIsland.setTeamColor(islandTile.getTeam().get().ansiColor);
     }
 }
