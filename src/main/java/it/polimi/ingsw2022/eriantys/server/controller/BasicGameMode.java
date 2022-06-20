@@ -67,7 +67,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
             HelperCardsChange helperCardsChange = new HelperCardsChange(player.getUsername());
             for(int i = 0; i < player.getNumberOfHelpers(); i++) helperCardsChange.addHelperCard(player.getHelperCard(i));
-            helperCardsChange.setPlayedHelperCard(player.getCurrentHelper());
+            helperCardsChange.setPlayedHelperCard(player.getPrevHelper());
 
             for(Update initUpdate : initUpdates) initUpdate.addChange(helperCardsChange);
         }
@@ -140,6 +140,8 @@ public class BasicGameMode implements GameMode, Serializable {
     }
 
     private void playHelpers() throws IOException, InterruptedException {
+
+        for(Player player : game.getPlayers()) player.resetCurrentHelper();
 
         List<Integer> unplayableIndices = new ArrayList<>(3);
         for (int n = 0; n < game.getPlayers().size(); n++) {

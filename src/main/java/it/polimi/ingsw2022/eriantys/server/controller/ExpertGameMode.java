@@ -18,7 +18,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -269,9 +268,9 @@ public class ExpertGameMode extends BasicGameMode {
 
         CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
 
-        if(motherNatureIsland.getNumberOfDenyCards() > 0) {
+        if(motherNatureIsland.getNumberOfDenyTiles() > 0) {
 
-            motherNatureIsland.decrementNumberOfDenyCards();
+            motherNatureIsland.decrementNumberOfDenyTiles();
             game.getCharacterOfIndex(5).incrementDenyTiles();
         }
         else super.checkIslandInfluence();

@@ -20,6 +20,7 @@ public class IslandTile implements Serializable {
 
     private final List<ColoredPawn> students;
     private boolean motherNature;
+    private int numberOfDenyTiles;
     private boolean tower;
     private Team team;
     private int index;
@@ -28,6 +29,7 @@ public class IslandTile implements Serializable {
 
         students = new ArrayList<>();
         motherNature = false;
+        numberOfDenyTiles = 0;
         tower = false;
         team = null;
         index = 0;
@@ -135,5 +137,15 @@ public class IslandTile implements Serializable {
     public void setIndex(int index) {
 
         this.index = index;
+    }
+
+    public int getNumberOfDenyTiles() {
+
+        return numberOfDenyTiles;
+    }
+
+    public void setNumberOfDenyTiles(int numberOfDenyTiles) {
+
+        this.numberOfDenyTiles = numberOfDenyTiles;
     }
 }

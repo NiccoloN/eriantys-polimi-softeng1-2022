@@ -35,6 +35,7 @@ public class Player implements Serializable {
     private String username;
     private int coins;
     private HelperCard currentHelper;
+    private HelperCard prevHelper;
     private final List<HelperCard> helperCards;
     private SchoolDashboard school;
 
@@ -91,6 +92,7 @@ public class Player implements Serializable {
 
         currentHelper = helperCards.stream().filter((x) -> x.index == index).findAny().orElseThrow();
         helperCards.remove(currentHelper);
+        prevHelper = currentHelper;
         return currentHelper;
     }
 
@@ -124,6 +126,11 @@ public class Player implements Serializable {
     public HelperCard getCurrentHelper() {
 
         return currentHelper;
+    }
+
+    public HelperCard getPrevHelper() {
+
+        return prevHelper;
     }
 
     public int getCoins() {
