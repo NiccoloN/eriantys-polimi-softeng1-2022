@@ -97,6 +97,11 @@ public class SchoolDashboard implements Serializable {
         if (!entranceStudents.remove(student)) throw new NoSuchElementException();
     }
 
+    /**
+     * Removes from the school entrance a student pawn of the given color, if present.
+     * @param color the given color.
+     * @return the pawn removed from the school entrance.
+     */
     public ColoredPawn removeFromEntrance(PawnColor color) {
 
         ColoredPawn student = entranceStudents.stream().filter((x) -> x.color == color).findFirst().orElseThrow();
@@ -144,6 +149,7 @@ public class SchoolDashboard implements Serializable {
     public int countProfessors() {
         return professors.size();
     }
+
     /**
      * @param color the color of the professor to check for
      * @return whether the professor of the given color is in this school

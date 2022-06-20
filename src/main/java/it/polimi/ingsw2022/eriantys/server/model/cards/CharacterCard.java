@@ -9,6 +9,8 @@ import java.util.List;
 /**
  * Special card with an associated Skill
  * @author Francesco Melegati Maccari
+ * @author Niccolò Nicolosi
+ * @author Emanuele Musto
  */
 public class CharacterCard extends Card {
 
@@ -34,6 +36,9 @@ public class CharacterCard extends Card {
         return cost;
     }
 
+    /**
+     * Increments the cost of the character card if it's the first time being used.
+     */
     public void incrementCost() {
         if(initialCost == cost) this.cost = this.cost + 1;
     }
@@ -47,10 +52,18 @@ public class CharacterCard extends Card {
         return students.stream().filter((x) -> x.color == color).findAny().orElseThrow();
     }
 
+    /**
+     * Adds a student to the character card.
+     * @param student the student to add.
+     */
     public void addStudent(ColoredPawn student) {
         students.add(student);
     }
 
+    /**
+     * Removes a student from the character card.
+     * @param student the student to remove from the character card.
+     */
     public void removeStudent(ColoredPawn student) {
         students.remove(student);
     }
@@ -64,6 +77,9 @@ public class CharacterCard extends Card {
         return (int) students.stream().filter((x) -> x.color == color).count();
     }
 
+    /**
+     * @return a list of all the students' colors present on the character card.
+     */
     public List<PawnColor> getStudentsColors() {
 
         ArrayList<PawnColor> availableColors = new ArrayList<>();
@@ -77,12 +93,20 @@ public class CharacterCard extends Card {
         return denyTilesNumber;
     }
 
+    /**
+     * Decrements by one the number on deny tiles on the character card if possible.
+     * (Not possible when there are none already)
+     */
     public void decrementDenyTiles() {
 
         if (denyTilesNumber == 0) throw new RuntimeException("Number of deny tiles can't be negative");
         this.denyTilesNumber--;
     }
 
+    /**
+     * Increments by one the number of deny tiles on the character card if possible.
+     * (Not possible when there are already four, the maximum number of deny tiles)
+     */
     public void incrementDenyTiles() {
 
         if (denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");

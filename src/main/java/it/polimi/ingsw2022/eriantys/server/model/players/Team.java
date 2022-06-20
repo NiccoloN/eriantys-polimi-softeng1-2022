@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This enumeration represents the teams of the game. Every team should contain from 0 to 2 players
+ * This class represents the teams of the game. Every team should contain from 0 to 2 players
  * @author Emanuele Musto
  */
 public class Team implements Serializable {
