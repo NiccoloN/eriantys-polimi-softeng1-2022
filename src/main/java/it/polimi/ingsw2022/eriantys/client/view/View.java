@@ -10,6 +10,7 @@ import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -34,13 +35,13 @@ public interface View {
      * Makes this view ask the user for a username
      * @param requestMessage the message requesting a username
      */
-    void askUsername(Message requestMessage);
+    void askUsername(Message requestMessage) throws IOException;
 
     /**
      * Makes this view ask the user for game settings
      * @param requestMessage the message requesting game settings
      */
-    void askGameSettings(Message requestMessage);
+    void askGameSettings(Message requestMessage) throws IOException;
 
     /**
      * Makes this view show the lobby waiting room, with the updated info

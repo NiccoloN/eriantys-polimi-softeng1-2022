@@ -193,7 +193,7 @@ public class EriantysClient {
      * Asks the view to provide a username and send it to the server
      * @param requestMessage the message requesting the username
      */
-    public void askUsername(Message requestMessage) {
+    public void askUsername(Message requestMessage) throws IOException {
 
         view.askUsername(requestMessage);
     }
@@ -202,7 +202,7 @@ public class EriantysClient {
      * Asks the view to provide game settings and send them to the server
      * @param requestMessage the message requesting game settings
      */
-    public void askGameSettings(Message requestMessage) {
+    public void askGameSettings(Message requestMessage) throws IOException {
 
         view.askGameSettings(requestMessage);
     }
