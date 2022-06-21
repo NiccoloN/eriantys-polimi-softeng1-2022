@@ -2,14 +2,25 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="242.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Username:" wrappingWidth="115.85205078125" />
-      <TextField fx:id="usernameField" layoutX="220.0" layoutY="199.0" />
-      <Button layoutX="273.0" layoutY="240.0" mnemonicParsing="false" text="Button" onAction="#setUsername"/>
+      <ImageView fx:id="blue" fitHeight="600.0" fitWidth="800.0" opacity="0.82" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Images/application_logo.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="ipAddressField" layoutX="325.0" layoutY="287.0" stylesheets="@../CSS/TextFieldStyle.css" AnchorPane.bottomAnchor="287.4" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="325.4" AnchorPane.topAnchor="287.0" />
+      <Button layoutX="324.0" layoutY="358.0" mnemonicParsing="false" onAction="#sendUsername" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Confirm" AnchorPane.bottomAnchor="207.60000000000002" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="324.0" AnchorPane.topAnchor="358.0" />
+      <Text fill="#d1cbef" layoutY="269.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select a username:" textAlignment="CENTER" wrappingWidth="800.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

@@ -4,22 +4,37 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="232.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select number of players" wrappingWidth="136.21630859375" />
-      <RadioButton layoutX="243.0" layoutY="133.0" mnemonicParsing="false" selected="true" text="2">
+      <ImageView fx:id="blue" fitHeight="600.0" fitWidth="800.0" opacity="0.82" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/application_logo.png" />
+         </image>
+      </ImageView>
+      <Text fill="#d1cbef" layoutY="161.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select number of players:" textAlignment="CENTER" wrappingWidth="800.0">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
+      <RadioButton layoutX="309.0" layoutY="180.0" mnemonicParsing="false" selected="true" stylesheets="@../CSS/RadioButtonStyle.css" text="2">
          <toggleGroup>
             <ToggleGroup fx:id="players" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="329.0" layoutY="133.0" mnemonicParsing="false" text="4" toggleGroup="$players" />
-      <RadioButton layoutX="285.0" layoutY="133.0" mnemonicParsing="false" text="3" toggleGroup="$players" />
-      <Text layoutX="249.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select gamemode" wrappingWidth="101.21630859375" />
-      <ComboBox fx:id="gamemode" layoutX="225.0" layoutY="212.0" prefWidth="150.0" promptText="Gamemode">
+      <RadioButton layoutX="457.0" layoutY="180.0" mnemonicParsing="false" stylesheets="@../CSS/RadioButtonStyle.css" text="4" toggleGroup="$players" />
+      <RadioButton layoutX="381.0" layoutY="180.0" mnemonicParsing="false" stylesheets="@../CSS/RadioButtonStyle.css" text="3" toggleGroup="$players" />
+      <ComboBox fx:id="gamemode" layoutX="324.0" layoutY="285.0" prefHeight="26.0" prefWidth="152.0" promptText="Gamemode" stylesheets="@../CSS/ComboBoxStyle.css">
       </ComboBox>
-      <Button layoutX="278.0" layoutY="265.0" mnemonicParsing="false" onAction="#setGameSettings" text="Start" />
+      <Button layoutX="324.0" layoutY="400.0" mnemonicParsing="false" onAction="#setGameSettings" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Start" />
+      <Text fill="#d1cbef" layoutY="267.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select the gamemode:" textAlignment="CENTER" wrappingWidth="800.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

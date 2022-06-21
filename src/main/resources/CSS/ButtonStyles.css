@@ -238,7 +238,7 @@
     -fx-background-insets: 0,1,2,3,0;
     -fx-text-fill: #654b00;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
     -fx-padding: 5 10 5 10;
 }
 .button:hover {
@@ -252,7 +252,7 @@
     -fx-background-insets: 0,1,2,3,0;
     -fx-text-fill: #654b00;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
     -fx-padding: 5 10 5 10;
 }
 

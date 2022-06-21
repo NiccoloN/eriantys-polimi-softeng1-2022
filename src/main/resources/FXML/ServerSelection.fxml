@@ -5,15 +5,22 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="blue" fitHeight="600.0" fitWidth="800.0" opacity="0.82" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/application_logo.png" />
+            <Image url="@../Images/Backgrounds/eriantys_title.png" />
          </image>
       </ImageView>
-      <TextField fx:id="ipAddressField" layoutX="325.0" layoutY="287.0" stylesheets="@../CSS/TextFieldStyle.css" text="localhost" AnchorPane.bottomAnchor="287.4" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="325.4" AnchorPane.topAnchor="287.0" />
-      <Button layoutX="324.0" layoutY="358.0" mnemonicParsing="false" onAction="#saveServerIp" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Change IP" AnchorPane.bottomAnchor="207.60000000000002" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="324.0" AnchorPane.topAnchor="358.0" />
+      <TextField fx:id="ipAddressField" layoutX="531.0" layoutY="379.0" prefHeight="34.0" prefWidth="248.0" stylesheets="@../CSS/TextFieldStyle.css" text="localhost">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <Button layoutX="573.0" layoutY="449.0" mnemonicParsing="false" onAction="#saveServerIp" prefHeight="54.0" prefWidth="167.0" stylesheets="@../CSS/ButtonStyles.css" text="Change IP">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
    </children>
 </AnchorPane>

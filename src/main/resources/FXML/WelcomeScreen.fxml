@@ -6,22 +6,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="backgroundImage" fitHeight="600.0" fitWidth="800.0" opacity="0.82" pickOnBounds="true">
+      <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/application_logo.png" />
+            <Image url="@../Images/Backgrounds/eriantys_title.png" />
          </image>
       </ImageView>
-      <Button layoutX="324.0" layoutY="283.0" mnemonicParsing="false" onAction="#startGame" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Start game" textFill="#334abc" AnchorPane.bottomAnchor="282.6" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="324.0" AnchorPane.topAnchor="283.0">
+      <Button layoutX="565.0" layoutY="354.0" mnemonicParsing="false" onAction="#startGame" prefHeight="43.0" prefWidth="122.0" stylesheets="@../CSS/ButtonStyles.css" text="Start game" textFill="#334abc">
          <font>
             <Font name="SansSerif Regular" size="16.0" />
          </font></Button>
-      <ImageView fitHeight="159.0" fitWidth="432.0" layoutX="198.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="427.0" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="198.38461303710938" AnchorPane.topAnchor="14.0">
-         <image>
-            <Image url="@../Images/eriantys_text_logo.png" />
-         </image>
-      </ImageView>
-      <Button layoutX="324.0" layoutY="358.0" mnemonicParsing="false" onAction="#setServerIpScene" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Change IP" AnchorPane.bottomAnchor="208.60000000000002" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="324.0" AnchorPane.topAnchor="357.0" />
+      <Button layoutX="568.0" layoutY="460.0" mnemonicParsing="false" onAction="#setServerIpScene" prefHeight="43.0" prefWidth="122.0" stylesheets="@../CSS/ButtonStyles.css" text="Change IP" />
    </children>
 </AnchorPane>
