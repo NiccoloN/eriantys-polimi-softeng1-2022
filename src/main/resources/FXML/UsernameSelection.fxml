@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw2022.eriantys.client.view.gui.Lobby.LobbyController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyController">
    <children>
       <Text layoutX="242.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Username:" wrappingWidth="115.85205078125" />
       <TextField fx:id="usernameField" layoutX="220.0" layoutY="199.0" />

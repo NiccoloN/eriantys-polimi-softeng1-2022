@@ -298,4 +298,18 @@ public class EriantysClient {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String loadSavedServerIp() {
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(ADDRESS_FILE_NAME);
+            Scanner scanner = new Scanner(fileInputStream);
+            String ip = scanner.next();
+            scanner.close();
+            return ip;
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+            return "localhost";
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.Start;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
@@ -11,8 +12,9 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,21 +23,25 @@ import java.util.concurrent.TimeoutException;
 
 public class EriantysGUI extends Application implements View {
 
-    private static Stage mainStage;
-    private static Message previousMessage;
+    private Stage mainStage;
+    private Message previousMessage;
+    private Scene currentScene;
 
-    private void setNewScene(String FXMLFileName) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/" + FXMLFileName));
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                mainStage.setScene(new Scene(root));
+    public void setScene(String FXMLFileName, SceneController controller) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/" + FXMLFileName));
+        loader.setController(controller);
+        Parent root = loader.load();
+
+        currentScene = new Scene(root);
+
+        Platform.runLater( () -> {
+                mainStage.setScene(currentScene);
                 mainStage.show();
-            }
         });
     }
 
-    public static Message getPreviousMessage() {
+    public Message getPreviousMessage() {
         return previousMessage;
     }
 
@@ -50,20 +56,21 @@ public class EriantysGUI extends Application implements View {
     public void start(Stage stage) throws Exception {
         mainStage = stage;
         stage.setTitle("Eriantys");
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/WelcomeScreen.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Image icon = new Image("Images/application_logo.png");
+        stage.getIcons().add(icon);
+
+        setScene("WelcomeScreen.fxml", new Start(this));
     }
 
     @Override
     public void askUsername(Message requestMessage) throws IOException {
         previousMessage = requestMessage;
-        setNewScene("UsernameSelection.fxml");
+        //setScene("UsernameSelection.fxml");
     }
 
     @Override
     public void askGameSettings(Message requestMessage) throws IOException {
-        setNewScene(("GamemodeSelection.fxml"));
+        //setScene(("GamemodeSelection.fxml"));
     }
 
     @Override
@@ -93,5 +100,13 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void endGame(Team team) {
 
+    }
+
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
     }
 }

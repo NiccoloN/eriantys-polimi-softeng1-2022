@@ -32,10 +32,7 @@ public class Connecting extends MenuSceneState {
 
         super(cli, scene);
 
-        FileInputStream fileInputStream = new FileInputStream(ADDRESS_FILE_NAME);
-        Scanner scanner = new Scanner(fileInputStream);
-        serverIP = scanner.next();
-        scanner.close();
+        serverIP = EriantysClient.getInstance().loadSavedServerIp();
 
         connectingLabel = new BasicCLIComponent(17 + serverIP.length(), new String[] {"Connecting to " + serverIP + "..."});
         connectingLabel.setColor(BLACK + BLUE_BACKGROUND_BRIGHT);

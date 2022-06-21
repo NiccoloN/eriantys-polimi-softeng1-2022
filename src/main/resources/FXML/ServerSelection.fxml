@@ -2,13 +2,18 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw2022.eriantys.client.view.gui.Lobby.LobbyController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="226.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the server IP address:" />
-      <TextField fx:id="ipAddressField" layoutX="220.0" layoutY="183.0" text="localhost" />
-      <Button layoutX="280.0" layoutY="219.0" mnemonicParsing="false" onAction="#joinServer" text="Join" />
+      <ImageView fx:id="blue" fitHeight="600.0" fitWidth="800.0" opacity="0.82" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Images/application_logo.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="ipAddressField" layoutX="325.0" layoutY="287.0" stylesheets="@../CSS/TextFieldStyle.css" text="localhost" AnchorPane.bottomAnchor="287.4" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="325.4" AnchorPane.topAnchor="287.0" />
+      <Button layoutX="324.0" layoutY="358.0" mnemonicParsing="false" onAction="#saveServerIp" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Change IP" AnchorPane.bottomAnchor="207.60000000000002" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="324.0" AnchorPane.topAnchor="358.0" />
    </children>
 </AnchorPane>
