@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 public class EriantysGUI extends Application implements View {
@@ -89,12 +90,12 @@ public class EriantysGUI extends Application implements View {
 
         double scaleFactor = currentScene.getWidth() / DEFAULT_SCENE_WIDTH;
 
-        mainStage.setHeight(currentScene.getWidth() * DEFAULT_SCENE_HEIGHT / DEFAULT_SCENE_WIDTH + mainStage.getHeight() - currentScene.getHeight());
-
         Scale scale = new Scale(scaleFactor, scaleFactor);
         scale.setPivotX(0);
         scale.setPivotY(0);
         currentScene.getRoot().getTransforms().setAll(scale);
+
+        currentScene.getRoot().setTranslateY((currentScene.getHeight() - DEFAULT_SCENE_HEIGHT * scaleFactor) / 2);
     }
 
     @Override
