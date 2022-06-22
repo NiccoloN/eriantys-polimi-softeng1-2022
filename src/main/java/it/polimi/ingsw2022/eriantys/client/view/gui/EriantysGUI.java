@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class EriantysGUI extends Application implements View {
 
@@ -72,6 +73,8 @@ public class EriantysGUI extends Application implements View {
             resizeScene();
         }
         else currentScene = new Scene(root);
+
+        currentScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/CSS/LabelStyles.css")).toExternalForm());
 
         Platform.runLater(() -> {
 

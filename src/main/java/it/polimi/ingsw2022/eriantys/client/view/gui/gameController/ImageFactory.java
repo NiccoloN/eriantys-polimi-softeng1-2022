@@ -92,4 +92,10 @@ public class ImageFactory {
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/mother_nature.png")).toString();
         return new Image(path, MOTHER_NATURE_SIZE, MOTHER_NATURE_SIZE, true, true);
     }
+
+    public static Image getCoinImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/coin.png")).toString();
+        return new Image(path, STUDENT_SIZE, STUDENT_SIZE, true, true);
+    }
 }
