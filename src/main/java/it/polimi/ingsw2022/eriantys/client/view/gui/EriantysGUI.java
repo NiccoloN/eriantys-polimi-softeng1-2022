@@ -11,10 +11,16 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,27 +29,12 @@ import java.util.concurrent.TimeoutException;
 
 public class EriantysGUI extends Application implements View {
 
+    public static final double DEFAULT_SCENE_WIDTH = 1280;
+    public static final double DEFAULT_SCENE_HEIGHT = 720;
+
     private Stage mainStage;
     private Message previousMessage;
     private Scene currentScene;
-
-    public void setScene(String FXMLFileName, SceneController controller) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/" + FXMLFileName));
-        loader.setController(controller);
-        Parent root = loader.load();
-
-        currentScene = new Scene(root);
-
-        Platform.runLater( () -> {
-                mainStage.setScene(currentScene);
-                mainStage.show();
-        });
-    }
-
-    public Message getPreviousMessage() {
-        return previousMessage;
-    }
 
     @Override
     public void start(boolean showLog) throws TimeoutException {
@@ -51,15 +42,59 @@ public class EriantysGUI extends Application implements View {
         Application.launch(EriantysGUI.class);
     }
 
-
     @Override
     public void start(Stage stage) throws Exception {
-        mainStage = stage;
+
         stage.setTitle("Eriantys");
+        mainStage = stage;
+
         Image icon = new Image("Images/application_logo.png");
         stage.getIcons().add(icon);
 
         setScene("WelcomeScreen.fxml", new Start(this));
+    }
+
+    public void setScene(String FXMLFileName, SceneController controller) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/" + FXMLFileName));
+        loader.setController(controller);
+        Parent root = loader.load();
+
+        Scene previousScene = currentScene;
+
+        if(previousScene != null) {
+
+            currentScene = new Scene(root, previousScene.getWidth(), previousScene.getHeight());
+            resizeScene();
+        }
+        else currentScene = new Scene(root);
+
+        Platform.runLater(() -> {
+
+            mainStage.setScene(currentScene);
+            mainStage.show();
+
+            ChangeListener<Number> resizeListener = (observableValue, number, t1) -> resizeScene();
+            currentScene.widthProperty().addListener(resizeListener);
+            currentScene.heightProperty().addListener(resizeListener);
+
+            currentScene.setOnKeyPressed((keyEvent -> {
+
+                if(keyEvent.getCode() == KeyCode.F11) mainStage.setFullScreen(!mainStage.isFullScreen());
+            }));
+        });
+    }
+
+    private void resizeScene() {
+
+        double scaleFactor = currentScene.getWidth() / DEFAULT_SCENE_WIDTH;
+
+        mainStage.setHeight(currentScene.getWidth() * DEFAULT_SCENE_HEIGHT / DEFAULT_SCENE_WIDTH + mainStage.getHeight() - currentScene.getHeight());
+
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        scale.setPivotX(0);
+        scale.setPivotY(0);
+        currentScene.getRoot().getTransforms().setAll(scale);
     }
 
     @Override
@@ -108,5 +143,9 @@ public class EriantysGUI extends Application implements View {
 
     public Scene getCurrentScene() {
         return currentScene;
+    }
+
+    public Message getPreviousMessage() {
+        return previousMessage;
     }
 }

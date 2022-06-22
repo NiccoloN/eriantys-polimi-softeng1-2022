@@ -7,25 +7,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Start extends SceneController implements Initializable {
-
-    @FXML
-    ImageView backgroundImage;
+public class Start extends SceneController {
 
     public Start(EriantysGUI gui) {
         super(gui);
-    }
-
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        //imageView.setPreserveRatio(true);  //uncomment to keep image ratio.
-        backgroundImage.fitHeightProperty().bind(getGui().getMainStage().heightProperty());
-        backgroundImage.fitWidthProperty().bind(getGui().getMainStage().widthProperty());
     }
 
     public void startGame(ActionEvent event) throws IOException {
