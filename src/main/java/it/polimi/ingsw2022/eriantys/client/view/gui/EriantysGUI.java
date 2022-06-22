@@ -1,6 +1,9 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
+import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.EnterUsername;
+import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LoadOrCreateGame;
+import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyWaiting;
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.Start;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -22,22 +25,25 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeoutException;
 
 public class EriantysGUI extends Application implements View {
+
+    private static EriantysGUI instance;
 
     public static final double DEFAULT_SCENE_WIDTH = 1280;
     public static final double DEFAULT_SCENE_HEIGHT = 720;
 
     private Stage mainStage;
-    private Message previousMessage;
     private Scene currentScene;
 
-    @Override
-    public void start(boolean showLog) throws TimeoutException {
+    public EriantysGUI() { instance = this; }
 
-        Application.launch(EriantysGUI.class);
+    public static EriantysGUI launch(boolean showLog) throws InterruptedException {
+
+        new Thread( () -> Application.launch(EriantysGUI.class)).start();
+        while(instance==null) Thread.sleep(100);
+
+        return instance;
     }
 
     @Override
@@ -97,19 +103,20 @@ public class EriantysGUI extends Application implements View {
 
     @Override
     public void askUsername(Message requestMessage) throws IOException {
-        previousMessage = requestMessage;
-        //setScene("UsernameSelection.fxml");
+
+        setScene("UsernameSelection.fxml", new EnterUsername(this, requestMessage));
     }
 
     @Override
     public void askGameSettings(Message requestMessage) throws IOException {
-        //setScene(("GamemodeSelection.fxml"));
+
+        setScene("LoadOrCreateGameSelection.fxml", new LoadOrCreateGame(this, requestMessage));
     }
 
     @Override
-    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
+    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) throws IOException {
 
-        //TODO
+        setScene("Lobby.fxml", new LobbyWaiting(this, playerUsernames, gameSettings));
     }
 
     @Override
@@ -143,7 +150,4 @@ public class EriantysGUI extends Application implements View {
         return currentScene;
     }
 
-    public Message getPreviousMessage() {
-        return previousMessage;
-    }
 }

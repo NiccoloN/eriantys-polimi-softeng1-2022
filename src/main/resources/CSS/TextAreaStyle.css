@@ -6,6 +6,10 @@
     -fx-effect: dropshadow( three-pass-box , rgba(47, 45, 45, 0.6), 5, 0.5 , 1, 0.5);
 }
 
+.text-area *.text {
+    -fx-text-alignment: center;
+}
+
 .text-area .scroll-pane {
     -fx-background-color: transparent;
 }

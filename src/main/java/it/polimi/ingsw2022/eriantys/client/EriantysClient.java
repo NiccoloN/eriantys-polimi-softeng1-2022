@@ -4,7 +4,6 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
@@ -39,14 +38,13 @@ public class EriantysClient {
      * Launches the client with the given arguments
      * @param args the arguments passed to the client. If args contains "-nogui" the cli version of the view will be launched
      * @throws IOException if an I/O exception occurs
-     * @throws TimeoutException if the view doesn't respond
+     * @throws InterruptedException if the thread is interrupted.
      */
-    public static void launch(String[] args) throws IOException, TimeoutException {
+    public static void launch(String[] args) throws IOException, InterruptedException {
 
         boolean gui = args.length == 0 || !args[0].equals("-nogui");
         boolean showLog = (gui && args.length >= 1 && args[0].equals("-log")) || (!gui && args.length >= 2 && args[1].equals("-log"));
         createInstance(gui, showLog);
-        getInstance().start();
     }
 
     public static final String ADDRESS_FILE_NAME = "server address.txt";
@@ -58,9 +56,11 @@ public class EriantysClient {
      * @param showLog whether view should show logs
      * @throws IOException if could not correctly launch the view
      */
-    private static void createInstance(boolean gui, boolean showLog) throws IOException {
+    private static void createInstance(boolean gui, boolean showLog) throws IOException, InterruptedException {
 
-        instance = new EriantysClient(gui, showLog);
+        instance = new EriantysClient(showLog);
+        if(!gui) instance.view = EriantysCLI.launch(showLog);
+        else instance.view = EriantysGUI.launch(showLog);
     }
 
     /**
@@ -79,11 +79,11 @@ public class EriantysClient {
     private final boolean showLog;
     private final StringWriter log;
 
-    private final View view;
+    private View view;
 
     private GameSettings gameSettings;
 
-    private EriantysClient(boolean gui, boolean showLog) throws IOException {
+    private EriantysClient(boolean showLog) throws IOException {
 
         this.showLog = showLog;
         log = new StringWriter();
@@ -97,21 +97,6 @@ public class EriantysClient {
             outputStreamWriter.write("localhost");
             outputStreamWriter.close();
         }
-
-        //initialize view
-        view = gui ? new EriantysGUI() : new EriantysCLI();
-
-        if (!gui) Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-
-            ((EriantysCLI) view).stop();
-            System.out.println(log);
-            e.printStackTrace();
-        });
-    }
-
-    private void start() throws TimeoutException {
-
-        view.start(showLog);
     }
 
     /**
@@ -212,7 +197,7 @@ public class EriantysClient {
      * @param playerUsernames the usernames of the players currently connected to the lobby
      * @param gameSettings the game settings of the lobby
      */
-    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) {
+    public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) throws IOException {
 
         this.gameSettings = gameSettings;
         view.showUpdatedLobby(playerUsernames, gameSettings);
@@ -222,7 +207,7 @@ public class EriantysClient {
      * Asks the view to show the lobby waiting room, with the updated info
      * @param playerUsernames the usernames of the players currently connected to the lobby
      */
-    public void showUpdatedLobby(String[] playerUsernames) {
+    public void showUpdatedLobby(String[] playerUsernames) throws IOException {
 
         view.showUpdatedLobby(playerUsernames, gameSettings);
     }

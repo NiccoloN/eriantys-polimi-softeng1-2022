@@ -39,6 +39,28 @@ public class EriantysCLI implements View {
     private static final String TERMINAL_RESIZE = "\u001B[8;" + FRAME_HEIGHT + ";" + FRAME_WIDTH + "t";
     private static final String TERMINAL_HOME = "\u001B[H" + RESET;
 
+    public static EriantysCLI launch(boolean showLog) throws IOException {
+
+        EriantysCLI instance = new EriantysCLI();
+
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+
+            instance.stop();
+            System.out.println(EriantysClient.getInstance().getLog());
+            e.printStackTrace();
+        });
+
+        new Thread( () -> {
+            try {
+                instance.start(showLog);
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        return instance;
+    }
+
     private final Terminal terminal;
     private int prevWidth, prevHeight;
 
@@ -57,7 +79,7 @@ public class EriantysCLI implements View {
      * Constructs the CLI and all of its components
      * @throws IOException if the terminal instance could not be built or could not load scii arts from files
      */
-    public EriantysCLI() throws IOException {
+    private EriantysCLI() throws IOException {
 
         //build terminal instance
         terminal = TerminalBuilder
@@ -89,8 +111,8 @@ public class EriantysCLI implements View {
      * inputs are passed to the controller to evolve the game state
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
-    @Override
-    public void start(boolean showLog) throws TimeoutException {
+
+    private void start(boolean showLog) throws TimeoutException {
 
         this.showLog = showLog;
         running = true;

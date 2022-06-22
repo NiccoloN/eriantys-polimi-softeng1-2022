@@ -20,12 +20,12 @@
             <Font size="36.0" />
          </font>
       </Text>
-      <Button layoutX="573.0" layoutY="449.0" mnemonicParsing="false" onAction="#saveServerIp" prefHeight="54.0" prefWidth="167.0" stylesheets="@../CSS/ButtonStyles.css" text="Confirm">
+      <Button layoutX="573.0" layoutY="449.0" mnemonicParsing="false" onAction="#sendUsername" prefHeight="54.0" prefWidth="167.0" stylesheets="@../CSS/ButtonStyles.css" text="Confirm">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <TextField fx:id="ipAddressField" layoutX="531.0" layoutY="379.0" prefHeight="34.0" prefWidth="248.0" stylesheets="@../CSS/TextFieldStyle.css">
+      <TextField fx:id="usernameField" layoutX="531.0" layoutY="379.0" prefHeight="34.0" prefWidth="248.0" stylesheets="@../CSS/TextFieldStyle.css">
          <font>
             <Font size="18.0" />
          </font>

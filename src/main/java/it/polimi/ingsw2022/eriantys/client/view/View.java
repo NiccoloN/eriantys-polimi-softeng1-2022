@@ -25,13 +25,6 @@ import java.util.concurrent.TimeoutException;
 public interface View {
 
     /**
-     * Starts this view
-     * @param showLog whether this view should show logs
-     * @throws TimeoutException if this view stops responding
-     */
-    void start(boolean showLog) throws TimeoutException;
-
-    /**
      * Makes this view ask the user for a username
      * @param requestMessage the message requesting a username
      */
@@ -48,7 +41,7 @@ public interface View {
      * @param playerUsernames the usernames of the players currently connected to the lobby
      * @param gameSettings the game settings of the lobby
      */
-    void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings);
+    void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) throws IOException;
 
     /**
      * Makes this view start the game, showing the game scenario
