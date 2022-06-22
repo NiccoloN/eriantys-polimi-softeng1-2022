@@ -7,6 +7,9 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a change of the clouds. Whenever they change, the clients will be updated with this change.
+ */
 public class CloudChange implements Change, Serializable {
 
     private final Integer cloudIndex;

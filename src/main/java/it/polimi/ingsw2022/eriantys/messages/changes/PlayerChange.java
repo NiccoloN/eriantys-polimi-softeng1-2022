@@ -6,6 +6,10 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a change of the player. Whenever they change (change in coins or username),
+ * the clients will be updated with this change.
+ */
 public class PlayerChange implements Change, Serializable {
 
     private final Player player;

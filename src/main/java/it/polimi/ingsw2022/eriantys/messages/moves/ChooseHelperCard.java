@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * This class represents the choice of a helper card by a player
+ * This class represents the choice of a helper card by a player.
  * @author Emanuele Musto
  */
 public class ChooseHelperCard extends Move {

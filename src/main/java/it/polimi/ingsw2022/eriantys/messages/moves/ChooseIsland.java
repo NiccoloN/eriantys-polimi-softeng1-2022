@@ -11,6 +11,10 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.util.Optional;
 
+/**
+ * This class represents the choice of an island by a player. It's mainly used for character cards effects.
+ * @author Emanuele Musto
+ */
 public class ChooseIsland extends Move{
 
     public final int compoundIslandIndex;

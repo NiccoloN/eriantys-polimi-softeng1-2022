@@ -7,6 +7,9 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a change in the school dashboard. Whenever it changes, the clients will be updated with this change.
+ */
 public class SchoolChange implements Change, Serializable {
 
     private final SchoolDashboard schoolDashboard;

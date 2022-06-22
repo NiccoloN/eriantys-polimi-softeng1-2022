@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * This class represents a change of the islands. Whenever they change, the clients will be updated with this change.
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
@@ -32,6 +33,11 @@ public class IslandChange implements Change, Serializable {
         for(int n = 0; n < islandTiles.size(); n++) setCliIslandTile(scene.getIsland(n), islandTiles.get(n));
     }
 
+    /**
+     * Utility method to apply the change to the view of the CLI.
+     * @param cliIsland the CLI island compound to update
+     * @param islandTile the CLI single island to update
+     */
     private void setCliIslandTile(IslandCLIComponent cliIsland, IslandTile islandTile) {
 
         for(PawnColor color : PawnColor.values()) cliIsland.setStudents(color, islandTile.countStudents(color));
