@@ -10,30 +10,31 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="blue" fitHeight="600.0" fitWidth="800.0" opacity="0.82" pickOnBounds="true">
+      <ImageView fitHeight="920.0" fitWidth="1280.0" opacity="0.95" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/application_logo.png" />
+            <Image url="@../Images/Backgrounds/eriantys_title.png" />
          </image>
       </ImageView>
-      <Text fill="#d1cbef" layoutY="161.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select number of players:" textAlignment="CENTER" wrappingWidth="800.0">
-         <font>
-            <Font size="18.0" />
-         </font></Text>
-      <RadioButton layoutX="309.0" layoutY="180.0" mnemonicParsing="false" selected="true" stylesheets="@../CSS/RadioButtonStyle.css" text="2">
+      <RadioButton layoutX="519.0" layoutY="270.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="50.0" selected="true" stylesheets="@../CSS/RadioButtonStyle.css" text="2">
          <toggleGroup>
             <ToggleGroup fx:id="players" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="457.0" layoutY="180.0" mnemonicParsing="false" stylesheets="@../CSS/RadioButtonStyle.css" text="4" toggleGroup="$players" />
-      <RadioButton layoutX="381.0" layoutY="180.0" mnemonicParsing="false" stylesheets="@../CSS/RadioButtonStyle.css" text="3" toggleGroup="$players" />
-      <ComboBox fx:id="gamemode" layoutX="324.0" layoutY="285.0" prefHeight="26.0" prefWidth="152.0" promptText="Gamemode" stylesheets="@../CSS/ComboBoxStyle.css">
+      <RadioButton layoutX="749.0" layoutY="270.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="50.0" stylesheets="@../CSS/RadioButtonStyle.css" text="4" toggleGroup="$players" />
+      <RadioButton layoutX="632.0" layoutY="270.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="50.0" stylesheets="@../CSS/RadioButtonStyle.css" text="3" toggleGroup="$players" />
+      <ComboBox fx:id="gamemode" layoutX="577.0" layoutY="414.0" prefHeight="37.0" prefWidth="167.0" promptText="Gamemode" stylesheets="@../CSS/ComboBoxStyle.css">
       </ComboBox>
-      <Button layoutX="324.0" layoutY="400.0" mnemonicParsing="false" onAction="#setGameSettings" prefHeight="34.0" prefWidth="152.0" stylesheets="@../CSS/ButtonStyles.css" text="Start" />
-      <Text fill="#d1cbef" layoutY="267.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select the gamemode:" textAlignment="CENTER" wrappingWidth="800.0">
+      <Button layoutX="576.0" layoutY="531.0" mnemonicParsing="false" onAction="#setGameSettings" prefHeight="54.0" prefWidth="167.0" stylesheets="@../CSS/ButtonStyles.css" text="Start" />
+      <Text fill="#d1cbef" layoutX="505.0" layoutY="390.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select gamemode:" textAlignment="CENTER" wrappingWidth="316.93341064453125">
          <font>
-            <Font size="18.0" />
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Text fill="#d1cbef" layoutX="409.0" layoutY="246.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.6" text="Select number of players:" textAlignment="CENTER" wrappingWidth="512.1333618164062">
+         <font>
+            <Font size="36.0" />
          </font>
       </Text>
    </children>
