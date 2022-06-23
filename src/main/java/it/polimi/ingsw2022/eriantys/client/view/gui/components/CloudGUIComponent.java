@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +37,6 @@ public class CloudGUIComponent {
         button = (Button) cloud.getChildren().get(buttonIndex);
 
         initializeStudentImageViews();
-
-        setStudents(PawnColor.BLUE, 2);
-        setStudents(PawnColor.RED, 1);
 
         button_clicked = mouseEvent -> {
 
