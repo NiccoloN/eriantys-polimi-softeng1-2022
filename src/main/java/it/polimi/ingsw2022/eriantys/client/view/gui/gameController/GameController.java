@@ -49,6 +49,7 @@ public class GameController extends SceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        Image image = ImageFactory.studentsImages.get(PawnColor.RED);
         Image redStudentImage = studentsImages.get(PawnColor.RED);
         Image greenStudentImage = studentsImages.get(PawnColor.GREEN);
         Image yellowStudentImage = studentsImages.get(PawnColor.YELLOW);
@@ -63,9 +64,12 @@ public class GameController extends SceneController implements Initializable {
             for(int j = 0; j < 10; j++)
                 tables1.add(new ImageView(coinImage), j, i);
 
+        Image image1 = ImageFactory.professorsImages.get(PawnColor.RED);
+        for(int n = 0; n < 5; n++) professors1.add(new ImageView(image1), 0, n);
         Image redProfImage = professorsImages.get(PawnColor.RED);
         for(int n = 0; n < 5; n++) professors1.add(new ImageView(redProfImage), 0, n);
 
+        Image image2 = ImageFactory.whiteTowerImage;
         for(int i = 0; i < 4; i++)
             for(int j = 0; j < 2; j++)
                 towers1.add(new ImageView(whiteTowerImage), j, i);
