@@ -1,22 +1,36 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.components;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.StudentLabel;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
-import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.requests.*;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-public class IslandGUIComponent {
-    private final int islandIndex;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-    private final GameController gameController;
+public class IslandGUIComponent {
+
+    private final int indexTraslateY = 36;
+    private final int gridPaneIndex = 1;
+    private final int buttonIndex = 2;
+
+    private int characterIndex;
+    private final int islandIndex;
     private final GridPane island;
     private final Button click;
 
@@ -26,13 +40,18 @@ public class IslandGUIComponent {
 
     private ImageView whiteTowerImage, grayTowerImage, blackTowerImage;
     private ImageView motherNatureImage;
+    private List<ImageView> denyTilesImages;
 
-    public IslandGUIComponent(Integer islandIndex, GridPane island, Button click, GameController gameController) {
+    EventHandler<MouseEvent> button_clicked;
+    MoveRequestMessage requestMessage;
+    PawnColor chosenColor;
+
+
+    public IslandGUIComponent(Integer islandIndex, Group islandGroup) {
 
         this.islandIndex = islandIndex;
-        this.island = island;
-        this.click = click;
-        this.gameController = gameController;
+        this.island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
+        this.click = (Button) islandGroup.getChildren().get(buttonIndex);
 
         initializeStudentImageViews();
 
@@ -46,14 +65,25 @@ public class IslandGUIComponent {
         componentIndexLabel.setStyle("-fx-font-size: 16px");
         componentIndexLabel.setText(islandIndex.toString());
         componentIndexLabel.setTranslateX(2);
-        componentIndexLabel.setTranslateY(36);
+        componentIndexLabel.setTranslateY(indexTraslateY);
         island.add(componentIndexLabel, 2, 2);
 
         initializeTowers();
         initializeMotherNature();
+
+        initializeDenyTilesImages();
+
+        button_clicked = mouseEvent -> {
+
+            try {
+                manageInput(mouseEvent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
-    public void initializeStudentImageViews() {
+    private void initializeStudentImageViews() {
 
         redStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.RED));
         greenStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.GREEN));
@@ -68,22 +98,20 @@ public class IslandGUIComponent {
         pinkStudentLabel = new StudentLabel(PawnColor.PINK);
     }
 
-    public void initializeStudentAndLabel(ImageView image, Label label, PawnColor color, int positionX, int positionY) {
+    private void initializeStudentAndLabel(ImageView image, Label label, PawnColor color, int positionX, int positionY) {
 
-        image.setId(color.toString());
         island.add(image, positionX, positionY);
 
         label.setText("0");
-        label.setId(color + "Label");
         label.getStyleClass().add("students-label");
-        if(color == PawnColor.YELLOW) label.setTranslateY(-53);
-        else label.setTranslateY(-25);
+        if(color == PawnColor.YELLOW) label.setTranslateY(-55);
+        else label.setTranslateY(-27);
         label.setTranslateX(3);
 
         island.add(label, positionX, positionY);
     }
 
-    public void initializeTowers() {
+    private void initializeTowers() {
 
         whiteTowerImage = new ImageView(ImageFactory.loadWhiteTowerImage());
         grayTowerImage = new ImageView(ImageFactory.loadGreyTowerImage());
@@ -99,10 +127,10 @@ public class IslandGUIComponent {
 
         blackTowerImage.setTranslateY(-7);
         island.add(blackTowerImage, 2, 0);
-        blackTowerImage.setVisible(false);
+        blackTowerImage.setVisible(true);
     }
 
-    public void initializeMotherNature() {
+    private void initializeMotherNature() {
 
         motherNatureImage = new ImageView(ImageFactory.loadMotherNatureImage());
         motherNatureImage.setTranslateX(-3);
@@ -111,18 +139,112 @@ public class IslandGUIComponent {
         motherNatureImage.setVisible(false);
     }
 
+    private void initializeDenyTilesImages() {
 
-    public void listenToInput(MoveRequestMessage requestMessage) {
+        denyTilesImages = new ArrayList<>(4);
 
-        click.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
+        ImageView denyTile1 = new ImageView(ImageFactory.loadDenyTileImage());
+        ImageView denyTile2 = new ImageView(ImageFactory.loadDenyTileImage());
+        ImageView denyTile3 = new ImageView(ImageFactory.loadDenyTileImage());
+        ImageView denyTile4 = new ImageView(ImageFactory.loadDenyTileImage());
 
-            if(mouseEvent.isPrimaryButtonDown()) {
+        island.add(denyTile1, 0, 2);
+        island.add(denyTile2, 1, 2);
+        island.add(denyTile3, 3, 2);
+        island.add(denyTile4, 4, 2);
 
-                if(requestMessage.moveRequest instanceof MoveStudentRequest) {
-                    //TODO: send message
+        denyTilesImages.add(denyTile1);
+        denyTilesImages.add(denyTile2);
+        denyTilesImages.add(denyTile3);
+        denyTilesImages.add(denyTile4);
+
+        denyTile1.setTranslateX(3);
+        denyTile2.setTranslateX(5);
+        denyTile3.setTranslateX(-4);
+        denyTile4.setTranslateX(-12);
+
+        for(ImageView image : denyTilesImages) {
+
+            image.setTranslateY(indexTraslateY);
+            image.setVisible(false);
+        }
+    }
+
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
+
+        this.requestMessage = requestMessage;
+        this.chosenColor = chosenColor;
+        characterIndex = 0;
+
+
+        click.addEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+    }
+
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
+
+        listenToInput(requestMessage, chosenColor);
+        this.characterIndex = characterIndex;
+    }
+
+    public void stopListeningToInput() {
+
+        click.removeEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+    }
+
+    public void manageInput(MouseEvent mouseEvent) throws IOException {
+
+        MoveRequest request = requestMessage.moveRequest;
+
+        if(mouseEvent.isPrimaryButtonDown()) {
+
+            if(characterIndex > 0) manageCharacters();
+            else{
+
+                if(request instanceof MoveStudentRequest) {
+
+                    EriantysClient.getInstance().sendToServer(
+                            new PerformedMoveMessage(requestMessage,
+                                    new MoveStudent(
+                                            ColoredPawnOriginDestination.ISLAND,
+                                            ((MoveStudentRequest) request).toWhere,
+                                            Integer.parseInt(componentIndexLabel.getText()),
+                                            chosenColor
+                                    )
+                            )
+                    );
+                }
+
+                if(request instanceof MoveMotherNatureRequest) {
+
+                    EriantysClient.getInstance().sendToServer(
+                            new PerformedMoveMessage(requestMessage,
+                                    new MoveMotherNature(
+                                            Integer.parseInt(componentIndexLabel.getText()),
+                                            ((MoveMotherNatureRequest) request).motherNatureMaxSteps
+                                    )
+                            )
+                    );
                 }
             }
-        } );
+        }
+    }
+
+    public void manageCharacters() throws IOException {
+
+        if(chosenColor != null) EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                new MoveStudent(
+                        ColoredPawnOriginDestination.ISLAND,
+                        ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
+                        Integer.parseInt(componentIndexLabel.getText()),
+                        chosenColor,
+                        characterIndex)));
+
+        else EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                new ChooseIsland(
+                        Integer.parseInt(componentIndexLabel.getText()),
+                        characterIndex
+                )
+        ));
     }
 
     public void setIslandIndex(Integer islandIndex) {
@@ -178,6 +300,13 @@ public class IslandGUIComponent {
                 grayTowerImage.setVisible(visible);
                 break;
             default: throw new RuntimeException("There are no towers of this color");
+        }
+    }
+
+    public void setDenyTiles(int numberOfDenyTiles) {
+
+        for(int i = 0; i<numberOfDenyTiles; i++) {
+            denyTilesImages.get(i).setVisible(true);
         }
     }
 

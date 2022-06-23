@@ -297,4 +297,8 @@ public class EriantysClient {
             return "localhost";
         }
     }
+
+    public GameSettings getGameSettings() {
+        return gameSettings;
+    }
 }

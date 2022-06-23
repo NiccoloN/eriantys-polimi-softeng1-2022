@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.IslandGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
@@ -45,6 +46,17 @@ public class IslandChange implements Change, Serializable {
 
     @Override
     public void apply(GameController controller) {
-        //TODO
+
+        for(int n = 0; n< islandTiles.size(); n++)
+            setGuiIslandTile(controller.getIslandGUIComponentOfIndex(n), islandTiles.get(n));
+    }
+
+    private void setGuiIslandTile(IslandGUIComponent guiIsland, IslandTile islandTile) {
+
+        for(PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
+        guiIsland.setMotherNature(islandTile.hasMotherNature());
+        if(islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
+        guiIsland.setIslandIndex(islandTile.getIndex());
+        guiIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
     }
 }

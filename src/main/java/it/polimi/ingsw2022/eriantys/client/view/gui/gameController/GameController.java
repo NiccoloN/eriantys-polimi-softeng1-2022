@@ -11,6 +11,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,9 +37,6 @@ public class GameController extends SceneController implements Initializable {
         return result;
     }
 
-    private final Mode gameMode;
-    private PawnColor chosenColor;
-
     private final List<String> playersUsernames;
     private final List<IslandGUIComponent> islandGUIComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
@@ -61,7 +59,7 @@ public class GameController extends SceneController implements Initializable {
             entrance4, tables4, professors4, towers4;
 
     @FXML
-    GridPane island11;
+    Group island11;
 
     public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
 
@@ -84,7 +82,6 @@ public class GameController extends SceneController implements Initializable {
         dashboardComponents = new HashMap<>();
         playerComponents = new HashMap<>();
 
-        this.gameMode = gameMode;
         //for(Player player : players) playersUsernames.add(player.getUsername());
     }
 
@@ -124,7 +121,7 @@ public class GameController extends SceneController implements Initializable {
 
 
         //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
-        islandGUIComponents.add(new IslandGUIComponent(11, island11, null, this));
+        islandGUIComponents.add(new IslandGUIComponent(11, island11));
 
         //dashBoardGUIComponent = new DashboardGUIComponent();
         playerGUIComponent = new PlayerGUIComponent();
@@ -137,7 +134,10 @@ public class GameController extends SceneController implements Initializable {
         return playerComponents.get(username);
     }
 
-    public PawnColor getChosenColor() {
-        return chosenColor;
+    public List<IslandGUIComponent> getIslandGUIComponents() { return islandGUIComponents; }
+
+    public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
+
+        return islandGUIComponents.stream().filter( (x) -> x.getIslandIndex()==index).findAny().orElseThrow();
     }
 }

@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class ImageFactory {
 
+    private static final int DENY_TILE_SIZE = 20;
     private static final int STUDENT_SIZE = 19;
     private static final int PROFESSOR_SIZE = 23;
     private static final int TOWER_SIZE = 35;
@@ -116,5 +117,11 @@ public class ImageFactory {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/coin.png")).toString();
         return new Image(path, STUDENT_SIZE, STUDENT_SIZE, true, true);
+    }
+
+    public static Image loadDenyTileImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/deny_island_icon.png")).toString();
+        return new Image(path, DENY_TILE_SIZE, DENY_TILE_SIZE, true, true);
     }
 }
