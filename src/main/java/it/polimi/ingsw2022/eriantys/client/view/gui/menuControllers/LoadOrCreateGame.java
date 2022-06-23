@@ -1,8 +1,11 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
+import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
 
 
 import java.io.IOException;
@@ -24,7 +27,7 @@ public class LoadOrCreateGame extends SceneController {
 
     public void loadGame() throws IOException {
 
-        //EriantysClient.getInstance().sendToServer(new GameSettingsMessage
-                //(getGui().getPreviousMessage(), new GameSettings()));
+        EriantysClient.getInstance().sendToServer(new GameSettingsMessage
+                (requestMessage, new GameSettings()));
     }
 }
