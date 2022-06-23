@@ -32,7 +32,7 @@ public class IslandGUIComponent {
     private int characterIndex;
     private final int islandIndex;
     private final GridPane island;
-    private final Button click;
+    private final Button button;
 
     private ImageView redStudentImage, greenStudentImage, yellowStudentImage, blueStudentImage, pinkStudentImage;
     private Label redStudentLabel, greenStudentLabel, yellowStudentLabel, blueStudentLabel, pinkStudentLabel;
@@ -51,7 +51,7 @@ public class IslandGUIComponent {
 
         this.islandIndex = islandIndex;
         island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
-        click = (Button) islandGroup.getChildren().get(buttonIndex);
+        button = (Button) islandGroup.getChildren().get(buttonIndex);
 
         initializeStudentImageViews();
 
@@ -191,7 +191,7 @@ public class IslandGUIComponent {
         characterIndex = 0;
 
 
-        click.addEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
     }
 
     public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
@@ -202,12 +202,11 @@ public class IslandGUIComponent {
 
     public void stopListeningToInput() {
 
-        click.removeEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
 
-        System.out.println("ciao");
         MoveRequest request = requestMessage.moveRequest;
 
         if(mouseEvent.isPrimaryButtonDown()) {
@@ -227,6 +226,7 @@ public class IslandGUIComponent {
                                     )
                             )
                     );
+                    stopListeningToInput();
                 }
 
                 if(request instanceof MoveMotherNatureRequest) {
@@ -239,6 +239,7 @@ public class IslandGUIComponent {
                                     )
                             )
                     );
+                    stopListeningToInput();
                 }
             }
         }
@@ -246,20 +247,26 @@ public class IslandGUIComponent {
 
     public void manageCharacters() throws IOException {
 
-        if(chosenColor != null) EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
-                new MoveStudent(
-                        ColoredPawnOriginDestination.ISLAND,
-                        ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
-                        Integer.parseInt(componentIndexLabel.getText()),
-                        chosenColor,
-                        characterIndex)));
+        if(chosenColor != null) {
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new MoveStudent(
+                            ColoredPawnOriginDestination.ISLAND,
+                            ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
+                            Integer.parseInt(componentIndexLabel.getText()),
+                            chosenColor,
+                            characterIndex)));
+            stopListeningToInput();
+        }
 
-        else EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
-                new ChooseIsland(
-                        Integer.parseInt(componentIndexLabel.getText()),
-                        characterIndex
-                )
-        ));
+        else {
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new ChooseIsland(
+                            Integer.parseInt(componentIndexLabel.getText()),
+                            characterIndex
+                    )
+            ));
+            stopListeningToInput();
+        }
     }
 
     public void setIslandIndex(Integer islandIndex) {
