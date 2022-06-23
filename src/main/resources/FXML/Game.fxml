@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -565,6 +566,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="534.0" layoutY="71.0">
@@ -588,6 +590,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="659.0" layoutY="146.0">
@@ -611,6 +614,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="659.0" layoutY="298.0">
@@ -634,6 +638,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="534.0" layoutY="380.0">
@@ -657,6 +662,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="410.0" layoutY="457.0">
@@ -680,6 +686,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="259.0" layoutY="457.0">
@@ -703,6 +710,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="128.0" layoutY="380.0">
@@ -726,6 +734,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutY="298.0">
@@ -749,6 +758,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutY="146.0">
@@ -772,6 +782,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="128.0" layoutY="71.0">
@@ -795,6 +806,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
             <Group layoutX="256.0">
@@ -818,12 +830,13 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
                </children>
             </Group>
          </children>
       </Group>
-      <TextArea fx:id="effects_text_area" layoutX="17.0" layoutY="210.0" prefHeight="200.0" prefWidth="219.0" stylesheets="@../CSS/TextAreaStyle.css" />
-      <TextArea fx:id="hints_text_area" layoutX="1045.0" layoutY="212.0" prefHeight="200.0" prefWidth="219.0" stylesheets="@../CSS/TextAreaStyle.css" />
+      <TextArea fx:id="effects_text_area" editable="false" layoutX="17.0" layoutY="210.0" prefHeight="200.0" prefWidth="219.0" stylesheets="@../CSS/TextAreaStyle.css" />
+      <TextArea fx:id="hints_text_area" editable="false" layoutX="1045.0" layoutY="212.0" prefHeight="200.0" prefWidth="219.0" stylesheets="@../CSS/TextAreaStyle.css" />
       <Group layoutY="154.0">
          <children>
             <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">

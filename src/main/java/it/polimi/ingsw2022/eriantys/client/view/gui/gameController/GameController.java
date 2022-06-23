@@ -5,7 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -22,13 +22,10 @@ public class GameController extends SceneController implements Initializable {
     private final Image whiteTowerImage, blackTowerImage, greyTowerImage, motherNatureImage, coinImage;
 
     @FXML
-    GridPane entrance1, tables1, professors1, towers1, 
-            entrance2, tables2, professors2, towers2,
-            entrance3, tables3, professors3, towers3,
-            entrance4, tables4, professors4, towers4;
+    Group schools, islands;
 
     @FXML
-    GridPane island11;
+    GridPane clouds, characters;
 
     public GameController(EriantysGUI gui) {
 
@@ -55,43 +52,8 @@ public class GameController extends SceneController implements Initializable {
         Image blueStudentImage = studentsImages.get(PawnColor.BLUE);
         Image pinkStudentImage = studentsImages.get(PawnColor.PINK);
 
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 2; j++)
-                if(i != 0 || j != 0) entrance1.add(new ImageView(redStudentImage), j, i);
-
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 10; j++)
-                tables1.add(new ImageView(coinImage), j, i);
-
-        Image redProfImage = professorsImages.get(PawnColor.RED);
-        for(int n = 0; n < 5; n++) professors1.add(new ImageView(redProfImage), 0, n);
-
-        for(int i = 0; i < 4; i++)
-            for(int j = 0; j < 2; j++)
-                towers1.add(new ImageView(whiteTowerImage), j, i);
-
-        island11.add(new ImageView(redStudentImage), 1, 0);
-
-        Label label = new Label("5");
-        label.getStyleClass().add("students-label");
-        label.setTranslateX(3);
-        label.setTranslateY(-30);
-
-        island11.add(label, 1, 0);
-
-        ImageView tower = new ImageView(whiteTowerImage);
-        tower.setTranslateY(-7);
-        island11.add(tower, 2, 0);
-
-        island11.add(new ImageView(greenStudentImage), 3, 0);
-        island11.add(new ImageView(yellowStudentImage), 2, 1);
-        island11.add(new ImageView(blueStudentImage), 1, 2);
-
-        ImageView motherNature = new ImageView(motherNatureImage);
-        motherNature.setTranslateX(-3);
-        motherNature.setTranslateY(-7);
-        island11.add(motherNature, 2, 2);
-
-        island11.add(new ImageView(pinkStudentImage), 3, 2);
+        Group school1 = (Group) schools.getChildren().get(0);
+        GridPane entrance = (GridPane) school1.getChildren().get(1);
+        entrance.add(new ImageView(redStudentImage), 0, 0);
     }
 }
