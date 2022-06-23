@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.StudentLabel;

@@ -2,17 +2,15 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.DashboardGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.HelpersGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.IslandGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.PlayerGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.DashboardGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.HelpersGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.IslandGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.PlayerGUIComponent;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
