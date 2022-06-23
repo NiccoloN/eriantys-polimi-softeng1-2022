@@ -2,9 +2,10 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.DashboardGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.IslandGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.PlayerGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.DashboardGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.HelpersGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.IslandGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.PlayerGUIComponent;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -23,6 +24,7 @@ public class GameController extends SceneController implements Initializable {
     private final Map<String, PlayerGUIComponent> playerComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
     private final List<IslandGUIComponent> islandGUIComponents;
+    private HelpersGUIComponent helpersGUIComponent;
 
     private IslandGUIComponent islandController;
     //private HelperCardController helperCardController;
@@ -33,7 +35,7 @@ public class GameController extends SceneController implements Initializable {
     Group players, schools, islands;
 
     @FXML
-    GridPane clouds, characters;
+    GridPane clouds, characters, helpers;
 
     public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
 
@@ -49,10 +51,6 @@ public class GameController extends SceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        Group school1 = (Group) schools.getChildren().get(0);
-        GridPane entrance = (GridPane) school1.getChildren().get(1);
-        entrance.add(new ImageView(ImageFactory.studentsImages.get(PawnColor.RED)), 0, 0);
 
         for(int n = 0; n < 4; n++) {
 
@@ -71,6 +69,8 @@ public class GameController extends SceneController implements Initializable {
        for(int n = 0; n < 12; n++)
            islandGUIComponents.add(new IslandGUIComponent(n, (Group) islands.getChildren().get(n)));
 
+       helpersGUIComponent = new HelpersGUIComponent(helpers);
+
         //if(gameMode == Mode.EXPERT) characterCardController = new CharacterCardController();
     }
 
@@ -79,10 +79,13 @@ public class GameController extends SceneController implements Initializable {
         return playerComponents.get(username);
     }
 
-    public List<IslandGUIComponent> getIslandGUIComponents() { return islandGUIComponents; }
-
     public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
 
         return islandGUIComponents.stream().filter((x) -> x.getIslandIndex() == index).findAny().orElseThrow();
+    }
+
+    public HelpersGUIComponent getHelpersGUIComponent() {
+
+        return helpersGUIComponent;
     }
 }

@@ -47,6 +47,7 @@ public class HelperCardsChange implements Change, Serializable {
 
     @Override
     public void apply(GameController controller) {
-        //TODO
+
+        controller.getHelpersGUIComponent().setRemainingHelpers(helperCards);
     }
 }

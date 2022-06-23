@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.StudentLabel;
@@ -86,10 +86,24 @@ public class IslandGUIComponent {
     private void initializeStudentImageViews() {
 
         redStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.RED));
+        redStudentImage.setPreserveRatio(true);
+        redStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
+
         greenStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.GREEN));
+        greenStudentImage.setPreserveRatio(true);
+        greenStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
+
         yellowStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.YELLOW));
+        yellowStudentImage.setPreserveRatio(true);
+        yellowStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
+
         blueStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.BLUE));
+        blueStudentImage.setPreserveRatio(true);
+        blueStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
+
         pinkStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.PINK));
+        pinkStudentImage.setPreserveRatio(true);
+        pinkStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
 
         redStudentLabel = new StudentLabel(PawnColor.RED);
         greenStudentLabel = new StudentLabel(PawnColor.GREEN);
