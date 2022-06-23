@@ -32,7 +32,7 @@ public class ImageFactory {
         motherNatureImage = ImageFactory.loadMotherNatureImage();
     }
 
-    private static Image loadStudentImage(PawnColor color) {
+    public static Image loadStudentImage(PawnColor color) {
 
         String imageName;
         switch(color) {
@@ -60,7 +60,7 @@ public class ImageFactory {
         return new Image(path, STUDENT_SIZE, STUDENT_SIZE, true, true);
     }
 
-    private static Image loadProfessorImage(PawnColor color) {
+    public static Image loadProfessorImage(PawnColor color) {
 
         String imageName;
         switch(color) {
@@ -88,31 +88,31 @@ public class ImageFactory {
         return new Image(path, PROFESSOR_SIZE, PROFESSOR_SIZE, true, true);
     }
 
-    private static Image loadWhiteTowerImage() {
+    public static Image loadWhiteTowerImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/white_tower.png")).toString();
         return new Image(path, TOWER_SIZE, TOWER_SIZE, true, true);
     }
 
-    private static Image loadBlackTowerImage() {
+    public static Image loadBlackTowerImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/black_tower.png")).toString();
         return new Image(path, TOWER_SIZE, TOWER_SIZE, true, true);
     }
 
-    private static Image loadGreyTowerImage() {
+    public static Image loadGreyTowerImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/grey_tower.png")).toString();
         return new Image(path, TOWER_SIZE, TOWER_SIZE, true, true);
     }
 
-    private static Image loadMotherNatureImage() {
+    public static Image loadMotherNatureImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/mother_nature.png")).toString();
         return new Image(path, MOTHER_NATURE_SIZE, MOTHER_NATURE_SIZE, true, true);
     }
 
-    public static Image getCoinImage() {
+    public static Image loadCoinImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/coin.png")).toString();
         return new Image(path, STUDENT_SIZE, STUDENT_SIZE, true, true);

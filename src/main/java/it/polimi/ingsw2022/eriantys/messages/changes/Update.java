@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,5 +28,10 @@ public class Update implements Serializable {
     public void applyChanges(GameScene scene) {
 
         for (Change change : changes) change.apply(scene);
+    }
+
+    public void applyChanges(GameController controller) {
+
+        for (Change change: changes) change.apply(controller);
     }
 }

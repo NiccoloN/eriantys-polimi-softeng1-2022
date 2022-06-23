@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
@@ -40,5 +41,10 @@ public class IslandChange implements Change, Serializable {
         cliIsland.setIndex(islandTile.getIndex());
         cliIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
         if(islandTile.getTeam().isPresent()) cliIsland.setTeamColor(islandTile.getTeam().get().ansiColor);
+    }
+
+    @Override
+    public void apply(GameController controller) {
+        //TODO
     }
 }

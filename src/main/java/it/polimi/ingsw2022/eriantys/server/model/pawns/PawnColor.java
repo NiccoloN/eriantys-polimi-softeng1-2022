@@ -21,8 +21,8 @@ public enum PawnColor implements Serializable {
 
     /**
      * Initializes a color
-     * @param ansiForegroundColor the ansi foreground olor corresponding to this color in the cli
-     * @param ansiBackgroundColor the ansi background olor corresponding to this color in the cli
+     * @param ansiForegroundColor the ansi foreground color corresponding to this color in the cli
+     * @param ansiBackgroundColor the ansi background color corresponding to this color in the cli
      */
     PawnColor(String ansiForegroundColor, String ansiBackgroundColor) {
 
