@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.CloudGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.DashboardGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.IslandGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.PlayerGUIComponent;
@@ -21,6 +22,7 @@ public class GameController extends SceneController implements Initializable {
 
     private final List<String> playersUsernames;
     private final List<IslandGUIComponent> islandGUIComponents;
+    private final List<CloudGUIComponent> cloudGUIComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
     private final Map<String, PlayerGUIComponent> playerComponents;
 
@@ -42,6 +44,7 @@ public class GameController extends SceneController implements Initializable {
 
         playersUsernames = new ArrayList<>(2);
         islandGUIComponents = new ArrayList<>(12);
+        cloudGUIComponents = new ArrayList<>(2);
         dashboardComponents = new HashMap<>();
         playerComponents = new HashMap<>();
 
@@ -57,6 +60,9 @@ public class GameController extends SceneController implements Initializable {
 
         //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
         islandGUIComponents.add(new IslandGUIComponent(0, (Group) islands.getChildren().get(0)));
+
+        cloudGUIComponents.add(new CloudGUIComponent(0, (Group) clouds.getChildren().get(0)));
+        cloudGUIComponents.add(new CloudGUIComponent(1, (Group) clouds.getChildren().get(1)));
 
         //dashBoardGUIComponent = new DashboardGUIComponent();
         playerGUIComponent = new PlayerGUIComponent();
@@ -74,5 +80,10 @@ public class GameController extends SceneController implements Initializable {
     public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
 
         return islandGUIComponents.stream().filter((x) -> x.getIslandIndex() == index).findAny().orElseThrow();
+    }
+
+    public CloudGUIComponent getCloudGUIComponentOfIndex(int index) {
+
+        return cloudGUIComponents.stream().filter((x) -> x.getCloudIndex() == index).findAny().orElseThrow();
     }
 }
