@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 
 import java.io.Serializable;
@@ -25,5 +26,10 @@ public class CharacterCardsChange implements Change, Serializable {
     public void apply(GameScene scene) {
 
         scene.setCharacters(characterCards);
+    }
+
+    @Override
+    public void apply(GameController controller) {
+        //TODO
     }
 }

@@ -217,7 +217,7 @@ public class EriantysClient {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    public void startGame(List<Player> players, Mode gameMode) {
+    public void startGame(List<Player> players, Mode gameMode) throws IOException {
 
         view.startGame(players, gameMode);
     }
@@ -296,5 +296,9 @@ public class EriantysClient {
             System.out.println("File not found");
             return "localhost";
         }
+    }
+
+    public GameSettings getGameSettings() {
+        return gameSettings;
     }
 }
