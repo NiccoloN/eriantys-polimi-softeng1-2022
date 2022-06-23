@@ -2,11 +2,11 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.CloudGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.DashboardGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.HelpersGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.IslandGUIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.components.PlayerGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.CloudGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.DashboardGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.HelpersGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.IslandGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.PlayerGUIComponent;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
@@ -26,9 +26,6 @@ public class GameController extends SceneController implements Initializable {
     private final List<IslandGUIComponent> islandGUIComponents;
     private final List<CloudGUIComponent> cloudGUIComponents;
     private HelpersGUIComponent helpersGUIComponent;
-
-    //private CharacterCardController characterCardController;
-    //private CloudController cloudController;
 
     @FXML
     Group players, schools, islands;
@@ -74,9 +71,6 @@ public class GameController extends SceneController implements Initializable {
         cloudGUIComponents.add(new CloudGUIComponent(0, (Group) clouds.getChildren().get(0)));
         cloudGUIComponents.add(new CloudGUIComponent(1, (Group) clouds.getChildren().get(1)));
 
-        //dashBoardGUIComponent = new DashboardGUIComponent();
-        playerGUIComponent = new PlayerGUIComponent();
-
         //if(gameMode == Mode.EXPERT) characterCardController = new CharacterCardController();
     }
 
@@ -93,6 +87,7 @@ public class GameController extends SceneController implements Initializable {
     public HelpersGUIComponent getHelpersGUIComponent() {
 
         return helpersGUIComponent;
+    }
         
     public CloudGUIComponent getCloudGUIComponentOfIndex(int index) {
 

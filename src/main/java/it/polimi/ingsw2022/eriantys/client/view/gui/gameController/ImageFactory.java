@@ -13,13 +13,14 @@ public class ImageFactory {
     public static final int DENY_TILE_SIZE = 20;
     public static final int STUDENT_SIZE = 19;
     public static final int PROFESSOR_SIZE = 23;
-    public static final int TOWER_SIZE = 35;
-    public static final int MOTHER_NATURE_SIZE = 35;
+    public static final int TOWER_SIZE = 18;
+    public static final int MOTHER_NATURE_SIZE = 18;
 
     public static final Map<PawnColor, Image> studentsImages;
     public static final Map<PawnColor, Image> professorsImages;
     public static final Map<Integer, Image> helpersImages;
     public static final Image whiteTowerImage, blackTowerImage, greyTowerImage, motherNatureImage, coinImage, denyTileImage;
+    public static final Map<Integer, Image> charactersImages;
 
     static {
 
@@ -28,6 +29,9 @@ public class ImageFactory {
 
         professorsImages = new HashMap<>(5);
         for(PawnColor color : PawnColor.values()) professorsImages.put(color, ImageFactory.loadProfessorImage(color));
+
+        charactersImages = new HashMap<>(12);
+        for(int i = 1; i <= 12 ; i++) charactersImages.put(i, ImageFactory.loadCharacterImage(i));
 
         helpersImages = new HashMap<>(10);
         for(int n = 1; n <= 10; n++) helpersImages.put(n, ImageFactory.loadHelperImage(n));
@@ -136,6 +140,13 @@ public class ImageFactory {
     private static Image loadDenyTileImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/deny_island_icon.png")).toString();
+        return new Image(path);
+    }
+
+    private static Image loadCharacterImage(int index) {
+
+        String imageName = "character (" + index + ").jpg";
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/" + imageName)).toString();
         return new Image(path);
     }
 }

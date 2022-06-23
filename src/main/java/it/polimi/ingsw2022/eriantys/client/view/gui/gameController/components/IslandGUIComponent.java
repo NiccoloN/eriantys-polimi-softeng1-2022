@@ -1,7 +1,8 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.client.view.gui.StudentLabel;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.SizedImageView;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.StudentLabel;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
-    private final int indexTraslateY = 40;
+    private final int indexTraslateY = 42;
     private final int gridPaneIndex = 1;
     private final int buttonIndex = 2;
 
@@ -63,10 +64,9 @@ public class IslandGUIComponent {
 
         componentIndexLabel = new Label();
         componentIndexLabel.setStyle("-fx-font-size: 16px");
-        componentIndexLabel.setText(islandIndex.toString());
-        componentIndexLabel.setTranslateX(2);
         componentIndexLabel.setTranslateY(indexTraslateY);
         island.add(componentIndexLabel, 2, 2);
+        setIslandIndex(islandIndex);
 
         initializeTowers();
         initializeMotherNature();
@@ -85,25 +85,11 @@ public class IslandGUIComponent {
 
     private void initializeStudentImageViews() {
 
-        redStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.RED));
-        redStudentImage.setPreserveRatio(true);
-        redStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
-
-        greenStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.GREEN));
-        greenStudentImage.setPreserveRatio(true);
-        greenStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
-
-        yellowStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.YELLOW));
-        yellowStudentImage.setPreserveRatio(true);
-        yellowStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
-
-        blueStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.BLUE));
-        blueStudentImage.setPreserveRatio(true);
-        blueStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
-
-        pinkStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.PINK));
-        pinkStudentImage.setPreserveRatio(true);
-        pinkStudentImage.setFitWidth(ImageFactory.STUDENT_SIZE);
+        redStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.RED));
+        greenStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.GREEN));
+        yellowStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.YELLOW));
+        blueStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.BLUE));
+        pinkStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.PINK));
 
         redStudentLabel = new StudentLabel(PawnColor.RED);
         greenStudentLabel = new StudentLabel(PawnColor.GREEN);
@@ -127,28 +113,27 @@ public class IslandGUIComponent {
 
     private void initializeTowers() {
 
-        whiteTowerImage = new ImageView(ImageFactory.whiteTowerImage);
-        grayTowerImage = new ImageView(ImageFactory.greyTowerImage);
-        blackTowerImage = new ImageView(ImageFactory.blackTowerImage);
+        whiteTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.whiteTowerImage);
+        grayTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.greyTowerImage);
+        blackTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.blackTowerImage);
 
-        whiteTowerImage.setTranslateY(-7);
+        whiteTowerImage.setTranslateY(-4);
         island.add(whiteTowerImage, 2, 0);
         whiteTowerImage.setVisible(false);
 
-        grayTowerImage.setTranslateY(-7);
+        grayTowerImage.setTranslateY(-4);
         island.add(grayTowerImage, 2, 0);
         grayTowerImage.setVisible(false);
 
-        blackTowerImage.setTranslateY(-7);
+        blackTowerImage.setTranslateY(-4);
         island.add(blackTowerImage, 2, 0);
         blackTowerImage.setVisible(false);
     }
 
     private void initializeMotherNature() {
 
-        motherNatureImage = new ImageView(ImageFactory.motherNatureImage);
-        motherNatureImage.setTranslateX(-3);
-        motherNatureImage.setTranslateY(-7);
+        motherNatureImage = new SizedImageView(ImageFactory.MOTHER_NATURE_SIZE, ImageFactory.motherNatureImage);
+        motherNatureImage.setTranslateY(-2);
         island.add(motherNatureImage, 2, 2);
         motherNatureImage.setVisible(false);
     }
@@ -157,10 +142,10 @@ public class IslandGUIComponent {
 
         denyTilesImages = new ArrayList<>(4);
 
-        ImageView denyTile1 = new ImageView(ImageFactory.denyTileImage);
-        ImageView denyTile2 = new ImageView(ImageFactory.denyTileImage);
-        ImageView denyTile3 = new ImageView(ImageFactory.denyTileImage);
-        ImageView denyTile4 = new ImageView(ImageFactory.denyTileImage);
+        ImageView denyTile1 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
+        ImageView denyTile2 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
+        ImageView denyTile3 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
+        ImageView denyTile4 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
 
         island.add(denyTile1, 0, 2);
         island.add(denyTile2, 1, 2);
@@ -272,6 +257,9 @@ public class IslandGUIComponent {
     public void setIslandIndex(Integer islandIndex) {
 
         componentIndexLabel.setText(islandIndex.toString());
+
+        if(islandIndex < 10) componentIndexLabel.setTranslateX(6);
+        else componentIndexLabel.setTranslateX(2);
     }
 
     public void setStudents(PawnColor color, Integer value) {

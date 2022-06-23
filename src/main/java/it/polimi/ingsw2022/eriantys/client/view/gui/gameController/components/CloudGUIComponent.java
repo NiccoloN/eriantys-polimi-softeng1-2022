@@ -1,7 +1,8 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.client.view.gui.ColoredImageView;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.ColoredPawnImageView;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
@@ -22,7 +23,7 @@ public class CloudGUIComponent {
     private final int buttonIndex = 2;
 
     private final int cloudIndex;
-    private List<ColoredImageView> students;
+    private List<ColoredPawnImageView> students;
 
     GridPane cloudGrid;
     Button button;
@@ -52,9 +53,9 @@ public class CloudGUIComponent {
 
         students = new ArrayList<>(3);
 
-        ColoredImageView firstStudentImage = new ColoredImageView();
-        ColoredImageView secondStudentImage = new ColoredImageView();
-        ColoredImageView thirdStudentImage = new ColoredImageView();
+        ColoredPawnImageView firstStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+        ColoredPawnImageView secondStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+        ColoredPawnImageView thirdStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
 
         firstStudentImage.setVisible(false);
         secondStudentImage.setVisible(false);
@@ -81,7 +82,7 @@ public class CloudGUIComponent {
                 thirdStudentImage.setTranslateY(-10);
                 break;
             case 3:
-                ColoredImageView fourthStudentImage = new ColoredImageView();
+                ColoredPawnImageView fourthStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
                 students.add(fourthStudentImage);
 
                 fourthStudentImage.setVisible(false);
@@ -131,11 +132,11 @@ public class CloudGUIComponent {
 
         for(int i = 0; i < numberOfStudents; i++) {
 
-            for(ColoredImageView image : students) {
+            for(ColoredPawnImageView image : students) {
 
                 if(image.getColor() == null) {
 
-                    image.setColor(color);
+                    image.setStudentOfColor(color);
                     break;
                 }
             }
@@ -144,7 +145,7 @@ public class CloudGUIComponent {
 
     public void clearStudents() {
 
-        for(ColoredImageView image : students) image.clearColor();
+        for(ColoredPawnImageView image : students) image.clearColor();
     }
 
     public int getCloudIndex() {

@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;

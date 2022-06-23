@@ -1,16 +1,15 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui;
+package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
-import javafx.scene.image.ImageView;
 
-public class ColoredImageView extends ImageView {
+public class ColoredPawnImageView extends SizedImageView {
 
     PawnColor color;
 
-    public ColoredImageView() {
+    public ColoredPawnImageView(int size) {
 
-        super();
+        super(size);
         color = null;
     }
 
@@ -18,10 +17,17 @@ public class ColoredImageView extends ImageView {
         return color;
     }
 
-    public void setColor(PawnColor color) {
+    public void setStudentOfColor(PawnColor color) {
 
         this.color = color;
         setImage(ImageFactory.studentsImages.get(color));
+        setVisible(true);
+    }
+
+    public void setProfessorOfColor(PawnColor color) {
+
+        this.color = color;
+        setImage(ImageFactory.professorsImages.get(color));
         setVisible(true);
     }
 
