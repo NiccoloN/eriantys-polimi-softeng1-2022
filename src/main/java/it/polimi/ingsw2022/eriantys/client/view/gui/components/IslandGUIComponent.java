@@ -50,8 +50,8 @@ public class IslandGUIComponent {
     public IslandGUIComponent(Integer islandIndex, Group islandGroup) {
 
         this.islandIndex = islandIndex;
-        this.island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
-        this.click = (Button) islandGroup.getChildren().get(buttonIndex);
+        island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
+        click = (Button) islandGroup.getChildren().get(buttonIndex);
 
         initializeStudentImageViews();
 
@@ -85,11 +85,11 @@ public class IslandGUIComponent {
 
     private void initializeStudentImageViews() {
 
-        redStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.RED));
-        greenStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.GREEN));
-        yellowStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.YELLOW));
-        blueStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.BLUE));
-        pinkStudentImage = new ImageView(ImageFactory.loadStudentImage(PawnColor.PINK));
+        redStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.RED));
+        greenStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.GREEN));
+        yellowStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.YELLOW));
+        blueStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.BLUE));
+        pinkStudentImage = new ImageView(ImageFactory.studentsImages.get(PawnColor.PINK));
 
         redStudentLabel = new StudentLabel(PawnColor.RED);
         greenStudentLabel = new StudentLabel(PawnColor.GREEN);
@@ -113,9 +113,9 @@ public class IslandGUIComponent {
 
     private void initializeTowers() {
 
-        whiteTowerImage = new ImageView(ImageFactory.loadWhiteTowerImage());
-        grayTowerImage = new ImageView(ImageFactory.loadGreyTowerImage());
-        blackTowerImage = new ImageView(ImageFactory.loadBlackTowerImage());
+        whiteTowerImage = new ImageView(ImageFactory.whiteTowerImage);
+        grayTowerImage = new ImageView(ImageFactory.greyTowerImage);
+        blackTowerImage = new ImageView(ImageFactory.blackTowerImage);
 
         whiteTowerImage.setTranslateY(-7);
         island.add(whiteTowerImage, 2, 0);
@@ -132,7 +132,7 @@ public class IslandGUIComponent {
 
     private void initializeMotherNature() {
 
-        motherNatureImage = new ImageView(ImageFactory.loadMotherNatureImage());
+        motherNatureImage = new ImageView(ImageFactory.motherNatureImage);
         motherNatureImage.setTranslateX(-3);
         motherNatureImage.setTranslateY(-7);
         island.add(motherNatureImage, 2, 2);
@@ -143,10 +143,10 @@ public class IslandGUIComponent {
 
         denyTilesImages = new ArrayList<>(4);
 
-        ImageView denyTile1 = new ImageView(ImageFactory.loadDenyTileImage());
-        ImageView denyTile2 = new ImageView(ImageFactory.loadDenyTileImage());
-        ImageView denyTile3 = new ImageView(ImageFactory.loadDenyTileImage());
-        ImageView denyTile4 = new ImageView(ImageFactory.loadDenyTileImage());
+        ImageView denyTile1 = new ImageView(ImageFactory.denyTileImage);
+        ImageView denyTile2 = new ImageView(ImageFactory.denyTileImage);
+        ImageView denyTile3 = new ImageView(ImageFactory.denyTileImage);
+        ImageView denyTile4 = new ImageView(ImageFactory.denyTileImage);
 
         island.add(denyTile1, 0, 2);
         island.add(denyTile2, 1, 2);
@@ -193,6 +193,7 @@ public class IslandGUIComponent {
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
 
+        System.out.println("ciao");
         MoveRequest request = requestMessage.moveRequest;
 
         if(mouseEvent.isPrimaryButtonDown()) {

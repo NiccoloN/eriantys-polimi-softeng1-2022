@@ -22,29 +22,10 @@ import java.util.*;
 
 public class GameController extends SceneController implements Initializable {
 
-    public static Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
-
-        Node result = null;
-        ObservableList<Node> children = gridPane.getChildren();
-
-        for (Node node : children) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-
-        return result;
-    }
-
     private final List<String> playersUsernames;
     private final List<IslandGUIComponent> islandGUIComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
     private final Map<String, PlayerGUIComponent> playerComponents;
-
-    private final Map<PawnColor, Image> studentsImages;
-    private final Map<PawnColor, Image> professorsImages;
-    private final Image whiteTowerImage, blackTowerImage, greyTowerImage, motherNatureImage, coinImage;
 
     private IslandGUIComponent islandController;
     //private HelperCardController helperCardController;
@@ -62,18 +43,6 @@ public class GameController extends SceneController implements Initializable {
 
         super(gui);
 
-        studentsImages = new HashMap<>(5);
-        for(PawnColor color : PawnColor.values()) studentsImages.put(color, ImageFactory.loadStudentImage(color));
-
-        professorsImages = new HashMap<>(5);
-        for(PawnColor color : PawnColor.values()) professorsImages.put(color, ImageFactory.loadProfessorImage(color));
-
-        whiteTowerImage = ImageFactory.loadWhiteTowerImage();
-        blackTowerImage = ImageFactory.loadBlackTowerImage();
-        greyTowerImage = ImageFactory.loadGreyTowerImage();
-        motherNatureImage = ImageFactory.loadMotherNatureImage();
-        coinImage = ImageFactory.loadCoinImage();
-
         playersUsernames = new ArrayList<>(2);
         islandGUIComponents = new ArrayList<>(12);
         dashboardComponents = new HashMap<>();
@@ -85,25 +54,13 @@ public class GameController extends SceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        initializeComponents();
-
-        Image image = ImageFactory.studentsImages.get(PawnColor.RED);
-        Image redStudentImage = studentsImages.get(PawnColor.RED);
-        Image greenStudentImage = studentsImages.get(PawnColor.GREEN);
-        Image yellowStudentImage = studentsImages.get(PawnColor.YELLOW);
-        Image blueStudentImage = studentsImages.get(PawnColor.BLUE);
-        Image pinkStudentImage = studentsImages.get(PawnColor.PINK);
-
         Group school1 = (Group) schools.getChildren().get(0);
         GridPane entrance = (GridPane) school1.getChildren().get(1);
-        entrance.add(new ImageView(redStudentImage), 0, 0);
-    }
-
-    public void initializeComponents() {
+        entrance.add(new ImageView(ImageFactory.studentsImages.get(PawnColor.RED)), 0, 0);
 
 
         //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
-        islandGUIComponents.add(new IslandGUIComponent(11, island11));
+        islandGUIComponents.add(new IslandGUIComponent(11, (Group) islands.getChildren().get(11)));
 
         //dashBoardGUIComponent = new DashboardGUIComponent();
         playerGUIComponent = new PlayerGUIComponent();

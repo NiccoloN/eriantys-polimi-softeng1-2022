@@ -566,7 +566,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="534.0" layoutY="71.0">
@@ -590,7 +590,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="659.0" layoutY="146.0">
@@ -614,7 +614,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="659.0" layoutY="298.0">
@@ -638,7 +638,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="534.0" layoutY="380.0">
@@ -662,7 +662,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="410.0" layoutY="457.0">
@@ -686,7 +686,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="259.0" layoutY="457.0">
@@ -710,7 +710,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="128.0" layoutY="380.0">
@@ -734,7 +734,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutY="298.0">
@@ -758,7 +758,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutY="146.0">
@@ -782,7 +782,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="128.0" layoutY="71.0">
@@ -806,7 +806,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group layoutX="256.0">
@@ -830,7 +830,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" visible="false" />
+                  <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0" prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
          </children>
