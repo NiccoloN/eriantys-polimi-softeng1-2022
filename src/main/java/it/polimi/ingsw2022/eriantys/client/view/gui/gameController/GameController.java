@@ -20,18 +20,17 @@ import java.util.*;
 public class GameController extends SceneController implements Initializable {
 
     private final List<String> playersUsernames;
-    private final List<IslandGUIComponent> islandGUIComponents;
-    private final Map<String, DashboardGUIComponent> dashboardComponents;
     private final Map<String, PlayerGUIComponent> playerComponents;
+    private final Map<String, DashboardGUIComponent> dashboardComponents;
+    private final List<IslandGUIComponent> islandGUIComponents;
 
     private IslandGUIComponent islandController;
     //private HelperCardController helperCardController;
     //private CharacterCardController characterCardController;
     //private CloudController cloudController;
-    private PlayerGUIComponent playerGUIComponent;
 
     @FXML
-    Group schools, islands;
+    Group players, schools, islands;
 
     @FXML
     GridPane clouds, characters;
@@ -45,7 +44,7 @@ public class GameController extends SceneController implements Initializable {
         dashboardComponents = new HashMap<>();
         playerComponents = new HashMap<>();
 
-        //for(Player player : players) playersUsernames.add(player.getUsername());
+        for(Player player : players) playersUsernames.add(player.getUsername());
     }
 
     @Override
@@ -55,11 +54,22 @@ public class GameController extends SceneController implements Initializable {
         GridPane entrance = (GridPane) school1.getChildren().get(1);
         entrance.add(new ImageView(ImageFactory.studentsImages.get(PawnColor.RED)), 0, 0);
 
-        //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
-        islandGUIComponents.add(new IslandGUIComponent(0, (Group) islands.getChildren().get(0)));
+        for(int n = 0; n < 4; n++) {
 
-        //dashBoardGUIComponent = new DashboardGUIComponent();
-        playerGUIComponent = new PlayerGUIComponent();
+            if(n < playersUsernames.size()) playerComponents.put(playersUsernames.get(n),
+                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersUsernames.get(n)));
+
+            else players.getChildren().get(n).setVisible(false);
+        }
+
+        for(int n = 0; n < 4; n++) {
+
+            /*if(n < dashboardComponents.size()) /*TODO;
+            else schools.getChildren().get(n).setVisible(false);*/
+        }
+
+       for(int n = 0; n < 12; n++)
+           islandGUIComponents.add(new IslandGUIComponent(n, (Group) islands.getChildren().get(n)));
 
         //if(gameMode == Mode.EXPERT) characterCardController = new CharacterCardController();
     }

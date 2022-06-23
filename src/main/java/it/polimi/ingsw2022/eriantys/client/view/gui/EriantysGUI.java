@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameControlle
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.EnterUsername;
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LoadOrCreateGame;
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyWaiting;
+import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.Start;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
@@ -57,7 +58,7 @@ public class EriantysGUI extends Application implements View {
         Image icon = new Image("Images/application_logo.png");
         stage.getIcons().add(icon);
 
-        setScene("Game.fxml", new GameController(this, null, null));
+        setScene("WelcomeScreen.fxml", new Start(this));
     }
 
     public void setScene(String FXMLFileName, SceneController controller) throws IOException {
