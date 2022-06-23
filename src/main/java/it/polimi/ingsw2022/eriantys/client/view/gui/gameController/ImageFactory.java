@@ -10,14 +10,15 @@ import java.util.Objects;
 
 public class ImageFactory {
 
-    private static final int DENY_TILE_SIZE = 20;
-    private static final int STUDENT_SIZE = 19;
-    private static final int PROFESSOR_SIZE = 23;
-    private static final int TOWER_SIZE = 35;
-    private static final int MOTHER_NATURE_SIZE = 35;
+    public static final int DENY_TILE_SIZE = 20;
+    public static final int STUDENT_SIZE = 19;
+    public static final int PROFESSOR_SIZE = 23;
+    public static final int TOWER_SIZE = 35;
+    public static final int MOTHER_NATURE_SIZE = 35;
 
     public static final Map<PawnColor, Image> studentsImages;
     public static final Map<PawnColor, Image> professorsImages;
+    public static final Map<Integer, Image> helpersImages;
     public static final Image whiteTowerImage, blackTowerImage, greyTowerImage, motherNatureImage, coinImage, denyTileImage;
 
     static {
@@ -27,6 +28,9 @@ public class ImageFactory {
 
         professorsImages = new HashMap<>(5);
         for(PawnColor color : PawnColor.values()) professorsImages.put(color, ImageFactory.loadProfessorImage(color));
+
+        helpersImages = new HashMap<>(10);
+        for(int n = 1; n <= 10; n++) helpersImages.put(n, ImageFactory.loadHelperImage(n));
 
         whiteTowerImage = ImageFactory.loadWhiteTowerImage();
         blackTowerImage = ImageFactory.loadBlackTowerImage();
@@ -61,7 +65,7 @@ public class ImageFactory {
         }
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
-        return new Image(path, STUDENT_SIZE, STUDENT_SIZE, true, true);
+        return new Image(path);
     }
 
     private static Image loadProfessorImage(PawnColor color) {
@@ -89,42 +93,49 @@ public class ImageFactory {
         }
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
-        return new Image(path, PROFESSOR_SIZE, PROFESSOR_SIZE, true, true);
+        return new Image(path);
+    }
+
+    private static Image loadHelperImage(int index) {
+
+        String imageName = "Helper (" + index + ").png";
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Helpers/" + imageName)).toString();
+        return new Image(path);
     }
 
     private static Image loadWhiteTowerImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/white_tower.png")).toString();
-        return new Image(path, TOWER_SIZE, TOWER_SIZE, true, true);
+        return new Image(path);
     }
 
     private static Image loadBlackTowerImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/black_tower.png")).toString();
-        return new Image(path, TOWER_SIZE, TOWER_SIZE, true, true);
+        return new Image(path);
     }
 
     private static Image loadGreyTowerImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/grey_tower.png")).toString();
-        return new Image(path, TOWER_SIZE, TOWER_SIZE, true, true);
+        return new Image(path);
     }
 
     private static Image loadMotherNatureImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/mother_nature.png")).toString();
-        return new Image(path, MOTHER_NATURE_SIZE, MOTHER_NATURE_SIZE, true, true);
+        return new Image(path);
     }
 
     private static Image loadCoinImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/coin.png")).toString();
-        return new Image(path, STUDENT_SIZE, STUDENT_SIZE, true, true);
+        return new Image(path);
     }
 
     private static Image loadDenyTileImage() {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/deny_island_icon.png")).toString();
-        return new Image(path, DENY_TILE_SIZE, DENY_TILE_SIZE, true, true);
+        return new Image(path);
     }
 }

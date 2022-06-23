@@ -4,15 +4,14 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.CloudGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.DashboardGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.components.HelpersGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.IslandGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.components.PlayerGUIComponent;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -21,22 +20,21 @@ import java.util.*;
 public class GameController extends SceneController implements Initializable {
 
     private final List<String> playersUsernames;
+    
+    private final Map<String, PlayerGUIComponent> playerComponents;
+    private final Map<String, DashboardGUIComponent> dashboardComponents;
     private final List<IslandGUIComponent> islandGUIComponents;
     private final List<CloudGUIComponent> cloudGUIComponents;
-    private final Map<String, DashboardGUIComponent> dashboardComponents;
-    private final Map<String, PlayerGUIComponent> playerComponents;
+    private HelpersGUIComponent helpersGUIComponent;
 
-    private IslandGUIComponent islandController;
-    //private HelperCardController helperCardController;
     //private CharacterCardController characterCardController;
     //private CloudController cloudController;
-    private PlayerGUIComponent playerGUIComponent;
 
     @FXML
-    Group schools, islands;
+    Group players, schools, islands;
 
     @FXML
-    GridPane clouds, characters;
+    GridPane clouds, characters, helpers;
 
     public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
 
@@ -48,19 +46,31 @@ public class GameController extends SceneController implements Initializable {
         dashboardComponents = new HashMap<>();
         playerComponents = new HashMap<>();
 
-        //for(Player player : players) playersUsernames.add(player.getUsername());
+        for(Player player : players) playersUsernames.add(player.getUsername());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Group school1 = (Group) schools.getChildren().get(0);
-        GridPane entrance = (GridPane) school1.getChildren().get(1);
-        entrance.add(new ImageView(ImageFactory.studentsImages.get(PawnColor.RED)), 0, 0);
+        for(int n = 0; n < 4; n++) {
 
-        //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
-        islandGUIComponents.add(new IslandGUIComponent(0, (Group) islands.getChildren().get(0)));
+            if(n < playersUsernames.size()) playerComponents.put(playersUsernames.get(n),
+                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersUsernames.get(n)));
 
+            else players.getChildren().get(n).setVisible(false);
+        }
+
+        for(int n = 0; n < 4; n++) {
+
+            /*if(n < dashboardComponents.size()) /*TODO;
+            else schools.getChildren().get(n).setVisible(false);*/
+        }
+
+       for(int n = 0; n < 12; n++)
+           islandGUIComponents.add(new IslandGUIComponent(n, (Group) islands.getChildren().get(n)));
+
+       helpersGUIComponent = new HelpersGUIComponent(helpers);
+       
         cloudGUIComponents.add(new CloudGUIComponent(0, (Group) clouds.getChildren().get(0)));
         cloudGUIComponents.add(new CloudGUIComponent(1, (Group) clouds.getChildren().get(1)));
 
@@ -75,13 +85,15 @@ public class GameController extends SceneController implements Initializable {
         return playerComponents.get(username);
     }
 
-    public List<IslandGUIComponent> getIslandGUIComponents() { return islandGUIComponents; }
-
     public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
 
         return islandGUIComponents.stream().filter((x) -> x.getIslandIndex() == index).findAny().orElseThrow();
     }
+    
+    public HelpersGUIComponent getHelpersGUIComponent() {
 
+        return helpersGUIComponent;
+        
     public CloudGUIComponent getCloudGUIComponentOfIndex(int index) {
 
         return cloudGUIComponents.stream().filter((x) -> x.getCloudIndex() == index).findAny().orElseThrow();
