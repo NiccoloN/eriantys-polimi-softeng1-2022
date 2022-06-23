@@ -8,12 +8,9 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.components.PlayerGUIComponen
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
@@ -59,7 +56,7 @@ public class GameController extends SceneController implements Initializable {
         entrance.add(new ImageView(ImageFactory.studentsImages.get(PawnColor.RED)), 0, 0);
 
         //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
-        islandGUIComponents.add(new IslandGUIComponent(11, (Group) islands.getChildren().get(11)));
+        islandGUIComponents.add(new IslandGUIComponent(0, (Group) islands.getChildren().get(0)));
 
         //dashBoardGUIComponent = new DashboardGUIComponent();
         playerGUIComponent = new PlayerGUIComponent();
@@ -76,6 +73,6 @@ public class GameController extends SceneController implements Initializable {
 
     public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
 
-        return islandGUIComponents.stream().filter( (x) -> x.getIslandIndex()==index).findAny().orElseThrow();
+        return islandGUIComponents.stream().filter((x) -> x.getIslandIndex() == index).findAny().orElseThrow();
     }
 }

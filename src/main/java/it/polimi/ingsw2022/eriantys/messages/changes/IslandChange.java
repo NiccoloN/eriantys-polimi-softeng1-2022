@@ -47,7 +47,7 @@ public class IslandChange implements Change, Serializable {
     @Override
     public void apply(GameController controller) {
 
-        for(int n = 0; n< islandTiles.size(); n++)
+        for(int n = 0; n < islandTiles.size(); n++)
             setGuiIslandTile(controller.getIslandGUIComponentOfIndex(n), islandTiles.get(n));
     }
 

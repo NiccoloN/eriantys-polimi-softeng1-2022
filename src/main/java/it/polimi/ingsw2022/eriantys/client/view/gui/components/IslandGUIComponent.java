@@ -25,7 +25,7 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
-    private final int indexTraslateY = 36;
+    private final int indexTraslateY = 40;
     private final int gridPaneIndex = 1;
     private final int buttonIndex = 2;
 
@@ -127,7 +127,7 @@ public class IslandGUIComponent {
 
         blackTowerImage.setTranslateY(-7);
         island.add(blackTowerImage, 2, 0);
-        blackTowerImage.setVisible(true);
+        blackTowerImage.setVisible(false);
     }
 
     private void initializeMotherNature() {
@@ -259,24 +259,29 @@ public class IslandGUIComponent {
 
         switch(color) {
             case RED:
-                redStudentImage.setVisible(value != 0);
+                redStudentImage.setVisible(value > 0);
                 redStudentLabel.setText(value.toString());
+                redStudentLabel.setVisible(value > 1);
                 break;
             case GREEN:
-                greenStudentImage.setVisible(value != 0);
+                greenStudentImage.setVisible(value > 0);
                 greenStudentLabel.setText(value.toString());
+                greenStudentLabel.setVisible(value > 1);
                 break;
             case YELLOW:
-                yellowStudentImage.setVisible(value != 0);
+                yellowStudentImage.setVisible(value > 0);
                 yellowStudentLabel.setText(value.toString());
+                yellowStudentLabel.setVisible(value > 1);
                 break;
             case BLUE:
-                blueStudentImage.setVisible(value != 0);
+                blueStudentImage.setVisible(value > 0);
                 blueStudentLabel.setText(value.toString());
+                blueStudentLabel.setVisible(value > 1);
                 break;
             case PINK:
-                pinkStudentImage.setVisible(value != 0);
+                pinkStudentImage.setVisible(value > 0);
                 pinkStudentLabel.setText(value.toString());
+                pinkStudentLabel.setVisible(value > 1);
                 break;
             default: throw new RuntimeException("Chosen color does not exists");
         }
