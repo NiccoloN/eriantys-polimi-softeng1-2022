@@ -123,6 +123,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
+                  <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group GridPane.columnIndex="1">
@@ -144,6 +145,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group GridPane.columnIndex="2">
@@ -165,6 +167,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
             <Group GridPane.columnIndex="3">
@@ -186,6 +189,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
+                  <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0" prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button" />
                </children>
             </Group>
          </children>

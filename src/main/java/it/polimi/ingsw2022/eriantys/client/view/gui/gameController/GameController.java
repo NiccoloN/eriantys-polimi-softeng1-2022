@@ -58,7 +58,6 @@ public class GameController extends SceneController implements Initializable {
         GridPane entrance = (GridPane) school1.getChildren().get(1);
         entrance.add(new ImageView(ImageFactory.studentsImages.get(PawnColor.RED)), 0, 0);
 
-
         //for(String player : playersUsernames) playerComponents.put(player, new PlayerGUIComponent());
         islandGUIComponents.add(new IslandGUIComponent(11, (Group) islands.getChildren().get(11)));
 
