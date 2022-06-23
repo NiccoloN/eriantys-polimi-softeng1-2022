@@ -53,13 +53,10 @@ public class GameController extends SceneController implements Initializable {
     private PlayerGUIComponent playerGUIComponent;
 
     @FXML
-    GridPane entrance1, tables1, professors1, towers1,
-            entrance2, tables2, professors2, towers2,
-            entrance3, tables3, professors3, towers3,
-            entrance4, tables4, professors4, towers4;
+    Group schools, islands;
 
     @FXML
-    Group island11;
+    GridPane clouds, characters;
 
     public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
 
@@ -97,24 +94,9 @@ public class GameController extends SceneController implements Initializable {
         Image blueStudentImage = studentsImages.get(PawnColor.BLUE);
         Image pinkStudentImage = studentsImages.get(PawnColor.PINK);
 
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 2; j++)
-                if(i != 0 || j != 0) entrance1.add(new ImageView(redStudentImage), j, i);
-
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 10; j++)
-                tables1.add(new ImageView(coinImage), j, i);
-
-        Image image1 = ImageFactory.professorsImages.get(PawnColor.RED);
-        for(int n = 0; n < 5; n++) professors1.add(new ImageView(image1), 0, n);
-        Image redProfImage = professorsImages.get(PawnColor.RED);
-        for(int n = 0; n < 5; n++) professors1.add(new ImageView(redProfImage), 0, n);
-
-        Image image2 = ImageFactory.whiteTowerImage;
-        for(int i = 0; i < 4; i++)
-            for(int j = 0; j < 2; j++)
-                towers1.add(new ImageView(whiteTowerImage), j, i);
-
+        Group school1 = (Group) schools.getChildren().get(0);
+        GridPane entrance = (GridPane) school1.getChildren().get(1);
+        entrance.add(new ImageView(redStudentImage), 0, 0);
     }
 
     public void initializeComponents() {
