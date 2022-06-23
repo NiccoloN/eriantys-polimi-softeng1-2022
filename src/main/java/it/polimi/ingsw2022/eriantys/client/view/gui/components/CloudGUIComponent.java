@@ -123,6 +123,7 @@ public class CloudGUIComponent {
         if(mouseEvent.isPrimaryButtonDown()) {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(cloudIndex)));
+            stopListeningToInput();
         }
     }
 

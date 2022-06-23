@@ -212,6 +212,7 @@ public class IslandGUIComponent {
                                     )
                             )
                     );
+                    stopListeningToInput();
                 }
 
                 if(request instanceof MoveMotherNatureRequest) {
@@ -224,6 +225,7 @@ public class IslandGUIComponent {
                                     )
                             )
                     );
+                    stopListeningToInput();
                 }
             }
         }
@@ -231,20 +233,26 @@ public class IslandGUIComponent {
 
     public void manageCharacters() throws IOException {
 
-        if(chosenColor != null) EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
-                new MoveStudent(
-                        ColoredPawnOriginDestination.ISLAND,
-                        ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
-                        Integer.parseInt(componentIndexLabel.getText()),
-                        chosenColor,
-                        characterIndex)));
+        if(chosenColor != null) {
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new MoveStudent(
+                            ColoredPawnOriginDestination.ISLAND,
+                            ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
+                            Integer.parseInt(componentIndexLabel.getText()),
+                            chosenColor,
+                            characterIndex)));
+            stopListeningToInput();
+        }
 
-        else EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
-                new ChooseIsland(
-                        Integer.parseInt(componentIndexLabel.getText()),
-                        characterIndex
-                )
-        ));
+        else {
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                    new ChooseIsland(
+                            Integer.parseInt(componentIndexLabel.getText()),
+                            characterIndex
+                    )
+            ));
+            stopListeningToInput();
+        }
     }
 
     public void setIslandIndex(Integer islandIndex) {
