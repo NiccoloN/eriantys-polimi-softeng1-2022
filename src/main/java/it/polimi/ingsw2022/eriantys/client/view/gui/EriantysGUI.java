@@ -36,6 +36,7 @@ public class EriantysGUI extends Application implements View {
 
     private Stage mainStage;
     private Scene currentScene;
+    private GameController gameController;
 
     public EriantysGUI() { instance = this; }
 
@@ -56,7 +57,7 @@ public class EriantysGUI extends Application implements View {
         Image icon = new Image("Images/application_logo.png");
         stage.getIcons().add(icon);
 
-        setScene("Game.fxml", new GameController(this));
+        setScene("Game.fxml", new GameController(this, null, null));
     }
 
     public void setScene(String FXMLFileName, SceneController controller) throws IOException {
@@ -123,15 +124,16 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void startGame(List<Player> players, Mode gameMode) {
+    public void startGame(List<Player> players, Mode gameMode) throws IOException {
 
-        //TODO
+        gameController = new GameController(this, gameMode, players);
+        setScene("Game.fxml", gameController);
     }
 
     @Override
     public void applyUpdate(Update update) {
 
-        //TODO
+        if(gameController!=null) update.applyChanges(gameController);
     }
 
     @Override
@@ -143,6 +145,7 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void endGame(Team team) {
 
+        //TODO
     }
 
     public Stage getMainStage() {

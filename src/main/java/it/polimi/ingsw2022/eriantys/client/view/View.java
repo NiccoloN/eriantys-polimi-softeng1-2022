@@ -48,7 +48,7 @@ public interface View {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    void startGame(List<Player> players, Mode gameMode);
+    void startGame(List<Player> players, Mode gameMode) throws IOException;
 
     /**
      * Applies a given update to the game this view is showing

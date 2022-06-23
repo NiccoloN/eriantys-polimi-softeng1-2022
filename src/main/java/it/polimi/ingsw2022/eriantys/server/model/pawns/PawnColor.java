@@ -10,10 +10,10 @@ import java.io.Serializable;
  */
 public enum PawnColor implements Serializable {
 
+    RED(AnsiCodes.RED, AnsiCodes.RED_BACKGROUND),
+    GREEN(AnsiCodes.GREEN_BRIGHT, AnsiCodes.GREEN_BACKGROUND_BRIGHT),
     YELLOW(AnsiCodes.YELLOW, AnsiCodes.YELLOW_BACKGROUND),
     BLUE(AnsiCodes.BLUE_BRIGHT, AnsiCodes.BLUE_BACKGROUND_BRIGHT),
-    GREEN(AnsiCodes.GREEN_BRIGHT, AnsiCodes.GREEN_BACKGROUND_BRIGHT),
-    RED(AnsiCodes.RED, AnsiCodes.RED_BACKGROUND),
     PINK(AnsiCodes.PURPLE_BRIGHT, AnsiCodes.PURPLE_BACKGROUND_BRIGHT);
 
     public final String ansiForegroundColor;
@@ -21,8 +21,8 @@ public enum PawnColor implements Serializable {
 
     /**
      * Initializes a color
-     * @param ansiForegroundColor the ansi foreground olor corresponding to this color in the cli
-     * @param ansiBackgroundColor the ansi background olor corresponding to this color in the cli
+     * @param ansiForegroundColor the ansi foreground color corresponding to this color in the cli
+     * @param ansiBackgroundColor the ansi background color corresponding to this color in the cli
      */
     PawnColor(String ansiForegroundColor, String ansiBackgroundColor) {
 
