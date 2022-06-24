@@ -2,10 +2,10 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.ColoredPawnImageView;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.IndexedImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -24,13 +24,14 @@ public class CharacterGUIComponent {
     private boolean denyCardsInitialized = false;
     private boolean coinInitialized = false;
 
+    private int characterIndex;
     private String effect;
     private int cost;
-    private int numberOfDenyTiles = 0;
+    private int numberOfDenyTiles;
 
-    IndexedImageView characterImage;
-    GridPane characterCard;
-    TextArea effectsTextArea;
+    private final ImageView characterImage;
+    private final GridPane characterCard;
+    private final TextArea effectsTextArea;
 
     private List<ImageView> denyTilesImages;
     private List<ColoredPawnImageView> studentsImages;
@@ -38,10 +39,11 @@ public class CharacterGUIComponent {
 
     public CharacterGUIComponent(Group group, TextArea effectsTextArea) {
 
-        characterImage = new IndexedImageView((ImageView) group.getChildren().get(imageIndex));
+        characterImage = (ImageView) group.getChildren().get(imageIndex);
         characterCard = (GridPane) group.getChildren().get(gridIndex);
         this.effectsTextArea = effectsTextArea;
         this.effectsTextArea.setWrapText(true);
+        this.effectsTextArea.setPadding(new Insets(30, 0, 0, 0));
 
         characterCard.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> {
 
@@ -60,10 +62,14 @@ public class CharacterGUIComponent {
 
     public void setCharacter(CharacterCard card) {
 
-        if(card.index != characterImage.getIndex()) characterImage.setCharacterIndex(card.index);
-        this.effect = card.effect;
+        if(characterIndex == 0) {
 
-        this.cost = card.getCost();
+            characterIndex = card.index;
+            characterImage.setImage(ImageFactory.charactersImages.get(characterIndex));
+            effect = card.effect;
+        }
+
+        cost = card.getCost();
         if(card.isCostIncremented()) setCoin();
 
         if(!studentsInitialized) initializeStudents();
@@ -73,7 +79,7 @@ public class CharacterGUIComponent {
         numberOfDenyTiles = card.getDenyTilesNumber();
         setDenyTiles(numberOfDenyTiles);
 
-        if(characterImage.getIndex() == 1 || characterImage.getIndex() == 7 || characterImage.getIndex() == 11) {
+        if(characterIndex == 1 || characterIndex == 7 || characterIndex == 11) {
 
             for(ColoredPawnImageView image : studentsImages) image.clearColor();
             for(PawnColor color : PawnColor.values()) setStudents(card.countStudents(color), color);
@@ -82,7 +88,7 @@ public class CharacterGUIComponent {
 
     private void initializeStudents() {
 
-        if(characterImage.getIndex() == 1 || characterImage.getIndex() == 7 || characterImage.getIndex() == 11) {
+        if(characterIndex == 1 || characterIndex == 7 || characterIndex == 11) {
 
             studentsImages = new ArrayList<>(4);
 
@@ -97,7 +103,7 @@ public class CharacterGUIComponent {
             studentsImages.add(fourthStudentImage);
         }
 
-        switch(characterImage.getIndex()) {
+        switch(characterIndex) {
 
             case 1:
             case 11:
@@ -145,7 +151,7 @@ public class CharacterGUIComponent {
 
     private void initializeDenyCards() {
 
-        if(characterImage.getIndex() == 5) {
+        if(characterIndex == 5) {
 
             denyTilesImages = new ArrayList<>(4);
 
@@ -182,7 +188,7 @@ public class CharacterGUIComponent {
 
     private void setDenyTiles(int numberOfDenyTiles) {
 
-        if(characterImage.getIndex() == 5) {
+        if(characterIndex == 5) {
 
             for(ImageView image : denyTilesImages) image.setVisible(false);
             for(int i = 0; i < numberOfDenyTiles; i++) denyTilesImages.get(i).setVisible(true);

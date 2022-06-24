@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class DashboardGUIComponent {
 
-    private final HashMap<PawnColor, Integer> COLOR_ROW_INDEX;
+    /*private final HashMap<PawnColor, Integer> COLOR_ROW_INDEX;
 
     private final int ENTRANCE_COLS = 2;
     private final int ENTRANCE_ROWS = 5;
@@ -110,7 +110,7 @@ public class DashboardGUIComponent {
                 return;
             }
         }
-    }
+    }*/
 
     // TODO: towers
 

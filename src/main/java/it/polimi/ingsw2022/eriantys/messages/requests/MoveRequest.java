@@ -3,6 +3,8 @@ package it.polimi.ingsw2022.eriantys.messages.requests;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
+import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 import java.io.Serializable;
@@ -17,6 +19,11 @@ public abstract class MoveRequest implements Serializable {
     }
 
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
+
+        EriantysClient.getInstance().log(promptSentence);
+    }
+
+    public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         EriantysClient.getInstance().log(promptSentence);
     }

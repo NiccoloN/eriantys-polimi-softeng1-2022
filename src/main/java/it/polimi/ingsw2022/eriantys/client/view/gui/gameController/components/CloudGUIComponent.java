@@ -10,6 +10,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -25,11 +26,11 @@ public class CloudGUIComponent {
     private final int cloudIndex;
     private List<ColoredPawnImageView> students;
 
-    GridPane cloudGrid;
-    Button button;
+    private GridPane cloudGrid;
+    private Button button;
 
-    EventHandler<MouseEvent> button_clicked;
-    MoveRequestMessage requestMessage;
+    private final EventHandler<MouseEvent> buttonClicked;
+    private MoveRequestMessage requestMessage;
 
     public CloudGUIComponent(int cloudIndex, Group cloud) {
 
@@ -39,7 +40,7 @@ public class CloudGUIComponent {
 
         initializeStudentImageViews();
 
-        button_clicked = mouseEvent -> {
+        buttonClicked = mouseEvent -> {
 
             try {
                 manageInput(mouseEvent);
@@ -111,17 +112,17 @@ public class CloudGUIComponent {
     public void listenToInput(MoveRequestMessage requestMessage) {
 
         this.requestMessage = requestMessage;
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
     public void stopListeningToInput() {
 
-        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
 
-        if(mouseEvent.isPrimaryButtonDown()) {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(cloudIndex)));
             stopListeningToInput();

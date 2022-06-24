@@ -20,7 +20,7 @@
             <Image url="@../Images/Backgrounds/game_background.jpg" />
          </image>
       </ImageView>
-      <GridPane fx:id="helpers" layoutX="278.0" layoutY="615.0">
+      <GridPane fx:id="helpers" layoutX="278.0" layoutY="615.0" visible="false">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
@@ -206,7 +206,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Group>
+            <Group visible="false">
                <children>
                   <ImageView fitHeight="120.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -228,7 +228,7 @@
                   </GridPane>
                </children>
             </Group>
-            <Group GridPane.columnIndex="1">
+            <Group visible="false" GridPane.columnIndex="1">
                <children>
                   <ImageView fitHeight="120.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -250,7 +250,7 @@
                   </GridPane>
                </children>
             </Group>
-            <Group GridPane.columnIndex="2">
+            <Group visible="false" GridPane.columnIndex="2">
                <children>
                   <ImageView fitHeight="120.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
