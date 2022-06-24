@@ -19,6 +19,8 @@ public class DashboardGUIComponent {
     private final int ENTRANCE_COLS = 2;
     private final int ENTRANCE_ROWS = 5;
     private final int TABLE_COLS = 10;
+    private final int TOWERS_COLS = 2;
+    private final int TOWERS_ROWS = 4;
 
     private GridPane entrancePane;
     private GridPane tablePane;
@@ -54,12 +56,21 @@ public class DashboardGUIComponent {
             colorRow++;
         }
 
-        // Populating the entrance grid with ImageViews
+        // Setting up entrance pane
         for (int row = 0; row < ENTRANCE_ROWS; row ++) {
             for (int col = 0; col < ENTRANCE_COLS; col++) {
                 ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
                 coloredImageView.setVisible(false);
                 entrancePane.add(coloredImageView, col, row);
+            }
+        }
+
+        // Setting up towers pane
+        for (int row = 0; row < TOWERS_ROWS; row ++) {
+            for (int col = 0; col < TOWERS_COLS; col++) {
+                ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.TOWER_SIZE);
+                coloredImageView.setVisible(false);
+                towersPane.add(coloredImageView, col, row);
             }
         }
 
@@ -111,6 +122,16 @@ public class DashboardGUIComponent {
             }
         }
     }
-    // TODO: towers
 
+    public void setTowers(int towers) {
+        for (Node child : towersPane.getChildren()) {
+            ColoredPawnImageView coloredImageView = (ColoredPawnImageView) child;
+            if (towers > 0) {
+                coloredImageView.setVisible(true);
+                towers--;
+            } else {
+                coloredImageView.setVisible(false);
+            }
+        }
+    }
 }
