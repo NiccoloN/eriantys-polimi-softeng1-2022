@@ -101,6 +101,8 @@ public class BasicGameMode implements GameMode, Serializable {
             playHelpers();
             game.sortPlayersBasedOnHelperCard();
 
+            server.sendToAllClients(new MoveRequestMessage(new WaitRequest()));
+
             currentGamePhase = GamePhase.MOVING_STUDENTS;
             game.setCurrentPlayer(game.getPlayers().get(0));
             server.saveGame();
@@ -142,6 +144,7 @@ public class BasicGameMode implements GameMode, Serializable {
     private void playHelpers() throws IOException, InterruptedException {
 
         for(Player player : game.getPlayers()) player.resetCurrentHelper();
+        server.sendToAllClients(new MoveRequestMessage(new WaitRequest()));
 
         List<Integer> unplayableIndices = new ArrayList<>(3);
         for (int n = 0; n < game.getPlayers().size(); n++) {
@@ -157,6 +160,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
                 if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
                 requestMove(new ChooseHelperCardRequest(unplayableIndices), player.getUsername());
+                server.sendToClient(new MoveRequestMessage(new WaitRequest()), player.getUsername());
 
                 if (game.getCurrentPlayer().getNumberOfHelpers() == 0) game.setGameEnding();
 
@@ -200,6 +204,9 @@ public class BasicGameMode implements GameMode, Serializable {
                 server.saveGame();
             }
         }
+
+        if(playerIndex < game.getPlayers().size() - 1)
+            server.sendToClient(new MoveRequestMessage(new WaitRequest()), player.getUsername());
     }
 
     protected void requestStudent(Player player) throws IOException, InterruptedException {
