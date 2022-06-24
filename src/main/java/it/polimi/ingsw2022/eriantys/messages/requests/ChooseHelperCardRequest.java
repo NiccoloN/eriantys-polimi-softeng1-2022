@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.HelperSelection;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.CharacterGUIComponent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 import java.util.List;

@@ -20,7 +20,8 @@ import java.util.*;
 public class GameController extends SceneController implements Initializable {
 
     private final List<String> playersUsernames;
-    
+    private GUIGamePhase gamePhase;
+
     private final Map<String, PlayerGUIComponent> playerComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
     private final List<IslandGUIComponent> islandGUIComponents;
@@ -114,8 +115,24 @@ public class GameController extends SceneController implements Initializable {
         return cloudGUIComponents.stream().filter((x) -> x.getCloudIndex() == index).findAny().orElseThrow();
     }
 
+    public List<CharacterGUIComponent> getCharacterGUIComponents() {
+
+        return characterGUIComponents;
+    }
+
     public void setCharacters(List<CharacterCard> characters) {
 
         for(int i=0; i<3; i++) characterGUIComponents.get(i).setCharacter(characters.get(i));
+    }
+
+    public void setGamePhase(GUIGamePhase gamePhase) {
+
+        this.gamePhase = gamePhase;
+
+        switch(gamePhase) {
+
+            case STALL:
+                hintsTextArea.setText("Waiting ");
+        }
     }
 }
