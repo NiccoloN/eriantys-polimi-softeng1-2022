@@ -47,8 +47,8 @@ public class DashboardGUIComponent {
 
         // Setting up entrance pane
         int ENTRANCE_ROWS = 5;
+        int ENTRANCE_COLS = 2;
         for (int row = 0; row < ENTRANCE_ROWS; row ++) {
-            int ENTRANCE_COLS = 2;
             for (int col = 0; col < ENTRANCE_COLS; col++) {
                 ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
                 coloredImageView.setVisible(false);
@@ -58,8 +58,8 @@ public class DashboardGUIComponent {
 
         // Setting up towers pane
         int TOWERS_ROWS = 4;
+        int TOWERS_COLS = 2;
         for (int row = 0; row < TOWERS_ROWS; row ++) {
-            int TOWERS_COLS = 2;
             for (int col = 0; col < TOWERS_COLS; col++) {
                 ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.TOWER_SIZE);
                 coloredImageView.setVisible(false);
