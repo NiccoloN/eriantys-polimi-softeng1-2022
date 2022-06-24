@@ -2,50 +2,95 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.CloudGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.DashboardGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.HelpersGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.IslandGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.PlayerGUIComponent;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class GameController extends SceneController implements Initializable {
 
-    @FXML
-    GridPane entrance1, tables1, professors1, towers1, 
-            entrance2, tables2, professors2, towers2,
-            entrance3, tables3, professors3, towers3,
-            entrance4, tables4, professors4, towers4;
+    private final List<String> playersUsernames;
+    
+    private final Map<String, PlayerGUIComponent> playerComponents;
+    private final Map<String, DashboardGUIComponent> dashboardComponents;
+    private final List<IslandGUIComponent> islandGUIComponents;
+    private final List<CloudGUIComponent> cloudGUIComponents;
+    private HelpersGUIComponent helpersGUIComponent;
 
-    public GameController(EriantysGUI gui) {
+    @FXML
+    Group players, schools, islands;
+
+    @FXML
+    GridPane clouds, helpers, characters;
+
+    public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
 
         super(gui);
+
+        playersUsernames = new ArrayList<>(2);
+        islandGUIComponents = new ArrayList<>(12);
+        cloudGUIComponents = new ArrayList<>(2);
+        dashboardComponents = new HashMap<>();
+        playerComponents = new HashMap<>();
+
+        for(Player player : players) playersUsernames.add(player.getUsername());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Image image = ImageFactory.studentsImages.get(PawnColor.RED);
+        for(int n = 0; n < 4; n++) {
 
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 2; j++)
-                entrance1.add(new ImageView(image), j, i);
+            if(n < playersUsernames.size()) playerComponents.put(playersUsernames.get(n),
+                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersUsernames.get(n)));
 
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 10; j++)
-                tables1.add(new ImageView(image), j, i);
+            else players.getChildren().get(n).setVisible(false);
+        }
 
-        Image image1 = ImageFactory.professorsImages.get(PawnColor.RED);
-        for(int n = 0; n < 5; n++) professors1.add(new ImageView(image1), 0, n);
+        for(int n = 0; n < 4; n++) {
 
-        Image image2 = ImageFactory.whiteTowerImage;
-        for(int i = 0; i < 4; i++)
-            for(int j = 0; j < 2; j++)
-                towers1.add(new ImageView(image2), j, i);
+            /*if(n < dashboardComponents.size()) /*TODO;
+            else schools.getChildren().get(n).setVisible(false);*/
+        }
+
+       for(int n = 0; n < 12; n++)
+           islandGUIComponents.add(new IslandGUIComponent(n, (Group) islands.getChildren().get(n)));
+
+       helpersGUIComponent = new HelpersGUIComponent(helpers);
+       
+        cloudGUIComponents.add(new CloudGUIComponent(0, (Group) clouds.getChildren().get(0)));
+        cloudGUIComponents.add(new CloudGUIComponent(1, (Group) clouds.getChildren().get(1)));
+
+        //if(gameMode == Mode.EXPERT) characterCardController = new CharacterCardController();
+    }
+
+    public PlayerGUIComponent getPlayerGUIComponent(String username) {
+
+        return playerComponents.get(username);
+    }
+
+    public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
+
+        return islandGUIComponents.stream().filter((x) -> x.getIslandIndex() == index).findAny().orElseThrow();
+    }
+    
+    public HelpersGUIComponent getHelpersGUIComponent() {
+
+        return helpersGUIComponent;
+    }
+        
+    public CloudGUIComponent getCloudGUIComponentOfIndex(int index) {
+
+        return cloudGUIComponents.stream().filter((x) -> x.getCloudIndex() == index).findAny().orElseThrow();
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameControlle
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.EnterUsername;
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LoadOrCreateGame;
 import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyWaiting;
+import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.Start;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
@@ -25,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class EriantysGUI extends Application implements View {
 
@@ -35,6 +37,7 @@ public class EriantysGUI extends Application implements View {
 
     private Stage mainStage;
     private Scene currentScene;
+    private GameController gameController;
 
     public EriantysGUI() { instance = this; }
 
@@ -55,7 +58,7 @@ public class EriantysGUI extends Application implements View {
         Image icon = new Image("Images/application_logo.png");
         stage.getIcons().add(icon);
 
-        setScene("Game.fxml", new GameController(this));
+        setScene("WelcomeScreen.fxml", new Start(this));
     }
 
     public void setScene(String FXMLFileName, SceneController controller) throws IOException {
@@ -72,6 +75,8 @@ public class EriantysGUI extends Application implements View {
             resizeScene();
         }
         else currentScene = new Scene(root);
+
+        currentScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/CSS/LabelStyles.css")).toExternalForm());
 
         Platform.runLater(() -> {
 
@@ -120,15 +125,16 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void startGame(List<Player> players, Mode gameMode) {
+    public void startGame(List<Player> players, Mode gameMode) throws IOException {
 
-        //TODO
+        gameController = new GameController(this, gameMode, players);
+        setScene("Game.fxml", gameController);
     }
 
     @Override
     public void applyUpdate(Update update) {
 
-        //TODO
+        if(gameController!=null) update.applyChanges(gameController);
     }
 
     @Override
@@ -140,6 +146,7 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void endGame(Team team) {
 
+        //TODO
     }
 
     public Stage getMainStage() {

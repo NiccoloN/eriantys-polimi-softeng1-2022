@@ -8,7 +8,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import java.io.IOException;
 import java.util.List;
 
-public class StartingGameMessage extends ToClientMessage {
+public class   StartingGameMessage extends ToClientMessage {
 
     private final List<Player> players;
     private final Mode gameMode;
