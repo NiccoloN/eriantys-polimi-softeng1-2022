@@ -4,8 +4,13 @@ import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.*;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseIslandRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
+import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +26,7 @@ public class GameController extends SceneController implements Initializable {
 
     private final List<String> playersUsernames;
     private GUIGamePhase gamePhase;
+    private PawnColor chosenColor;
 
     private final Map<String, PlayerGUIComponent> playerComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
@@ -125,14 +131,36 @@ public class GameController extends SceneController implements Initializable {
         for(int i=0; i<3; i++) characterGUIComponents.get(i).setCharacter(characters.get(i));
     }
 
-    public void setGamePhase(GUIGamePhase gamePhase) {
+    public void setGamePhase(GUIGamePhase gamePhase, MoveRequestMessage requestMessage) {
 
         this.gamePhase = gamePhase;
 
         switch(gamePhase) {
 
             case STALL:
-                hintsTextArea.setText("Waiting ");
+                for(CharacterGUIComponent character : characterGUIComponents) character.stopListeningToInput();
+                break;
+            case HELPER_CARD:
+                helpersGUIComponent.listenToInput(requestMessage);
+                break;
+            case MOVE_STUDENT_ENTRANCE:
+                break;
+            case MOVE_STUDENT_TABLES:
+                break;
+            case MOVE_STUDENT_CHARACTER:
+                break;
+            case CHOOSE_ISLAND:
+                if(requestMessage.moveRequest instanceof MoveMotherNatureRequest)
+                    for(IslandGUIComponent island : islandGUIComponents) island.listenToInput(requestMessage, chosenColor);
+                if(requestMessage.moveRequest instanceof ChooseIslandRequest)
+                    for(IslandGUIComponent island : islandGUIComponents)
+                        island.listenToInput(requestMessage, chosenColor, ((ChooseIslandRequest) requestMessage.moveRequest).characterCardIndex);
+                break;
+            case CHOOSE_CLOUD:
+                for(CloudGUIComponent cloud : cloudGUIComponents) cloud.listenToInput(requestMessage);
+                break;
         }
     }
+
+
 }
