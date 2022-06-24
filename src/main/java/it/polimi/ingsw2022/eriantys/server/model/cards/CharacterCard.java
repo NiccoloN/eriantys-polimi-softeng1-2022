@@ -15,6 +15,7 @@ public class CharacterCard extends Card {
     public final String effect;
     private final int initialCost;
     private int cost;
+    private boolean costIncremented = false;
 
     private final List<ColoredPawn> students;
     private int denyTilesNumber;
@@ -35,7 +36,12 @@ public class CharacterCard extends Card {
     }
 
     public void incrementCost() {
-        if(initialCost == cost) this.cost = this.cost + 1;
+
+        if(initialCost == cost) {
+
+            this.cost = this.cost + 1;
+            costIncremented = true;
+        }
     }
 
     public ColoredPawn getStudent(int index) {
@@ -87,5 +93,10 @@ public class CharacterCard extends Card {
 
         if (denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");
         this.denyTilesNumber++;
+    }
+
+    public boolean isCostIncremented() {
+
+        return costIncremented;
     }
 }

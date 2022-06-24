@@ -15,6 +15,7 @@ public class ImageFactory {
     public static final int PROFESSOR_SIZE = 23;
     public static final int TOWER_SIZE = 18;
     public static final int MOTHER_NATURE_SIZE = 18;
+    public static final int CHARACHTER_CARD_SIZE = 70;
 
     public static final Map<PawnColor, Image> studentsImages;
     public static final Map<PawnColor, Image> professorsImages;

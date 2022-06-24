@@ -1,14 +1,16 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
+import javafx.scene.image.ImageView;
 
-public class IndexedImageView extends SizedImageView {
+public class IndexedImageView extends ImageView {
 
-    private int index;
+    private int index = 0;
+    private final ImageView imageView;
 
-    public IndexedImageView(int size) {
+    public IndexedImageView(ImageView imageView) {
 
-        super(size);
+        this.imageView = imageView;
     }
 
     public int getIndex() {
@@ -16,9 +18,13 @@ public class IndexedImageView extends SizedImageView {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setCharacterIndex(int index) {
 
         this.index = index;
-        setImage(ImageFactory.charactersImages.get(index));
+        imageView.setImage(ImageFactory.charactersImages.get(index));
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(ImageFactory.CHARACHTER_CARD_SIZE);
     }
+
+    public ImageView getImageView() { return imageView; }
 }
