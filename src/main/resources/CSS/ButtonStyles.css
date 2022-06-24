@@ -26,3 +26,88 @@
     -fx-font-size: 18px;
     -fx-padding: 5 10 5 10;
 }
+
+.red-button {
+    -fx-background-color:
+            linear-gradient(#ff0000, #bd0000);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+}
+.red-button:hover {
+    -fx-background-color:
+            linear-gradient(#bd0000, #ff0000);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #654b00;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5 10 5 10;
+}
+
+.green-button {
+    -fx-background-color:
+            linear-gradient(#2dff2d, #018d01);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+}
+.green-button:hover {
+    -fx-background-color:
+            linear-gradient(#018d01, #2dff2d);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #654b00;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5 10 5 10;
+}
+
+.yellow-button {
+    -fx-background-color:
+            linear-gradient(#fff000, #aab000);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+}
+.yellow-button:hover {
+    -fx-background-color:
+            linear-gradient(#aab000, #fff000);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #654b00;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5 10 5 10;
+}
+
+.blue-button {
+    -fx-background-color:
+            linear-gradient(#0021ff, #0004a6);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+}
+.blue-button:hover {
+    -fx-background-color:
+            linear-gradient(#0004a6, #0021ff);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #654b00;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5 10 5 10;
+}
+
+.pink-button {
+    -fx-background-color:
+            linear-gradient(#ed00ff, #a10098);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+}
+.pink-button:hover {
+    -fx-background-color:
+            linear-gradient(#a10098, #ed00ff);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #654b00;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5 10 5 10;
+}
