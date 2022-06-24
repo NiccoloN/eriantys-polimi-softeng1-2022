@@ -26,7 +26,7 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
-    private final int indexTraslateY = 42;
+    private final int indexTraslateY = 41;
     private final int gridPaneIndex = 1;
     private final int buttonIndex = 2;
 
@@ -63,7 +63,7 @@ public class IslandGUIComponent {
         initializeStudentAndLabel(pinkStudentImage, pinkStudentLabel, PawnColor.PINK, 3, 2);
 
         componentIndexLabel = new Label();
-        componentIndexLabel.setStyle("-fx-font-size: 16px");
+        componentIndexLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         componentIndexLabel.setTranslateY(indexTraslateY);
         island.add(componentIndexLabel, 2, 2);
         setIslandIndex(islandIndex);

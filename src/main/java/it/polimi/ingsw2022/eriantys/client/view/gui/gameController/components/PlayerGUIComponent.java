@@ -13,8 +13,8 @@ public class PlayerGUIComponent {
 
     public PlayerGUIComponent(Group player, String username) {
 
-        nameLabel = (Label) player.getChildren().get(0);
-        coinLabel = (Label) player.getChildren().get(2);
+        nameLabel = (Label) player.getChildren().get(1);
+        coinLabel = (Label) player.getChildren().get(3);
         setName(username);
     }
 

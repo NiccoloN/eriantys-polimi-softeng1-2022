@@ -8,6 +8,7 @@ public class SizedImageView extends ImageView {
     public SizedImageView(int size, Image image) {
 
         super(image);
+        setSmooth(true);
         setPreserveRatio(true);
         setFitWidth(size);
     }
@@ -15,6 +16,7 @@ public class SizedImageView extends ImageView {
     public SizedImageView(int size) {
 
         super();
+        setSmooth(true);
         setPreserveRatio(true);
         setFitWidth(size);
     }

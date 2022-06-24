@@ -30,6 +30,7 @@ public class HelpersGUIComponent {
             else helper.setVisible(false);
         }
 
-        helpers.setTranslateX(helpers.getWidth() - helperCards.size() * helpers.getWidth() / helpers.getColumnCount());
+        helpers.setTranslateX((helpers.getChildren().get(0).getLayoutBounds().getWidth() + 4) / 2 *
+                              (helpers.getColumnCount() - helperCards.size()));
     }
 }

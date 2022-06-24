@@ -31,7 +31,7 @@ public class GameController extends SceneController implements Initializable {
     Group players, schools, islands;
 
     @FXML
-    GridPane clouds, characters, helpers;
+    GridPane clouds, helpers, characters;
 
     public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
 
