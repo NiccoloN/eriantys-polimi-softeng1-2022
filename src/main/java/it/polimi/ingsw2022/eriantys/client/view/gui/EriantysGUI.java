@@ -127,7 +127,7 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void startGame(List<Player> players, Mode gameMode) throws IOException {
 
-        gameController = new GameController(this, gameMode, players);
+        gameController = new GameController(this, players);
         setScene("Game.fxml", gameController);
     }
 

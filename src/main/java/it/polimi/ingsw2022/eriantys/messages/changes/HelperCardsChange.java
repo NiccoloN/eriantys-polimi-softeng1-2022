@@ -48,6 +48,7 @@ public class HelperCardsChange implements Change, Serializable {
     @Override
     public void apply(GameController controller) {
 
-        controller.getHelpersGUIComponent().setRemainingHelpers(helperCards);
+        if(EriantysClient.getInstance().getUsername().equals(playerUsername))
+            controller.getHelpersGUIComponent().setRemainingHelpers(helperCards);
     }
 }

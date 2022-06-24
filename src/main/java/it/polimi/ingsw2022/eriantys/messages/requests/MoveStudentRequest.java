@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.messages.requests;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.ColorSelection;
+import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -38,5 +39,11 @@ public class MoveStudentRequest extends MoveRequest {
 
         if (characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
         else scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
+    }
+
+    @Override
+    public void manage(GameController controller, MoveRequestMessage requestMessage) {
+
+        super.manage(controller, requestMessage);
     }
 }

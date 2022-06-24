@@ -7,7 +7,6 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -79,17 +78,20 @@ public class HelpersGUIComponent {
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 
             ImageView helper = (ImageView) helpers.getChildren().get(n);
-            helper.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(imagesIndices.get(helper)));
+            int cardIndex = imagesIndices.get(helper);
+            if(cardIndex > 0) helper.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
         }
     }
 
     public void stopListeningToInput() {
 
         helpers.setVisible(false);
+
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 
             ImageView helper = (ImageView) helpers.getChildren().get(n);
-            helper.removeEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(imagesIndices.get(helper)));
+            int cardIndex = imagesIndices.get(helper);
+            if(cardIndex > 0) helper.removeEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
         }
     }
 

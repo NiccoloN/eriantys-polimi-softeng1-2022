@@ -42,21 +42,15 @@ public class CharacterGUIComponent {
         characterImage = (ImageView) group.getChildren().get(imageIndex);
         characterCard = (GridPane) group.getChildren().get(gridIndex);
         this.effectsTextArea = effectsTextArea;
-        this.effectsTextArea.setWrapText(true);
-        this.effectsTextArea.setPadding(new Insets(30, 0, 0, 0));
 
         characterCard.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> {
 
-            this.effectsTextArea.setEditable(true);
             this.effectsTextArea.setText(effect + "\n\nCost: " + cost);
-            this.effectsTextArea.setEditable(false);
         });
 
         characterCard.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> {
 
-            this.effectsTextArea.setEditable(true);
             this.effectsTextArea.setText("");
-            this.effectsTextArea.setEditable(false);
         });
     }
 

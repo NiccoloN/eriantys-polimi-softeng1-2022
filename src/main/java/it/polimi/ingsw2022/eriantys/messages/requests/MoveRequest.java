@@ -25,6 +25,6 @@ public abstract class MoveRequest implements Serializable {
 
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
-        EriantysClient.getInstance().log(promptSentence);
+        controller.setHintsText(promptSentence);
     }
 }

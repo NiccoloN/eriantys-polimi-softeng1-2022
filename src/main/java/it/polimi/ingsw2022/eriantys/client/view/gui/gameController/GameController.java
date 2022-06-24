@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -36,7 +37,7 @@ public class GameController extends SceneController implements Initializable {
     @FXML
     TextArea effectsTextArea, hintsTextArea;
 
-    public GameController(EriantysGUI gui, Mode gameMode, List<Player> players) {
+    public GameController(EriantysGUI gui, List<Player> players) {
 
         super(gui);
 
@@ -81,6 +82,16 @@ public class GameController extends SceneController implements Initializable {
             for(int i=0; i<3; i++)
                 characterGUIComponents.add(new CharacterGUIComponent((Group) characters.getChildren().get(i), effectsTextArea));
         }
+
+        effectsTextArea.setWrapText(true);
+        effectsTextArea.setPadding(new Insets(30, 0, 0, 0));
+        hintsTextArea.setWrapText(true);
+        hintsTextArea.setPadding(new Insets(30, 0, 0, 0));
+    }
+
+    public void setHintsText(String text) {
+
+        hintsTextArea.setText(text);
     }
 
     public PlayerGUIComponent getPlayerGUIComponent(String username) {
