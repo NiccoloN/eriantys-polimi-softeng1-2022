@@ -61,9 +61,10 @@ public class GameController extends SceneController implements Initializable {
         }
 
         for(int n = 0; n < 4; n++) {
-
-            /*if(n < dashboardComponents.size()) /*TODO;
-            else schools.getChildren().get(n).setVisible(false);*/
+            if(n < playersUsernames.size()) {
+                dashboardComponents.put(playersUsernames.get(n), new DashboardGUIComponent((Group) schools.getChildren().get(n)));
+            }
+            else schools.getChildren().get(n).setVisible(false);
         }
 
        for(int n = 0; n < 12; n++)
