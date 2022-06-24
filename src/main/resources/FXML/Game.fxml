@@ -841,8 +841,8 @@
             </Group>
          </children>
       </Group>
-      <TextArea fx:id="effects_text_area" editable="false" layoutX="20.0" layoutY="212.0" prefHeight="200.0" prefWidth="220.0" stylesheets="@../CSS/TextAreaStyle.css" />
-      <TextArea fx:id="hints_text_area" editable="false" layoutX="1040.0" layoutY="212.0" prefHeight="200.0" prefWidth="220.0" stylesheets="@../CSS/TextAreaStyle.css" />
+      <TextArea fx:id="effectsTextArea" editable="false" layoutX="20.0" layoutY="212.0" prefHeight="200.0" prefWidth="220.0" stylesheets="@../CSS/TextAreaStyle.css" />
+      <TextArea fx:id="hintsTextArea" editable="false" layoutX="1040.0" layoutY="212.0" prefHeight="200.0" prefWidth="220.0" stylesheets="@../CSS/TextAreaStyle.css" />
       <Group fx:id="players" layoutX="70.0" layoutY="145.0">
          <children>
             <Group>
