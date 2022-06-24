@@ -1,11 +1,9 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.HashMap;
