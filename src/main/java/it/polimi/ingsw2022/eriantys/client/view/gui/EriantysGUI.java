@@ -140,7 +140,7 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void requestMove(MoveRequestMessage requestMessage) {
 
-        //TODO
+        requestMessage.moveRequest.manage(gameController, requestMessage);
     }
 
     @Override

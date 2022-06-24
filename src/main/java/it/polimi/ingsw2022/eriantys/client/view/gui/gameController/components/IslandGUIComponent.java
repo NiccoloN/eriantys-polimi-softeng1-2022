@@ -17,6 +17,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -43,9 +44,9 @@ public class IslandGUIComponent {
     private ImageView motherNatureImage;
     private List<ImageView> denyTilesImages;
 
-    EventHandler<MouseEvent> button_clicked;
-    MoveRequestMessage requestMessage;
-    PawnColor chosenColor;
+    private final EventHandler<MouseEvent> buttonClicked;
+    private MoveRequestMessage requestMessage;
+    private PawnColor chosenColor;
 
 
     public IslandGUIComponent(Integer islandIndex, Group islandGroup) {
@@ -73,7 +74,7 @@ public class IslandGUIComponent {
 
         initializeDenyTilesImages();
 
-        button_clicked = mouseEvent -> {
+        buttonClicked = mouseEvent -> {
 
             try {
                 manageInput(mouseEvent);
@@ -175,8 +176,7 @@ public class IslandGUIComponent {
         this.chosenColor = chosenColor;
         characterIndex = 0;
 
-
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
     public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
@@ -187,14 +187,14 @@ public class IslandGUIComponent {
 
     public void stopListeningToInput() {
 
-        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, button_clicked);
+        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
 
         MoveRequest request = requestMessage.moveRequest;
 
-        if(mouseEvent.isPrimaryButtonDown()) {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 
             if(characterIndex > 0) manageCharacters();
             else{
