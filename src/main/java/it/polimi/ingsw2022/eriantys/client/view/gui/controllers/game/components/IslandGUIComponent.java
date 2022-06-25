@@ -1,9 +1,9 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.SizedImageView;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.StudentLabel;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.StudentLabel;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;

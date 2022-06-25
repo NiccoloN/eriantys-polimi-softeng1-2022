@@ -3,7 +3,7 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 
 import java.io.Serializable;

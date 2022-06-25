@@ -1,10 +1,9 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
-import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components.*;
-import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.*;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseIslandRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -39,7 +38,7 @@ public class GameController extends SceneController implements Initializable {
     Group players, schools, islands;
 
     @FXML
-    GridPane clouds, helpers, characters;
+    GridPane clouds, helpers, characters, colors;
 
     @FXML
     TextArea effectsTextArea, hintsTextArea;

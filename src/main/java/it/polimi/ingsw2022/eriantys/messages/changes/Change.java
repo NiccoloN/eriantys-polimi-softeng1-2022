@@ -1,7 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 
 /**
  * @author Francesco Melegati Maccari
