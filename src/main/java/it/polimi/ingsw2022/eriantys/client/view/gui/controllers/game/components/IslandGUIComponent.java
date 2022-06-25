@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.StudentLabel;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
@@ -27,6 +28,8 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
+    private GameController gameController;
+
     private final int indexTraslateY = 41;
     private final int gridPaneIndex = 1;
     private final int buttonIndex = 2;
@@ -46,15 +49,16 @@ public class IslandGUIComponent {
 
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
-    private PawnColor chosenColor;
 
 
-    public IslandGUIComponent(Integer islandIndex, Group islandGroup) {
+    public IslandGUIComponent(Group islandGroup, Integer islandIndex, GameController gameController) {
+
+        this.gameController = gameController;
+        this.islandIndex = islandIndex;
 
         ImageView islandImageView = ((ImageView) islandGroup.getChildren().get(0));
         islandImageView.setImage(ImageFactory.islandsImages.get(((int) (Math.random() * 3) + 1)));
 
-        this.islandIndex = islandIndex;
         island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
         button = (Button) islandGroup.getChildren().get(buttonIndex);
 
@@ -173,23 +177,23 @@ public class IslandGUIComponent {
         }
     }
 
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
+    public void listenToInput(MoveRequestMessage requestMessage) {
 
         this.requestMessage = requestMessage;
-        this.chosenColor = chosenColor;
         characterIndex = 0;
 
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
+    public void listenToInput(MoveRequestMessage requestMessage, int characterIndex) {
 
-        listenToInput(requestMessage, chosenColor);
+        listenToInput(requestMessage);
         this.characterIndex = characterIndex;
     }
 
     public void stopListeningToInput() {
 
+        gameController.setChosenColor(null);
         button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
@@ -200,53 +204,53 @@ public class IslandGUIComponent {
         if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 
             if(characterIndex > 0) manageCharacters();
-            else{
 
-                if(request instanceof MoveStudentRequest) {
+            else if(request instanceof MoveStudentRequest) {
 
-                    EriantysClient.getInstance().sendToServer(
-                            new PerformedMoveMessage(requestMessage,
-                                    new MoveStudent(
-                                            ColoredPawnOriginDestination.ISLAND,
-                                            ((MoveStudentRequest) request).toWhere,
-                                            Integer.parseInt(componentIndexLabel.getText()),
-                                            chosenColor
-                                    )
-                            )
-                    );
-                    stopListeningToInput();
-                }
+                EriantysClient.getInstance().sendToServer(
+                        new PerformedMoveMessage(requestMessage,
+                                new MoveStudent(
+                                        ColoredPawnOriginDestination.ISLAND,
+                                        ((MoveStudentRequest) request).toWhere,
+                                        Integer.parseInt(componentIndexLabel.getText()),
+                                        gameController.getChosenColor()
+                                )
+                        )
+                );
+                stopListeningToInput();
+            }
 
-                if(request instanceof MoveMotherNatureRequest) {
+            else if(request instanceof MoveMotherNatureRequest) {
 
-                    EriantysClient.getInstance().sendToServer(
-                            new PerformedMoveMessage(requestMessage,
-                                    new MoveMotherNature(
-                                            Integer.parseInt(componentIndexLabel.getText()),
-                                            ((MoveMotherNatureRequest) request).motherNatureMaxSteps
-                                    )
-                            )
-                    );
-                    stopListeningToInput();
-                }
+                EriantysClient.getInstance().sendToServer(
+                        new PerformedMoveMessage(requestMessage,
+                                new MoveMotherNature(
+                                        Integer.parseInt(componentIndexLabel.getText()),
+                                        ((MoveMotherNatureRequest) request).motherNatureMaxSteps
+                                )
+                        )
+                );
+                stopListeningToInput();
             }
         }
     }
 
     public void manageCharacters() throws IOException {
 
-        if(chosenColor != null) {
+        if(gameController.getChosenColor() != null) {
+
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
                     new MoveStudent(
                             ColoredPawnOriginDestination.ISLAND,
                             ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
                             Integer.parseInt(componentIndexLabel.getText()),
-                            chosenColor,
+                            gameController.getChosenColor(),
                             characterIndex)));
             stopListeningToInput();
         }
 
         else {
+
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
                     new ChooseIsland(
                             Integer.parseInt(componentIndexLabel.getText()),

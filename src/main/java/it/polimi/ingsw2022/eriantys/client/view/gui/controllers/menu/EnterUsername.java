@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +21,7 @@ import java.util.regex.Pattern;
 public class EnterUsername extends SceneController implements Initializable {
 
     private final Message requestMessage;
+
     @FXML
     private TextField usernameField;
 
@@ -28,19 +31,31 @@ public class EnterUsername extends SceneController implements Initializable {
         this.requestMessage = requestMessage;
     }
 
-    public void sendUsername() throws IOException {
-
-        EriantysClient client = EriantysClient.getInstance();
-        client.setUsername(usernameField.getText());
-        EriantysClient.getInstance().sendToServer(new UsernameChoiceMessage(requestMessage));
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         Pattern pattern = Pattern.compile(".{0,20}");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> pattern.matcher(change.getControlNewText()).matches() ? change : null);
-
         usernameField.setTextFormatter(formatter);
+
+        usernameField.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+
+                try {
+                    sendUsername();
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void sendUsername() throws IOException {
+
+        EriantysClient client = EriantysClient.getInstance();
+        client.setUsername(usernameField.getText());
+        EriantysClient.getInstance().sendToServer(new UsernameChoiceMessage(requestMessage));
     }
 }

@@ -45,5 +45,8 @@ public class MoveStudentRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
+
+        if (characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
+        else controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
     }
 }

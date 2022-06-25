@@ -86,6 +86,7 @@ public class HelpersGUIComponent {
     public void stopListeningToInput() {
 
         helpers.setVisible(false);
+        requestMessage = null;
 
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 

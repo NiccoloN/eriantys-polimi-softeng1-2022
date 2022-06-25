@@ -24,8 +24,6 @@ import java.util.List;
 
 public class CharacterGUIComponent {
 
-    public final int imageIndex = 0;
-    public final int gridIndex = 1;
     private boolean studentsInitialized = false;
     private boolean denyCardsInitialized = false;
     private boolean coinInitialized = false;
@@ -48,8 +46,8 @@ public class CharacterGUIComponent {
 
     public CharacterGUIComponent(Group group, TextArea effectsTextArea) {
 
-        characterImage = (ImageView) group.getChildren().get(imageIndex);
-        characterCard = (GridPane) group.getChildren().get(gridIndex);
+        characterImage = (ImageView) group.getChildren().get(0);
+        characterCard = (GridPane) group.getChildren().get(1);
         characterCard.setVisible(true);
         this.effectsTextArea = effectsTextArea;
 

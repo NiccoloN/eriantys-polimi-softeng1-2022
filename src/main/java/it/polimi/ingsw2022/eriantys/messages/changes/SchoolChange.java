@@ -33,6 +33,7 @@ public class SchoolChange implements Change, Serializable {
 
     @Override
     public void apply(GameController controller) {
-        //TODO
+
+
     }
 }
