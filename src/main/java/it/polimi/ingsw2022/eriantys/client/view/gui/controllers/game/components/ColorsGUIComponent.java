@@ -2,7 +2,10 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -17,7 +20,7 @@ import java.util.Map;
 
 public class ColorsGUIComponent {
 
-    private final GameController controller;
+    private final GameController gameController;
     private final GridPane colorButtons;
 
     private final Map<Button, PawnColor> buttonColors;
@@ -28,8 +31,8 @@ public class ColorsGUIComponent {
 
     public ColorsGUIComponent(GridPane colorButtons, GameController controller) {
 
-        this.colorButtons = colorButtons;
-        this.controller = controller;
+        this.colorButtons   = colorButtons;
+        this.gameController = controller;
 
         buttonColors = new HashMap<>(5);
         colorClickListeners = new HashMap<>(5);
@@ -116,11 +119,18 @@ public class ColorsGUIComponent {
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 
-            EriantysClient client = EriantysClient.getInstance();
+            if(characterIndex <= 0)
+                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.listenToInput(requestMessage, color);
 
-            System.out.println(color);
-            controller.setChosenColor(color);
+            else if(characterIndex == 1)
+                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.listenToInput(requestMessage, color, characterIndex);
 
+            else {
+
+                ChooseColorRequest colorRequest = (ChooseColorRequest) requestMessage.moveRequest;
+                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
+                        new ChooseColor(color, characterIndex, colorRequest.fromWhere)));
+            }
 
             stopListeningToInput();
         }

@@ -35,12 +35,14 @@ public class SchoolChange implements Change, Serializable {
     @Override
     public void apply(GameController controller) {
 
-        /*DashboardGUIComponent dashboardGUIComponent = controller.getDashboardGUIComponentOfPlayer(schoolDashboard.player.getUsername());
+        DashboardGUIComponent dashboardGUIComponent = controller.getDashboardGUIComponentOfPlayer(schoolDashboard.player.getUsername());
+
         for (PawnColor color : PawnColor.values()) {
+
             dashboardGUIComponent.setEntranceStudents(schoolDashboard.countEntranceStudents(color), color);
             dashboardGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
             dashboardGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
             dashboardGUIComponent.setTowers(schoolDashboard.getTowers());
-        }*/
+        }
     }
 }

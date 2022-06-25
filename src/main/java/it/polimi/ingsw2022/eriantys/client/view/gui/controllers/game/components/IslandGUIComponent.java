@@ -28,7 +28,7 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
-    private GameController gameController;
+    private PawnColor chosenColor;
 
     private final int indexTraslateY = 41;
     private final int gridPaneIndex = 1;
@@ -51,9 +51,8 @@ public class IslandGUIComponent {
     private MoveRequestMessage requestMessage;
 
 
-    public IslandGUIComponent(Group islandGroup, Integer islandIndex, GameController gameController) {
+    public IslandGUIComponent(Group islandGroup, Integer islandIndex) {
 
-        this.gameController = gameController;
         this.islandIndex = islandIndex;
 
         ImageView islandImageView = ((ImageView) islandGroup.getChildren().get(0));
@@ -177,23 +176,34 @@ public class IslandGUIComponent {
         }
     }
 
-    public void listenToInput(MoveRequestMessage requestMessage) {
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
 
         this.requestMessage = requestMessage;
+        this.chosenColor = chosenColor;
         characterIndex = 0;
 
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
+    public void listenToInput(MoveRequestMessage requestMessage) {
+
+        listenToInput(requestMessage, null);
+    }
+
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
+
+        listenToInput(requestMessage, chosenColor);
+        this.characterIndex = characterIndex;
+    }
+
     public void listenToInput(MoveRequestMessage requestMessage, int characterIndex) {
 
-        listenToInput(requestMessage);
-        this.characterIndex = characterIndex;
+        listenToInput(requestMessage, null, characterIndex);
     }
 
     public void stopListeningToInput() {
 
-        gameController.setChosenColor(null);
+        chosenColor = null;
         button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
     }
 
@@ -213,7 +223,7 @@ public class IslandGUIComponent {
                                         ColoredPawnOriginDestination.ISLAND,
                                         ((MoveStudentRequest) request).toWhere,
                                         Integer.parseInt(componentIndexLabel.getText()),
-                                        gameController.getChosenColor()
+                                        chosenColor
                                 )
                         )
                 );
@@ -237,14 +247,14 @@ public class IslandGUIComponent {
 
     public void manageCharacters() throws IOException {
 
-        if(gameController.getChosenColor() != null) {
+        if(chosenColor != null) {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
                     new MoveStudent(
                             ColoredPawnOriginDestination.ISLAND,
                             ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
                             Integer.parseInt(componentIndexLabel.getText()),
-                            gameController.getChosenColor(),
+                            chosenColor,
                             characterIndex)));
             stopListeningToInput();
         }

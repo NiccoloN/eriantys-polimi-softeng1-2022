@@ -6,7 +6,6 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.*;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
-import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +20,6 @@ import java.util.*;
 public class GameController extends SceneController implements Initializable {
 
     private final List<String> playersUsernames;
-    private PawnColor chosenColor;
 
     private final Map<String, PlayerGUIComponent> playerComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
@@ -73,7 +71,7 @@ public class GameController extends SceneController implements Initializable {
         }
 
         for(int n = 0; n < 12; n++)
-            islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), n, this));
+            islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), n));
 
         helpersGUIComponent = new HelpersGUIComponent(helpers);
 
@@ -147,15 +145,5 @@ public class GameController extends SceneController implements Initializable {
     public void setHintsText(String text) {
 
         hintsTextArea.setText(text);
-    }
-
-    public PawnColor getChosenColor() {
-
-        return chosenColor;
-    }
-
-    public void setChosenColor(PawnColor color) {
-
-        chosenColor = color;
     }
 }

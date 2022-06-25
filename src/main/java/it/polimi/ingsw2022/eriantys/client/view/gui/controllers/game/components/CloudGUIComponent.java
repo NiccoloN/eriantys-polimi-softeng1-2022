@@ -21,14 +21,11 @@ import java.util.List;
 
 public class CloudGUIComponent {
 
-    private final int gridPaneIndex = 1;
-    private final int buttonIndex = 2;
-
     private final int cloudIndex;
     private List<ColoredPawnImageView> students;
 
-    private GridPane cloudGrid;
-    private Button button;
+    private final GridPane cloudGrid;
+    private final Button button;
 
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
@@ -38,8 +35,8 @@ public class CloudGUIComponent {
         ((ImageView) cloud.getChildren().get(0)).setImage(ImageFactory.cloudImage);
 
         this.cloudIndex = cloudIndex;
-        cloudGrid = (GridPane) cloud.getChildren().get(gridPaneIndex);
-        button = (Button) cloud.getChildren().get(buttonIndex);
+        cloudGrid = (GridPane) cloud.getChildren().get(1);
+        button = (Button) cloud.getChildren().get(2);
 
         initializeStudentImageViews();
 

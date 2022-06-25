@@ -12,7 +12,6 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -29,19 +28,15 @@ public class DashboardGUIComponent {
     private final GridPane professorPane;
     private final GridPane towersPane;
 
-    private final Button button;
-
-    private final EventHandler<MouseEvent> buttonClicked;
+    private EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
 
     private ColoredPawnOriginDestination fromWhere;
-    private PawnColor choosenColor;
 
     public DashboardGUIComponent(Group school) {
 
         ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
 
-        button = (Button) school.getChildren().get(0);
         entrancePane = (GridPane) school.getChildren().get(1);
         tablePane = (GridPane) school.getChildren().get(2);
         professorPane = (GridPane) school.getChildren().get(3);
@@ -89,14 +84,14 @@ public class DashboardGUIComponent {
             }
         }
 
-        buttonClicked = mouseEvent -> {
+        /*buttonClicked = mouseEvent -> {
 
             try {
                 manageInput(mouseEvent);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        };
+        };*/
     }
 
     public void setEntranceStudents(int students, PawnColor color) {
@@ -161,9 +156,7 @@ public class DashboardGUIComponent {
     public void listenToInput(MoveRequestMessage requestMessage, ColoredPawnOriginDestination fromWhere, PawnColor choosenColor) {
 
         this.requestMessage = requestMessage;
-        this.fromWhere = fromWhere;
-        this.choosenColor = choosenColor;
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        this.fromWhere   = fromWhere;
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
@@ -176,10 +169,8 @@ public class DashboardGUIComponent {
                             new MoveStudent(
                                     fromWhere == ColoredPawnOriginDestination.ENTRANCE ? ColoredPawnOriginDestination.TABLE : ColoredPawnOriginDestination.ENTRANCE,
                                     ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
-                                    -1,
-                                    choosenColor
+                                    -1, null
                                     )));
-            button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
         }
     }
 }
