@@ -39,7 +39,7 @@ public class GameController extends SceneController implements Initializable {
     Group players, schools, islands;
 
     @FXML
-    GridPane clouds, helpers, characters;
+    GridPane clouds, helpers, characters, colorButtons;
 
     @FXML
     TextArea effectsTextArea, hintsTextArea;
@@ -130,6 +130,8 @@ public class GameController extends SceneController implements Initializable {
 
         for(int i=0; i<3; i++) characterGUIComponents.get(i).setCharacter(characters.get(i));
     }
+
+    public void setChosenColor(PawnColor color) { chosenColor = color; }
 
     public void setGamePhase(GUIGamePhase gamePhase, MoveRequestMessage requestMessage) {
 
