@@ -192,7 +192,7 @@ public class CharacterGUIComponent {
 
         if(!coinInitialized) {
 
-            coin = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.coinImage);
+            coin = new SizedImageView(ImageFactory.COIN_SIZE, ImageFactory.coinImage);
 
             characterCard.add(coin, 1, 0);
             coin.setTranslateY(-23);

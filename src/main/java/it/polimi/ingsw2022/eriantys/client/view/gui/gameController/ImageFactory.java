@@ -10,11 +10,13 @@ import java.util.Objects;
 
 public class ImageFactory {
 
-    public static final int DENY_TILE_SIZE = 20;
     public static final int STUDENT_SIZE = 19;
     public static final int PROFESSOR_SIZE = 23;
-    public static final int TOWER_SIZE = 18;
     public static final int MOTHER_NATURE_SIZE = 18;
+    public static final int TOWER_SIZE = 18;
+    public static final int COIN_SIZE = 19;
+    public static final int DENY_TILE_SIZE = 20;
+    public static final int HELPER_CARD_SIZE = 70;
     public static final int CHARACHTER_CARD_SIZE = 70;
 
     public static final Map<PawnColor, Image> studentsImages;
@@ -22,6 +24,8 @@ public class ImageFactory {
     public static final Map<Integer, Image> helpersImages;
     public static final Image whiteTowerImage, blackTowerImage, greyTowerImage, motherNatureImage, coinImage, denyTileImage;
     public static final Map<Integer, Image> charactersImages;
+
+    private static final double MAX_SCALE = 2;
 
     static {
 
@@ -70,7 +74,7 @@ public class ImageFactory {
         }
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
-        return new Image(path);
+        return new Image(path, STUDENT_SIZE * MAX_SCALE, STUDENT_SIZE * MAX_SCALE, true, true);
     }
 
     private static Image loadProfessorImage(PawnColor color) {
@@ -98,56 +102,56 @@ public class ImageFactory {
         }
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
-        return new Image(path);
+        return new Image(path, PROFESSOR_SIZE * MAX_SCALE, PROFESSOR_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadWhiteTowerImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/white_tower.png")).toString();
+        return new Image(path, TOWER_SIZE * MAX_SCALE, TOWER_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadBlackTowerImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/black_tower.png")).toString();
+        return new Image(path, TOWER_SIZE * MAX_SCALE, TOWER_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadGreyTowerImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/grey_tower.png")).toString();
+        return new Image(path, TOWER_SIZE * MAX_SCALE, TOWER_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadMotherNatureImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/mother_nature.png")).toString();
+        return new Image(path, MOTHER_NATURE_SIZE * MAX_SCALE, MOTHER_NATURE_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadCoinImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/coin.png")).toString();
+        return new Image(path, COIN_SIZE * MAX_SCALE, COIN_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadDenyTileImage() {
+
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/deny_island_icon.png")).toString();
+        return new Image(path, DENY_TILE_SIZE * MAX_SCALE, DENY_TILE_SIZE * MAX_SCALE, true, true);
     }
 
     private static Image loadHelperImage(int index) {
 
         String imageName = "Helper (" + index + ").png";
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Helpers/" + imageName)).toString();
-        return new Image(path);
-    }
-
-    private static Image loadWhiteTowerImage() {
-
-        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/white_tower.png")).toString();
-        return new Image(path);
-    }
-
-    private static Image loadBlackTowerImage() {
-
-        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/black_tower.png")).toString();
-        return new Image(path);
-    }
-
-    private static Image loadGreyTowerImage() {
-
-        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/grey_tower.png")).toString();
-        return new Image(path);
-    }
-
-    private static Image loadMotherNatureImage() {
-
-        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/mother_nature.png")).toString();
-        return new Image(path);
-    }
-
-    private static Image loadCoinImage() {
-
-        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/coin.png")).toString();
-        return new Image(path);
-    }
-
-    private static Image loadDenyTileImage() {
-
-        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/deny_island_icon.png")).toString();
-        return new Image(path);
+        return new Image(path, HELPER_CARD_SIZE * MAX_SCALE, HELPER_CARD_SIZE * MAX_SCALE, true, true);
     }
 
     private static Image loadCharacterImage(int index) {
 
         String imageName = "character (" + index + ").jpg";
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Characters/" + imageName)).toString();
-        return new Image(path);
+        return new Image(path, CHARACHTER_CARD_SIZE * MAX_SCALE, CHARACHTER_CARD_SIZE * MAX_SCALE, true, true);
     }
 }

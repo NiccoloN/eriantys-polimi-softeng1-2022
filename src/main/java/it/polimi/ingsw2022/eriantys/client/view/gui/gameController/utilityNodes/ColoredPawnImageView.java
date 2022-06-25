@@ -36,5 +36,4 @@ public class ColoredPawnImageView extends SizedImageView {
         this.color = null;
         setVisible(false);
     }
-
 }
