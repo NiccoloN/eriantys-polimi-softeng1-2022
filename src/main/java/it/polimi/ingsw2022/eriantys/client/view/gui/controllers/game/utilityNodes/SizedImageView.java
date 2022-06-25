@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

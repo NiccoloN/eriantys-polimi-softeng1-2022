@@ -1,7 +1,7 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
@@ -86,6 +86,7 @@ public class HelpersGUIComponent {
     public void stopListeningToInput() {
 
         helpers.setVisible(false);
+        requestMessage = null;
 
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 

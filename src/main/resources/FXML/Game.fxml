@@ -943,7 +943,7 @@
             </Group>
          </children>
       </Group>
-      <GridPane layoutX="477.5" layoutY="625.0" prefHeight="75.0">
+      <GridPane fx:id="colorButtons" layoutX="477.5" layoutY="625.0" prefHeight="75.0" visible="false">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />

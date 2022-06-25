@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game;
 
 public enum GUIGamePhase {
 

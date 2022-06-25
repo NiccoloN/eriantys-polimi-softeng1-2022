@@ -1,24 +1,19 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
-import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
-import javafx.event.ActionEvent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static it.polimi.ingsw2022.eriantys.client.EriantysClient.ADDRESS_FILE_NAME;
@@ -36,9 +31,22 @@ public class EnterServerIp extends SceneController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         ipAddressField.setText(EriantysClient.getInstance().loadSavedServerIp());
+
+        ipAddressField.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+
+                try {
+                    saveServerIp();
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    public void saveServerIp(ActionEvent event) throws IOException {
+    public void saveServerIp() throws IOException {
 
         String serverIpAddress = ipAddressField.getText().trim();
 
@@ -49,6 +57,5 @@ public class EnterServerIp extends SceneController implements Initializable {
         outputStreamWriter.close();
 
         getGui().setScene("WelcomeScreen.fxml", new Start(getGui()));
-
     }
 }

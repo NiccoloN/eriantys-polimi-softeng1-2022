@@ -1,11 +1,12 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
 import it.polimi.ingsw2022.eriantys.client.view.View;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.GameController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.EnterUsername;
-import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LoadOrCreateGame;
-import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.LobbyWaiting;
-import it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers.Start;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.EnterUsername;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.LoadOrCreateGame;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.LobbyWaiting;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.Start;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
@@ -19,7 +20,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.transform.Scale;

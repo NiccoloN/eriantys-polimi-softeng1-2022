@@ -1,17 +1,11 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
-import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class Start extends SceneController {
 

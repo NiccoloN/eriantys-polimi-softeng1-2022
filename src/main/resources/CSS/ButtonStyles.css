@@ -19,95 +19,69 @@
             linear-gradient(#efaa22, #ffea6a),
             linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),
             linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
-    -fx-text-fill: #654b00;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-    -fx-padding: 5 10 5 10;
 }
 
 .red-button {
+    -fx-background-image: url("../Images/Game/Pawns/2D/student_red.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 40px;
     -fx-background-color:
-            linear-gradient(#ff0000, #bd0000);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
+            linear-gradient(#cc0000, #750000);
 }
 .red-button:hover {
     -fx-background-color:
-            linear-gradient(#bd0000, #ff0000);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
-    -fx-text-fill: #654b00;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-    -fx-padding: 5 10 5 10;
+            linear-gradient(#750000, #cc0000);
 }
 
 .green-button {
+    -fx-background-image: url("../Images/Game/Pawns/2D/student_green.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 40px;
     -fx-background-color:
-            linear-gradient(#2dff2d, #018d01);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
+            linear-gradient(#00ab00, #006e00);
 }
 .green-button:hover {
     -fx-background-color:
-            linear-gradient(#018d01, #2dff2d);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
-    -fx-text-fill: #654b00;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-    -fx-padding: 5 10 5 10;
+            linear-gradient(#006e00, #00ab00);
 }
 
 .yellow-button {
+    -fx-background-image: url("../Images/Game/Pawns/2D/student_yellow.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 40px;
     -fx-background-color:
-            linear-gradient(#fff000, #aab000);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
+            linear-gradient(#c5a400, #c97400);
 }
 .yellow-button:hover {
     -fx-background-color:
-            linear-gradient(#aab000, #fff000);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
-    -fx-text-fill: #654b00;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-    -fx-padding: 5 10 5 10;
+            linear-gradient(#c97400, #c5a400);
 }
 
 .blue-button {
+    -fx-background-image: url("../Images/Game/Pawns/2D/student_blue.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 40px;
     -fx-background-color:
-            linear-gradient(#0021ff, #0004a6);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
+            linear-gradient(#0094e3, #006b85);
 }
 .blue-button:hover {
     -fx-background-color:
-            linear-gradient(#0004a6, #0021ff);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
-    -fx-text-fill: #654b00;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-    -fx-padding: 5 10 5 10;
+            linear-gradient(#006b85, #0094e3);
 }
 
 .pink-button {
+    -fx-background-image: url("../Images/Game/Pawns/2D/student_pink.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 40px;
     -fx-background-color:
-            linear-gradient(#ed00ff, #a10098);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
+            linear-gradient(#bf00d0, #8c0086);
 }
 .pink-button:hover {
     -fx-background-color:
-            linear-gradient(#a10098, #ed00ff);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0,1,2,3,0;
-    -fx-text-fill: #654b00;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-    -fx-padding: 5 10 5 10;
+            linear-gradient(#8c0086, #bf00d0);
 }

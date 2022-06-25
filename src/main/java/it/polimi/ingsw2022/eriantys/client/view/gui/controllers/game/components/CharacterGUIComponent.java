@@ -1,16 +1,15 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.ColoredPawnImageView;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.SizedImageView;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -25,8 +24,6 @@ import java.util.List;
 
 public class CharacterGUIComponent {
 
-    public final int imageIndex = 0;
-    public final int gridIndex = 1;
     private boolean studentsInitialized = false;
     private boolean denyCardsInitialized = false;
     private boolean coinInitialized = false;
@@ -49,8 +46,8 @@ public class CharacterGUIComponent {
 
     public CharacterGUIComponent(Group group, TextArea effectsTextArea) {
 
-        characterImage = (ImageView) group.getChildren().get(imageIndex);
-        characterCard = (GridPane) group.getChildren().get(gridIndex);
+        characterImage = (ImageView) group.getChildren().get(0);
+        characterCard = (GridPane) group.getChildren().get(1);
         characterCard.setVisible(true);
         this.effectsTextArea = effectsTextArea;
 

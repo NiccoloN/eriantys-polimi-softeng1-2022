@@ -1,7 +1,7 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.menuControllers;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu;
 
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
-import it.polimi.ingsw2022.eriantys.client.view.gui.SceneController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

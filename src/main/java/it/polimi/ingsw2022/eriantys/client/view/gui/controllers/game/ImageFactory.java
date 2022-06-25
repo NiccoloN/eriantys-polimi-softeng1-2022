@@ -1,4 +1,4 @@
-package it.polimi.ingsw2022.eriantys.client.view.gui.gameController;
+package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.scene.image.Image;
@@ -12,6 +12,7 @@ public class ImageFactory {
 
     public static final int STUDENT_SIZE = 19;
     public static final int PROFESSOR_SIZE = 23;
+    public static final int COLOR_SIZE = 40;
     public static final int MOTHER_NATURE_SIZE = 18;
     public static final int TOWER_SIZE = 18;
     public static final int COIN_SIZE = 19;
@@ -23,6 +24,7 @@ public class ImageFactory {
 
     public static final Map<PawnColor, Image> studentsImages;
     public static final Map<PawnColor, Image> professorsImages;
+    public static final Map<PawnColor, Image> colorsImages;
     public static final Map<Integer, Image> helpersImages;
     public static final Map<Integer, Image> charactersImages;
     public static final Map<Integer, Image> islandsImages;
@@ -39,6 +41,9 @@ public class ImageFactory {
 
         professorsImages = new HashMap<>(5);
         for(PawnColor color : PawnColor.values()) professorsImages.put(color, ImageFactory.loadProfessorImage(color));
+
+        colorsImages = new HashMap<>(5);
+        for(PawnColor color : PawnColor.values()) colorsImages.put(color, ImageFactory.loadColorImage(color));
 
         helpersImages = new HashMap<>(10);
         for(int n = 1; n <= 10; n++) helpersImages.put(n, ImageFactory.loadHelperImage(n));
@@ -116,6 +121,33 @@ public class ImageFactory {
 
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
         return new Image(path, PROFESSOR_SIZE * MAX_SCALE, PROFESSOR_SIZE * MAX_SCALE, true, true);
+    }
+
+    private static Image loadColorImage(PawnColor color) {
+
+        String imageName;
+        switch(color) {
+
+            case RED:
+                imageName = "student_red.png";
+                break;
+            case GREEN:
+                imageName = "student_green.png";
+                break;
+            case YELLOW:
+                imageName = "student_yellow.png";
+                break;
+            case BLUE:
+                imageName = "student_blue.png";
+                break;
+            case PINK:
+                imageName = "student_pink.png";
+                break;
+            default:
+                throw new InvalidParameterException("Invalid pawn color");
+        }
+        String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/2D/" + imageName)).toString();
+        return new Image(path, COLOR_SIZE * MAX_SCALE, COLOR_SIZE * MAX_SCALE, true, true);
     }
 
     private static Image loadWhiteTowerImage() {
