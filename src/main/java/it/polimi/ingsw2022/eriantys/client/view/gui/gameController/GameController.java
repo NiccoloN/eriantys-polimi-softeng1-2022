@@ -63,7 +63,7 @@ public class GameController extends SceneController implements Initializable {
         for(int n = 0; n < 4; n++) {
 
             if(n < playersUsernames.size()) playerComponents.put(playersUsernames.get(n),
-                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersUsernames.get(n)));
+                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersUsernames.get(n), n));
 
             else players.getChildren().get(n).setVisible(false);
         }

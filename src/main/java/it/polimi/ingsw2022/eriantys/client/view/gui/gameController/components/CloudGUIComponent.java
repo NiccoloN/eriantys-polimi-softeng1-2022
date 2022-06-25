@@ -10,6 +10,7 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -33,6 +34,8 @@ public class CloudGUIComponent {
     private MoveRequestMessage requestMessage;
 
     public CloudGUIComponent(int cloudIndex, Group cloud) {
+
+        ((ImageView) cloud.getChildren().get(0)).setImage(ImageFactory.cloudImage);
 
         this.cloudIndex = cloudIndex;
         cloudGrid = (GridPane) cloud.getChildren().get(gridPaneIndex);

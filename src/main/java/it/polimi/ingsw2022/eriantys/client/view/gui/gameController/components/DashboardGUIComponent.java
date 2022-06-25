@@ -5,11 +5,10 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
 
 
 public class DashboardGUIComponent {
@@ -20,10 +19,13 @@ public class DashboardGUIComponent {
     private final GridPane towersPane;
 
     public DashboardGUIComponent(Group school) {
-        this.entrancePane = (GridPane) school.getChildren().get(1);
-        this.tablePane = (GridPane) school.getChildren().get(2);
-        this.professorPane = (GridPane) school.getChildren().get(3);
-        this.towersPane = (GridPane) school.getChildren().get(4);
+
+        ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
+
+        entrancePane = (GridPane) school.getChildren().get(1);
+        tablePane = (GridPane) school.getChildren().get(2);
+        professorPane = (GridPane) school.getChildren().get(3);
+        towersPane = (GridPane) school.getChildren().get(4);
 
         int colorRow = 0;
         for (PawnColor color : PawnColor.values()) {

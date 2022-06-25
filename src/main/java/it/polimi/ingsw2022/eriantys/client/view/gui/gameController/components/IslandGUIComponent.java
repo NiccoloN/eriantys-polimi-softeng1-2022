@@ -51,6 +51,9 @@ public class IslandGUIComponent {
 
     public IslandGUIComponent(Integer islandIndex, Group islandGroup) {
 
+        ImageView islandImageView = ((ImageView) islandGroup.getChildren().get(0));
+        islandImageView.setImage(ImageFactory.islandsImages.get(((int) (Math.random() * 3) + 1)));
+
         this.islandIndex = islandIndex;
         island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
         button = (Button) islandGroup.getChildren().get(buttonIndex);

@@ -110,7 +110,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Board/cloud_tile_empty.png" />
+                        <Image url="@../Images/Game/Board/cloud.png" />
                      </image>
                   </ImageView>
                   <GridPane layoutX="10.0" layoutY="10.0">
@@ -132,7 +132,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Board/cloud_tile_empty.png" />
+                        <Image url="@../Images/Game/Board/cloud.png" />
                      </image>
                   </ImageView>
                   <GridPane layoutX="10.0" layoutY="10.0">
@@ -154,7 +154,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Board/cloud_tile_empty.png" />
+                        <Image url="@../Images/Game/Board/cloud.png" />
                      </image>
                   </ImageView>
                   <GridPane layoutX="10.0" layoutY="10.0">
@@ -176,7 +176,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Board/cloud_tile_empty.png" />
+                        <Image url="@../Images/Game/Board/cloud.png" />
                      </image>
                   </ImageView>
                   <GridPane layoutX="10.0" layoutY="10.0">
@@ -849,7 +849,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="-70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Mages/king_no_bg.png" />
+                        <Image url="@../Images/Game/Mages/mage (1).png" />
                      </image>
                   </ImageView>
                   <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css" text="Nicooooooooooooooooo">
@@ -873,7 +873,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Mages/pixie_no_bg.png" />
+                        <Image url="@../Images/Game/Mages/mage (2).png" />
                      </image>
                   </ImageView>
                   <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css" text="Emaaaaaaaaaaaaaaaaaa">
@@ -897,7 +897,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="-70.0" layoutY="-230.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Mages/wizard_no_bg.png" />
+                        <Image url="@../Images/Game/Mages/mage (4).png" />
                      </image>
                   </ImageView>
                   <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css" text="Fraaaaaaaaaaaaaaaaaaaa">
@@ -921,7 +921,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="200.0" layoutY="-230.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Images/Game/Mages/sorcerer_no_bg.png" />
+                        <Image url="@../Images/Game/Mages/mage (3).png" />
                      </image>
                   </ImageView>
                   <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css" text="MMMMMMMMMMMMMMMMMMMM">
