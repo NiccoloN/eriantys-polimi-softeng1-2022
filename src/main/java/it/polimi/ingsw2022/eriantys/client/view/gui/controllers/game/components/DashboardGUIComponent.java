@@ -1,9 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
-import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.ColoredPawnImageView;
-import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
@@ -32,7 +29,7 @@ public class DashboardGUIComponent {
     private final GridPane professorPane;
     private final GridPane towersPane;
 
-    private Button button;
+    private final Button button;
 
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
