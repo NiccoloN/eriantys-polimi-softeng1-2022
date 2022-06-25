@@ -943,7 +943,7 @@
             </Group>
          </children>
       </Group>
-      <GridPane fx:id="colors" layoutX="477.5" layoutY="625.0" prefHeight="75.0">
+      <GridPane fx:id="colorButtons" layoutX="477.5" layoutY="625.0" prefHeight="75.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
@@ -955,15 +955,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="red-button" stylesheets="@../CSS/ButtonStyles.css">
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="red-button" stylesheets="@../CSS/ButtonStyles.css" visible="false">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="green-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="yellow-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="blue-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="3" />
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pink-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="4" />
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="green-button" stylesheets="@../CSS/ButtonStyles.css" visible="false" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="yellow-button" stylesheets="@../CSS/ButtonStyles.css" visible="false" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="blue-button" stylesheets="@../CSS/ButtonStyles.css" visible="false" GridPane.columnIndex="3" />
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pink-button" stylesheets="@../CSS/ButtonStyles.css" visible="false" GridPane.columnIndex="4" />
          </children>
          <padding>
             <Insets left="5.0" />
