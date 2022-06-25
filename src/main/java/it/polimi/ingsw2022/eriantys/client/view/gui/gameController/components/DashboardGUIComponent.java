@@ -1,13 +1,25 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.gameController.components;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.ImageFactory;
 import it.polimi.ingsw2022.eriantys.client.view.gui.gameController.utilityNodes.ColoredPawnImageView;
+import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
+import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
+import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
+import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
 
 
@@ -18,10 +30,19 @@ public class DashboardGUIComponent {
     private final GridPane professorPane;
     private final GridPane towersPane;
 
+    private Button button;
+
+    private final EventHandler<MouseEvent> buttonClicked;
+    private MoveRequestMessage requestMessage;
+
+    private ColoredPawnOriginDestination fromWhere;
+    private PawnColor choosenColor;
+
     public DashboardGUIComponent(Group school) {
 
         ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
 
+        button = (Button) school.getChildren().get(0);
         entrancePane = (GridPane) school.getChildren().get(1);
         tablePane = (GridPane) school.getChildren().get(2);
         professorPane = (GridPane) school.getChildren().get(3);
@@ -68,6 +89,15 @@ public class DashboardGUIComponent {
                 towersPane.add(coloredImageView, col, row);
             }
         }
+
+        buttonClicked = mouseEvent -> {
+
+            try {
+                manageInput(mouseEvent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     public void setEntranceStudents(int students, PawnColor color) {
@@ -126,6 +156,31 @@ public class DashboardGUIComponent {
             } else {
                 coloredImageView.setVisible(false);
             }
+        }
+    }
+
+    public void listenToInput(MoveRequestMessage requestMessage, ColoredPawnOriginDestination fromWhere, PawnColor choosenColor) {
+
+        this.requestMessage = requestMessage;
+        this.fromWhere = fromWhere;
+        this.choosenColor = choosenColor;
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+    }
+
+    public void manageInput(MouseEvent mouseEvent) throws IOException {
+
+        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+
+            EriantysClient.getInstance().sendToServer(
+                    new PerformedMoveMessage(
+                            requestMessage,
+                            new MoveStudent(
+                                    fromWhere == ColoredPawnOriginDestination.ENTRANCE ? ColoredPawnOriginDestination.TABLE : ColoredPawnOriginDestination.ENTRANCE,
+                                    ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
+                                    -1,
+                                    choosenColor
+                                    )));
+            button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
         }
     }
 }

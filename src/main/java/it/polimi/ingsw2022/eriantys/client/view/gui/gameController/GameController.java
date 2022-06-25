@@ -121,6 +121,10 @@ public class GameController extends SceneController implements Initializable {
         return cloudGUIComponents.stream().filter((x) -> x.getCloudIndex() == index).findAny().orElseThrow();
     }
 
+    public DashboardGUIComponent getDashboardGUIComponentOfPlayer(String playerName) {
+        return dashboardComponents.get(playerName);
+    }
+
     public List<CharacterGUIComponent> getCharacterGUIComponents() {
 
         return characterGUIComponents;
