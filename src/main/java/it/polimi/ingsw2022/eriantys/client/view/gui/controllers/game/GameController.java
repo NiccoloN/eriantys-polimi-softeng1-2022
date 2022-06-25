@@ -19,7 +19,7 @@ import java.util.*;
 
 public class GameController extends SceneController implements Initializable {
 
-    private final List<String> playersUsernames;
+    private final List<Player> playersList;
 
     private final Map<String, PlayerGUIComponent> playerComponents;
     private final Map<String, DashboardGUIComponent> dashboardComponents;
@@ -41,14 +41,12 @@ public class GameController extends SceneController implements Initializable {
     public GameController(EriantysGUI gui, List<Player> players) {
 
         super(gui);
-
-        playersUsernames = new ArrayList<>(2);
         islandGUIComponents = new ArrayList<>(12);
         cloudGUIComponents = new ArrayList<>(2);
         dashboardComponents = new HashMap<>();
         playerComponents = new HashMap<>();
 
-        for(Player player : players) playersUsernames.add(player.getUsername());
+        playersList = players;
     }
 
     @Override
@@ -56,22 +54,24 @@ public class GameController extends SceneController implements Initializable {
 
         for(int n = 0; n < 4; n++) {
 
-            if(n < playersUsernames.size()) playerComponents.put(playersUsernames.get(n),
-                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersUsernames.get(n), n));
+            if(n < playersList.size()) playerComponents.put(playersList.get(n).getUsername(),
+                        new PlayerGUIComponent((Group) players.getChildren().get(n), playersList.get(n).getUsername(), n));
 
             else players.getChildren().get(n).setVisible(false);
         }
 
         for(int n = 0; n < 4; n++) {
 
-            if(n < playersUsernames.size())
-                dashboardComponents.put(playersUsernames.get(n), new DashboardGUIComponent((Group) schools.getChildren().get(n)));
+            if(n < playersList.size())
+                dashboardComponents.put(
+                        playersList.get(n).getUsername(),
+                        new DashboardGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
 
             else schools.getChildren().get(n).setVisible(false);
         }
 
         for(int n = 0; n < 12; n++)
-            islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), n));
+            islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), n, this));
 
         helpersGUIComponent = new HelpersGUIComponent(helpers);
 

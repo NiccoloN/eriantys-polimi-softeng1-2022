@@ -8,6 +8,8 @@ import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchoolChange implements Change, Serializable {
 
@@ -37,12 +39,20 @@ public class SchoolChange implements Change, Serializable {
 
         DashboardGUIComponent dashboardGUIComponent = controller.getDashboardGUIComponentOfPlayer(schoolDashboard.player.getUsername());
 
-        for (PawnColor color : PawnColor.values()) {
+        List<PawnColor> entranceStudents = new ArrayList<>();
 
-            dashboardGUIComponent.setEntranceStudents(schoolDashboard.countEntranceStudents(color), color);
-            dashboardGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
-            dashboardGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
-            dashboardGUIComponent.setTowers(schoolDashboard.getTowers());
+        for (PawnColor color : PawnColor.values()) {
+           dashboardGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
+           dashboardGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
+
+           for (int n = 0; n < schoolDashboard.countEntranceStudents(color); n++) {
+               entranceStudents.add(color);
+           }
         }
+
+        dashboardGUIComponent.setEntranceStudents(entranceStudents);
+        dashboardGUIComponent.setTowers(schoolDashboard.getTowers());
+
+
     }
 }

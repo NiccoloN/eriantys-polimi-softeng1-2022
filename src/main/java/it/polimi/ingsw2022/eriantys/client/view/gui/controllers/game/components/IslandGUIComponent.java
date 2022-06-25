@@ -50,9 +50,11 @@ public class IslandGUIComponent {
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
 
+    private final GameController controller;
 
-    public IslandGUIComponent(Group islandGroup, Integer islandIndex) {
+    public IslandGUIComponent(Group islandGroup, Integer islandIndex, GameController controller) {
 
+        this.controller = controller;
         this.islandIndex = islandIndex;
 
         ImageView islandImageView = ((ImageView) islandGroup.getChildren().get(0));
@@ -228,6 +230,7 @@ public class IslandGUIComponent {
                         )
                 );
                 stopListeningToInput();
+                controller.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
             }
 
             else if(request instanceof MoveMotherNatureRequest) {

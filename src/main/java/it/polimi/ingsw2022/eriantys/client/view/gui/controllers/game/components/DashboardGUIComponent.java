@@ -1,6 +1,8 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
@@ -9,9 +11,12 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -19,28 +24,33 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.List;
 
 
 public class DashboardGUIComponent {
 
+    private final ImageView dashboardImageView;
     private final GridPane entrancePane;
     private final GridPane tablePane;
     private final GridPane professorPane;
     private final GridPane towersPane;
 
-    private EventHandler<MouseEvent> buttonClicked;
+    private EventHandler<MouseEvent> dashboardClicked;
     private MoveRequestMessage requestMessage;
+    private PawnColor choosenColor;
 
-    private ColoredPawnOriginDestination fromWhere;
+    private final GameController controller;
 
-    public DashboardGUIComponent(Group school) {
-
-        ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
+    public DashboardGUIComponent(Group school, Team team, GameController controller) {
+        dashboardImageView = (ImageView) school.getChildren().get(0);
+        dashboardImageView.setImage(ImageFactory.schoolImage);
 
         entrancePane = (GridPane) school.getChildren().get(1);
         tablePane = (GridPane) school.getChildren().get(2);
         professorPane = (GridPane) school.getChildren().get(3);
         towersPane = (GridPane) school.getChildren().get(4);
+
+        this.controller = controller;
 
         int colorRow = 0;
         for (PawnColor color : PawnColor.values()) {
@@ -67,6 +77,7 @@ public class DashboardGUIComponent {
         int ENTRANCE_COLS = 2;
         for (int row = 0; row < ENTRANCE_ROWS; row ++) {
             for (int col = 0; col < ENTRANCE_COLS; col++) {
+                if (row == 0 && col == 0) continue;
                 ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
                 coloredImageView.setVisible(false);
                 entrancePane.add(coloredImageView, col, row);
@@ -78,36 +89,45 @@ public class DashboardGUIComponent {
         int TOWERS_COLS = 2;
         for (int row = 0; row < TOWERS_ROWS; row ++) {
             for (int col = 0; col < TOWERS_COLS; col++) {
-                ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.TOWER_SIZE);
+                Image towerImage;
+                switch (team.getTeamName()) {
+                    case "BLACK":
+                        towerImage = ImageFactory.blackTowerImage;
+                        break;
+                    case "WHITE":
+                        towerImage = ImageFactory.whiteTowerImage;
+                        break;
+                    case "CYAN":
+                        towerImage = ImageFactory.greyTowerImage;
+                        break;
+                    default: throw new InvalidParameterException("Invalid team");
+                }
+                SizedImageView coloredImageView = new SizedImageView(ImageFactory.TOWER_SIZE, towerImage);
                 coloredImageView.setVisible(false);
                 towersPane.add(coloredImageView, col, row);
             }
         }
 
-        /*buttonClicked = mouseEvent -> {
+        dashboardClicked = mouseEvent -> {
 
             try {
                 manageInput(mouseEvent);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        };*/
+        };
     }
 
-    public void setEntranceStudents(int students, PawnColor color) {
-        for (Node child : entrancePane.getChildren()) {
-            ColoredPawnImageView coloredImageView = (ColoredPawnImageView) child;
-            if (students == 0) {
+    public void setEntranceStudents(List<PawnColor> students) {
+        for (int n = 0; n < entrancePane.getChildren().size(); n++) {
+            ColoredPawnImageView coloredImageView = (ColoredPawnImageView) entrancePane.getChildren().get(n);
+            if (n < students.size()) {
+                coloredImageView.setStudentOfColor(students.get(n));
+            } else {
                 coloredImageView.setVisible(false);
-            } else if (!coloredImageView.isVisible()) {
-                coloredImageView.setStudentOfColor(color);
-                students--;
             }
         }
-
-        if (students > 0) throw new InvalidParameterException("Too many students");
     }
-
 
     public void setTableStudents(int students, PawnColor color) {
         for (int i = 0; i < tablePane.getChildren().size(); i++) {
@@ -143,20 +163,21 @@ public class DashboardGUIComponent {
 
     public void setTowers(int towers) {
         for (Node child : towersPane.getChildren()) {
-            ColoredPawnImageView coloredImageView = (ColoredPawnImageView) child;
+            SizedImageView sizedImageView = (SizedImageView) child;
             if (towers > 0) {
-                coloredImageView.setVisible(true);
+                sizedImageView.setVisible(true);
                 towers--;
             } else {
-                coloredImageView.setVisible(false);
+                sizedImageView.setVisible(false);
             }
         }
     }
 
-    public void listenToInput(MoveRequestMessage requestMessage, ColoredPawnOriginDestination fromWhere, PawnColor choosenColor) {
-
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor choosenColor) {
+        dashboardImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
         this.requestMessage = requestMessage;
-        this.fromWhere   = fromWhere;
+        this.choosenColor = choosenColor;
+
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
@@ -167,10 +188,19 @@ public class DashboardGUIComponent {
                     new PerformedMoveMessage(
                             requestMessage,
                             new MoveStudent(
-                                    fromWhere == ColoredPawnOriginDestination.ENTRANCE ? ColoredPawnOriginDestination.TABLE : ColoredPawnOriginDestination.ENTRANCE,
+                                    ColoredPawnOriginDestination.TABLE,
                                     ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
-                                    -1, null
+                                    -1, choosenColor
                                     )));
+            stopListeningToInput();
+            for (IslandGUIComponent island : controller.getIslandGUIComponents()) {
+                island.stopListeningToInput();
+            }
         }
     }
+
+    public void stopListeningToInput() {
+        dashboardImageView.removeEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
+    }
+
 }
