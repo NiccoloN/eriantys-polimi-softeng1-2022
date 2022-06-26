@@ -975,15 +975,59 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="red-button" stylesheets="@../CSS/ButtonStyles.css">
+            <Group>
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="green-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="yellow-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="blue-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="3" />
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pink-button" stylesheets="@../CSS/ButtonStyles.css" GridPane.columnIndex="4" />
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="red-button" stylesheets="@../CSS/ButtonStyles.css" />
+                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/Game/Pawns/2D/student_red.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <Group GridPane.columnIndex="1">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="green-button" stylesheets="@../CSS/ButtonStyles.css" />
+                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/Game/Pawns/2D/student_green.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <Group GridPane.columnIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="yellow-button" stylesheets="@../CSS/ButtonStyles.css" />
+                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/Game/Pawns/2D/student_yellow.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <Group GridPane.columnIndex="3">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="blue-button" stylesheets="@../CSS/ButtonStyles.css" />
+                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/Game/Pawns/2D/student_blue.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <Group GridPane.columnIndex="4">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pink-button" stylesheets="@../CSS/ButtonStyles.css" />
+                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/Game/Pawns/2D/student_pink.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
          </children>
          <padding>
             <Insets left="5.0" />
