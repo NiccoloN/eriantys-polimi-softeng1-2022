@@ -174,7 +174,7 @@ public class GameController extends SceneController implements Initializable {
         String winner2 = "";
         if(team.getSize() > 1) winner2 = team.getPlayers().get(1).getUsername();
 
-        winner.setStyle("-fx-font-size: 25px");
+        winner.setStyle("-fx-font-size: 22px");
         winner.setText("THE WINNER IS TEAM:\n" + team.getTeamName() + "\n\n" + team.getLeader().getUsername() + "\n" + winner2);
 
         winner.setVisible(true);
