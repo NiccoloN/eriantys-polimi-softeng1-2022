@@ -29,7 +29,7 @@ import java.util.List;
 
 public class DashboardGUIComponent {
 
-    private final ImageView dashboardImageView;
+    private final Group dashboardGroup;
     private final GridPane entrancePane;
     private final GridPane tablePane;
     private final GridPane professorPane;
@@ -42,8 +42,8 @@ public class DashboardGUIComponent {
     private final GameController controller;
 
     public DashboardGUIComponent(Group school, Team team, GameController controller) {
-        dashboardImageView = (ImageView) school.getChildren().get(0);
-        dashboardImageView.setImage(ImageFactory.schoolImage);
+        dashboardGroup = school;
+        ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
 
         entrancePane = (GridPane) school.getChildren().get(1);
         tablePane = (GridPane) school.getChildren().get(2);
@@ -130,6 +130,8 @@ public class DashboardGUIComponent {
     }
 
     public void setTableStudents(int students, PawnColor color) {
+        if (students > 10) return;
+
         for (int i = 0; i < tablePane.getChildren().size(); i++) {
             ColoredPawnImageView coloredImageView = (ColoredPawnImageView) tablePane.getChildren().get(i);
 
@@ -143,8 +145,8 @@ public class DashboardGUIComponent {
 
             if (!coloredImageView.isVisible()) {
                 coloredImageView.setVisible(true);
-                students--;
             }
+            students--;
         }
 
         if (students > 0) throw new InvalidParameterException("Too many students");
@@ -174,7 +176,7 @@ public class DashboardGUIComponent {
     }
 
     public void listenToInput(MoveRequestMessage requestMessage, PawnColor choosenColor) {
-        dashboardImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
+        dashboardGroup.addEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
         this.requestMessage = requestMessage;
         this.choosenColor = choosenColor;
 
@@ -200,7 +202,7 @@ public class DashboardGUIComponent {
     }
 
     public void stopListeningToInput() {
-        dashboardImageView.removeEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
+        dashboardGroup.removeEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
     }
 
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,17 +42,19 @@ public class SchoolChange implements Change, Serializable {
 
         List<PawnColor> entranceStudents = new ArrayList<>();
 
-        for (PawnColor color : PawnColor.values()) {
-           dashboardGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
-           dashboardGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
+        Platform.runLater(() -> {
+            for (PawnColor color : PawnColor.values()) {
+                dashboardGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
+                dashboardGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
 
-           for (int n = 0; n < schoolDashboard.countEntranceStudents(color); n++) {
-               entranceStudents.add(color);
-           }
-        }
+                for (int n = 0; n < schoolDashboard.countEntranceStudents(color); n++) {
+                    entranceStudents.add(color);
+                }
+            }
 
-        dashboardGUIComponent.setEntranceStudents(entranceStudents);
-        dashboardGUIComponent.setTowers(schoolDashboard.getTowers());
+            dashboardGUIComponent.setEntranceStudents(entranceStudents);
+            dashboardGUIComponent.setTowers(schoolDashboard.getTowers());
+        });
 
 
     }
