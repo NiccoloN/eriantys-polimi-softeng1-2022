@@ -22,7 +22,7 @@ public abstract class MoveRequest implements Serializable {
 
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
 
-        EriantysClient.getInstance().log(promptSentence);
+        scene.getHintTextArea().setText(promptSentence);
     }
 
     public void manage(GameController controller, MoveRequestMessage requestMessage) {

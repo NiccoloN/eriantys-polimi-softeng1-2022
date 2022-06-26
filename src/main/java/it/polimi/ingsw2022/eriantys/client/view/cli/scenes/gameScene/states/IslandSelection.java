@@ -93,8 +93,6 @@ public class IslandSelection extends GameSceneState {
             updateSelectedIndex();
         }
 
-        getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
-                                      "Press ↓ or s to select a character card");
         updateCLI();
     }
 
@@ -103,7 +101,6 @@ public class IslandSelection extends GameSceneState {
 
         super.exit();
         currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
-        getScene().getHintTextArea().setText("");
     }
 
     @Override

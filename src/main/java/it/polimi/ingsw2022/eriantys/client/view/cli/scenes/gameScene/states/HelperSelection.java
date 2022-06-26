@@ -54,8 +54,6 @@ public class HelperSelection extends GameSceneState {
             }
         }
 
-        getScene().getHintTextArea().setText("Select a helper card:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
-                                      "Press ↑ or w to select a character card");
         updateCLI();
     }
 
@@ -64,7 +62,6 @@ public class HelperSelection extends GameSceneState {
 
         super.exit();
         for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setPlayable(true);
-        getScene().getHintTextArea().setText("");
     }
 
 
