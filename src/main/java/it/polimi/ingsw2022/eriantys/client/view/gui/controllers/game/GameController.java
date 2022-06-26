@@ -7,6 +7,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -36,7 +37,7 @@ public class GameController extends SceneController implements Initializable {
     GridPane clouds, helpers, characters, colorButtons;
 
     @FXML
-    TextArea effectsTextArea, hintsTextArea;
+    TextArea effectsTextArea, hintsTextArea, winner;
 
     public GameController(EriantysGUI gui, List<Player> players) {
 
@@ -161,5 +162,21 @@ public class GameController extends SceneController implements Initializable {
                 for(CharacterGUIComponent character : characterGUIComponents) character.stopListeningToInput();
         helpersGUIComponent.stopListeningToInput();
         colorsGUIComponent.stopListeningToInput();
+    }
+
+    public void endGame(Team team) {
+
+        stopListeners();
+
+        winner.setWrapText(true);
+        winner.setPadding(new Insets(30, 0, 0, 0));
+
+        String winner2 = "";
+        if(team.getSize() > 1) winner2 = team.getPlayers().get(1).getUsername();
+
+        winner.setStyle("-fx-font-size: 25px");
+        winner.setText("THE WINNER IS TEAM:\n" + team.getTeamName() + "\n\n" + team.getLeader().getUsername() + "\n" + winner2);
+
+        winner.setVisible(true);
     }
 }

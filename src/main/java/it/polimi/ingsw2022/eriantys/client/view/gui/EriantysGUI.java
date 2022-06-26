@@ -147,7 +147,7 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void endGame(Team team) {
 
-        //TODO
+        gameController.endGame(team);
     }
 
     public Stage getMainStage() {
