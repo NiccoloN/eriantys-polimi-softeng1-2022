@@ -45,7 +45,7 @@ public class ChooseCharacterCard extends Move {
             return false;
         }
 
-        if(game.getCurrentPlayer().isCharacterUsed()) {
+        if(game.getCurrentPlayer().hasPlayedCharacter()) {
 
             errorMessage = "You already used a character in this turn";
             return false;

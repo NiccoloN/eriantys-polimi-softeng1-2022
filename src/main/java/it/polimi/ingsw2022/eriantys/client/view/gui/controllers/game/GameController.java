@@ -77,7 +77,7 @@ public class GameController extends SceneController implements Initializable {
         for(int n = 0; n < 12; n++)
             islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), this));
 
-        helpersGUIComponent = new HelpersGUIComponent(helpers);
+        helpersGUIComponent = new HelpersGUIComponent(helpers, this);
 
         for(int n = 0; n < clouds.getColumnCount(); n++) {
 
@@ -91,8 +91,8 @@ public class GameController extends SceneController implements Initializable {
         if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
 
             characterGUIComponents = new ArrayList<>(3);
-            for(int i=0; i<3; i++)
-                characterGUIComponents.add(new CharacterGUIComponent((Group) characters.getChildren().get(i), effectsTextArea));
+            for(int i = 0; i < 3; i++)
+                characterGUIComponents.add(new CharacterGUIComponent((Group) characters.getChildren().get(i), effectsTextArea, this));
         }
 
         colorsGUIComponent = new ColorsGUIComponent(colorButtons, this);

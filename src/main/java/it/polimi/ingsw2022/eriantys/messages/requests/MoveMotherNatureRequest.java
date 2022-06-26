@@ -15,14 +15,16 @@ import java.util.List;
 
 public class MoveMotherNatureRequest extends MoveRequest {
 
-    public final int motherNatureMaxSteps;
     private static boolean additionalSteps = false;
 
-    public MoveMotherNatureRequest(int maxMotherNatureMaxSteps) {
+    public final int motherNatureMaxSteps;
+
+    public MoveMotherNatureRequest(int maxMotherNatureMaxSteps, boolean canPlayCharacter) {
 
         super("Choose how many steps mother nature will take");
         if(!additionalSteps) this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
         else this.motherNatureMaxSteps = maxMotherNatureMaxSteps + 2;
+        setCanPlayCharacter(canPlayCharacter);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class MoveMotherNatureRequest extends MoveRequest {
                 }
             }
 
-            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
+            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT && canPlayCharacter()) {
 
                 for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
 
@@ -77,6 +79,7 @@ public class MoveMotherNatureRequest extends MoveRequest {
     }
 
     public static void setAdditionalSteps(boolean additionalSteps) {
+
         MoveMotherNatureRequest.additionalSteps = additionalSteps;
     }
 }

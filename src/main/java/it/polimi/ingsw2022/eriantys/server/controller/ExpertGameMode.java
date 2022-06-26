@@ -112,6 +112,7 @@ public class ExpertGameMode extends BasicGameMode {
 
                 Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence
                         (game.getPlayers(),game.getBoard().getIsland(game.getCharacterIsland()), game.getCurrentPlayer());
+
                 if(dominantTeam.isPresent()) updateTowers(dominantTeam.get(), game.getBoard().getIsland(game.getCharacterIsland()));
 
                 break;
@@ -277,7 +278,7 @@ public class ExpertGameMode extends BasicGameMode {
             Update update = new Update();
             update.addChange(new IslandChange(game.getBoard().getIslands(), game.getBoard().getIslandTiles()));
             CharacterCardsChange characterCardsChange = new CharacterCardsChange();
-            for(int i=0; i<game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
+            for(int i = 0; i < game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
             server.sendToAllClients(new UpdateMessage(update));
         }
         else super.checkIslandInfluence();
@@ -294,30 +295,37 @@ public class ExpertGameMode extends BasicGameMode {
 
             new Thread(() -> {
                 try {
+
                     if (move.isValid(game, currentMoveRequest)) {
 
                         playCharacter(move.characterCardIndex);
                         performedMoveMessage.move.apply(game);
+                        previousMessage.moveRequest.setCanPlayCharacter(false);
                         server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
                     }
+
                     else {
+
                         server.sendToClient(
-                                new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), "The chosen character card does not exist."),
+                                new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
                                 game.getCurrentPlayer().getUsername());
                     }
 
-                    if(previousMessage.moveRequest instanceof MoveMotherNatureRequest) {
-                        requestMotherNature(game.getCurrentPlayer());
-                    }
+                    if(previousMessage.moveRequest instanceof MoveMotherNatureRequest) requestMotherNature(game.getCurrentPlayer());
+
                     else if(previousMessage.moveRequest instanceof MoveStudentRequest) requestStudent(game.getCurrentPlayer());
+
                     else requestMove(previousMessage.moveRequest, game.getCurrentPlayer().getUsername());
+
                     previousMessage.acceptResponse();
 
                 } catch (IOException | InterruptedException e) {
+
                     e.printStackTrace();
                 }
             }).start();
         }
+
         else if(performedMoveMessage.move instanceof Abort) {
 
             new Thread( () -> {
@@ -326,6 +334,7 @@ public class ExpertGameMode extends BasicGameMode {
                 previousMessage.acceptResponse();
             }).start();
         }
+
         else super.managePerformedMoveMessage(performedMoveMessage);
     }
 }

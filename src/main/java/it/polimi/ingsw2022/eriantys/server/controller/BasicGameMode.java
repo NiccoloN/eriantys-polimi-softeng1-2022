@@ -161,7 +161,7 @@ public class BasicGameMode implements GameMode, Serializable {
                         unplayableIndices.add(other.getCurrentHelper().index);
 
                 if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
-                requestMove(new ChooseHelperCardRequest(unplayableIndices), player.getUsername());
+                requestMove(new ChooseHelperCardRequest(unplayableIndices, !player.hasPlayedCharacter()), player.getUsername());
                 server.sendToClient(new MoveRequestMessage(new WaitRequest()), player.getUsername());
 
                 if (game.getCurrentPlayer().getNumberOfHelpers() == 0) game.setGameEnding();
@@ -191,7 +191,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
         if(currentGamePhase == GamePhase.CHOOSING_CLOUD && !game.isGameEnding()) {
 
-            requestMove(new ChooseCloudRequest(), player.getUsername());
+            requestMove(new ChooseCloudRequest(!player.hasPlayedCharacter()), player.getUsername());
 
             if (playerIndex + 1 < game.getPlayers().size()) {
 
@@ -213,14 +213,15 @@ public class BasicGameMode implements GameMode, Serializable {
 
     protected void requestStudent(Player player) throws IOException, InterruptedException {
 
-        requestMove(new MoveStudentRequest
-                        (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+        requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors(),
+                        List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE),
+                        !player.hasPlayedCharacter()),
                 player.getUsername());
     }
 
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {
 
-        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.getUsername());
+        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement, !player.hasPlayedCharacter()), player.getUsername());
     }
 
      protected void checkIslandInfluence() throws IOException {
@@ -316,6 +317,7 @@ public class BasicGameMode implements GameMode, Serializable {
     public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
         synchronized (this) {
+
             Move move = performedMoveMessage.move;
 
             if (move.isValid(game, currentMoveRequest)) {

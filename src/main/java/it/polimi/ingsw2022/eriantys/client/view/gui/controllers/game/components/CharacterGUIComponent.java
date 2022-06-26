@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
@@ -24,33 +25,38 @@ import java.util.List;
 
 public class CharacterGUIComponent {
 
-    private boolean studentsInitialized = false;
-    private boolean denyCardsInitialized = false;
-    private boolean coinInitialized = false;
-
+    private final GameController gameController;
     private int characterIndex;
     private String effect;
     private int cost;
     private int numberOfDenyTiles;
 
-    private final ImageView characterImage;
+    private final Group characterGroup;
+    private final ImageView characterImageView;
     private final GridPane characterCard;
     private final TextArea effectsTextArea;
 
-    private List<ImageView> denyTilesImages;
     private List<ColoredPawnImageView> studentsImages;
+    private List<ImageView> denyTilesImages;
     private SizedImageView coin;
+
+    private boolean studentsInitialized = false;
+    private boolean denyCardsInitialized = false;
+    private boolean coinInitialized = false;
 
     private final EventHandler<MouseEvent> characterClicked;
     private MoveRequestMessage requestMessage;
 
-    public CharacterGUIComponent(Group group, TextArea effectsTextArea) {
+    public CharacterGUIComponent(Group characterGroup, TextArea effectsTextArea, GameController gameController) {
 
-        group.setVisible(true);
-        characterImage = (ImageView) group.getChildren().get(0);
-        characterCard = (GridPane) group.getChildren().get(1);
-        characterCard.setVisible(true);
+        this.gameController = gameController;
         this.effectsTextArea = effectsTextArea;
+        this.characterGroup = characterGroup;
+        characterImageView   = (ImageView) characterGroup.getChildren().get(0);
+        characterCard        = (GridPane) characterGroup.getChildren().get(1);
+        characterCard.setVisible(true);
+
+        characterGroup.setVisible(true);
 
         characterCard.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> {
 
@@ -77,7 +83,7 @@ public class CharacterGUIComponent {
         if(characterIndex == 0) {
 
             characterIndex = card.index;
-            characterImage.setImage(ImageFactory.charactersImages.get(characterIndex));
+            characterImageView.setImage(ImageFactory.charactersImages.get(characterIndex));
             effect = card.effect;
         }
 
@@ -211,19 +217,18 @@ public class CharacterGUIComponent {
 
         this.requestMessage = requestMessage;
         characterCard.addEventHandler(MouseEvent.MOUSE_CLICKED, characterClicked);
+        characterGroup.setEffect(gameController.getBorderGlowEffect());
     }
 
     public void stopListeningToInput() {
 
         characterCard.removeEventHandler(MouseEvent.MOUSE_CLICKED, characterClicked);
+        characterGroup.setEffect(null);
     }
 
     private void manageInput(MouseEvent mouseEvent) throws IOException {
 
-        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage
-                    (requestMessage, new ChooseCharacterCard(characterIndex)));
-        }
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCharacterCard(characterIndex)));
     }
 }

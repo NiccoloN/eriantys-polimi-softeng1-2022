@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -21,14 +22,17 @@ import java.util.Map;
 
 public class HelpersGUIComponent {
 
+    private final GameController gameController;
     private final GridPane helpers;
     private final Map<ImageView, Integer> imagesIndices;
     private final Map<Integer, EventHandler<MouseEvent>> cardClickListeners;
     private MoveRequestMessage requestMessage;
 
-    public HelpersGUIComponent(GridPane helpers) {
+    public HelpersGUIComponent(GridPane helpers, GameController gameController) {
 
+        this.gameController = gameController;
         this.helpers = helpers;
+
         imagesIndices = new HashMap<>(10);
 
         cardClickListeners = new HashMap<>(10);
@@ -84,8 +88,11 @@ public class HelpersGUIComponent {
 
             if(cardIndex > 0) {
 
-                if(!unplayableIndices.contains(cardIndex))
+                if(!unplayableIndices.contains(cardIndex)) {
+
                     helper.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
+                    helper.setEffect(gameController.getBorderGlowEffect());
+                }
 
                 else {
 

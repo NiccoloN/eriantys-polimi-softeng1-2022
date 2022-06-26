@@ -12,10 +12,12 @@ import java.io.Serializable;
 public abstract class MoveRequest implements Serializable {
 
     public final String promptSentence;
+    private boolean canPlayCharacter;
 
     public MoveRequest(String promptSentence) {
 
         this.promptSentence = promptSentence;
+        canPlayCharacter = false;
     }
 
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
@@ -26,5 +28,15 @@ public abstract class MoveRequest implements Serializable {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         Platform.runLater(() -> controller.setHintsText(promptSentence));
+    }
+
+    public boolean canPlayCharacter() {
+
+        return canPlayCharacter;
+    }
+
+    public void setCanPlayCharacter(boolean canPlayCharacter) {
+
+        this.canPlayCharacter = canPlayCharacter;
     }
 }

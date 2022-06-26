@@ -176,7 +176,7 @@ public class Player implements Serializable {
         this.school = school;
     }
 
-    public boolean isCharacterUsed() {
+    public boolean hasPlayedCharacter() {
         return characterUsed;
     }
 

@@ -84,6 +84,8 @@ public class ColorsGUIComponent {
 
     public void listenToInput(MoveRequestMessage requestMessage, List<PawnColor> availableColors) {
 
+        gameController.getHelpersGUIComponent().stopListeningToInput();
+
         setAvailableColors(availableColors);
 
         colorButtons.setVisible(true);

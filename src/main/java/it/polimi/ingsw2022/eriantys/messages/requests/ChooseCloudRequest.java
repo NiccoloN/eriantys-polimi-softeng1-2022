@@ -13,9 +13,10 @@ import javafx.application.Platform;
 
 public class ChooseCloudRequest extends MoveRequest {
 
-    public ChooseCloudRequest() {
+    public ChooseCloudRequest(boolean canPlayCharacter) {
 
         super("Choose a cloud from which to take new students");
+        setCanPlayCharacter(canPlayCharacter);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class ChooseCloudRequest extends MoveRequest {
             for(CloudGUIComponent cloud : controller.getCloudGUIComponents())
                 if(!cloud.isEmpty()) cloud.listenToInput(requestMessage);
 
-            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
+            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT && canPlayCharacter()) {
 
                 for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
 

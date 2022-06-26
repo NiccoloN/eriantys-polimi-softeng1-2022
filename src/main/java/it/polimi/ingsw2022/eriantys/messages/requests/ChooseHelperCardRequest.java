@@ -16,10 +16,11 @@ public class ChooseHelperCardRequest extends MoveRequest {
 
     private final List<Integer> unplayableIndices;
 
-    public ChooseHelperCardRequest(List<Integer> unplayableIndices) {
+    public ChooseHelperCardRequest(List<Integer> unplayableIndices, boolean canPlayCharacter) {
 
         super("Choose an helper card");
         this.unplayableIndices = unplayableIndices;
+        setCanPlayCharacter(canPlayCharacter);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class ChooseHelperCardRequest extends MoveRequest {
 
             controller.getHelpersGUIComponent().listenToInput(requestMessage, unplayableIndices);
 
-            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT)
+            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT && canPlayCharacter())
                 for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) character.listenToInput(requestMessage);
         });
     }
