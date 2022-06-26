@@ -40,7 +40,7 @@ public class IslandChange implements Change, Serializable {
         for(PawnColor color : PawnColor.values()) cliIsland.setStudents(color, islandTile.countStudents(color));
         cliIsland.setMother(islandTile.hasMotherNature());
         cliIsland.setTower(islandTile.hasTower());
-        cliIsland.setIndex(islandTile.getIndex());
+        cliIsland.setCompoundIndex(islandTile.getIndex());
         cliIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
         if(islandTile.getTeam().isPresent()) cliIsland.setTeamColor(islandTile.getTeam().get().ansiColor);
     }
@@ -49,7 +49,7 @@ public class IslandChange implements Change, Serializable {
     public void apply(GameController controller) {
 
         for(int n = 0; n < islandTiles.size(); n++)
-            setGuiIslandTile(controller.getIslandGUIComponentOfIndex(n), islandTiles.get(n));
+            setGuiIslandTile(controller.getIslandGUIComponents(n), islandTiles.get(n));
     }
 
     private void setGuiIslandTile(IslandGUIComponent guiIsland, IslandTile islandTile) {
@@ -59,7 +59,7 @@ public class IslandChange implements Change, Serializable {
             for(PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
             guiIsland.setMotherNature(islandTile.hasMotherNature());
             if(islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
-            guiIsland.setIslandIndex(islandTile.getIndex());
+            guiIsland.setGuiIslandIndex(islandTile.getIndex());
             guiIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
         });
     }

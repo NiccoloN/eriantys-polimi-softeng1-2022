@@ -28,22 +28,20 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
-
-    private final GameController controller;
+    private final GameController gameController;
     private PawnColor chosenColor;
+    private boolean hasMotherNature;
 
     private final int indexTraslateY = 41;
-    private final int gridPaneIndex = 1;
-    private final int buttonIndex = 2;
 
     private int characterIndex;
-    private final int islandIndex;
     private final GridPane island;
     private final Button button;
 
+    private final ImageView islandImageView;
     private ImageView redStudentImage, greenStudentImage, yellowStudentImage, blueStudentImage, pinkStudentImage;
     private Label redStudentLabel, greenStudentLabel, yellowStudentLabel, blueStudentLabel, pinkStudentLabel;
-    private final Label componentIndexLabel;
+    private final Label indexLabel;
 
     private ImageView whiteTowerImage, grayTowerImage, blackTowerImage;
     private ImageView motherNatureImage;
@@ -52,16 +50,15 @@ public class IslandGUIComponent {
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
 
-    public IslandGUIComponent(Group islandGroup, Integer islandIndex, GameController controller) {
+    public IslandGUIComponent(Group islandGroup, GameController gameController) {
 
-        this.controller = controller;
-        this.islandIndex = islandIndex;
+        this.gameController = gameController;
 
-        ImageView islandImageView = ((ImageView) islandGroup.getChildren().get(0));
+        islandImageView = ((ImageView) islandGroup.getChildren().get(0));
         islandImageView.setImage(ImageFactory.islandsImages.get(((int) (Math.random() * 3) + 1)));
 
-        island = (GridPane) islandGroup.getChildren().get(gridPaneIndex);
-        button = (Button) islandGroup.getChildren().get(buttonIndex);
+        island = (GridPane) islandGroup.getChildren().get(1);
+        button = (Button) islandGroup.getChildren().get(2);
 
         initializeStudentImageViews();
 
@@ -71,11 +68,10 @@ public class IslandGUIComponent {
         initializeStudentAndLabel(blueStudentImage, blueStudentLabel, PawnColor.BLUE, 1, 2);
         initializeStudentAndLabel(pinkStudentImage, pinkStudentLabel, PawnColor.PINK, 3, 2);
 
-        componentIndexLabel = new Label();
-        componentIndexLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        componentIndexLabel.setTranslateY(indexTraslateY);
-        island.add(componentIndexLabel, 2, 2);
-        setIslandIndex(islandIndex);
+        indexLabel = new Label();
+        indexLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        indexLabel.setTranslateY(indexTraslateY);
+        island.add(indexLabel, 2, 2);
 
         initializeTowers();
         initializeMotherNature();
@@ -185,6 +181,8 @@ public class IslandGUIComponent {
         characterIndex = 0;
 
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+
+        islandImageView.setEffect(gameController.getBorderGlowEffect());
     }
 
     public void listenToInput(MoveRequestMessage requestMessage) {
@@ -207,6 +205,7 @@ public class IslandGUIComponent {
 
         chosenColor = null;
         button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        islandImageView.setEffect(null);
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
@@ -224,13 +223,13 @@ public class IslandGUIComponent {
                                 new MoveStudent(
                                         ColoredPawnOriginDestination.ISLAND,
                                         ((MoveStudentRequest) request).toWhere,
-                                        Integer.parseInt(componentIndexLabel.getText()),
+                                        Integer.parseInt(indexLabel.getText()),
                                         chosenColor
                                 )
                         )
                 );
-                for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
-                controller.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
+                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
             }
 
             else if(request instanceof MoveMotherNatureRequest) {
@@ -238,12 +237,12 @@ public class IslandGUIComponent {
                 EriantysClient.getInstance().sendToServer(
                         new PerformedMoveMessage(requestMessage,
                                 new MoveMotherNature(
-                                        Integer.parseInt(componentIndexLabel.getText()),
+                                        Integer.parseInt(indexLabel.getText()),
                                         ((MoveMotherNatureRequest) request).motherNatureMaxSteps
                                 )
                         )
                 );
-                for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
+                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
             }
         }
     }
@@ -256,30 +255,30 @@ public class IslandGUIComponent {
                     new MoveStudent(
                             ColoredPawnOriginDestination.ISLAND,
                             ((MoveStudentRequest) requestMessage.moveRequest).toWhere,
-                            Integer.parseInt(componentIndexLabel.getText()),
+                            Integer.parseInt(indexLabel.getText()),
                             chosenColor,
                             characterIndex)));
-            for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
+            for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
         }
 
         else {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage,
                     new ChooseIsland(
-                            Integer.parseInt(componentIndexLabel.getText()),
+                            Integer.parseInt(indexLabel.getText()),
                             characterIndex
                     )
             ));
-            for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
+            for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
         }
     }
 
-    public void setIslandIndex(Integer islandIndex) {
+    public void setGuiIslandIndex(Integer guiIslandIndex) {
 
-        componentIndexLabel.setText(islandIndex.toString());
+        indexLabel.setText(guiIslandIndex.toString());
 
-        if(islandIndex < 10) componentIndexLabel.setTranslateX(6);
-        else componentIndexLabel.setTranslateX(2);
+        if(guiIslandIndex < 10) indexLabel.setTranslateX(6);
+        else indexLabel.setTranslateX(2);
     }
 
     public void setStudents(PawnColor color, Integer value) {
@@ -318,7 +317,13 @@ public class IslandGUIComponent {
 
     public void setMotherNature(boolean visible) {
 
+        hasMotherNature = visible;
         motherNatureImage.setVisible(visible);
+    }
+
+    public boolean hasMotherNature() {
+
+        return hasMotherNature;
     }
 
     public void setTower(boolean visible, Team team) {
@@ -345,5 +350,8 @@ public class IslandGUIComponent {
         }
     }
 
-    public int getIslandIndex() { return islandIndex; }
+    public int getCompoundIslandIndex() {
+
+        return Integer.parseInt(indexLabel.getText());
+    }
 }

@@ -13,17 +13,20 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameController extends SceneController implements Initializable {
 
     private final List<Player> playersList;
 
     private final Map<String, PlayerGUIComponent> playerComponents;
-    private final Map<String, DashboardGUIComponent> dashboardComponents;
+    private final Map<String, SchoolGUIComponent> dashboardComponents;
     private final List<IslandGUIComponent> islandGUIComponents;
     private final List<CloudGUIComponent> cloudGUIComponents;
     private List<CharacterGUIComponent> characterGUIComponents;
@@ -66,19 +69,19 @@ public class GameController extends SceneController implements Initializable {
             if(n < playersList.size())
                 dashboardComponents.put(
                         playersList.get(n).getUsername(),
-                        new DashboardGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
+                        new SchoolGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
 
             else schools.getChildren().get(n).setVisible(false);
         }
 
         for(int n = 0; n < 12; n++)
-            islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), n, this));
+            islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), this));
 
         helpersGUIComponent = new HelpersGUIComponent(helpers);
 
         for(int n = 0; n < clouds.getColumnCount(); n++) {
 
-            if(n < playersList.size()) cloudGUIComponents.add(new CloudGUIComponent(n, (Group) clouds.getChildren().get(n)));
+            if(n < playersList.size()) cloudGUIComponents.add(new CloudGUIComponent((Group) clouds.getChildren().get(n), n , this));
             else clouds.getChildren().get(n).setVisible(false);
         }
 
@@ -105,9 +108,14 @@ public class GameController extends SceneController implements Initializable {
         return playerComponents.get(username);
     }
 
-    public IslandGUIComponent getIslandGUIComponentOfIndex(int index) {
+    public IslandGUIComponent getIslandGUIComponents(int index) {
 
-        return islandGUIComponents.stream().filter((x) -> x.getIslandIndex() == index).findAny().orElseThrow();
+        return islandGUIComponents.get(index);
+    }
+
+    public List<IslandGUIComponent> getIslandGUIComponentsOfIndex(int compoundIndex) {
+
+        return islandGUIComponents.stream().filter((x) -> x.getCompoundIslandIndex() == compoundIndex).collect(Collectors.toList());
     }
 
     public List<IslandGUIComponent> getIslandGUIComponents() {
@@ -115,12 +123,17 @@ public class GameController extends SceneController implements Initializable {
         return new ArrayList<>(islandGUIComponents);
     }
 
-    public CloudGUIComponent getCloudGUIComponentOfIndex(int index) {
+    public int getNumberOfCompoundIslands() {
 
-        return cloudGUIComponents.stream().filter((x) -> x.getCloudIndex() == index).findAny().orElseThrow();
+        return islandGUIComponents.get(11).getCompoundIslandIndex() + 1;
     }
 
-    public DashboardGUIComponent getDashboardGUIComponentOfPlayer(String playerName) {
+    public CloudGUIComponent getCloudGUIComponent(int index) {
+
+        return cloudGUIComponents.get(index);
+    }
+
+    public SchoolGUIComponent getDashboardGUIComponentOfPlayer(String playerName) {
         return dashboardComponents.get(playerName);
     }
 
@@ -178,5 +191,16 @@ public class GameController extends SceneController implements Initializable {
         winner.setText("THE WINNER IS TEAM:\n" + team.getTeamName() + "\n\n" + team.getLeader().getUsername() + "\n" + winner2);
 
         winner.setVisible(true);
+    }
+
+    public DropShadow getBorderGlowEffect() {
+
+        DropShadow borderGlow = new DropShadow();
+        borderGlow.setColor(Color.LIGHTGOLDENRODYELLOW);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setOffsetY(0f);
+        borderGlow.setWidth(80);
+        borderGlow.setHeight(80);
+        return borderGlow;
     }
 }

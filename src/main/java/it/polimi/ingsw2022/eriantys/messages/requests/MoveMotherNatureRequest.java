@@ -11,6 +11,8 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import javafx.application.Platform;
 
+import java.util.List;
+
 public class MoveMotherNatureRequest extends MoveRequest {
 
     public final int motherNatureMaxSteps;
@@ -37,7 +39,31 @@ public class MoveMotherNatureRequest extends MoveRequest {
 
         Platform.runLater(() -> {
 
-            for (IslandGUIComponent island : controller.getIslandGUIComponents()) island.listenToInput(requestMessage);
+            int compoundIslands = controller.getNumberOfCompoundIslands();
+            int motherNatureCompoundIndex = 0;
+
+            List<IslandGUIComponent> guiIslands = controller.getIslandGUIComponents();
+            for(IslandGUIComponent guiIsland : guiIslands) {
+
+                if(guiIsland.hasMotherNature()) {
+
+                    motherNatureCompoundIndex = guiIsland.getCompoundIslandIndex();
+                    break;
+                }
+            }
+
+            int currentCompoundIndex = motherNatureCompoundIndex;
+            for(int n = 0; n < motherNatureMaxSteps; n++) {
+
+                currentCompoundIndex++;
+                currentCompoundIndex %= compoundIslands;
+                if(currentCompoundIndex == motherNatureCompoundIndex) break;
+
+                for(IslandGUIComponent island : controller.getIslandGUIComponentsOfIndex(currentCompoundIndex)) {
+
+                    island.listenToInput(requestMessage);
+                }
+            }
 
             if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
 

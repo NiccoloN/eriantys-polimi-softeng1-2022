@@ -20,21 +20,21 @@
             <Image url="@../Images/Backgrounds/game_background.jpg" />
          </image>
       </ImageView>
-      <GridPane fx:id="helpers" layoutX="278.0" layoutY="615.0" visible="false">
+      <GridPane fx:id="helpers" layoutX="278.0" layoutY="615.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
@@ -97,13 +97,13 @@
       </GridPane>
       <GridPane fx:id="clouds" layoutX="465.0" layoutY="218.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="90.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="90.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="90.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="90.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Group>
@@ -203,7 +203,7 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="78.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="107.0" minHeight="107.0" prefHeight="107.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Group visible="false">
@@ -868,7 +868,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="292.0" layoutY="-145.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="307.0" layoutY="-145.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
                      </image>
@@ -897,7 +897,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-142.0" layoutY="-145.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-157.0" layoutY="-145.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
                      </image>
@@ -926,7 +926,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="292.0" layoutY="-62.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="307.0" layoutY="-62.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
                      </image>
@@ -955,7 +955,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-142.0" layoutY="-62.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-157.0" layoutY="-62.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
                      </image>
@@ -964,7 +964,7 @@
             </Group>
          </children>
       </Group>
-      <GridPane fx:id="colorButtons" layoutX="477.5" layoutY="625.0" prefHeight="75.0" visible="false">
+      <GridPane fx:id="colorButtons" layoutX="477.5" layoutY="625.0" prefHeight="75.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
@@ -982,51 +982,26 @@
                </GridPane.margin>
                <children>
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="red-button" stylesheets="@../CSS/ButtonStyles.css" />
-                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/Game/Pawns/2D/student_red.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Group>
             <Group GridPane.columnIndex="1">
                <children>
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="green-button" stylesheets="@../CSS/ButtonStyles.css" />
-                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/Game/Pawns/2D/student_green.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Group>
             <Group GridPane.columnIndex="2">
                <children>
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="yellow-button" stylesheets="@../CSS/ButtonStyles.css" />
-                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/Game/Pawns/2D/student_yellow.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Group>
             <Group GridPane.columnIndex="3">
                <children>
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="blue-button" stylesheets="@../CSS/ButtonStyles.css" />
-                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/Game/Pawns/2D/student_blue.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Group>
             <Group GridPane.columnIndex="4">
                <children>
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pink-button" stylesheets="@../CSS/ButtonStyles.css" />
-                  <ImageView fitHeight="150.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/Game/Pawns/2D/student_pink.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Group>
          </children>

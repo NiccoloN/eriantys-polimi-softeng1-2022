@@ -36,7 +36,7 @@ public class ChooseHelperCardRequest extends MoveRequest {
 
         Platform.runLater(() -> {
 
-            controller.getHelpersGUIComponent().listenToInput(requestMessage);
+            controller.getHelpersGUIComponent().listenToInput(requestMessage, unplayableIndices);
 
             if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT)
                 for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) character.listenToInput(requestMessage);

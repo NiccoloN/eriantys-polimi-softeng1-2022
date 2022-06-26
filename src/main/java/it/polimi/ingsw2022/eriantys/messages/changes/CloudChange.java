@@ -33,7 +33,7 @@ public class CloudChange implements Change, Serializable {
 
         Platform.runLater(() -> {
 
-            CloudGUIComponent guiCloud = controller.getCloudGUIComponentOfIndex(cloudIndex);
+            CloudGUIComponent guiCloud = controller.getCloudGUIComponent(cloudIndex);
 
             if(cloud.isEmpty()) guiCloud.clearStudents();
             else for(PawnColor color : PawnColor.values()) guiCloud.setStudents(color, cloud.countStudents(color));

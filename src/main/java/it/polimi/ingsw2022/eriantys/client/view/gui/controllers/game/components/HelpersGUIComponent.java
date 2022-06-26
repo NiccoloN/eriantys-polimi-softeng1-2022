@@ -7,6 +7,8 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import javafx.event.EventHandler;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -70,7 +72,7 @@ public class HelpersGUIComponent {
                               (helpers.getColumnCount() - helperCards.size()));
     }
 
-    public void listenToInput(MoveRequestMessage requestMessage) {
+    public void listenToInput(MoveRequestMessage requestMessage, List<Integer> unplayableIndices) {
 
         helpers.setVisible(true);
         this.requestMessage = requestMessage;
@@ -79,7 +81,19 @@ public class HelpersGUIComponent {
 
             ImageView helper = (ImageView) helpers.getChildren().get(n);
             int cardIndex = imagesIndices.get(helper);
-            if(cardIndex > 0) helper.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
+
+            if(cardIndex > 0) {
+
+                if(!unplayableIndices.contains(cardIndex))
+                    helper.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
+
+                else {
+
+                    ColorAdjust colorAdjust = new ColorAdjust();
+                    colorAdjust.setBrightness(-0.5);
+                    helper.setEffect(colorAdjust);
+                }
+            }
         }
     }
 

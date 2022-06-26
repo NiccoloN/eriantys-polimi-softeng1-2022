@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
@@ -21,20 +22,28 @@ import java.util.List;
 
 public class CloudGUIComponent {
 
-    private final int cloudIndex;
-    private List<ColoredPawnImageView> students;
+    private final GameController gameController;
 
+    private List<ColoredPawnImageView> students;
+    private final int cloudIndex;
+    private boolean empty;
+
+    private final Group cloudGroup;
     private final GridPane cloudGrid;
     private final Button button;
 
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
 
-    public CloudGUIComponent(int cloudIndex, Group cloud) {
+    public CloudGUIComponent(Group cloud, int cloudIndex, GameController gameController) {
+
+        this.gameController = gameController;
+        this.cloudIndex = cloudIndex;
+        empty = true;
 
         ((ImageView) cloud.getChildren().get(0)).setImage(ImageFactory.cloudImage);
 
-        this.cloudIndex = cloudIndex;
+        cloudGroup = cloud;
         cloudGrid = (GridPane) cloud.getChildren().get(1);
         button = (Button) cloud.getChildren().get(2);
 
@@ -113,11 +122,13 @@ public class CloudGUIComponent {
 
         this.requestMessage = requestMessage;
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        cloudGroup.setEffect(gameController.getBorderGlowEffect());
     }
 
     public void stopListeningToInput() {
 
         button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        cloudGroup.setEffect(null);
     }
 
     public void manageInput(MouseEvent mouseEvent) throws IOException {
@@ -138,6 +149,7 @@ public class CloudGUIComponent {
                 if(image.getColor() == null) {
 
                     image.setStudentOfColor(color);
+                    empty = false;
                     break;
                 }
             }
@@ -147,9 +159,11 @@ public class CloudGUIComponent {
     public void clearStudents() {
 
         for(ColoredPawnImageView image : students) image.clearColor();
+        empty = true;
     }
 
-    public int getCloudIndex() {
-        return cloudIndex;
+    public boolean isEmpty() {
+
+        return empty;
     }
 }

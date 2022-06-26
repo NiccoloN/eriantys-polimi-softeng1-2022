@@ -1,9 +1,7 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components;
 
-import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
-import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.security.InvalidParameterException;
@@ -23,23 +21,23 @@ public class IslandCLIComponent extends BasicCLIComponent {
 
     private String color;
     private String teamColor;
-    private int index;
+    private int compoundIndex;
     private boolean tower, mother;
     private int denyTiles;
     private final Map<PawnColor, Integer> students;
 
     /**
      * Constructs an island cli component with the given index
-     * @param index the index of this island
+     * @param compoundIndex the index of this island
      */
-    public IslandCLIComponent(int index) {
+    public IslandCLIComponent(int compoundIndex) {
 
         super(WIDTH, HEIGHT);
 
         color     = DEFAULT_COLOR;
         teamColor = YELLOW_BRIGHT;
 
-        setIndex(index);
+        setCompoundIndex(compoundIndex);
 
         tower = false;
         mother = false;
@@ -76,7 +74,7 @@ public class IslandCLIComponent extends BasicCLIComponent {
                   PawnColor.BLUE.ansiForegroundColor + (blue == 0 ? "  " : String.format("%02d", blue)) + "    " +
                   PawnColor.PINK.ansiForegroundColor + (pink == 0 ? "  " : String.format("%02d", pink)) + teamColor + " / " + RESET);
         setRow(5, teamColor + "  \\___" + UNDERLINED + (mother ? "MM" : "  ") + RESET + teamColor + "___/  " + RESET);
-        setRow(6, color + "      " + (index < 10 ? "0" : "") + index + "      " + RESET);
+        setRow(6, color + "      " + (compoundIndex < 10 ? "0" : "") + compoundIndex + "      " + RESET);
     }
 
     @Override
@@ -95,19 +93,19 @@ public class IslandCLIComponent extends BasicCLIComponent {
     /**
      * @return the index of this island
      */
-    public int getIndex() {
+    public int getCompoundIndex() {
 
-        return index;
+        return compoundIndex;
     }
 
     /**
-     * Sets the index of this island
-     * @param index the new index
+     * Sets the compound index of this island
+     * @param compoundIndex the new index
      */
-    public void setIndex(int index) {
+    public void setCompoundIndex(int compoundIndex) {
 
-        if (index < 0 || index > 11) throw new InvalidParameterException("Index must be between 0 and 11");
-        this.index = index;
+        if (compoundIndex < 0 || compoundIndex > 11) throw new InvalidParameterException("Index must be between 0 and 11");
+        this.compoundIndex = compoundIndex;
     }
 
     /**

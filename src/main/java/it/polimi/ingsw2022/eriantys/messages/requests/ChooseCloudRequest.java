@@ -32,7 +32,8 @@ public class ChooseCloudRequest extends MoveRequest {
 
         Platform.runLater(() -> {
 
-            for(CloudGUIComponent cloud : controller.getCloudGUIComponents()) cloud.listenToInput(requestMessage);
+            for(CloudGUIComponent cloud : controller.getCloudGUIComponents())
+                if(!cloud.isEmpty()) cloud.listenToInput(requestMessage);
 
             if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
 
