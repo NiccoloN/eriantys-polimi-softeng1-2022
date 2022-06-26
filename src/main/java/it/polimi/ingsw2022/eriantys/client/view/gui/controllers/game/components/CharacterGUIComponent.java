@@ -46,6 +46,7 @@ public class CharacterGUIComponent {
 
     public CharacterGUIComponent(Group group, TextArea effectsTextArea) {
 
+        group.setVisible(true);
         characterImage = (ImageView) group.getChildren().get(0);
         characterCard = (GridPane) group.getChildren().get(1);
         characterCard.setVisible(true);
@@ -209,12 +210,12 @@ public class CharacterGUIComponent {
     public void listenToInput(MoveRequestMessage requestMessage) {
 
         this.requestMessage = requestMessage;
-        characterImage.addEventHandler(MouseEvent.MOUSE_CLICKED, characterClicked);
+        characterCard.addEventHandler(MouseEvent.MOUSE_CLICKED, characterClicked);
     }
 
     public void stopListeningToInput() {
 
-        characterImage.removeEventHandler(MouseEvent.MOUSE_CLICKED, characterClicked);
+        characterCard.removeEventHandler(MouseEvent.MOUSE_CLICKED, characterClicked);
     }
 
     private void manageInput(MouseEvent mouseEvent) throws IOException {

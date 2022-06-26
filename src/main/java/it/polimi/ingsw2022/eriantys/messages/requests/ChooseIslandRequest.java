@@ -28,6 +28,7 @@ public class ChooseIslandRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
+        controller.stopListeners();
         for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.listenToInput(requestMessage, characterCardIndex);
     }
 }

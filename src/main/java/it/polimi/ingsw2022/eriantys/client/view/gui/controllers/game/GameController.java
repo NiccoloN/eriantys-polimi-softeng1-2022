@@ -146,4 +146,14 @@ public class GameController extends SceneController implements Initializable {
 
         hintsTextArea.setText(text);
     }
+
+    public void stopListeners() {
+
+        for(IslandGUIComponent island : islandGUIComponents) island.stopListeningToInput();
+        for(CloudGUIComponent cloud : cloudGUIComponents) cloud.stopListeningToInput();
+        if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT)
+                for(CharacterGUIComponent character : characterGUIComponents) character.stopListeningToInput();
+        helpersGUIComponent.stopListeningToInput();
+        colorsGUIComponent.stopListeningToInput();
+    }
 }

@@ -25,9 +25,6 @@ public class WaitRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
-        if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
-            for (CharacterGUIComponent character : controller.getCharacterGUIComponents())
-                character.stopListeningToInput();
-        }
+        controller.stopListeners();
     }
 }

@@ -34,6 +34,7 @@ public class ChooseColorRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
-        controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
+        controller.stopListeners();
+        controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterCardIndex);
     }
 }
