@@ -2,13 +2,13 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseHelperCardRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of a helper card by a player
@@ -24,7 +24,13 @@ public class ChooseHelperCard extends Move {
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
+
+        if(!(request instanceof ChooseHelperCardRequest)) {
+
+            errorMessage = "Move not requested";
+            return false;
+        }
 
         Player player = game.getCurrentPlayer();
 

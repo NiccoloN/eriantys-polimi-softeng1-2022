@@ -27,7 +27,9 @@ public class BasicGameMode implements GameMode, Serializable {
     protected final Game game;
     protected final EriantysServer server;
     protected GamePhase currentGamePhase;
+    protected MoveRequest currentMoveRequest;
     private boolean endGameNow;
+
 
     public BasicGameMode(Game game) {
 
@@ -304,6 +306,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
         if(!endGameNow) {
 
+            currentMoveRequest = request;
             MoveRequestMessage requestMessage = new MoveRequestMessage(request);
             server.sendToClient(requestMessage, playerUsername);
             requestMessage.waitForValidResponse();
@@ -315,7 +318,7 @@ public class BasicGameMode implements GameMode, Serializable {
         synchronized (this) {
             Move move = performedMoveMessage.move;
 
-            if (move.isValid(game)) {
+            if (move.isValid(game, currentMoveRequest)) {
 
                 move.apply(game);
                 server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));

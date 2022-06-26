@@ -5,6 +5,8 @@ import it.polimi.ingsw2022.eriantys.messages.changes.PlayerChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
@@ -44,7 +46,13 @@ public class MoveStudent extends Move {
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
+
+        if(!(request instanceof MoveStudentRequest)) {
+
+            errorMessage = "Move not requested";
+            return false;
+        }
 
         SchoolDashboard school = game.getCurrentPlayer().getSchool();
 
@@ -72,7 +80,7 @@ public class MoveStudent extends Move {
 
         if(!toWhere.contains(destination)) {
 
-            errorMessage = "The chosen destination is not possible for the current move";
+            errorMessage = "The chosen destination is not valid for the current move";
             return false;
         }
 

@@ -28,6 +28,8 @@ import java.util.List;
 
 public class IslandGUIComponent {
 
+
+    private final GameController controller;
     private PawnColor chosenColor;
 
     private final int indexTraslateY = 41;
@@ -49,8 +51,6 @@ public class IslandGUIComponent {
 
     private final EventHandler<MouseEvent> buttonClicked;
     private MoveRequestMessage requestMessage;
-
-    private final GameController controller;
 
     public IslandGUIComponent(Group islandGroup, Integer islandIndex, GameController controller) {
 
@@ -229,7 +229,7 @@ public class IslandGUIComponent {
                                 )
                         )
                 );
-                stopListeningToInput();
+                for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
                 controller.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
             }
 
@@ -243,7 +243,7 @@ public class IslandGUIComponent {
                                 )
                         )
                 );
-                stopListeningToInput();
+                for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
             }
         }
     }
@@ -259,7 +259,7 @@ public class IslandGUIComponent {
                             Integer.parseInt(componentIndexLabel.getText()),
                             chosenColor,
                             characterIndex)));
-            stopListeningToInput();
+            for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
         }
 
         else {
@@ -270,7 +270,7 @@ public class IslandGUIComponent {
                             characterIndex
                     )
             ));
-            stopListeningToInput();
+            for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.stopListeningToInput();
         }
     }
 

@@ -3,13 +3,13 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 import it.polimi.ingsw2022.eriantys.messages.changes.CloudChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseCloudRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of one cloud by a player
@@ -25,7 +25,13 @@ public class ChooseCloud extends Move {
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
+
+        if(!(request instanceof ChooseCloudRequest)) {
+
+            errorMessage = "Move not requested";
+            return false;
+        }
 
         if(game.getBoard().getCloud(cloudIndex).isEmpty()) {
 

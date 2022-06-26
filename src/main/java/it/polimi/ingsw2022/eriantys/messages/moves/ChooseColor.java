@@ -3,7 +3,9 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
@@ -24,35 +26,67 @@ public class ChooseColor extends Move{
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
+
+        if(!(request instanceof ChooseColorRequest)) {
+
+            errorMessage = "Move not requested";
+            return false;
+        }
 
         switch(characterCardIndex) {
 
             case 7:
                 if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) {
-                    errorMessage = "The chosen color isn't available on the character card";
-                    return game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor);
+
+                    if(!game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor)) {
+
+                        errorMessage = "The chosen color isn't available on the character card";
+                        return false;
+                    }
+
+                    return true;
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
-                    errorMessage = "The chosen color isn't available on school entrance.";
-                    return game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor);
+
+                    if(!game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor)) {
+
+                        errorMessage = "The chosen color isn't available on school entrance";
+                        return false;
+                    }
+
+                    return true;
                 }
                 else {
-                    errorMessage = "Invalid parameters.";
+
+                    errorMessage = "Invalid parameters";
                     return false;
                 }
 
             case 10:
                 if(fromWhere.equals(ColoredPawnOriginDestination.TABLE)) {
-                    errorMessage = "The chosen color isn't available on the students' table";
-                    return game.getCurrentPlayer().getSchool().countTableStudents(chosenColor) > 0;
+
+                    if(game.getCurrentPlayer().getSchool().countTableStudents(chosenColor) <= 0) {
+
+                        errorMessage = "The chosen color isn't available on the students' table";
+                        return false;
+                    }
+
+                    return true;
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
-                    errorMessage = "The chosen color isn't available on school entrance.";
-                    return game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor);
+
+                    if(!game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor)) {
+
+                        errorMessage = "The chosen color isn't available on school entrance";
+                        return false;
+                    }
+
+                    return true;
                 }
                 else {
-                    errorMessage = "Invalid parameters.";
+
+                    errorMessage = "Invalid parameters";
                     return false;
                 }
             case 9:
@@ -60,15 +94,21 @@ public class ChooseColor extends Move{
                 return true;
             case 11:
                 if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) {
-                    errorMessage = "The chosen color isn't available on the character card";
-                    return game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor);
+
+                    if(!game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor)) {
+
+                        errorMessage = "The chosen color isn't available on the character card";
+                        return false;
+                    }
+                    return true;
                 }
                 else {
-                    errorMessage = "Invalid parameters.";
+
+                    errorMessage = "Invalid parameters";
                     return false;
                 }
             default:
-                errorMessage = "The chosen character card is not available.";
+                errorMessage = "The chosen character card is not available";
                 return characterCardIndex >= 1 && characterCardIndex <= 12;
         }
     }

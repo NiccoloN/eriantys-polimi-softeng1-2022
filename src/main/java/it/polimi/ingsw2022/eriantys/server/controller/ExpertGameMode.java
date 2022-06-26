@@ -294,7 +294,7 @@ public class ExpertGameMode extends BasicGameMode {
 
             new Thread(() -> {
                 try {
-                    if (move.isValid(game)) {
+                    if (move.isValid(game, currentMoveRequest)) {
 
                         playCharacter(move.characterCardIndex);
                         performedMoveMessage.move.apply(game);
@@ -322,7 +322,7 @@ public class ExpertGameMode extends BasicGameMode {
 
             new Thread( () -> {
 
-                if(performedMoveMessage.move.isValid(game)) performedMoveMessage.move.apply(game);
+                if(performedMoveMessage.move.isValid(game, currentMoveRequest)) performedMoveMessage.move.apply(game);
                 previousMessage.acceptResponse();
             }).start();
         }

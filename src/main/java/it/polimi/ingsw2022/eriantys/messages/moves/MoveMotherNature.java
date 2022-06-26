@@ -2,10 +2,10 @@ package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
-
-import java.io.Serializable;
 
 /**
  * This class represents the movement of mother nature by specifying the destination island's index
@@ -24,7 +24,13 @@ public class MoveMotherNature extends Move {
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
+
+        if(!(request instanceof MoveMotherNatureRequest)) {
+
+            errorMessage = "Move not requested";
+            return false;
+        }
 
         oldIslandIndex = game.getBoard().getMotherNatureIsland().getIndex();
         if(oldIslandIndex == islandIndex) {

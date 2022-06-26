@@ -1,15 +1,15 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
-import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
-import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBonus;
-import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor;
 import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoTowers;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
+
+import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of a Character by a player
@@ -25,14 +25,39 @@ public class ChooseCharacterCard extends Move {
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
 
-        boolean validParameters = characterCardIndex >= 1 && characterCardIndex <= 12 &&
-                game.getCurrentPlayer().getCoins() >= game.getCharacterOfIndex(characterCardIndex).getCost() &&
-                !game.getCurrentPlayer().isCharacterUsed();
+        CharacterCard characterCard;
 
-        if(characterCardIndex == 10) return validParameters && !game.getCurrentPlayer().getSchool().getAvailableTableColors().isEmpty();
-        else return validParameters;
+        try {
+
+            characterCard = game.getCharacterOfIndex(characterCardIndex);
+        }
+        catch(NoSuchElementException e) {
+
+            errorMessage = "Invalid character index";
+            return false;
+        }
+
+        if(game.getCurrentPlayer().getCoins() < characterCard.getCost()) {
+
+            errorMessage = "Not enough coins";
+            return false;
+        }
+
+        if(game.getCurrentPlayer().isCharacterUsed()) {
+
+            errorMessage = "You already used a character in this turn";
+            return false;
+        }
+
+        if(characterCardIndex == 10 && game.getCurrentPlayer().getSchool().getAvailableTableColors().isEmpty()) {
+
+            errorMessage = "Not enough students in your school's tables";
+            return false;
+        }
+
+        return true;
     }
 
     @Override
