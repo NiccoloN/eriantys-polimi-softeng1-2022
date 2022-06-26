@@ -7,6 +7,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameControl
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.util.List;
@@ -53,10 +54,12 @@ public class IslandChange implements Change, Serializable {
 
     private void setGuiIslandTile(IslandGUIComponent guiIsland, IslandTile islandTile) {
 
-        for(PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
-        guiIsland.setMotherNature(islandTile.hasMotherNature());
-        if(islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
-        guiIsland.setIslandIndex(islandTile.getIndex());
-        guiIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
+        Platform.runLater(() ->  {
+            for(PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
+            guiIsland.setMotherNature(islandTile.hasMotherNature());
+            if(islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
+            guiIsland.setIslandIndex(islandTile.getIndex());
+            guiIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
+        });
     }
 }
