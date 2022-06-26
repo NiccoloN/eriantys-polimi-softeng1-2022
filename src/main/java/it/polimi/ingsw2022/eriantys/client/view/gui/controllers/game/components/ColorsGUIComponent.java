@@ -2,6 +2,8 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination;
@@ -9,9 +11,12 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -57,7 +62,9 @@ public class ColorsGUIComponent {
 
         for(int n = 0; n < colorButtons.getChildren().size(); n++) {
 
-            Button colorButton = (Button) colorButtons.getChildren().get(n);
+            Group buttonGroup = (Group) colorButtons.getChildren().get(n);
+            Button colorButton = (Button) buttonGroup.getChildren().get(0);
+            ImageView buttonImage = (ImageView) buttonGroup.getChildren().get(1);
 
             if(n < colors.size()) {
 
@@ -66,13 +73,14 @@ public class ColorsGUIComponent {
                 buttonColors.put(colorButton, color);
                 colorButton.getStyleClass().remove(1);
                 colorButton.getStyleClass().add(color.name().toLowerCase() + "-button");
-                colorButton.setVisible(true);
+                buttonImage.setImage(ImageFactory.colorsImages.get(color));
+                buttonGroup.setVisible(true);
             }
 
             else {
 
                 buttonColors.put(colorButton, null);
-                colorButton.setVisible(false);
+                buttonGroup.setVisible(false);
             }
         }
 
@@ -90,7 +98,7 @@ public class ColorsGUIComponent {
 
         for(int n = 0; n < colorButtons.getChildren().size(); n++) {
 
-            Button colorButton = (Button) colorButtons.getChildren().get(n);
+            Button colorButton = (Button) ((Group) colorButtons.getChildren().get(n)).getChildren().get(0);
             PawnColor color = buttonColors.get(colorButton);
             if(color != null) colorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
         }
@@ -110,7 +118,7 @@ public class ColorsGUIComponent {
 
         for(int n = 0; n < colorButtons.getChildren().size(); n++) {
 
-            Button colorButton = (Button) colorButtons.getChildren().get(n);
+            Button colorButton = (Button) ((Group) colorButtons.getChildren().get(n)).getChildren().get(0);
             PawnColor color = buttonColors.get(colorButton);
             if(color != null) colorButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
         }

@@ -3,7 +3,6 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.scene.image.Image;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,13 +11,12 @@ public class ImageFactory {
 
     public static final int STUDENT_SIZE = 19;
     public static final int PROFESSOR_SIZE = 23;
-    public static final int COLOR_SIZE = 40;
+    public static final int COLOR_SIZE = 60;
     public static final int MOTHER_NATURE_SIZE = 18;
     public static final int TOWER_SIZE = 18;
     public static final int COIN_SIZE = 19;
     public static final int DENY_TILE_SIZE = 20;
     public static final int CARD_SIZE = 70;
-    public static final int REDUCED_CARD_SIZE = 50;
     public static final int SCHOOL_SIZE = 362;
     public static final int ISLAND_SIZE = 150;
     public static final int CLOUD_SIZE = 80;
@@ -70,83 +68,21 @@ public class ImageFactory {
 
     private static Image loadStudentImage(PawnColor color) {
 
-        String imageName;
-        switch(color) {
-
-            case RED:
-                imageName = "redStudent3D.png";
-                break;
-            case GREEN:
-                imageName = "greenStudent3D.png";
-                break;
-            case YELLOW:
-                imageName = "yellowStudent3D.png";
-                break;
-            case BLUE:
-                imageName = "blueStudent3D.png";
-                break;
-            case PINK:
-                imageName = "pinkStudent3D.png";
-                break;
-            default:
-                throw new InvalidParameterException("Invalid pawn color");
-        }
-
+        String imageName = color.name().toLowerCase() + "Student3D.png";
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
         return new Image(path, STUDENT_SIZE * MAX_SCALE, STUDENT_SIZE * MAX_SCALE, true, true);
     }
 
     private static Image loadProfessorImage(PawnColor color) {
 
-        String imageName;
-        switch(color) {
-
-            case RED:
-                imageName = "redProf3D.png";
-                break;
-            case GREEN:
-                imageName = "greenProf3D.png";
-                break;
-            case YELLOW:
-                imageName = "yellowProf3D.png";
-                break;
-            case BLUE:
-                imageName = "blueProf3D.png";
-                break;
-            case PINK:
-                imageName = "pinkProf3D.png";
-                break;
-            default:
-                throw new InvalidParameterException("Invalid pawn color");
-        }
-
+        String imageName = color.name().toLowerCase() + "Prof3D.png";
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/3D/" + imageName)).toString();
         return new Image(path, PROFESSOR_SIZE * MAX_SCALE, PROFESSOR_SIZE * MAX_SCALE, true, true);
     }
 
     private static Image loadColorImage(PawnColor color) {
 
-        String imageName;
-        switch(color) {
-
-            case RED:
-                imageName = "student_red.png";
-                break;
-            case GREEN:
-                imageName = "student_green.png";
-                break;
-            case YELLOW:
-                imageName = "student_yellow.png";
-                break;
-            case BLUE:
-                imageName = "student_blue.png";
-                break;
-            case PINK:
-                imageName = "student_pink.png";
-                break;
-            default:
-                throw new InvalidParameterException("Invalid pawn color");
-        }
+        String imageName = "student_" + color.name().toLowerCase() + ".png";
         String path = Objects.requireNonNull(ImageFactory.class.getResource("/Images/Game/Pawns/2D/" + imageName)).toString();
         return new Image(path, COLOR_SIZE * MAX_SCALE, COLOR_SIZE * MAX_SCALE, true, true);
     }
