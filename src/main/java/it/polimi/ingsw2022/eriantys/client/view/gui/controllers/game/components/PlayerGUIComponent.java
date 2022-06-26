@@ -1,7 +1,9 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
+import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,12 +20,18 @@ public class PlayerGUIComponent {
     public PlayerGUIComponent(Group player, String username, int index) {
 
         ((ImageView) player.getChildren().get(0)).setImage(ImageFactory.magesImages.get(index + 1));
-        ((ImageView) player.getChildren().get(2)).setImage(ImageFactory.coinImage);
+        ImageView coinImage = ((ImageView) player.getChildren().get(2));
+        coinImage.setImage(ImageFactory.coinImage);
 
         nameLabel = (Label) player.getChildren().get(1);
         coinLabel = (Label) player.getChildren().get(3);
         lastHelper = (ImageView) player.getChildren().get(4);
         setName(username);
+
+        if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.BASIC) {
+            coinImage.setVisible(false);
+            coinLabel.setVisible(false);
+        }
     }
 
     public void setName(String name) {
