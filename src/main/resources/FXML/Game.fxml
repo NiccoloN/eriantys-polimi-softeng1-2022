@@ -867,6 +867,11 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="292.0" layoutY="-145.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
+                     </image>
+                  </ImageView>
                </children>
             </Group>
             <Group layoutX="940.0">
@@ -891,6 +896,11 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-142.0" layoutY="-145.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
+                     </image>
+                  </ImageView>
                </children>
             </Group>
             <Group layoutY="455.0">
@@ -915,6 +925,11 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="292.0" layoutY="-62.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
+                     </image>
+                  </ImageView>
                </children>
             </Group>
             <Group layoutX="940.0" layoutY="455.0">
@@ -939,6 +954,11 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-142.0" layoutY="-62.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../Images/Game/Helpers/Helper%20(1).png" />
+                     </image>
+                  </ImageView>
                </children>
             </Group>
          </children>

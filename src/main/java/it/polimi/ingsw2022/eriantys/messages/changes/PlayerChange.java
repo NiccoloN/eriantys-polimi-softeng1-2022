@@ -38,8 +38,6 @@ public class PlayerChange implements Change, Serializable {
     @Override
     public void apply(GameController controller) {
 
-        Platform.runLater( () -> {
-            controller.getPlayerGUIComponent(player.getUsername()).setCoins(player.getCoins());
-        });
+        Platform.runLater(() -> controller.getPlayerGUIComponent(player.getUsername()).setCoins(player.getCoins()));
     }
 }

@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.CloudGUIComponent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import javafx.application.Platform;
 
 public class ChooseCloudRequest extends MoveRequest {
 
@@ -28,15 +29,19 @@ public class ChooseCloudRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
-        for(CloudGUIComponent cloud : controller.getCloudGUIComponents()) cloud.listenToInput(requestMessage);
 
-        if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
+        Platform.runLater(() -> {
 
-            for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
+            for(CloudGUIComponent cloud : controller.getCloudGUIComponents()) cloud.listenToInput(requestMessage);
 
-                character.stopListeningToInput();
-                character.listenToInput(requestMessage);
+            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
+
+                for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
+
+                    character.stopListeningToInput();
+                    character.listenToInput(requestMessage);
+                }
             }
-        }
+        });
     }
 }

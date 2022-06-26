@@ -75,8 +75,14 @@ public class GameController extends SceneController implements Initializable {
 
         helpersGUIComponent = new HelpersGUIComponent(helpers);
 
-        cloudGUIComponents.add(new CloudGUIComponent(0, (Group) clouds.getChildren().get(0)));
-        cloudGUIComponents.add(new CloudGUIComponent(1, (Group) clouds.getChildren().get(1)));
+        for(int n = 0; n < clouds.getColumnCount(); n++) {
+
+            if(n < playersList.size()) cloudGUIComponents.add(new CloudGUIComponent(n, (Group) clouds.getChildren().get(n)));
+            else clouds.getChildren().get(n).setVisible(false);
+        }
+
+        clouds.setTranslateX((clouds.getChildren().get(0).getLayoutBounds().getWidth() + 10) / 2 *
+                             (clouds.getColumnCount() - playersList.size()));
 
         if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
 

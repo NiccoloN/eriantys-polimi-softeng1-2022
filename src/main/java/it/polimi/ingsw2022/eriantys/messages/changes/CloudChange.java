@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.board.CloudTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 
@@ -30,11 +31,12 @@ public class CloudChange implements Change, Serializable {
     @Override
     public void apply(GameController controller) {
 
-        CloudGUIComponent guiCloud = controller.getCloudGUIComponentOfIndex(cloudIndex);
+        Platform.runLater(() -> {
 
-        if(cloud.isEmpty()) guiCloud.clearStudents();
-        else {
-            for(PawnColor color : PawnColor.values()) guiCloud.setStudents(color, cloud.countStudents(color));
-        }
+            CloudGUIComponent guiCloud = controller.getCloudGUIComponentOfIndex(cloudIndex);
+
+            if(cloud.isEmpty()) guiCloud.clearStudents();
+            else for(PawnColor color : PawnColor.values()) guiCloud.setStudents(color, cloud.countStudents(color));
+        });
     }
 }

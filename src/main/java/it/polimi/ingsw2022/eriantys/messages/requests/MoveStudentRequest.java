@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.application.Platform;
 
 import java.util.List;
 
@@ -49,12 +50,15 @@ public class MoveStudentRequest extends MoveRequest {
 
         super.manage(controller, requestMessage);
 
-        if (characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
-        else controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
+        Platform.runLater(() -> {
 
-        if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
-            for (CharacterGUIComponent character : controller.getCharacterGUIComponents())
-                character.listenToInput(requestMessage);
-        }
+            if (characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
+            else controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
+
+            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
+                for (CharacterGUIComponent character : controller.getCharacterGUIComponents())
+                    character.listenToInput(requestMessage);
+            }
+        });
     }
 }

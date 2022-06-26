@@ -6,6 +6,8 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.Colo
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.application.Platform;
+
 import java.util.List;
 
 public class ChooseColorRequest extends MoveRequest {
@@ -34,7 +36,11 @@ public class ChooseColorRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
-        controller.stopListeners();
-        controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterCardIndex);
+
+        Platform.runLater(() -> {
+
+            controller.stopListeners();
+            controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterCardIndex);
+        });
     }
 }

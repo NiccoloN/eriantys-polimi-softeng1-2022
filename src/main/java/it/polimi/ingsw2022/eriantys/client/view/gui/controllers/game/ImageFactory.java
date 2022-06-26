@@ -18,6 +18,7 @@ public class ImageFactory {
     public static final int COIN_SIZE = 19;
     public static final int DENY_TILE_SIZE = 20;
     public static final int CARD_SIZE = 70;
+    public static final int REDUCED_CARD_SIZE = 50;
     public static final int SCHOOL_SIZE = 362;
     public static final int ISLAND_SIZE = 150;
     public static final int CLOUD_SIZE = 80;

@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 
@@ -24,6 +25,6 @@ public abstract class MoveRequest implements Serializable {
 
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
-        controller.setHintsText(promptSentence);
+        Platform.runLater(() -> controller.setHintsText(promptSentence));
     }
 }

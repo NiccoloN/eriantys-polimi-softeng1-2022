@@ -5,6 +5,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class HelperCardsChange implements Change, Serializable {
     public void apply(GameController controller) {
 
         if(EriantysClient.getInstance().getUsername().equals(playerUsername))
-            controller.getHelpersGUIComponent().setRemainingHelpers(helperCards);
+            Platform.runLater(() -> controller.getHelpersGUIComponent().setRemainingHelpers(helperCards));
+
+        if(playedHelperCard != null)
+            Platform.runLater(() -> controller.getPlayerGUIComponent(playerUsername).setLastHelper(playedHelperCard.index));
     }
 }

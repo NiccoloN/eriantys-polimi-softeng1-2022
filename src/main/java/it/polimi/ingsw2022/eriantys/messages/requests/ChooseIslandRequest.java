@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.Isla
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.IslandGUIComponent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import javafx.application.Platform;
 
 public class ChooseIslandRequest extends MoveRequest {
 
@@ -28,7 +29,11 @@ public class ChooseIslandRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
 
         super.manage(controller, requestMessage);
-        controller.stopListeners();
-        for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.listenToInput(requestMessage, characterCardIndex);
+
+        Platform.runLater(() -> {
+
+            controller.stopListeners();
+            for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.listenToInput(requestMessage, characterCardIndex);
+        });
     }
 }

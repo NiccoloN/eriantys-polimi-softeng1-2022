@@ -4,6 +4,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactor
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.security.InvalidParameterException;
@@ -12,6 +13,7 @@ public class PlayerGUIComponent {
 
     private final Label nameLabel;
     private final Label coinLabel;
+    private final ImageView lastHelper;
 
     public PlayerGUIComponent(Group player, String username, int index) {
 
@@ -20,6 +22,7 @@ public class PlayerGUIComponent {
 
         nameLabel = (Label) player.getChildren().get(1);
         coinLabel = (Label) player.getChildren().get(3);
+        lastHelper = (ImageView) player.getChildren().get(4);
         setName(username);
     }
 
@@ -33,5 +36,11 @@ public class PlayerGUIComponent {
 
         if(coins < 0 || coins > 99) throw new InvalidParameterException("Coins must be between 0 and 99");
         coinLabel.setText("x" + coins);
+    }
+
+    public void setLastHelper(int helperIndex) {
+
+        lastHelper.setImage(ImageFactory.helpersImages.get(helperIndex));
+        lastHelper.setVisible(true);
     }
 }

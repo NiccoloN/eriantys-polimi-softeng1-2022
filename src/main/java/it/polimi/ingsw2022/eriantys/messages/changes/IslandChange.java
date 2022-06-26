@@ -55,6 +55,7 @@ public class IslandChange implements Change, Serializable {
     private void setGuiIslandTile(IslandGUIComponent guiIsland, IslandTile islandTile) {
 
         Platform.runLater(() ->  {
+
             for(PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
             guiIsland.setMotherNature(islandTile.hasMotherNature());
             if(islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
