@@ -8,7 +8,6 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LoadOrCreateGame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -52,9 +51,13 @@ public class EriantysCLI implements View {
         });
 
         new Thread( () -> {
+
             try {
+
                 instance.start(showLog);
-            } catch (TimeoutException e) {
+            }
+            catch (TimeoutException e) {
+
                 e.printStackTrace();
             }
         }).start();

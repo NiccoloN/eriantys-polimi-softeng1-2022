@@ -14,13 +14,15 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
+import javafx.application.Platform;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 /**
  * This class represents the client of the game. The client runs the view in its main thread and communicates with the server through
@@ -75,6 +77,7 @@ public class EriantysClient {
     private ObjectOutputStream serverOutputStream;
     private ObjectInputStream serverInputStream;
     private String username;
+    private boolean running;
 
     private final boolean showLog;
     private final StringWriter log;
@@ -97,15 +100,19 @@ public class EriantysClient {
             outputStreamWriter.write("localhost");
             outputStreamWriter.close();
         }
+
+        running = true;
     }
 
     /**
-     * Starts the connection to the server and remain listening in a separate thread
+     * Starts the connection to the server and remains listening in a separate thread. This method blocks for a maximum of 5 seconds.
+     * If the client couldn't connect within 5 seconds this method returns false.
      * @param serverIP the IP address of the server
+     * @return whether the connection was successful
      */
-    public void connectToServer(String serverIP) {
+    public boolean connectToServer(String serverIP) {
 
-        new Thread(() -> {
+        FutureTask<Boolean> futureConnectionTask = new FutureTask<>(() -> {
 
             try {
 
@@ -117,8 +124,46 @@ public class EriantysClient {
                 serverOutputStream = new ObjectOutputStream(server.getOutputStream());
                 serverInputStream = new ObjectInputStream(server.getInputStream());
 
+                listenToServer();
+
+                return true;
+            }
+            catch(IOException e) {
+
+                log("Connection failed");
+                return false;
+            }
+        });
+
+        new Thread(futureConnectionTask).start();
+
+        try {
+
+            return futureConnectionTask.get(5, TimeUnit.SECONDS);
+        }
+        catch(InterruptedException | ExecutionException e) {
+
+            e.printStackTrace();
+            return false;
+        }
+        catch(TimeoutException e) {
+
+            log("Connection timeout");
+            return false;
+        }
+    }
+
+    /**
+     * Starts listening to the server in a separate thread
+     */
+    private void listenToServer() {
+
+        new Thread(() -> {
+
+            try {
+
                 //update loop
-                while(true) {
+                while(running) {
 
                     Optional<ToClientMessage> message = readMessage();
                     if(message.isPresent()) {
@@ -128,9 +173,13 @@ public class EriantysClient {
                     }
                 }
             }
+            catch(SocketException e) {
+
+                System.out.println("Could not listen to a closed socket: " + server);
+            }
             catch(ClassNotFoundException | IOException e) {
 
-                log(e.toString());
+                e.printStackTrace();
             }
         }).start();
     }
@@ -144,6 +193,7 @@ public class EriantysClient {
     private Optional<ToClientMessage> readMessage() throws IOException, ClassNotFoundException {
 
         try {
+
             ToClientMessage message = (ToClientMessage) serverInputStream.readObject();
             return Optional.of(message);
         }
@@ -162,16 +212,6 @@ public class EriantysClient {
 
         serverOutputStream.writeObject(message);
         log("Message sent: " + message.getClass().getSimpleName());
-    }
-
-    /**
-     * Disconnects from the server
-     * @throws IOException if an I/O exception occurs
-     */
-    public void disconnect() throws IOException {
-
-        sendToServer(new DisconnectMessage());
-        server.close();
     }
 
     /**
@@ -248,13 +288,12 @@ public class EriantysClient {
         view.requestMove(moveRequestMessage);
     }
 
-    /**
-     * Appends the given logText to the log
-     * @param logText the text to append
-     */
-    public void log(String logText) {
+    public String getUsername(){
+        return username;
+    }
 
-        log.append(logText).append('\n');
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -276,23 +315,28 @@ public class EriantysClient {
         return stringBuilder.toString();
     }
 
-    public String getUsername(){
-        return username;
-    }
+    /**
+     * Appends the given logText to the log
+     * @param logText the text to append
+     */
+    public void log(String logText) {
 
-    public void setUsername(String username) {
-        this.username = username;
+        if(!(view instanceof EriantysCLI)) System.out.println(logText);
+        log.append(logText).append('\n');
     }
 
     public String loadSavedServerIp() {
 
         try {
+
             FileInputStream fileInputStream = new FileInputStream(ADDRESS_FILE_NAME);
             Scanner scanner = new Scanner(fileInputStream);
             String ip = scanner.next();
             scanner.close();
             return ip;
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
+
             System.out.println("File not found");
             return "localhost";
         }
@@ -300,5 +344,32 @@ public class EriantysClient {
 
     public GameSettings getGameSettings() {
         return gameSettings;
+    }
+
+    public boolean isRunning() {
+
+        return running;
+    }
+
+    /**
+     * Disconnects from the server
+     * @throws IOException if an I/O exception occurs
+     */
+    private void disconnect() throws IOException {
+
+        sendToServer(new DisconnectMessage());
+        serverOutputStream.close();
+        serverInputStream.close();
+        server.close();
+        log("Disconnected from the server");
+    }
+
+    public void exit(boolean connectionAlive) throws IOException {
+
+        running = false;
+        if(connectionAlive) disconnect();
+
+        if(view instanceof EriantysCLI) ((EriantysCLI) view).stop();
+        else Platform.exit();
     }
 }

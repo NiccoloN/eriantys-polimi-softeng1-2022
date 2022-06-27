@@ -186,7 +186,7 @@ public class Player implements Serializable {
     /**
      * @return true if the player has already used a character card during this round.
      */
-    public boolean isCharacterUsed() {
+    public boolean hasPlayedCharacter() {
         return characterUsed;
     }
 

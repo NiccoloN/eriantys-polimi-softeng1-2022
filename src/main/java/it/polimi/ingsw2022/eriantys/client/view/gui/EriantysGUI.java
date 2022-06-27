@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.gui;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
@@ -39,15 +40,34 @@ public class EriantysGUI extends Application implements View {
     private Stage mainStage;
     private Scene currentScene;
     private GameController gameController;
-
-    public EriantysGUI() { instance = this; }
+    private boolean running;
 
     public static EriantysGUI launch(boolean showLog) throws InterruptedException {
 
-        new Thread( () -> Application.launch(EriantysGUI.class)).start();
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+
+            try {
+
+                instance.stop();
+            }
+            catch(Exception ex) {
+
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+        });
+
+        new Thread(() -> Application.launch(EriantysGUI.class)).start();
         while(instance == null) Thread.sleep(100);
 
         return instance;
+    }
+
+    public EriantysGUI() {
+
+        instance = this;
+        running = true;
     }
 
     @Override
@@ -150,11 +170,14 @@ public class EriantysGUI extends Application implements View {
         gameController.endGame(team);
     }
 
-    public Stage getMainStage() {
-        return mainStage;
-    }
+    @Override
+    public void stop() throws Exception {
 
-    public Scene getCurrentScene() {
-        return currentScene;
+        if(running) {
+
+            super.stop();
+            EriantysClient client = EriantysClient.getInstance();
+            if(client.isRunning()) client.exit(true);
+        }
     }
 }

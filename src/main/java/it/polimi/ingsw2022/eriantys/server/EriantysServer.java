@@ -239,7 +239,10 @@ public class EriantysServer implements Serializable {
                     System.out.println("Could not listen to a closed socket: " + client +
                                        (clientUsername != null ? (" (" + clientUsername + ")") : ""));
 
-                    try { if(running) shutdown(true); }
+                    try {
+
+                        if(running) shutdown(true);
+                    }
                     catch(IOException ex) {
 
                         running = false;
@@ -250,7 +253,10 @@ public class EriantysServer implements Serializable {
 
                     e.printStackTrace();
 
-                    try { if(running) shutdown(true); }
+                    try {
+
+                        if(running) shutdown(true);
+                    }
                     catch(IOException ex) {
 
                         running = false;
@@ -592,8 +598,8 @@ public class EriantysServer implements Serializable {
             timer.cancel();
             timer.purge();
         }
-        for (Socket socket : clients.values()) socket.close();
         for (ObjectOutputStream outputStream : clientOutputStreams.values()) outputStream.close();
         for (ObjectInputStream inputStream : clientInputStreams.values()) inputStream.close();
+        for (Socket socket : clients.values()) socket.close();
     }
 }

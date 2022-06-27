@@ -34,18 +34,21 @@ public class EnterUsername extends SceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Pattern pattern = Pattern.compile(".{0,20}");
-        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> pattern.matcher(change.getControlNewText()).matches() ? change : null);
-        usernameField.setTextFormatter(formatter);
+        usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            if(newValue.length() > 20) usernameField.setText(oldValue);
+        });
 
         usernameField.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
 
             if(keyEvent.getCode() == KeyCode.ENTER) {
 
                 try {
+
                     sendUsername();
                 }
                 catch(IOException e) {
+
                     e.printStackTrace();
                 }
             }

@@ -13,7 +13,7 @@ public class PlayerDisconnectedMessage extends ToClientMessage{
     @Override
     public void manageAndReply() throws IOException {
 
-        EriantysClient.getInstance().log("A player disconnected from the server");
-        throw new RuntimeException("Server shutdown");
+        EriantysClient.getInstance().log("A player disconnected from the server\nServer shutdown: disconnected");
+        EriantysClient.getInstance().exit(false);
     }
 }

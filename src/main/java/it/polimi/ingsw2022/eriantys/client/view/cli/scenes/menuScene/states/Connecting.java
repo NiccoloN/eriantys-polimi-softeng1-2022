@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.concurrent.Future;
 
 import static it.polimi.ingsw2022.eriantys.client.EriantysClient.ADDRESS_FILE_NAME;
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.BLACK;
@@ -28,7 +29,7 @@ public class Connecting extends MenuSceneState {
      * @param cli the cli associated to this state
      * @param scene the menu scene associated to this state
      */
-    protected Connecting(EriantysCLI cli, MenuScene scene) throws IOException {
+    protected Connecting(EriantysCLI cli, MenuScene scene) {
 
         super(cli, scene);
 
@@ -42,7 +43,24 @@ public class Connecting extends MenuSceneState {
     public void enter() {
 
         getScene().setConnectingLabel(connectingLabel);
-        EriantysClient.getInstance().connectToServer(serverIP);
+
+        new Thread(() -> {
+
+            EriantysClient client = EriantysClient.getInstance();
+            if(!client.connectToServer(serverIP)) {
+
+                //add a little delay to actually see the connecting label in case the connection gets refused instantly
+                try {
+
+                    Thread.sleep(500);
+                }
+                catch(InterruptedException e) {
+
+                    e.printStackTrace();
+                }
+                getScene().setState(new Start(getCli(), getScene()));
+            }
+        }).start();
     }
 
     @Override

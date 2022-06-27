@@ -73,8 +73,7 @@ public class EnterUsername extends MenuSceneState {
                 String prevText = textArea.getText();
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
-            else if (c >= 32 && c <= 126 && username.length() < EriantysServer.MAX_USERNAME_LENGTH)
-                textArea.appendText(String.valueOf(c));
+            else if (username.length() < EriantysServer.MAX_USERNAME_LENGTH) textArea.appendText(String.valueOf(c));
 
             username = textArea.getText();
         }
