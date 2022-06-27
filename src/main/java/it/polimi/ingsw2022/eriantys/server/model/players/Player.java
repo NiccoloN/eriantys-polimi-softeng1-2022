@@ -105,11 +105,18 @@ public class Player implements Serializable {
         return new ArrayList<>(helperCards);
     }
 
+    /**
+     * @param index the index of the character card.
+     * @return true if the player has the character card with the given index, false otherwise.
+     */
     public boolean hasHelper(int index) {
 
         return helperCards.stream().anyMatch((x) -> x.index == index);
     }
 
+    /**
+     * Resets the current helper, used at the beginning of a new round.
+     */
     public void resetCurrentHelper() {
 
         currentHelper = null;
@@ -176,7 +183,10 @@ public class Player implements Serializable {
         this.school = school;
     }
 
-    public boolean hasPlayedCharacter() {
+    /**
+     * @return true if the player has already used a character card during this round.
+     */
+    public boolean isCharacterUsed() {
         return characterUsed;
     }
 
@@ -184,6 +194,11 @@ public class Player implements Serializable {
         this.characterUsed = characterUsed;
     }
 
+    /**
+     * Compare priority of turn of this player with another player, based on the index of the current helper card.
+     * @param otherPlayer the other player to compare to.
+     * @return -1 if priority is lower, +1 if it's higher.
+     */
     public int comparePriorityTo(Player otherPlayer) {
 
         return this.getCurrentHelper().priority < otherPlayer.getCurrentHelper().priority ? -1 : 1;

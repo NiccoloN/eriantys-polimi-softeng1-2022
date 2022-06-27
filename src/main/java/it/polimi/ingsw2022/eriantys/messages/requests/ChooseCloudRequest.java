@@ -11,6 +11,9 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import javafx.application.Platform;
 
+/**
+ * This class represents the request of choosing one cloud amongst the available in the game.
+ */
 public class ChooseCloudRequest extends MoveRequest {
 
     public ChooseCloudRequest(boolean canPlayCharacter) {

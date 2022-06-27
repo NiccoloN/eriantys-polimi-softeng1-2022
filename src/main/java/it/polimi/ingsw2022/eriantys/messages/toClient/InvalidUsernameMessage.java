@@ -8,6 +8,8 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 import java.io.IOException;
 
 /**
+ * This class represents a message sent by the server when the username chosen by the player is not valid
+ * (already taken or invalid format).
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto

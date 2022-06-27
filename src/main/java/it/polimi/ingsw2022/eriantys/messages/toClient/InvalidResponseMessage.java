@@ -6,6 +6,8 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import java.io.IOException;
 
 /**
+ * This class represents a message sent by the server when it receives a response from the client that he was not expecting.
+ * (ex. username choice in place of game settings choice)
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
  */

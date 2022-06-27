@@ -8,7 +8,12 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import java.io.IOException;
 import java.util.List;
 
-public class   StartingGameMessage extends ToClientMessage {
+/**
+ * This class represents a message sent from the server when the right number of players joined the lobby
+ * and the game is ready to start. The message contains the final list of players, the game mode,
+ * and the initial update containing every information from the model useful to display on the view.
+ */
+public class StartingGameMessage extends ToClientMessage {
 
     private final List<Player> players;
     private final Mode gameMode;

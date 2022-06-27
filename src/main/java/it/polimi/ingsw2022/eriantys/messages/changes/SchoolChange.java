@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a change in the school dashboard. Whenever it changes, the clients will be updated with this change.
+ */
 public class SchoolChange implements Change, Serializable {
 
     private final SchoolDashboard schoolDashboard;

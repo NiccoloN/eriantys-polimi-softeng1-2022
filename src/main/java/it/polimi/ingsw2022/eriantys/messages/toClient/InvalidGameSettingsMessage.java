@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import java.io.IOException;
 
 /**
+ * This class represents a message sent from the server when the game settings provided by the client are not valid.
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto

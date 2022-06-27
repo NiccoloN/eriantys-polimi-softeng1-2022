@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a change of the helper cards. Whenever they change, the clients will be updated with this change.
+ */
 public class HelperCardsChange implements Change, Serializable {
 
     private final String playerUsername;
@@ -28,10 +31,18 @@ public class HelperCardsChange implements Change, Serializable {
         this.playedHelperCard = playedHelperCard;
     }
 
+    /**
+     * Adds a helper card to this change.
+     * @param helperCard the changed helper card.
+     */
     public void addHelperCard(HelperCard helperCard) {
         this.helperCards.add(helperCard);
     }
 
+    /**
+     * Adds a list of helper cards to this change.
+     * @param helperCards the list of changed helper cards.
+     */
     public void addHelperCards(List<HelperCard> helperCards) {
         this.helperCards = new ArrayList<>(helperCards);
     }

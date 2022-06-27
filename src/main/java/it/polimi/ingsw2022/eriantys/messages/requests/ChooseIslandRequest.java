@@ -8,6 +8,10 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import javafx.application.Platform;
 
+/**
+ * This class represents the request of choosing an island. It's mainly used due to the effect of a character card.
+ * @author Emanuele Musto
+ */
 public class ChooseIslandRequest extends MoveRequest {
 
     public final int characterCardIndex;

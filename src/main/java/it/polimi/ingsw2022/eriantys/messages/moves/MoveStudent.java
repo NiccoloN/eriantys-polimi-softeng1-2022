@@ -30,6 +30,12 @@ public class MoveStudent extends Move {
     private final int islandIndex;
     private final PawnColor studentColor;
 
+    /**
+     * @param destination where the player moved the student.
+     * @param toWhere list of possible places where the student can be placed for the specific move.
+     * @param islandIndex the island index if the student is placed on an island, -1 if not.
+     * @param studentColor the color of the moved student
+     */
     public MoveStudent(ColoredPawnOriginDestination destination, List<ColoredPawnOriginDestination> toWhere, int islandIndex, PawnColor studentColor) {
 
         this.characterIndex = 0;
@@ -39,6 +45,14 @@ public class MoveStudent extends Move {
         this.studentColor = studentColor;
     }
 
+    /**
+     * Constructor used when the move is caused by a character card, of which the index is saved.
+     * @param destination where the player moved the student.
+     * @param toWhere list of possible places where the student can be placed for the specific move.
+     * @param islandIndex the island index if the student is placed on an island, -1 if not.
+     * @param studentColor the color of the moved student
+     * @param characterIndex the index of the character card that caused this move
+     */
     public MoveStudent(ColoredPawnOriginDestination destination, List<ColoredPawnOriginDestination> toWhere, int islandIndex, PawnColor studentColor, int characterIndex) {
 
         this(destination, toWhere, islandIndex, studentColor);

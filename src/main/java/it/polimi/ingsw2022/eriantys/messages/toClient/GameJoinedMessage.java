@@ -6,6 +6,8 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import java.io.IOException;
 
 /**
+ * This class represents a message that lets the client know when he successfully joined a game.
+ * This message is sent to the currently connecting player in order to display information in the lobby.
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto

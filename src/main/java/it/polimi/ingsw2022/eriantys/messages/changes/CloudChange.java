@@ -10,6 +10,9 @@ import javafx.application.Platform;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a change of the clouds. Whenever they change, the clients will be updated with this change.
+ */
 public class CloudChange implements Change, Serializable {
 
     private final Integer cloudIndex;

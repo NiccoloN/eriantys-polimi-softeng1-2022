@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents the choice of a helper card by a player
+ * This class represents the choice of a helper card by a player.
  * @author Emanuele Musto
  */
 public class ChooseHelperCard extends Move {

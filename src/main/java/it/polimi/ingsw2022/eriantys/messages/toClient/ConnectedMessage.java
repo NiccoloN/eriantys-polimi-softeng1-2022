@@ -5,6 +5,8 @@ import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import java.io.IOException;
 
 /**
+ * This class represents a message to let the client know that the connection has successfully been established
+ * between client and server.
  * @author Niccolò Nicolosi
  */
 public class ConnectedMessage extends ToClientMessage {
