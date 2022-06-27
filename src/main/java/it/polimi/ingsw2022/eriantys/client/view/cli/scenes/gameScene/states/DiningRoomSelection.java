@@ -51,15 +51,12 @@ public class DiningRoomSelection extends GameSceneState {
     public void enter() {
 
         getScene().getPlayer().setColor(GREEN);
-        getScene().getHintTextArea().setText("Press Enter to select your dining room\n\n" +
-                                             "Press ↓ or s to select an island");
     }
 
     @Override
     public void exit() {
 
         getScene().getPlayer().setColor(RESET);
-        getScene().getHintTextArea().setText("");
     }
 
     @Override

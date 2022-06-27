@@ -1,5 +1,6 @@
 package it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
@@ -19,11 +20,7 @@ public class EnterServerIp extends MenuSceneState {
     public EnterServerIp(EriantysCLI cli, MenuScene scene) throws IOException {
 
         super(cli, scene);
-
-        FileInputStream fileInputStream = new FileInputStream(ADDRESS_FILE_NAME);
-        Scanner scanner = new Scanner(fileInputStream);
-        serverIP = scanner.next();
-        scanner.close();
+        serverIP = EriantysClient.getInstance().loadSavedServerIp();
     }
 
     @Override

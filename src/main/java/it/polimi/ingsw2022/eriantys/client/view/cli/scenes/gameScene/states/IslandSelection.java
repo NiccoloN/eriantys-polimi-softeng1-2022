@@ -93,8 +93,6 @@ public class IslandSelection extends GameSceneState {
             updateSelectedIndex();
         }
 
-        getScene().getHintTextArea().setText("Select an island:\nUse ← and → or a and d keys to change your selection and press Enter to confirm\n\n" +
-                                      "Press ↓ or s to select a character card");
         updateCLI();
     }
 
@@ -103,7 +101,6 @@ public class IslandSelection extends GameSceneState {
 
         super.exit();
         currentSelected.setColor(IslandCLIComponent.DEFAULT_COLOR);
-        getScene().getHintTextArea().setText("");
     }
 
     @Override
@@ -126,10 +123,10 @@ public class IslandSelection extends GameSceneState {
             EriantysClient client = EriantysClient.getInstance();
 
             if(!movingStudent) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                            new MoveMotherNature(currentSelected.getIndex(), ((MoveMotherNatureRequest) requestMessage.moveRequest).motherNatureMaxSteps)));
+                            new MoveMotherNature(currentSelected.getCompoundIndex(), ((MoveMotherNatureRequest) requestMessage.moveRequest).motherNatureMaxSteps)));
             else if (characterIndex > 0) manageCharacters(client);
             else client.sendToServer(new PerformedMoveMessage(requestMessage,
-                        new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere ,currentSelected.getIndex(), studentColor)));
+                        new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere ,currentSelected.getCompoundIndex(), studentColor)));
 
             getScene().setState(new ViewOnly(getCli(), getScene()));
             return;
@@ -170,10 +167,10 @@ public class IslandSelection extends GameSceneState {
 
         for(int n = 0; n < getScene().getNumberOfIslands(); n++) {
 
-            if(getScene().getIsland(n).getIndex() == compoundIndex) {
+            if(getScene().getIsland(n).getCompoundIndex() == compoundIndex) {
 
                 int prevCliIndex = modValue(n - 1, getScene().getNumberOfIslands());
-                while(getScene().getIsland(prevCliIndex).getIndex() == compoundIndex) {
+                while(getScene().getIsland(prevCliIndex).getCompoundIndex() == compoundIndex) {
 
                     n = prevCliIndex;
                     prevCliIndex = modValue(n - 1, getScene().getNumberOfIslands());
@@ -195,9 +192,9 @@ public class IslandSelection extends GameSceneState {
     private void manageCharacters(EriantysClient client) throws IOException {
 
         if(studentColor != null) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, currentSelected.getIndex(), studentColor, characterIndex)));
+                new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, currentSelected.getCompoundIndex(), studentColor, characterIndex)));
         else client.sendToServer(new PerformedMoveMessage(requestMessage,
-                new ChooseIsland(currentSelected.getIndex(), characterIndex)));
+                new ChooseIsland(currentSelected.getCompoundIndex(), characterIndex)));
     }
 
     private void updateCLI() {

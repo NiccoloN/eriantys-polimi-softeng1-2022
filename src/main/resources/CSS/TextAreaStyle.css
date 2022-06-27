@@ -1,0 +1,21 @@
+.text-area {
+    -fx-background-color: -fx-background, -fx-text-box-border;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: rgba(68, 10, 10, 0.6);
+    -fx-effect: dropshadow( three-pass-box , rgba(47, 45, 45, 0.6), 5, 0.5 , 1, 0.5);
+}
+
+.text-area *.text {
+    -fx-text-alignment: center;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}

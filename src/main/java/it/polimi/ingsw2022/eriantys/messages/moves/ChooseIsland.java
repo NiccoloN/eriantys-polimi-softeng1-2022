@@ -4,11 +4,15 @@ import it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.IslandChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.ChooseIslandRequest;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
+import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -27,24 +31,39 @@ public class ChooseIsland extends Move{
     }
 
     @Override
-    public boolean isValid(Game game) {
+    public boolean isValid(Game game, MoveRequest request) {
 
-        boolean validParameters = (compoundIslandIndex >= 0 && compoundIslandIndex <= game.getBoard().getNumberOfIslands()) &&
-                (characterCardIndex >= 1 && characterCardIndex <= 12);
+        if(!(request instanceof ChooseIslandRequest)) {
 
-        switch(characterCardIndex) {
-
-            case 3:
-                errorMessage = "Invalid parameters (island index or character card index).";
-                return validParameters;
-            case 5:
-                errorMessage = "Deny Tiles are not available or invalid parameters";
-                int numberOfDenyTiles = game.getCharacterOfIndex(characterCardIndex).getDenyTilesNumber();
-                return numberOfDenyTiles > 0 && validParameters;
-            default:
-                errorMessage = "Invalid move.";
-                return false;
+            errorMessage = "Move not requested";
+            return false;
         }
+
+        if(compoundIslandIndex < 0 || compoundIslandIndex >= game.getBoard().getNumberOfIslands()) {
+
+            errorMessage = "Invalid island index";
+            return false;
+        }
+
+        CharacterCard characterCard;
+
+        try {
+
+            characterCard = game.getCharacterOfIndex(characterCardIndex);
+        }
+        catch(NoSuchElementException e) {
+
+            errorMessage = "Invalid character index";
+            return false;
+        }
+
+        if(characterCardIndex == 5 && characterCard.getDenyTilesNumber() <= 0) {
+
+            errorMessage = "Deny Tiles are not available or invalid parameters";
+            return false;
+        }
+
+        return true;
     }
 
     @Override

@@ -2,9 +2,12 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.IslandGUIComponent;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,8 +46,27 @@ public class IslandChange implements Change, Serializable {
         for(PawnColor color : PawnColor.values()) cliIsland.setStudents(color, islandTile.countStudents(color));
         cliIsland.setMother(islandTile.hasMotherNature());
         cliIsland.setTower(islandTile.hasTower());
-        cliIsland.setIndex(islandTile.getIndex());
+        cliIsland.setCompoundIndex(islandTile.getIndex());
         cliIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
         if(islandTile.getTeam().isPresent()) cliIsland.setTeamColor(islandTile.getTeam().get().ansiColor);
+    }
+
+    @Override
+    public void apply(GameController controller) {
+
+        for(int n = 0; n < islandTiles.size(); n++)
+            setGuiIslandTile(controller.getIslandGUIComponents(n), islandTiles.get(n));
+    }
+
+    private void setGuiIslandTile(IslandGUIComponent guiIsland, IslandTile islandTile) {
+
+        Platform.runLater(() ->  {
+
+            for(PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
+            guiIsland.setMotherNature(islandTile.hasMotherNature());
+            if(islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
+            guiIsland.setGuiIslandIndex(islandTile.getIndex());
+            guiIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
+        });
     }
 }

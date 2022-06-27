@@ -35,7 +35,9 @@ public class BasicGameMode implements GameMode, Serializable {
     protected final Game game;
     protected final EriantysServer server;
     protected GamePhase currentGamePhase;
+    protected MoveRequest currentMoveRequest;
     private boolean endGameNow;
+
 
     public BasicGameMode(Game game) {
 
@@ -122,6 +124,8 @@ public class BasicGameMode implements GameMode, Serializable {
             playHelpers();
             game.sortPlayersBasedOnHelperCard();
 
+            server.sendToAllClients(new MoveRequestMessage(new WaitRequest()));
+
             currentGamePhase = GamePhase.MOVING_STUDENTS;
             game.setCurrentPlayer(game.getPlayers().get(0));
             server.saveGame();
@@ -172,6 +176,7 @@ public class BasicGameMode implements GameMode, Serializable {
     private void playHelpers() throws IOException, InterruptedException {
 
         for(Player player : game.getPlayers()) player.resetCurrentHelper();
+        server.sendToAllClients(new MoveRequestMessage(new WaitRequest()));
 
         List<Integer> unplayableIndices = new ArrayList<>(3);
         for (int n = 0; n < game.getPlayers().size(); n++) {
@@ -186,7 +191,8 @@ public class BasicGameMode implements GameMode, Serializable {
                         unplayableIndices.add(other.getCurrentHelper().index);
 
                 if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
-                requestMove(new ChooseHelperCardRequest(unplayableIndices), player.getUsername());
+                requestMove(new ChooseHelperCardRequest(unplayableIndices, !player.hasPlayedCharacter()), player.getUsername());
+                server.sendToClient(new MoveRequestMessage(new WaitRequest()), player.getUsername());
 
                 if (game.getCurrentPlayer().getNumberOfHelpers() == 0) game.setGameEnding();
 
@@ -224,7 +230,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
         if(currentGamePhase == GamePhase.CHOOSING_CLOUD && !game.isGameEnding()) {
 
-            requestMove(new ChooseCloudRequest(), player.getUsername());
+            requestMove(new ChooseCloudRequest(!player.hasPlayedCharacter()), player.getUsername());
 
             if (playerIndex + 1 < game.getPlayers().size()) {
 
@@ -239,6 +245,9 @@ public class BasicGameMode implements GameMode, Serializable {
                 server.saveGame();
             }
         }
+
+        if(playerIndex < game.getPlayers().size() - 1)
+            server.sendToClient(new MoveRequestMessage(new WaitRequest()), player.getUsername());
     }
 
     /**
@@ -249,8 +258,9 @@ public class BasicGameMode implements GameMode, Serializable {
      */
     protected void requestStudent(Player player) throws IOException, InterruptedException {
 
-        requestMove(new MoveStudentRequest
-                        (player.getSchool().getAvailableEntranceColors(), List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE)),
+        requestMove(new MoveStudentRequest(player.getSchool().getAvailableEntranceColors(),
+                        List.of(ColoredPawnOriginDestination.ISLAND, ColoredPawnOriginDestination.TABLE),
+                        !player.hasPlayedCharacter()),
                 player.getUsername());
     }
 
@@ -262,7 +272,7 @@ public class BasicGameMode implements GameMode, Serializable {
      */
     protected void requestMotherNature(Player player) throws IOException, InterruptedException {
 
-        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement), player.getUsername());
+        requestMove(new MoveMotherNatureRequest(player.getCurrentHelper().movement, !player.hasPlayedCharacter()), player.getUsername());
     }
 
     /**
@@ -374,6 +384,7 @@ public class BasicGameMode implements GameMode, Serializable {
 
         if(!endGameNow) {
 
+            currentMoveRequest = request;
             MoveRequestMessage requestMessage = new MoveRequestMessage(request);
             server.sendToClient(requestMessage, playerUsername);
             requestMessage.waitForValidResponse();
@@ -383,9 +394,10 @@ public class BasicGameMode implements GameMode, Serializable {
     public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
         synchronized (this) {
+
             Move move = performedMoveMessage.move;
 
-            if (move.isValid(game)) {
+            if (move.isValid(game, currentMoveRequest)) {
 
                 move.apply(game);
                 server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));

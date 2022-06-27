@@ -34,7 +34,7 @@ public class MoveRequestMessage extends TimedMessage {
     @Override
     public void waitForValidResponse() throws InterruptedException {
 
-        waitForValidResponse(200, () -> {
+        waitForValidResponse(300, () -> {
 
             try {
                 System.out.println("Move response timeout");

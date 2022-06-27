@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.moves;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
+import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 
 import java.io.Serializable;
@@ -12,13 +13,15 @@ import java.io.Serializable;
 public abstract class Move implements Serializable {
 
     protected String errorMessage;
-
+    
     /**
      * Checks if this move made by the player is valid and withing the game rules.
+     * It also checks if the move made matches with the request send by the server.
      * @param game current state of the model
+     * @param request message sent by the server that this move must match with
      * @return true if this move made by the player is valid, false otherwise.
      */
-    public abstract boolean isValid(Game game);
+    public abstract boolean isValid(Game game, MoveRequest request);
 
     /**
      * @return the error message to display on the view when this move is not valid.
