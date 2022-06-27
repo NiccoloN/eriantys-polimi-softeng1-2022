@@ -7,6 +7,14 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * This class represents a ping message sent in order to establish that the connection is still alive between
+ * client and server. It's a timed message, so the client has 10 seconds in order to respond with a pong message,
+ * otherwise the connection is considered cut and the server shutdowns.
+ * @see PongMessage
+ * @author Emanuele Musto
+ * @author Niccolò Nicolosi
+ */
 public class PingMessage extends TimedMessage{
 
     static {

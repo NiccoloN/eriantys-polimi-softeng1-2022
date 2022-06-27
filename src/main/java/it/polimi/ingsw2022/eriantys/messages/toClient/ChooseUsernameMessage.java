@@ -8,6 +8,10 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import java.io.IOException;
 
 /**
+ * This class represents a message to request the username to a player.
+ * It accepts as a response a UsernameChoiceMessage containing the username of the player,
+ * or AbortMessage if the player does not want to continue starting the game.
+ * @see UsernameChoiceMessage
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto

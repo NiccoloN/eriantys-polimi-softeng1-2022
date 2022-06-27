@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
+ * This class represents a message that answers to the game settings request.
+ * It is sent by the client when he has to choose the game mode of the game.
+ * @see GameSettings
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  */

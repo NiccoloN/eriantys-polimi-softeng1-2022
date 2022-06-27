@@ -8,8 +8,8 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import java.io.IOException;
 
 /**
- * This class represent a request message for a move sent from the server to the client.
- * It specifies what kind of move through the enumeration MoveType
+ * This class represent a request message for a move sent from the server to the client, containing a move request.
+ * @see MoveRequest
  * @author Emanuele Musto
  */
 public class MoveRequestMessage extends TimedMessage {

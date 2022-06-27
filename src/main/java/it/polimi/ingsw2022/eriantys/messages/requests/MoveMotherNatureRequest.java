@@ -5,6 +5,12 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.IslandSelection;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
+/**
+ * This class represents the request of moving mother nature. The controller sets the attribute motherNatureMaxSteps
+ * that is used by the client to display how much can mother nature move. The attribute additionalSteps is used
+ * to increase by two the steps of mother nature due to the effect of a character card.
+ * @author Emanuele Musto
+ */
 public class MoveMotherNatureRequest extends MoveRequest {
 
     public final int motherNatureMaxSteps;

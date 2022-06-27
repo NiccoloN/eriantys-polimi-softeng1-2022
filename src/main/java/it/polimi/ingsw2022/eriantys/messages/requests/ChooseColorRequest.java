@@ -7,6 +7,13 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import java.util.List;
 
+/**
+ * This class represents the request of choosing a color amongst the ones available, saved in the attribute availableColors.
+ * It's mainly used due to the effect of a character card.
+ * The attribute fromWhere indicates where the chosen color is going to be taken from.
+ * @see ColoredPawnOriginDestination
+ * @author Emanuele Musto
+ */
 public class ChooseColorRequest extends MoveRequest {
 
     public final ColoredPawnOriginDestination fromWhere;

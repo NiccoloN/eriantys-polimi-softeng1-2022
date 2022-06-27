@@ -5,6 +5,9 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CloudSelection;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
+/**
+ * This class represents the request of choosing one cloud amongst the available in the game.
+ */
 public class ChooseCloudRequest extends MoveRequest {
 
     public ChooseCloudRequest() {

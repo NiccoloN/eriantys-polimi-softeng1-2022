@@ -4,6 +4,9 @@ import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.io.IOException;
 
+/**
+ * This class represents a message sent just before the client disconnects from the server.
+ */
 public class DisconnectMessage extends ToServerMessage {
 
     public DisconnectMessage() {

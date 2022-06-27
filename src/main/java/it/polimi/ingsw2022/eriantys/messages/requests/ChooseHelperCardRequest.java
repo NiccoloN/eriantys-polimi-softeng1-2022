@@ -7,6 +7,11 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 import java.util.List;
 
+/**
+ * This class represents the request of choosing a helper card amongst the ones available.
+ * The attribute unplayableIndices indicates the indexes of the helper cards that are still in the hand of the player,
+ * but are unplayable due to the fact that some other player has chosen the same card in this round.
+ */
 public class ChooseHelperCardRequest extends MoveRequest {
 
     private final List<Integer> unplayableIndices;

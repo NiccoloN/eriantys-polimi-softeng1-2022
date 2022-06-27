@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
+ * This class represents the game settings chosen by the first player connecting.
+ * It contains the desired number of players and the game mode, or the choice of loading ad existing game.
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  */

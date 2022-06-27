@@ -8,6 +8,12 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import java.util.List;
 
+/**
+ * This class represents the request of moving a student. The attribute availableColors indicates which color of the
+ * pawns that the player can move. The attribute toWhere indicates the possible destinations of the pawn.
+ * It's also used when a character card is in play.
+ * @see ColoredPawnOriginDestination
+ */
 public class MoveStudentRequest extends MoveRequest {
 
     private final List<PawnColor> availableColors;
