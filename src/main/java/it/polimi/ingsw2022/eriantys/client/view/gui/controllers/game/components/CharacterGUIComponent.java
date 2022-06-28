@@ -58,15 +58,8 @@ public class CharacterGUIComponent {
 
         characterGroup.setVisible(true);
 
-        characterCard.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> {
-
-            this.effectsTextArea.setText(effect + "\n\nCost: " + cost);
-        });
-
-        characterCard.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> {
-
-            this.effectsTextArea.setText("");
-        });
+        characterCard.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> effectsTextArea.setText(effect + "\n\nCost: " + cost));
+        characterCard.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> effectsTextArea.setText(""));
 
         characterClicked = mouseEvent -> {
 
@@ -231,7 +224,7 @@ public class CharacterGUIComponent {
         if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCharacterCard(characterIndex)));
-            //for(CharacterGUIComponent character : gameController.getCharacterGUIComponents()) character.stopListeningToInput();
+            for(CharacterGUIComponent character : gameController.getCharacterGUIComponents()) character.stopListeningToInput();
         }
     }
 }

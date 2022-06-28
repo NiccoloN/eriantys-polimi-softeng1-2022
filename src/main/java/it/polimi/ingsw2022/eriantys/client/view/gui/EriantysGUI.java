@@ -12,7 +12,7 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Application;
@@ -146,7 +146,7 @@ public class EriantysGUI extends Application implements View {
     }
 
     @Override
-    public void startGame(List<Player> players, Mode gameMode) throws IOException {
+    public void startGame(List<Player> players, GameMode gameMode) throws IOException {
 
         gameController = new GameController(this, players);
         setScene("Game.fxml", gameController);

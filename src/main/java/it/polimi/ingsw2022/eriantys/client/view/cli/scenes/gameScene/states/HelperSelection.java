@@ -7,11 +7,10 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,7 +67,7 @@ public class HelperSelection extends GameSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
 
-        if(input.triggersAction(Action.UP) && getScene().gameMode == Mode.EXPERT) {
+        if(input.triggersAction(Action.UP) && getScene().gameMode == GameMode.EXPERT) {
 
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;

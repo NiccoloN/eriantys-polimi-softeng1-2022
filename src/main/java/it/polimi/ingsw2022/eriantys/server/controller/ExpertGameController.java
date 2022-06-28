@@ -27,9 +27,8 @@ import java.util.*;
  * This class represents the expert mode of the game, it includes coins and characters.
  * @author Emanuele Musto
  */
-public class ExpertGameMode extends BasicGameMode {
+public class ExpertGameController extends BasicGameController {
 
-    private boolean usingCharacter;
     private MoveRequestMessage currentCharacterMoveRequestMessage;
     private int motherNatureAdditionalSteps;
 
@@ -38,13 +37,13 @@ public class ExpertGameMode extends BasicGameMode {
      * @param game the model and all the game's data.
      * @param initialize if true the game is initialized. It's false only when a game is loaded from a save.
      */
-    public ExpertGameMode(Game game, boolean initialize) {
+    public ExpertGameController(Game game, boolean initialize) {
 
         super(game);
 
         if(initialize) {
 
-            usingCharacter = false;
+            currentCharacterMoveRequestMessage = null;
             motherNatureAdditionalSteps = 0;
             game.resetCharacterUses();
 
@@ -348,7 +347,7 @@ public class ExpertGameMode extends BasicGameMode {
 
         MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
 
-        if(performedMoveMessage.move instanceof ChooseCharacterCard && !usingCharacter) {
+        if(performedMoveMessage.move instanceof ChooseCharacterCard && currentCharacterMoveRequestMessage == null) {
 
             ChooseCharacterCard move = (ChooseCharacterCard) performedMoveMessage.move;
 
@@ -359,14 +358,12 @@ public class ExpertGameMode extends BasicGameMode {
 
                     if (move.isValid(game, currentMoveRequestMessage.moveRequest)) {
 
-                        usingCharacter = true;
                         performedMoveMessage.move.apply(game);
-                        previousMessage.moveRequest.setCanPlayCharacter(false);
+                        currentMoveRequestMessage.moveRequest.setCanPlayCharacter(false);
 
                         playCharacter(move.characterCardIndex);
 
                         server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
-                        usingCharacter = false;
                     }
 
                     else server.sendToClient(new InvalidMoveMessage(move.getErrorMessage()), playerUsername);

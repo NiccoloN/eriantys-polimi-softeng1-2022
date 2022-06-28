@@ -12,7 +12,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCL
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
@@ -30,7 +30,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  */
 public class GameScene extends CLIScene {
 
-    public final Mode gameMode;
+    public final GameMode gameMode;
 
     private List<CompoundIslandTile> compoundIslands;
 
@@ -57,7 +57,7 @@ public class GameScene extends CLIScene {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    public GameScene(EriantysCLI cli, int width, int height, List<Player> players, Mode gameMode) {
+    public GameScene(EriantysCLI cli, int width, int height, List<Player> players, GameMode gameMode) {
 
         super(cli, width, height);
 

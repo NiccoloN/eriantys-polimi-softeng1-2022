@@ -14,7 +14,7 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.jline.terminal.Terminal;
@@ -329,7 +329,7 @@ public class EriantysCLI implements View {
     }
 
     @Override
-    public void startGame(List<Player> players, Mode gameMode) {
+    public void startGame(List<Player> players, GameMode gameMode) {
 
         setScene(new GameScene(this, currentScene.getWidth(), currentScene.getHeight(), players, gameMode));
     }

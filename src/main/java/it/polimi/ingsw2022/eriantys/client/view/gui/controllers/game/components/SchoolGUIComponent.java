@@ -10,23 +10,23 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 public class SchoolGUIComponent {
 
@@ -36,6 +36,8 @@ public class SchoolGUIComponent {
     private final GridPane professorPane;
     private final GridPane towersPane;
 
+    private final Map<PawnColor, Integer> tableStudents;
+
     private final EventHandler<MouseEvent> dashboardClicked;
     private MoveRequestMessage requestMessage;
     private PawnColor chosenColor;
@@ -44,18 +46,23 @@ public class SchoolGUIComponent {
 
     public SchoolGUIComponent(Group school, Team team, GameController gameController) {
 
+        this.gameController = gameController;
+
         schoolGroup = school;
         entrancePane = (GridPane) school.getChildren().get(1);
         tablePane = (GridPane) school.getChildren().get(2);
         professorPane = (GridPane) school.getChildren().get(3);
         towersPane = (GridPane) school.getChildren().get(4);
 
-        this.gameController = gameController;
-
         ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
 
+        PawnColor[] pawnColors = PawnColor.values();
+
+        tableStudents = new HashMap<>(5);
+        for(PawnColor color : pawnColors) tableStudents.put(color, 0);
+
         int colorRow = 0;
-        for (PawnColor color : PawnColor.values()) {
+        for (PawnColor color : pawnColors) {
 
             // Setting up professors pane
             ColoredPawnImageView professorsImageView = new ColoredPawnImageView(ImageFactory.PROFESSOR_SIZE);
@@ -67,10 +74,19 @@ public class SchoolGUIComponent {
             int TABLE_COLS = 10;
             for (int col = 0; col < TABLE_COLS; col++) {
 
-                ColoredPawnImageView tableImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-                tableImageView.setStudentOfColor(color);
-                tableImageView.setVisible(false);
-                tablePane.add(tableImageView, col, colorRow);
+                SizedImageView coinImageView = null;
+                if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && col % 3 == 2)
+                    coinImageView = new SizedImageView(ImageFactory.COIN_SIZE, ImageFactory.coinImage);
+
+                ColoredPawnImageView studentImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+                studentImageView.setStudentOfColor(color);
+                studentImageView.setVisible(false);
+
+                Group tableSeatGroup;
+                if(coinImageView != null) tableSeatGroup = new Group(coinImageView, studentImageView);
+                else tableSeatGroup = new Group(studentImageView);
+
+                tablePane.add(tableSeatGroup, col, colorRow);
             }
             colorRow++;
         }
@@ -83,9 +99,9 @@ public class SchoolGUIComponent {
             for (int col = 0; col < ENTRANCE_COLS; col++) {
 
                 if (row == 0 && col == 0) continue;
-                ColoredPawnImageView coloredImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-                coloredImageView.setVisible(false);
-                entrancePane.add(coloredImageView, col, row);
+                ColoredPawnImageView studentImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+                studentImageView.setVisible(false);
+                entrancePane.add(studentImageView, col, row);
             }
         }
 
@@ -141,21 +157,53 @@ public class SchoolGUIComponent {
 
         if (students < 0 || students > 10) throw new InvalidParameterException("Students must be >= 0 and <= 10");
 
-        for (int i = 0; i < tablePane.getChildren().size(); i++) {
+        int currentStudents = tableStudents.get(color);
 
-            ColoredPawnImageView student = (ColoredPawnImageView) tablePane.getChildren().get(i);
+        if(currentStudents < students) {
 
-            while (color != student.getColor()) {
+            for (int i = 0; i < tablePane.getChildren().size() && currentStudents != students; i++) {
 
-                i += 10;
-                student = (ColoredPawnImageView) tablePane.getChildren().get(i);
+                Group tableSeatGroup = (Group) tablePane.getChildren().get(i);
+                ColoredPawnImageView student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
+
+                while (color != student.getColor()) {
+
+                    i += 10;
+                    tableSeatGroup = (Group) tablePane.getChildren().get(i);
+                    student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
+                }
+
+                if (!student.isVisible()) {
+
+                    student.setVisible(true);
+                    currentStudents++;
+                }
             }
-
-            if (students == 0) break;
-
-            if (!student.isVisible()) student.setVisible(true);
-            students--;
         }
+
+        else if(currentStudents > students) {
+
+            for (int i = tablePane.getChildren().size() - 1; i > 0 && currentStudents != students; i--) {
+
+                Group tableSeatGroup = (Group) tablePane.getChildren().get(i);
+                ColoredPawnImageView student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
+
+                while(color != student.getColor()) {
+
+                    i -= 10;
+                    tableSeatGroup = (Group) tablePane.getChildren().get(i);
+                    student        = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
+                }
+
+                if(student.isVisible()) {
+
+                    student.setVisible(false);
+                    currentStudents--;
+                }
+            }
+        }
+
+        tableStudents.put(color, currentStudents);
     }
 
     public void setProfessors(PawnColor color, boolean isPresent) {

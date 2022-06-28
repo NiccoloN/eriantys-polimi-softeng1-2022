@@ -10,8 +10,7 @@ import it.polimi.ingsw2022.eriantys.messages.moves.Abort;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
-import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import java.io.IOException;
 
@@ -75,7 +74,7 @@ public class ColorSelection extends GameSceneState {
             return;
         }
 
-        if(input.triggersAction(Action.UP) && getScene().gameMode == Mode.EXPERT) {
+        if(input.triggersAction(Action.UP) && getScene().gameMode == GameMode.EXPERT) {
 
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;

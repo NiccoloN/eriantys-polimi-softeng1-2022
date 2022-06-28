@@ -7,11 +7,10 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 
 import java.io.IOException;
 
@@ -54,7 +53,7 @@ public class CloudSelection extends GameSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
 
-        if(input.triggersAction(Action.DOWN) && getScene().gameMode == Mode.EXPERT) {
+        if(input.triggersAction(Action.DOWN) && getScene().gameMode == GameMode.EXPERT) {
 
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.UP));
             return;

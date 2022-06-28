@@ -16,7 +16,7 @@ import it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
@@ -112,7 +112,7 @@ public class IslandSelection extends GameSceneState {
             return;
         }
 
-        if(input.triggersAction(Action.DOWN) && getScene().gameMode == Mode.EXPERT) {
+        if(input.triggersAction(Action.DOWN) && getScene().gameMode == GameMode.EXPERT) {
 
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.UP));
             return;

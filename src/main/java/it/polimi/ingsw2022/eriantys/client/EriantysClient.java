@@ -11,7 +11,7 @@ import it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.application.Platform;
@@ -257,7 +257,7 @@ public class EriantysClient {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    public void startGame(List<Player> players, Mode gameMode) throws IOException {
+    public void startGame(List<Player> players, GameMode gameMode) throws IOException {
 
         view.startGame(players, gameMode);
     }
@@ -357,11 +357,14 @@ public class EriantysClient {
      */
     private void disconnect() throws IOException {
 
-        sendToServer(new DisconnectMessage());
-        serverOutputStream.close();
-        serverInputStream.close();
-        server.close();
-        log("Disconnected from the server");
+        if(server != null) {
+
+            sendToServer(new DisconnectMessage());
+            serverOutputStream.close();
+            serverInputStream.close();
+            server.close();
+            log("Disconnected from the server");
+        }
     }
 
     public void exit(boolean connectionAlive) throws IOException {

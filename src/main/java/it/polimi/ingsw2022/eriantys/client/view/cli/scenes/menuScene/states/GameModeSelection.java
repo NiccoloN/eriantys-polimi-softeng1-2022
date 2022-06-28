@@ -4,14 +4,13 @@ import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Action;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.cli.Input;
-import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 
 import java.io.IOException;
 
@@ -74,7 +73,7 @@ public class GameModeSelection extends MenuSceneState {
         if (input.triggersAction(Action.SELECT)) {
 
             EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage,
-                    new GameSettings(selectedNumberOfPlayers, Mode.values()[currentSelectedIndex])));
+                    new GameSettings(selectedNumberOfPlayers, GameMode.values()[currentSelectedIndex])));
 
             //TODO abort message
         }

@@ -5,10 +5,10 @@ import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.BasicGameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameMode;
+import it.polimi.ingsw2022.eriantys.server.controller.BasicGameController;
+import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameController;
+import it.polimi.ingsw2022.eriantys.server.controller.GameController;
 import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
@@ -67,7 +67,7 @@ public class EriantysServer implements Serializable {
 
     private GameSettings gameSettings;
     private Game game;
-    private GameMode gameMode;
+    private GameController gameController;
     private boolean running;
 
     private EriantysServer loadedSave;
@@ -168,7 +168,7 @@ public class EriantysServer implements Serializable {
         else loadGame();                        //load game
 
         //Start controller
-        gameMode.playGame();
+        gameController.playGame();
 
         System.out.println("Game ended: deleting save file");
         File saveFile = new File("save");
@@ -439,8 +439,8 @@ public class EriantysServer implements Serializable {
      * It also sends the initial update to everyone.
      * @throws IOException when output stream throws an exception (while sending a message to client).
      * @see Game
-     * @see BasicGameMode
-     * @see ExpertGameMode
+     * @see BasicGameController
+     * @see ExpertGameController
      */
     private void createGame() throws IOException {
 
@@ -448,10 +448,10 @@ public class EriantysServer implements Serializable {
 
         String[] playerUsernames = clients.keySet().toArray(new String[0]);
 
-        game = new Game(playerUsernames);
-        gameMode = gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game, true);
+        game           = new Game(playerUsernames);
+        gameController = gameSettings.gameMode == GameMode.BASIC ? new BasicGameController(game) : new ExpertGameController(game, true);
 
-        Update[] initialUpdates = gameMode.createInitialUpdates();
+        Update[] initialUpdates = gameController.createInitialUpdates();
 
         for (int n = 0; n < playerUsernames.length; n++)
             sendToClient(new StartingGameMessage(game.getPlayersStartOrder(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
@@ -473,11 +473,11 @@ public class EriantysServer implements Serializable {
 
         for(int n = 0; n < playerUsernames.size(); n++) players.get(n).setUsername(playerUsernames.get(n));
 
-        gameMode = loadedSave.gameSettings.gameMode == Mode.BASIC ? new BasicGameMode(game) : new ExpertGameMode(game, false);
-        gameMode.setCurrentGamePhase(loadedSave.gameMode.getCurrentGamePhase());
-        gameMode.setEndGameNow(loadedSave.gameMode.getEndGameNow());
+        gameController = loadedSave.gameSettings.gameMode == GameMode.BASIC ? new BasicGameController(game) : new ExpertGameController(game, false);
+        gameController.setCurrentGamePhase(loadedSave.gameController.getCurrentGamePhase());
+        gameController.setEndGameNow(loadedSave.gameController.getEndGameNow());
 
-        Update[] initialUpdates = gameMode.createInitialUpdates();
+        Update[] initialUpdates = gameController.createInitialUpdates();
 
         for (int n = 0; n < playerUsernames.size(); n++)
             sendToClient(new StartingGameMessage(game.getPlayersStartOrder(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames.get(n)));
@@ -493,7 +493,7 @@ public class EriantysServer implements Serializable {
 
         try{
 
-            gameMode.managePerformedMoveMessage(moveMessage);
+            gameController.managePerformedMoveMessage(moveMessage);
         }
         catch(InterruptedException e) {
 

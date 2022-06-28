@@ -26,11 +26,11 @@ import java.util.*;
  * This class represents the basic mode of the game. It's the controller in the MVC pattern, manages rounds, player turns,
  * requests for moves, updates, and controls.
  * @author Francesco Melegati Maccari
- * @author Niccolò Nicolosi
  * @author Emanuele Musto
+ * @author Niccolò Nicolosi
  */
 
-public class BasicGameMode implements GameMode, Serializable {
+public class BasicGameController implements GameController, Serializable {
 
     protected final Game game;
     protected final EriantysServer server;
@@ -38,7 +38,7 @@ public class BasicGameMode implements GameMode, Serializable {
     protected MoveRequestMessage currentMoveRequestMessage;
     protected boolean endGameNow;
 
-    public BasicGameMode(Game game) {
+    public BasicGameController(Game game) {
 
         this.game = game;
         server = EriantysServer.getInstance();
