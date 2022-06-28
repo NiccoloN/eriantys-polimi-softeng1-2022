@@ -31,6 +31,8 @@ public class SchoolDashboard implements Serializable {
      */
     public SchoolDashboard(Player player, int maxTowers) {
 
+        if (maxTowers != 6 && maxTowers != 8) throw new RuntimeException("Number of maxTowers is wrong");
+
         this.player = player;
         entranceStudents = new ArrayList<>();
         studentsTables = new HashMap<>();
@@ -127,7 +129,7 @@ public class SchoolDashboard implements Serializable {
     public void addToTable(ColoredPawn student) {
 
         List<ColoredPawn> table = studentsTables.get(student.color);
-        if (table.size() >= 9) throw new RuntimeException("Maximum number of students at the " + student.color + " table already reached");
+        if (table.size() >= 10) throw new RuntimeException("Maximum number of students at the " + student.color + " table already reached");
         if (table.contains(student)) throw new RuntimeException("No duplicates allowed");
         table.add(student);
 
@@ -165,9 +167,9 @@ public class SchoolDashboard implements Serializable {
      * @param professor the professor to place
      */
     public void addProfessor(ColoredPawn professor) {
-        if (!professors.contains(professor)) {
-            professors.add(professor);
-        }
+
+        if (professors.contains(professor)) throw new RuntimeException("Professor already present");
+        professors.add(professor);
     }
 
     /**

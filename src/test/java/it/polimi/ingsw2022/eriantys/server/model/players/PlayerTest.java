@@ -14,13 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     private Player player;
+    private Team blackTeam;
 
     @BeforeEach
     void setUp() {
-
-        //TODO
-        //Team.WHITE.reset();
-        //player = new Player("", Team.WHITE, Mage.MAGE_1);
+        blackTeam = new Team("\u001b[30m", "black");
+        player = new Player("", blackTeam, Mage.MAGE_1);
     }
 
     @Test
