@@ -123,7 +123,7 @@ public class IslandSelection extends GameSceneState {
             EriantysClient client = EriantysClient.getInstance();
 
             if(!movingStudent) client.sendToServer(new PerformedMoveMessage(requestMessage,
-                            new MoveMotherNature(currentSelected.getCompoundIndex(), ((MoveMotherNatureRequest) requestMessage.moveRequest).motherNatureMaxSteps)));
+                            new MoveMotherNature(currentSelected.getCompoundIndex(), ((MoveMotherNatureRequest) requestMessage.moveRequest).getMotherNatureMaxSteps())));
             else if (characterIndex > 0) manageCharacters(client);
             else client.sendToServer(new PerformedMoveMessage(requestMessage,
                         new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere ,currentSelected.getCompoundIndex(), studentColor)));

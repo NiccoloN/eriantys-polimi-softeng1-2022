@@ -35,9 +35,8 @@ public class BasicGameMode implements GameMode, Serializable {
     protected final Game game;
     protected final EriantysServer server;
     protected GamePhase currentGamePhase;
-    protected MoveRequest currentMoveRequest;
-    private boolean endGameNow;
-
+    protected MoveRequestMessage currentMoveRequestMessage;
+    protected boolean endGameNow;
 
     public BasicGameMode(Game game) {
 
@@ -384,31 +383,28 @@ public class BasicGameMode implements GameMode, Serializable {
 
         if(!endGameNow) {
 
-            currentMoveRequest = request;
-            MoveRequestMessage requestMessage = new MoveRequestMessage(request);
-            server.sendToClient(requestMessage, playerUsername);
-            requestMessage.waitForValidResponse();
+            currentMoveRequestMessage = new MoveRequestMessage(request);
+            server.sendToClient(currentMoveRequestMessage, playerUsername);
+            currentMoveRequestMessage.waitForValidResponse();
         }
     }
 
     public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
-        synchronized (this) {
+        Move move = performedMoveMessage.move;
 
-            Move move = performedMoveMessage.move;
+        if (move.isValid(game, currentMoveRequestMessage.moveRequest)) {
 
-            if (move.isValid(game, currentMoveRequest)) {
+            move.apply(game);
+            server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
+            performedMoveMessage.getPreviousMessage().acceptResponse();
+        }
+        else {
 
-                move.apply(game);
-                server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
-                performedMoveMessage.getPreviousMessage().acceptResponse();
-            }
-            else {
+            String playerUsername = game.getCurrentPlayer().getUsername();
 
-                server.sendToClient(
-                        new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
-                        game.getCurrentPlayer().getUsername());
-            }
+            server.sendToClient(new InvalidMoveMessage(move.getErrorMessage()), playerUsername);
+            server.sendToClient(currentMoveRequestMessage, playerUsername);
         }
     }
 

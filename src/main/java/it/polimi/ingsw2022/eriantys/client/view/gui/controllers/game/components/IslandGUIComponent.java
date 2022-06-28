@@ -81,8 +81,11 @@ public class IslandGUIComponent {
         buttonClicked = mouseEvent -> {
 
             try {
+
                 manageInput(mouseEvent);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
+
                 e.printStackTrace();
             }
         };
@@ -238,7 +241,7 @@ public class IslandGUIComponent {
                         new PerformedMoveMessage(requestMessage,
                                 new MoveMotherNature(
                                         Integer.parseInt(indexLabel.getText()),
-                                        ((MoveMotherNatureRequest) request).motherNatureMaxSteps
+                                        ((MoveMotherNatureRequest) request).getMotherNatureMaxSteps()
                                 )
                         )
                 );

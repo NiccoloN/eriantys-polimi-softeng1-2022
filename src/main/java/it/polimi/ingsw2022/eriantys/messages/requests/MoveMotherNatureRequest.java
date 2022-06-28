@@ -21,16 +21,23 @@ import java.util.List;
  */
 public class MoveMotherNatureRequest extends MoveRequest {
 
-    private static boolean additionalSteps = false;
-
-    public final int motherNatureMaxSteps;
+    private int motherNatureMaxSteps;
 
     public MoveMotherNatureRequest(int maxMotherNatureMaxSteps, boolean canPlayCharacter) {
 
         super("Choose how many steps mother nature will take");
-        if(!additionalSteps) this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
-        else this.motherNatureMaxSteps = maxMotherNatureMaxSteps + 2;
+        this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
         setCanPlayCharacter(canPlayCharacter);
+    }
+
+    public int getMotherNatureMaxSteps() {
+
+        return motherNatureMaxSteps;
+    }
+
+    public void setMotherNatureMaxSteps(int motherNatureMaxSteps) {
+
+        this.motherNatureMaxSteps = motherNatureMaxSteps;
     }
 
     @Override
@@ -82,10 +89,5 @@ public class MoveMotherNatureRequest extends MoveRequest {
                 }
             }
         });
-    }
-
-    public static void setAdditionalSteps(boolean additionalSteps) {
-
-        MoveMotherNatureRequest.additionalSteps = additionalSteps;
     }
 }
