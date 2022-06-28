@@ -6,11 +6,9 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.Frame;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.*;
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Start;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 
-import java.io.*;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
@@ -140,12 +138,12 @@ public class MenuScene extends CLIScene {
         selectGameModePrompt.setColor(RESET);
         selectGameModePrompt.setHidden(true);
 
-        Mode[] modes = Mode.values();
-        gameModes = new BasicCLIComponent[modes.length];
-        for (int n = 0; n < gameModes.length; n++){
+        GameMode[] gameModes = GameMode.values();
+        this.gameModes = new BasicCLIComponent[gameModes.length];
+        for (int n = 0; n < this.gameModes.length; n++){
 
-            gameModes[n] = new BasicCLIComponent(modes[n].toString().length(), new String[] { modes[n].toString() });
-            gameModes[n].setHidden(true);
+            this.gameModes[n] = new BasicCLIComponent(gameModes[n].toString().length(), new String[] {gameModes[n].toString() });
+            this.gameModes[n].setHidden(true);
         }
 
         setComponentsPositions();

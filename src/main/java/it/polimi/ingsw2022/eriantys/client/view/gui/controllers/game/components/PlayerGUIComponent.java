@@ -3,10 +3,9 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.security.InvalidParameterException;
@@ -28,7 +27,7 @@ public class PlayerGUIComponent {
         lastHelper = (ImageView) player.getChildren().get(4);
         setName(username);
 
-        if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.BASIC) {
+        if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.BASIC) {
             coinImage.setVisible(false);
             coinLabel.setVisible(false);
         }

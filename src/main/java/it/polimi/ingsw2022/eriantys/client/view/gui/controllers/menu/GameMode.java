@@ -6,7 +6,6 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 
@@ -33,10 +32,10 @@ public class GameMode extends SceneController {
         else if (pButton4.isSelected()) numberOfPlayers = 4;
         else numberOfPlayers = 0;
 
-        Mode gameMode;
+        it.polimi.ingsw2022.eriantys.server.controller.GameMode gameMode;
 
-        if(basicButton.isSelected()) gameMode = Mode.BASIC;
-        else if(expertButton.isSelected()) gameMode = Mode.EXPERT;
+        if(basicButton.isSelected()) gameMode = it.polimi.ingsw2022.eriantys.server.controller.GameMode.BASIC;
+        else if(expertButton.isSelected()) gameMode = it.polimi.ingsw2022.eriantys.server.controller.GameMode.EXPERT;
         else gameMode = null;
 
         EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage,

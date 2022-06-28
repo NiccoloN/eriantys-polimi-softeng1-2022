@@ -26,20 +26,19 @@ import java.util.*;
  * This class represents the basic mode of the game. It's the controller in the MVC pattern, manages rounds, player turns,
  * requests for moves, updates, and controls.
  * @author Francesco Melegati Maccari
- * @author Niccolò Nicolosi
  * @author Emanuele Musto
+ * @author Niccolò Nicolosi
  */
 
-public class BasicGameMode implements GameMode, Serializable {
+public class BasicGameController implements GameController, Serializable {
 
     protected final Game game;
     protected final EriantysServer server;
     protected GamePhase currentGamePhase;
-    protected MoveRequest currentMoveRequest;
-    private boolean endGameNow;
+    protected MoveRequestMessage currentMoveRequestMessage;
+    protected boolean endGameNow;
 
-
-    public BasicGameMode(Game game) {
+    public BasicGameController(Game game) {
 
         this.game = game;
         server = EriantysServer.getInstance();
@@ -384,31 +383,28 @@ public class BasicGameMode implements GameMode, Serializable {
 
         if(!endGameNow) {
 
-            currentMoveRequest = request;
-            MoveRequestMessage requestMessage = new MoveRequestMessage(request);
-            server.sendToClient(requestMessage, playerUsername);
-            requestMessage.waitForValidResponse();
+            currentMoveRequestMessage = new MoveRequestMessage(request);
+            server.sendToClient(currentMoveRequestMessage, playerUsername);
+            currentMoveRequestMessage.waitForValidResponse();
         }
     }
 
     public void managePerformedMoveMessage(PerformedMoveMessage performedMoveMessage) throws IOException, InterruptedException {
 
-        synchronized (this) {
+        Move move = performedMoveMessage.move;
 
-            Move move = performedMoveMessage.move;
+        if (move.isValid(game, currentMoveRequestMessage.moveRequest)) {
 
-            if (move.isValid(game, currentMoveRequest)) {
+            move.apply(game);
+            server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
+            performedMoveMessage.getPreviousMessage().acceptResponse();
+        }
+        else {
 
-                move.apply(game);
-                server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
-                performedMoveMessage.getPreviousMessage().acceptResponse();
-            }
-            else {
+            String playerUsername = game.getCurrentPlayer().getUsername();
 
-                server.sendToClient(
-                        new InvalidMoveMessage(performedMoveMessage, performedMoveMessage.getPreviousMessage(), move.getErrorMessage()),
-                        game.getCurrentPlayer().getUsername());
-            }
+            server.sendToClient(new InvalidMoveMessage(move.getErrorMessage()), playerUsername);
+            server.sendToClient(currentMoveRequestMessage, playerUsername);
         }
     }
 

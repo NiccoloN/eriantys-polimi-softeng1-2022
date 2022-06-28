@@ -8,7 +8,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameControl
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.CharacterGUIComponent;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.IslandGUIComponent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -21,16 +21,23 @@ import java.util.List;
  */
 public class MoveMotherNatureRequest extends MoveRequest {
 
-    private static boolean additionalSteps = false;
-
-    public final int motherNatureMaxSteps;
+    private int motherNatureMaxSteps;
 
     public MoveMotherNatureRequest(int maxMotherNatureMaxSteps, boolean canPlayCharacter) {
 
         super("Choose how many steps mother nature will take");
-        if(!additionalSteps) this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
-        else this.motherNatureMaxSteps = maxMotherNatureMaxSteps + 2;
+        this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
         setCanPlayCharacter(canPlayCharacter);
+    }
+
+    public int getMotherNatureMaxSteps() {
+
+        return motherNatureMaxSteps;
+    }
+
+    public void setMotherNatureMaxSteps(int motherNatureMaxSteps) {
+
+        this.motherNatureMaxSteps = motherNatureMaxSteps;
     }
 
     @Override
@@ -73,7 +80,7 @@ public class MoveMotherNatureRequest extends MoveRequest {
                 }
             }
 
-            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT && canPlayCharacter()) {
+            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
 
                 for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
 
@@ -82,10 +89,5 @@ public class MoveMotherNatureRequest extends MoveRequest {
                 }
             }
         });
-    }
-
-    public static void setAdditionalSteps(boolean additionalSteps) {
-
-        MoveMotherNatureRequest.additionalSteps = additionalSteps;
     }
 }

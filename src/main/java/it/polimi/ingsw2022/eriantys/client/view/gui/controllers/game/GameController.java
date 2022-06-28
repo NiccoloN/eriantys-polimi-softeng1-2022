@@ -4,7 +4,7 @@ import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.*;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
@@ -88,7 +88,7 @@ public class GameController extends SceneController implements Initializable {
         clouds.setTranslateX((clouds.getChildren().get(0).getLayoutBounds().getWidth() + 10) / 2 *
                              (clouds.getColumnCount() - playersList.size()));
 
-        if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT) {
+        if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT) {
 
             characterGUIComponents = new ArrayList<>(3);
             for(int i = 0; i < 3; i++)
@@ -171,7 +171,7 @@ public class GameController extends SceneController implements Initializable {
 
         for(IslandGUIComponent island : islandGUIComponents) island.stopListeningToInput();
         for(CloudGUIComponent cloud : cloudGUIComponents) cloud.stopListeningToInput();
-        if(EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT)
+        if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT)
                 for(CharacterGUIComponent character : characterGUIComponents) character.stopListeningToInput();
         helpersGUIComponent.stopListeningToInput();
         colorsGUIComponent.stopListeningToInput();

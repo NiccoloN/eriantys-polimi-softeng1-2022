@@ -68,23 +68,6 @@ public class ChooseCharacterCard extends Move {
         game.getCurrentPlayer().payCoins(characterCard.getCost());
         characterCard.incrementCost();
         game.getCurrentPlayer().setCharacterUsed(true);
-
-        switch(characterCardIndex) {
-
-            case 1:
-            case 11:
-                characterCard.addStudent(game.getStudentsBag().extractRandomStudent());
-                break;
-            case 2:
-                for(PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, true);
-                break;
-            case 6:
-                game.setInfluenceCalculator(new InfluenceCalculatorNoTowers());
-                break;
-            case 8:
-                game.setInfluenceCalculator(new InfluenceCalculatorBonus());
-                break;
-        }
     }
 
     @Override
@@ -98,7 +81,7 @@ public class ChooseCharacterCard extends Move {
         if(characterCardIndex == 2) {
             for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool())); }
 
-        for(int i=0; i<game.getNumberOfCharacters(); i++){
+        for(int i=0; i<game.getNumberOfCharacters(); i++) {
             characterCardsChange.addCharacterCard(game.getCharacter(i));
         }
 

@@ -6,13 +6,12 @@ import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * This interface represents the view of the game. It is implemented by both EriantysGUI and EriantysCLI
@@ -48,7 +47,7 @@ public interface View {
      * @param players the players of the game
      * @param gameMode the mode of the game
      */
-    void startGame(List<Player> players, Mode gameMode) throws IOException;
+    void startGame(List<Player> players, GameMode gameMode) throws IOException;
 
     /**
      * Applies a given update to the game this view is showing

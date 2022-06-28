@@ -7,7 +7,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.Help
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.CharacterGUIComponent;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class ChooseHelperCardRequest extends MoveRequest {
 
             controller.getHelpersGUIComponent().listenToInput(requestMessage, unplayableIndices);
 
-            if (EriantysClient.getInstance().getGameSettings().gameMode == Mode.EXPERT && canPlayCharacter())
+            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter())
                 for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) character.listenToInput(requestMessage);
         });
     }

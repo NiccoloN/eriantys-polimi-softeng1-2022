@@ -57,7 +57,7 @@ public class Player implements Serializable {
         this.mage = mage;
 
         helperCards = new ArrayList<>(10);
-        coins = 1;
+        coins = 99;
     }
 
     public String getUsername() {

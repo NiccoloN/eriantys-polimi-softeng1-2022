@@ -1,7 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toServer;
 
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
-import it.polimi.ingsw2022.eriantys.server.controller.Mode;
+import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 
 import java.io.File;
@@ -18,7 +18,7 @@ public class GameSettings implements Serializable {
 
     public final boolean loadGame;
     public final int numberOfPlayers;
-    public final Mode gameMode;
+    public final GameMode gameMode;
 
     public GameSettings() {
 
@@ -27,7 +27,7 @@ public class GameSettings implements Serializable {
         gameMode = null;
     }
 
-    public GameSettings(int numberOfPlayers, Mode gameMode) {
+    public GameSettings(int numberOfPlayers, GameMode gameMode) {
 
         loadGame = false;
         this.numberOfPlayers = numberOfPlayers;
@@ -41,7 +41,7 @@ public class GameSettings implements Serializable {
 
         boolean valid = true;
         if (numberOfPlayers < Game.MIN_NUMBER_OF_PLAYERS || numberOfPlayers > Game.MAX_NUMBER_OF_PLAYERS) valid = false;
-        if (Arrays.stream(Mode.values()).noneMatch((mode) -> mode == gameMode)) valid = false;
+        if (Arrays.stream(GameMode.values()).noneMatch((mode) -> mode == gameMode)) valid = false;
         return valid;
     }
 }
