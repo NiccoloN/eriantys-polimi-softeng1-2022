@@ -1,7 +1,6 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
-import it.polimi.ingsw2022.eriantys.messages.Message;
 
 import java.io.IOException;
 
@@ -10,13 +9,12 @@ import java.io.IOException;
  * It also specifies the reason.
  * @author Emanuele Musto
  */
-public class InvalidMoveMessage extends InvalidResponseMessage {
+public class InvalidMoveMessage extends ToClientMessage {
 
     private final String cause;
 
-    public InvalidMoveMessage(Message response, Message request, String cause) {
+    public InvalidMoveMessage(String cause) {
 
-        super(response, request);
         this.cause = cause;
     }
 
@@ -24,6 +22,5 @@ public class InvalidMoveMessage extends InvalidResponseMessage {
     public void manageAndReply() throws IOException {
 
         EriantysClient.getInstance().log("Invalid move: " + cause);
-        request.manageAndReply();
     }
 }

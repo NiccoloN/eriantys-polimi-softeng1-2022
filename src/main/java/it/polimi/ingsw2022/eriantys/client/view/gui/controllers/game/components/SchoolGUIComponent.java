@@ -185,10 +185,10 @@ public class SchoolGUIComponent {
         }
     }
 
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor choosenColor) {
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
 
         this.requestMessage = requestMessage;
-        this.chosenColor    = choosenColor;
+        this.chosenColor    = chosenColor;
         schoolGroup.addEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
 
         schoolGroup.setEffect(gameController.getBorderGlowEffect());

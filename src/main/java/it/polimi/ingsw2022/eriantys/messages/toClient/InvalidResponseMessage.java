@@ -25,6 +25,7 @@ public class InvalidResponseMessage extends ToClientMessage {
     public void manageAndReply() throws IOException {
 
         if(response != null && request != null) {
+
             EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() +
                     ") was invalid for the request (" + request.getClass().getSimpleName() + ")");
         }

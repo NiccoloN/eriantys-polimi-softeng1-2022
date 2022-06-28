@@ -228,7 +228,10 @@ public class CharacterGUIComponent {
 
     private void manageInput(MouseEvent mouseEvent) throws IOException {
 
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCharacterCard(characterIndex)));
+            //for(CharacterGUIComponent character : gameController.getCharacterGUIComponents()) character.stopListeningToInput();
+        }
     }
 }

@@ -86,6 +86,19 @@ public class EriantysServer implements Serializable {
         messageLocks = new HashMap<>(10);
 
         nextLockId = 0;
+
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+
+            try {
+
+                e.printStackTrace();
+                shutdown(false);
+            }
+            catch(IOException ex) {
+
+                ex.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -590,7 +603,8 @@ public class EriantysServer implements Serializable {
 
         running = false;
 
-        if(playerDisconnected) sendToAllClients(new PlayerDisconnectedMessage());
+        if(playerDisconnected) sendToAllClients(new ErrorMessage("A player disconnected from the server\nServer shutdown: disconnected"));
+        else sendToAllClients(new ErrorMessage("Internal server error\nServer shutdown: disconnected"));
 
         for (Thread thread : clientThreads) thread.interrupt();
         for(Timer timer : clientPingTimers) {

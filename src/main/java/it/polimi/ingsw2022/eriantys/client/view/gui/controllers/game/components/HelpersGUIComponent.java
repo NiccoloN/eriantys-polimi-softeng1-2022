@@ -8,8 +8,8 @@ import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +24,7 @@ public class HelpersGUIComponent {
 
     private final GameController gameController;
     private final GridPane helpers;
-    private final Map<ImageView, Integer> imagesIndices;
+    private final Map<Group, Integer> helpersIndices;
     private final Map<Integer, EventHandler<MouseEvent>> cardClickListeners;
     private MoveRequestMessage requestMessage;
 
@@ -33,7 +33,7 @@ public class HelpersGUIComponent {
         this.gameController = gameController;
         this.helpers = helpers;
 
-        imagesIndices = new HashMap<>(10);
+        helpersIndices = new HashMap<>(10);
 
         cardClickListeners = new HashMap<>(10);
         for(int n = 1; n <= 10; n++) {
@@ -42,8 +42,11 @@ public class HelpersGUIComponent {
             cardClickListeners.put(n, mouseEvent -> {
 
                 try {
+
                     manageInput(mouseEvent, cardIndex);
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
+
                     e.printStackTrace();
                 }
             });
@@ -54,20 +57,22 @@ public class HelpersGUIComponent {
 
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 
-            ImageView helper = ((ImageView) helpers.getChildren().get(n));
+            Group helper = (Group) helpers.getChildren().get(n);
 
             if(n < helperCards.size()) {
 
                 HelperCard helperCard = helperCards.get(n);
 
-                imagesIndices.put(helper, helperCard.index);
-                helper.setImage(ImageFactory.helpersImages.get(helperCard.index));
+                ImageView helperImageView = (ImageView) helper.getChildren().get(0);
+                helperImageView.setImage(ImageFactory.helpersImages.get(helperCard.index));
+
+                helpersIndices.put(helper, helperCard.index);
                 helper.setVisible(true);
             }
 
             else {
 
-                imagesIndices.put(helper, 0);
+                helpersIndices.put(helper, 0);
                 helper.setVisible(false);
             }
         }
@@ -83,14 +88,17 @@ public class HelpersGUIComponent {
 
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 
-            ImageView helper = (ImageView) helpers.getChildren().get(n);
-            int cardIndex = imagesIndices.get(helper);
+            Group helper = (Group) helpers.getChildren().get(n);
+
+            int cardIndex = helpersIndices.get(helper);
 
             if(cardIndex > 0) {
 
                 if(!unplayableIndices.contains(cardIndex)) {
 
-                    helper.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
+                    ImageView helperImageView = (ImageView) helper.getChildren().get(0);
+
+                    helperImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
                     helper.setEffect(gameController.getBorderGlowEffect());
                 }
 
@@ -111,9 +119,12 @@ public class HelpersGUIComponent {
 
         for(int n = 0; n < helpers.getChildren().size(); n++) {
 
-            ImageView helper = (ImageView) helpers.getChildren().get(n);
-            int cardIndex = imagesIndices.get(helper);
-            if(cardIndex > 0) helper.removeEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
+            Group helper = (Group) helpers.getChildren().get(n);
+            ImageView helperImageView = (ImageView) helper.getChildren().get(0);
+
+            int cardIndex = helpersIndices.get(helper);
+
+            if(cardIndex > 0) helperImageView.removeEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
         }
     }
 

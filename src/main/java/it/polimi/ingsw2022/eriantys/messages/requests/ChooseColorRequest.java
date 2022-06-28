@@ -21,14 +21,14 @@ public class ChooseColorRequest extends MoveRequest {
 
     public final ColoredPawnOriginDestination fromWhere;
     private final List<PawnColor> availableColors;
-    public final int characterCardIndex;
+    public final int characterIndex;
 
-    public ChooseColorRequest(int characterCardIndex, List<PawnColor> availableColors, ColoredPawnOriginDestination fromWhere, String promptSentence) {
+    public ChooseColorRequest(int characterIndex, List<PawnColor> availableColors, ColoredPawnOriginDestination fromWhere, String promptSentence) {
 
         super(promptSentence);
-        this.characterCardIndex = characterCardIndex;
+        this.characterIndex  = characterIndex;
         this.availableColors = availableColors;
-        this.fromWhere = fromWhere;
+        this.fromWhere       = fromWhere;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ChooseColorRequest extends MoveRequest {
 
         super.manage(cli, scene, requestMessage);
         scene.setColors(availableColors);
-        scene.setState(new ColorSelection(cli, scene, requestMessage, characterCardIndex));
+        scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ChooseColorRequest extends MoveRequest {
         Platform.runLater(() -> {
 
             controller.stopListeners();
-            controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterCardIndex);
+            controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
         });
     }
 }

@@ -125,12 +125,15 @@ public class ColorsGUIComponent {
         if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 
             if(characterIndex <= 0) {
+
                 for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.listenToInput(requestMessage, color);
                 gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).listenToInput(requestMessage, color);
             }
 
-            else if(characterIndex == 1)
+            else if(characterIndex == 1) {
+
                 for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.listenToInput(requestMessage, color, characterIndex);
+            }
 
             else {
 
