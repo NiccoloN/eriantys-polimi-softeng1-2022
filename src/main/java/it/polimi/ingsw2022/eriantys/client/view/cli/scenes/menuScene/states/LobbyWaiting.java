@@ -33,7 +33,7 @@ public class LobbyWaiting extends MenuSceneState {
     public void enter() {
         
         getScene().getPanel().setHidden(false);
-    
+        
         assert gameSettings.gameMode != null;
         String gameMode = gameSettings.gameMode.toString();
         getScene().setChosenGameMode(new BasicCLIComponent(22 + gameMode.length(), new String[] {"Game mode: " + gameMode + " Players: " + gameSettings.numberOfPlayers}));

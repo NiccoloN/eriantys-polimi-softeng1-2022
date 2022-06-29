@@ -35,10 +35,10 @@ public class EriantysGUI extends Application implements View {
     public static final double DEFAULT_SCENE_WIDTH = 1280;
     public static final double DEFAULT_SCENE_HEIGHT = 720;
     private static EriantysGUI instance;
+    private final boolean running;
     private Stage mainStage;
     private Scene currentScene;
     private GameController gameController;
-    private final boolean running;
     
     public EriantysGUI() {
         

@@ -20,13 +20,13 @@ public abstract class TimedMessage extends Message {
     public TimedMessage() {
         
         fromClient = false;
-        lockId = EriantysServer.getInstance().getNextMessageLockId();
+        lockId     = EriantysServer.getInstance().getNextMessageLockId();
     }
     
     public TimedMessage(boolean fromClient) {
-    
+        
         this.fromClient = fromClient;
-        lockId = EriantysClient.getInstance().getNextMessageLockId();
+        lockId          = EriantysClient.getInstance().getNextMessageLockId();
     }
     
     /**
@@ -49,16 +49,16 @@ public abstract class TimedMessage extends Message {
         EriantysServer server = null;
         EriantysClient client = null;
         AtomicBoolean lock;
-    
+        
         if(fromClient) {
             
             client = EriantysClient.getInstance();
-            lock = client.getMessageLock(lockId);
+            lock   = client.getMessageLock(lockId);
         }
         else {
             
             server = EriantysServer.getInstance();
-            lock = server.getMessageLock(lockId);
+            lock   = server.getMessageLock(lockId);
         }
         
         synchronized(lock) {
@@ -81,7 +81,7 @@ public abstract class TimedMessage extends Message {
     public void acceptResponse() {
         
         AtomicBoolean lock;
-    
+        
         if(fromClient) lock = EriantysClient.getInstance().getMessageLock(lockId);
         else lock = EriantysServer.getInstance().getMessageLock(lockId);
         

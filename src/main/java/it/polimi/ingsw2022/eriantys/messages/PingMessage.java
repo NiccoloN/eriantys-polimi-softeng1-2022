@@ -39,7 +39,7 @@ public class PingMessage extends TimedMessage {
         
         //client-side
         if(clientUsername != null) EriantysServer.getInstance().sendToClient(new PongMessage(this), clientUsername);
-        //server-side
+            //server-side
         else EriantysClient.getInstance().sendToServer(new PongMessage(this));
     }
     
@@ -50,7 +50,7 @@ public class PingMessage extends TimedMessage {
             try {
                 
                 System.out.println("Ping response timeout");
-                if(clientUsername  != null) EriantysClient.getInstance().exit(false);
+                if(clientUsername != null) EriantysClient.getInstance().exit(false);
                 else EriantysServer.getInstance().shutdown(true);
             }
             catch(IOException e) {

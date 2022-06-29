@@ -14,6 +14,7 @@ public class BlinkingCLIComponent extends AnimatedCLIComponent {
     private float blinkTime;
     private BlinkState state;
     private String firstColor, secondColor;
+    
     /**
      * Constructs a blinking cli component from the given rows
      * @param width the width of the component

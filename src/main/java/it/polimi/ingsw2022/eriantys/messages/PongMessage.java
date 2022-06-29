@@ -11,12 +11,12 @@ import java.io.IOException;
  */
 public class PongMessage extends Message {
     
-    private final PingMessage previousMessage;
-    
     static {
         
         validResponses.add(PingMessage.class);
     }
+    
+    private final PingMessage previousMessage;
     
     public PongMessage(PingMessage previousMessage) {
         

@@ -37,7 +37,7 @@ public class MoveRequestMessage extends TimedMessage {
     public void waitForValidResponse() throws InterruptedException {
         
         waitForValidResponse(300, () -> {
-    
+            
             System.out.println("Move response timeout");
             EriantysServer.getInstance().shutdown(true);
             //TODO mossa casuale

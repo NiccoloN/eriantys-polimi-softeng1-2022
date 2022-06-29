@@ -47,6 +47,7 @@ public class EriantysCLI implements View {
     private boolean showLog;
     private GameScene gameScene;
     private CLIScene currentScene;
+    
     /**
      * Constructs the CLI and all of its components
      * @throws IOException if the terminal instance could not be built or could not load scii arts from files

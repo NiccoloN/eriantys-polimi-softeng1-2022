@@ -30,7 +30,7 @@ public class LobbyWaiting extends SceneController implements Initializable {
         int playersRemaining = gameSettings.numberOfPlayers - playerUsernames.length;
         
         info.setWrapText(true);
-    
+        
         assert gameSettings.gameMode != null;
         info.setText("Gamemode: " + gameSettings.gameMode.name() + "  Players: " + gameSettings.numberOfPlayers + "\n\n");
         info.appendText("Players in lobby:\n");

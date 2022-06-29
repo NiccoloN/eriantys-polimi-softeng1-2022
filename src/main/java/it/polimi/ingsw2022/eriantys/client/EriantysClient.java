@@ -4,13 +4,11 @@ import it.polimi.ingsw2022.eriantys.client.view.View;
 import it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
+import it.polimi.ingsw2022.eriantys.messages.PingMessage;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
-import it.polimi.ingsw2022.eriantys.messages.PingMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
-import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -44,12 +42,10 @@ public class EriantysClient {
     
     private final boolean showLog;
     private final StringWriter log;
-    
+    private final Map<Integer, AtomicBoolean> messageLocks;
     private Socket server;
     private ObjectOutputStream serverOutputStream;
     private ObjectInputStream serverInputStream;
-    private final Map<Integer, AtomicBoolean> messageLocks;
-    
     private String username;
     private Timer pingTimer;
     private int nextLockId;
@@ -195,7 +191,7 @@ public class EriantysClient {
                 System.out.println("Could not listen to a closed socket: " + server);
                 
                 try {
-    
+                    
                     if(running) exit(false);
                 }
                 catch(IOException ex) {
@@ -310,7 +306,7 @@ public class EriantysClient {
      * @param gameSettings    the game settings of the lobby
      */
     public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) throws IOException {
-    
+        
         if(pingTimer == null) startPing();
         this.gameSettings = gameSettings;
         view.showUpdatedLobby(playerUsernames, gameSettings);
@@ -427,7 +423,7 @@ public class EriantysClient {
             pingTimer.cancel();
             pingTimer.purge();
             if(connectionAlive) disconnect();
-    
+            
             if(view instanceof EriantysCLI) ((EriantysCLI) view).stop();
             else Platform.exit();
         }
@@ -457,12 +453,12 @@ public class EriantysClient {
         synchronized(serverOutputStream) {
             
             try {
-        
+                
                 serverOutputStream.writeObject(message);
                 log("Message sent: " + message.getClass().getSimpleName());
             }
             catch(SocketException e) {
-        
+                
                 System.out.println("Server socket closed: couldn't send " + message.getClass().getSimpleName());
                 if(running) exit(false);
             }

@@ -63,16 +63,16 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     }
     
     @Override
-    public void setColor(String color) {
-        
-        this.color = color;
-    }
-    
-    @Override
     public void printToFrame(Frame frame) {
         
         buildRows();
         super.printToFrame(frame);
+    }
+    
+    @Override
+    public void setColor(String color) {
+        
+        this.color = color;
     }
     
     /**

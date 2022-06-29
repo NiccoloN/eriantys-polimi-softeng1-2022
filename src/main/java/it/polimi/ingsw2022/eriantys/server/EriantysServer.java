@@ -7,7 +7,6 @@ import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toClient.*;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
-import it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage;
 import it.polimi.ingsw2022.eriantys.server.controller.BasicGameController;
 import it.polimi.ingsw2022.eriantys.server.controller.ExpertGameController;
 import it.polimi.ingsw2022.eriantys.server.controller.GameController;
@@ -67,12 +66,12 @@ public class EriantysServer implements Serializable {
         nextLockId = 0;
         
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-    
+            
             e.printStackTrace();
             if(running) shutdown(false);
         });
     }
-
+    
     public static void launch(String[] args) throws IOException, InterruptedException {
         
         createInstance();
@@ -213,36 +212,36 @@ public class EriantysServer implements Serializable {
      * @param client the socket of the client successfully connected to the server.
      */
     private void listenToClient(Socket client) {
-    
-        new Thread(() -> {
         
+        new Thread(() -> {
+            
             ObjectInputStream clientInputStream = clientInputStreams.get(client);
             String clientUsername = null;
             while(running) {
-            
-                try {
                 
+                try {
+                    
                     Optional<Message> message = readMessageFromClient(clientInputStream);
                     if(message.isPresent()) {
-                    
+                        
                         System.out.println("Message received from " + (clientUsername != null ? clientUsername : client) + ": " + message.get().getClass().getSimpleName());
                         message.get().manageAndReply();
                     }
-                
+                    
                     if(clientUsername == null) for(String username : clients.keySet())
                         if(clients.get(username) == client) {
-                        
+                            
                             clientUsername = username;
                             break;
                         }
                 }
                 catch(SocketException e) {
-                
+                    
                     System.out.println("Could not listen to a closed socket: " + client + (clientUsername != null ? (" (" + clientUsername + ")") : ""));
                     if(running) shutdown(true);
                 }
                 catch(IOException | ClassNotFoundException e) {
-                
+                    
                     e.printStackTrace();
                     if(running) shutdown(true);
                 }
@@ -260,7 +259,7 @@ public class EriantysServer implements Serializable {
     private Optional<Message> readMessageFromClient(ObjectInputStream clientInputStream) throws IOException, ClassNotFoundException {
         
         try {
-    
+            
             Message message = (Message) clientInputStream.readObject();
             return Optional.of(message);
         }
@@ -578,28 +577,28 @@ public class EriantysServer implements Serializable {
             
             System.out.println("Shutting down");
             running = false;
-    
+            
             if(playerDisconnected) sendToAllClients(new ErrorMessage("A player disconnected from the server\nServer shutdown: disconnected"));
             else sendToAllClients(new ErrorMessage("Internal server error\nServer shutdown: disconnected"));
             
             for(Timer timer : clientPingTimers) {
-        
+                
                 timer.cancel();
                 timer.purge();
             }
-    
+            
             for(Socket socket : clients.values()) {
                 
                 try {
-        
+                    
                     socket.close();
                 }
                 catch(IOException e) {
-        
+                    
                     e.printStackTrace();
                 }
             }
-    
+            
             Set<Thread> runningThreads = Thread.getAllStackTraces().keySet();
             for(Thread thread : runningThreads) thread.interrupt();
         }

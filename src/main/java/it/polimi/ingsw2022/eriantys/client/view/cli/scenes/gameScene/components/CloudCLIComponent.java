@@ -58,16 +58,16 @@ public class CloudCLIComponent extends BasicCLIComponent {
     }
     
     @Override
-    public void setColor(String ansiColor) {
-        
-        color = ansiColor;
-    }
-    
-    @Override
     public void printToFrame(Frame frame) {
         
         buildRows();
         super.printToFrame(frame);
+    }
+    
+    @Override
+    public void setColor(String ansiColor) {
+        
+        color = ansiColor;
     }
     
     /**

@@ -60,16 +60,16 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
     }
     
     @Override
-    public void setColor(String ansiColor) {
-        
-        this.color = ansiColor;
-    }
-    
-    @Override
     public void printToFrame(Frame frame) {
         
         buildRows();
         super.printToFrame(frame);
+    }
+    
+    @Override
+    public void setColor(String ansiColor) {
+        
+        this.color = ansiColor;
     }
     
     private void buildRows() {
