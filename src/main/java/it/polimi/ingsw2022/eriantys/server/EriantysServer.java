@@ -244,7 +244,7 @@ public class EriantysServer implements Serializable {
                     
                     try {
                         
-                        if(running) shutdown(true);
+                        shutdown(true);
                     }
                     catch(IOException ex) {
                         
@@ -258,7 +258,7 @@ public class EriantysServer implements Serializable {
                     
                     try {
                         
-                        if(running) shutdown(true);
+                        shutdown(true);
                     }
                     catch(IOException ex) {
                         
@@ -320,7 +320,7 @@ public class EriantysServer implements Serializable {
         catch(SocketException e) {
             
             System.out.println(client + (clientUsername != null ? (" (" + clientUsername + ")") : "") + " closed: couldn't send " + message.getClass().getSimpleName());
-            if(running) shutdown(true);
+            shutdown(true);
         }
     }
     
@@ -442,9 +442,10 @@ public class EriantysServer implements Serializable {
         
         Update[] initialUpdates = gameController.createInitialUpdates();
         
+        System.out.println("Sending initial update");
+        
         for(int n = 0; n < playerUsernames.length; n++)
             sendToClient(new StartingGameMessage(game.getPlayersStartOrder(), gameSettings.gameMode, initialUpdates[n]), clients.get(playerUsernames[n]));
-        System.out.println("Sending initial update");
     }
     
     /**
@@ -588,21 +589,23 @@ public class EriantysServer implements Serializable {
      */
     public void shutdown(boolean playerDisconnected) throws IOException {
         
-        System.out.println("Shutting down");
-        
-        running = false;
-        
-        if(playerDisconnected) sendToAllClients(new ErrorMessage("A player disconnected from the server\nServer shutdown: disconnected"));
-        else sendToAllClients(new ErrorMessage("Internal server error\nServer shutdown: disconnected"));
-        
-        for(Thread thread : clientThreads) thread.interrupt();
-        for(Timer timer : clientPingTimers) {
+        if(running) {
             
-            timer.cancel();
-            timer.purge();
+            System.out.println("Shutting down");
+            running = false;
+    
+            if(playerDisconnected) sendToAllClients(new ErrorMessage("A player disconnected from the server\nServer shutdown: disconnected"));
+            else sendToAllClients(new ErrorMessage("Internal server error\nServer shutdown: disconnected"));
+    
+            for(Thread thread : clientThreads) thread.interrupt();
+            for(Timer timer : clientPingTimers) {
+        
+                timer.cancel();
+                timer.purge();
+            }
+            for(ObjectOutputStream outputStream : clientOutputStreams.values()) outputStream.close();
+            for(ObjectInputStream inputStream : clientInputStreams.values()) inputStream.close();
+            for(Socket socket : clients.values()) socket.close();
         }
-        for(ObjectOutputStream outputStream : clientOutputStreams.values()) outputStream.close();
-        for(ObjectInputStream inputStream : clientInputStreams.values()) inputStream.close();
-        for(Socket socket : clients.values()) socket.close();
     }
 }

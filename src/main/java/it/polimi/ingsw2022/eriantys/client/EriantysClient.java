@@ -50,6 +50,7 @@ public class EriantysClient {
     private boolean running;
     private View view;
     private GameSettings gameSettings;
+    
     private EriantysClient(boolean showLog) throws IOException {
         
         this.showLog = showLog;
@@ -184,6 +185,15 @@ public class EriantysClient {
             catch(SocketException e) {
                 
                 System.out.println("Could not listen to a closed socket: " + server);
+                
+                try {
+                    
+                    exit(false);
+                }
+                catch(IOException ex) {
+                    
+                    ex.printStackTrace();
+                }
             }
             catch(ClassNotFoundException | IOException e) {
                 
@@ -374,7 +384,15 @@ public class EriantysClient {
      */
     public void sendToServer(ToServerMessage message) throws IOException {
         
-        serverOutputStream.writeObject(message);
-        log("Message sent: " + message.getClass().getSimpleName());
+        try {
+            
+            serverOutputStream.writeObject(message);
+            log("Message sent: " + message.getClass().getSimpleName());
+        }
+        catch(SocketException e) {
+    
+            System.out.println("Server socket closed: couldn't send " + message.getClass().getSimpleName());
+            exit(false);
+        }
     }
 }

@@ -181,10 +181,12 @@ public class Game implements Serializable {
      */
     private void fillSchools() {
         
+        int studentsPerSchool = players.size() == 3 ? 9 : 7;
+        
         for(Player player : players) {
             
             SchoolDashboard school = player.getSchool();
-            for(int n = 0; n < 7; n++) school.addToEntrance(studentsBag.extractRandomStudent());
+            for(int n = 0; n < studentsPerSchool; n++) school.addToEntrance(studentsBag.extractRandomStudent());
         }
     }
     

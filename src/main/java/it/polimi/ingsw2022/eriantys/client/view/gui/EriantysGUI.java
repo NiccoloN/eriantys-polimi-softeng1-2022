@@ -52,7 +52,7 @@ public class EriantysGUI extends Application implements View {
             
             try {
                 
-                instance.stop();
+                EriantysClient.getInstance().exit(true);
             }
             catch(Exception ex) {
                 

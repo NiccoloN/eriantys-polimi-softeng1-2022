@@ -187,18 +187,21 @@ public class BasicGameController implements GameController, Serializable {
     }
     
     /**
-     * Fills the cloud with three students each and sends the update to the clients.
+     * Fills every cloud with students and sends the updates to the clients.
      * @throws IOException when output stream throws an exception (while sending a message to client).
      */
     private void fillClouds() throws IOException {
         
         Update update = new Update();
         
-        for(int cloudIndex = 0; cloudIndex < game.getPlayers().size(); cloudIndex++) {
+        List<Player> players = game.getPlayers();
+        int studentsPerCloud = players.size() == 3 ? 4 : 3;
+        
+        for(int cloudIndex = 0; cloudIndex < players.size(); cloudIndex++) {
             
             CloudTile cloud = game.getBoard().getCloud(cloudIndex);
             
-            for(int i = 0; i < 3; i++) {
+            for(int i = 0; i < studentsPerCloud; i++) {
                 
                 if(game.getStudentsBag().isEmpty()) {
                     
@@ -262,7 +265,9 @@ public class BasicGameController implements GameController, Serializable {
         
         if(currentGamePhase == GamePhase.MOVING_STUDENTS) {
             
-            for(int studentMove = 0; studentMove < 3; studentMove++) requestStudent(player);
+            int studentsToMove = game.getPlayers().size() == 3 ? 4 : 3;
+            
+            for(int studentMove = 0; studentMove < studentsToMove; studentMove++) requestStudent(player);
             currentGamePhase = GamePhase.MOVING_MOTHER_NATURE;
             server.saveGame();
         }

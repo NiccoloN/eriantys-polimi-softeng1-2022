@@ -62,12 +62,12 @@ public class SchoolDashboard implements Serializable {
     /**
      * Place a colored pawn at the entrance of this school. Only pawns that represent students should be placed at the entrance
      * @param student the student to place
-     * @throws RuntimeException if the entrance of this school already contains 7 or more students
+     * @throws RuntimeException if the entrance of this school already contains 9 or more students
      * @throws RuntimeException if the given student is already at the entrance of this school
      */
     public void addToEntrance(ColoredPawn student) {
         
-        if(entranceStudents.size() >= 7) throw new RuntimeException("Maximum number of students at the entrance already reached");
+        if(entranceStudents.size() >= 9) throw new RuntimeException("Maximum number of students at the entrance already reached");
         if(entranceStudents.contains(student)) throw new RuntimeException("No duplicates allowed");
         entranceStudents.add(student);
     }
