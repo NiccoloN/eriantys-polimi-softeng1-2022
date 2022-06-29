@@ -307,11 +307,17 @@ public class IslandGUIComponent {
             
             case "WHITE":
                 whiteTowerImage.setVisible(visible);
+                blackTowerImage.setVisible(false);
+                grayTowerImage.setVisible(false);
                 break;
             case "BLACK":
+                whiteTowerImage.setVisible(false);
                 blackTowerImage.setVisible(visible);
+                grayTowerImage.setVisible(false);
                 break;
             case "CYAN":
+                whiteTowerImage.setVisible(false);
+                blackTowerImage.setVisible(false);
                 grayTowerImage.setVisible(visible);
                 break;
             default:
