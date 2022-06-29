@@ -7,10 +7,11 @@ import java.io.Serializable;
  * @author Francesco Melegati Maccari
  */
 public class Card implements Serializable {
-
+    
     public final int index;
-
+    
     Card(int index) {
+        
         this.index = index;
     }
 }

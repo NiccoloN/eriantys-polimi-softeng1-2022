@@ -10,17 +10,17 @@ import java.io.IOException;
  * @author Emanuele Musto
  */
 public class InvalidMoveMessage extends ToClientMessage {
-
+    
     private final String cause;
-
+    
     public InvalidMoveMessage(String cause) {
-
+        
         this.cause = cause;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient.getInstance().log("Invalid move: " + cause);
     }
 }

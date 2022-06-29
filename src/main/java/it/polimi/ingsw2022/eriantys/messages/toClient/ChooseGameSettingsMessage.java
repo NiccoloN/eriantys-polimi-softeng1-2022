@@ -11,38 +11,38 @@ import java.io.IOException;
  * This class represents a message to request the settings of the game to the first client that connects.
  * It accepts as a response a GameSettingsMessage containing the settings, or AbortMessage if the player
  * does not want to continue starting the game.
- * @see GameSettingsMessage
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
+ * @see GameSettingsMessage
  */
 public class ChooseGameSettingsMessage extends TimedMessage {
-
+    
     static {
-
+        
         validResponses.add(GameSettingsMessage.class);
         validResponses.add(AbortMessage.class);
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient client = EriantysClient.getInstance();
         client.askGameSettings(this);
     }
-
+    
     @Override
     public void waitForValidResponse() throws InterruptedException {
-
+        
         waitForValidResponse(300, () -> {
-
+            
             try {
-
+                
                 System.out.println("Game settings response timeout");
                 EriantysServer.getInstance().shutdown(true);
             }
-            catch (IOException e) {
-
+            catch(IOException e) {
+                
                 e.printStackTrace();
             }
         });

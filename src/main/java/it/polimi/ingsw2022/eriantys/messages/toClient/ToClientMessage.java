@@ -6,12 +6,12 @@ import java.io.IOException;
 
 /**
  * This class represents a generic message sent to the client by the server.
- * @see Message
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
+ * @see Message
  */
 public abstract class ToClientMessage extends Message {
-
+    
     @Override
     public abstract void manageAndReply() throws IOException;
 }

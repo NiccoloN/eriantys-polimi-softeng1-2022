@@ -9,18 +9,18 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
  * @author Niccolò Nicolosi
  */
 public class ViewOnly extends CLISceneState {
-
+    
     public ViewOnly(EriantysCLI cli, CLIScene scene) {
-
+        
         super(cli, scene);
     }
-
+    
     @Override
     public void enter() {}
-
+    
     @Override
     public void exit() {}
-
+    
     @Override
     public void manageInput(Input input) {}
 }

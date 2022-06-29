@@ -16,80 +16,80 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
  * This class represents the player's choice of a color. It's mainly used for the character cards effects.
  * @author Emanuele Musto
  */
-public class ChooseColor extends Move{
-
+public class ChooseColor extends Move {
+    
     private final PawnColor chosenColor;
     private final int characterCardIndex;
     private final ColoredPawnOriginDestination fromWhere;
-
+    
     public ChooseColor(PawnColor chosenColor, int characterCardIndex, ColoredPawnOriginDestination fromWhere) {
-
-        this.chosenColor = chosenColor;
+        
+        this.chosenColor        = chosenColor;
         this.characterCardIndex = characterCardIndex;
-        this.fromWhere = fromWhere;
+        this.fromWhere          = fromWhere;
     }
-
+    
     @Override
     public boolean isValid(Game game, MoveRequest request) {
-
+        
         if(!(request instanceof ChooseColorRequest)) {
-
+            
             errorMessage = "Move not requested";
             return false;
         }
-
+        
         switch(characterCardIndex) {
-
+            
             case 7:
                 if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) {
-
+                    
                     if(!game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor)) {
-
+                        
                         errorMessage = "The chosen color isn't available on the character card";
                         return false;
                     }
-
+                    
                     return true;
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
-
+                    
                     if(!game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor)) {
-
+                        
                         errorMessage = "The chosen color isn't available on school entrance";
                         return false;
                     }
-
+                    
                     return true;
                 }
                 else {
-
+                    
                     errorMessage = "Invalid parameters";
                     return false;
                 }
-
+            
             case 10:
                 if(fromWhere.equals(ColoredPawnOriginDestination.TABLE)) {
-
+                    
                     if(game.getCurrentPlayer().getSchool().countTableStudents(chosenColor) <= 0) {
-
+                        
                         errorMessage = "The chosen color isn't available on the students' table";
                         return false;
                     }
-
+                    
                     return true;
                 }
                 else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) {
-
+                    
                     if(!game.getPlayer(game.getCurrentPlayer().getUsername()).getSchool().getAvailableEntranceColors().contains(chosenColor)) {
-
+                        
                         errorMessage = "The chosen color isn't available on school entrance";
                         return false;
                     }
-
+                    
                     return true;
                 }
                 else {
-
+                    
                     errorMessage = "Invalid parameters";
                     return false;
                 }
@@ -98,16 +98,16 @@ public class ChooseColor extends Move{
                 return true;
             case 11:
                 if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) {
-
+                    
                     if(!game.getCharacterOfIndex(characterCardIndex).getStudentsColors().contains(chosenColor)) {
-
+                        
                         errorMessage = "The chosen color isn't available on the character card";
                         return false;
                     }
                     return true;
                 }
                 else {
-
+                    
                     errorMessage = "Invalid parameters";
                     return false;
                 }
@@ -116,35 +116,31 @@ public class ChooseColor extends Move{
                 return characterCardIndex >= 1 && characterCardIndex <= 12;
         }
     }
-
+    
     @Override
     public void apply(Game game) {
-
+        
         switch(characterCardIndex) {
-
+            
             case 7:
-                if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER))
-                    game.setExchanges(ColoredPawnOriginDestination.CHARACTER, chosenColor);
-                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE))
-                    game.setExchanges(ColoredPawnOriginDestination.ENTRANCE, chosenColor);
+                if(fromWhere.equals(ColoredPawnOriginDestination.CHARACTER)) game.setExchanges(ColoredPawnOriginDestination.CHARACTER, chosenColor);
+                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) game.setExchanges(ColoredPawnOriginDestination.ENTRANCE, chosenColor);
                 break;
             case 9:
                 game.setInfluenceCalculator(new InfluenceCalculatorNoColor(chosenColor));
                 break;
             case 10:
-                if(fromWhere.equals(ColoredPawnOriginDestination.TABLE))
-                    game.setExchanges(ColoredPawnOriginDestination.TABLE, chosenColor);
-                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE))
-                    game.setExchanges(ColoredPawnOriginDestination.ENTRANCE, chosenColor);
+                if(fromWhere.equals(ColoredPawnOriginDestination.TABLE)) game.setExchanges(ColoredPawnOriginDestination.TABLE, chosenColor);
+                else if(fromWhere.equals(ColoredPawnOriginDestination.ENTRANCE)) game.setExchanges(ColoredPawnOriginDestination.ENTRANCE, chosenColor);
                 break;
             case 11:
                 game.setExchanges(ColoredPawnOriginDestination.CHARACTER, chosenColor);
                 break;
             case 12:
                 for(Player player : game.getPlayers()) {
-
-                    for(int i = 0; i<3; i++) {
-
+                    
+                    for(int i = 0; i < 3; i++) {
+                        
                         if(player.getSchool().countTableStudents(chosenColor) > 0) {
                             ColoredPawn student = player.getSchool().removeFromTable(chosenColor);
                             game.getStudentsBag().addStudent(student);
@@ -154,19 +150,19 @@ public class ChooseColor extends Move{
                 break;
         }
     }
-
+    
     @Override
     public Update getUpdate(Game game) {
-
+        
         Update update = new Update();
-
+        
         CharacterCardsChange characterCardsChange;
-
+        
         switch(characterCardIndex) {
-
+            
             case 7:
                 characterCardsChange = new CharacterCardsChange();
-                for(int i=0; i<game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
+                for(int i = 0; i < game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
                 update.addChange(characterCardsChange);
                 update.addChange(new SchoolChange(game.getCurrentPlayer().getSchool()));
                 break;
@@ -176,7 +172,7 @@ public class ChooseColor extends Move{
                 for(Player player : game.getPlayers()) update.addChange(new SchoolChange(game.getPlayer(player.getUsername()).getSchool()));
                 break;
         }
-
+        
         return update;
     }
 }

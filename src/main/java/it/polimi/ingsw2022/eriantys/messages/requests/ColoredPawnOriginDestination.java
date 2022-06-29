@@ -6,9 +6,6 @@ package it.polimi.ingsw2022.eriantys.messages.requests;
  * @author Emanuele Musto
  */
 public enum ColoredPawnOriginDestination {
-
-    CHARACTER,
-    ENTRANCE,
-    TABLE,
-    ISLAND
+    
+    CHARACTER, ENTRANCE, TABLE, ISLAND
 }

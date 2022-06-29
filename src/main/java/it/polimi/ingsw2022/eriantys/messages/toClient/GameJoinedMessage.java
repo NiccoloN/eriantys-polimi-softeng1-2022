@@ -13,19 +13,19 @@ import java.io.IOException;
  * @author Emanuele Musto
  */
 public class GameJoinedMessage extends ToClientMessage {
-
-    private final String[] playerUsernames;
+    
     public final GameSettings gameSettings;
-
+    private final String[] playerUsernames;
+    
     public GameJoinedMessage(String[] playerUsernames, GameSettings gameSettings) {
-
+        
         this.playerUsernames = playerUsernames;
-        this.gameSettings = gameSettings;
+        this.gameSettings    = gameSettings;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient.getInstance().showUpdatedLobby(playerUsernames, gameSettings);
     }
 }

@@ -20,70 +20,70 @@ import java.util.List;
  * @author Emanuele Musto
  */
 public class MoveMotherNatureRequest extends MoveRequest {
-
+    
     private int motherNatureMaxSteps;
-
+    
     public MoveMotherNatureRequest(int maxMotherNatureMaxSteps, boolean canPlayCharacter) {
-
+        
         super("Choose how many steps mother nature will take");
         this.motherNatureMaxSteps = maxMotherNatureMaxSteps;
         setCanPlayCharacter(canPlayCharacter);
     }
-
+    
     public int getMotherNatureMaxSteps() {
-
+        
         return motherNatureMaxSteps;
     }
-
+    
     public void setMotherNatureMaxSteps(int motherNatureMaxSteps) {
-
+        
         this.motherNatureMaxSteps = motherNatureMaxSteps;
     }
-
+    
     @Override
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
-
+        
         super.manage(cli, scene, requestMessage);
         scene.setState(new IslandSelection(cli, scene, requestMessage, motherNatureMaxSteps));
     }
-
+    
     @Override
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
-
+        
         super.manage(controller, requestMessage);
-
+        
         Platform.runLater(() -> {
-
+            
             int compoundIslands = controller.getNumberOfCompoundIslands();
             int motherNatureCompoundIndex = 0;
-
+            
             List<IslandGUIComponent> guiIslands = controller.getIslandGUIComponents();
             for(IslandGUIComponent guiIsland : guiIslands) {
-
+                
                 if(guiIsland.hasMotherNature()) {
-
+                    
                     motherNatureCompoundIndex = guiIsland.getCompoundIslandIndex();
                     break;
                 }
             }
-
+            
             int currentCompoundIndex = motherNatureCompoundIndex;
             for(int n = 0; n < motherNatureMaxSteps; n++) {
-
+                
                 currentCompoundIndex++;
                 currentCompoundIndex %= compoundIslands;
                 if(currentCompoundIndex == motherNatureCompoundIndex) break;
-
+                
                 for(IslandGUIComponent island : controller.getIslandGUIComponentsOfIndex(currentCompoundIndex)) {
-
+                    
                     island.listenToInput(requestMessage);
                 }
             }
-
-            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
-
-                for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
-
+            
+            if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
+                
+                for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
+                    
                     character.stopListeningToInput();
                     character.listenToInput(requestMessage);
                 }

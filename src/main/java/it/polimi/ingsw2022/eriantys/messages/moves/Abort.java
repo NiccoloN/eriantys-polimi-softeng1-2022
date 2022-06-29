@@ -4,18 +4,20 @@ import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 
-public class Abort extends Move{
-
+public class Abort extends Move {
+    
     @Override
     public boolean isValid(Game game, MoveRequest request) {
+        
         return true;
     }
-
+    
     @Override
-    public void apply(Game game) { game.setAbortMessageReceived(true); }
-
+    public void apply(Game game) {game.setAbortMessageReceived(true);}
+    
     @Override
     public Update getUpdate(Game game) {
+        
         return null;
     }
 }

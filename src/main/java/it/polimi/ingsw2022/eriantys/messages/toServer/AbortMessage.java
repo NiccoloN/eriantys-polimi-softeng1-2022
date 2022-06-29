@@ -1,7 +1,6 @@
 package it.polimi.ingsw2022.eriantys.messages.toServer;
 
 import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.moves.Abort;
 
 /**
  * This class represents a message sent by the client when he wants to quit what he is doing and stop the connection.
@@ -9,9 +8,9 @@ import it.polimi.ingsw2022.eriantys.messages.moves.Abort;
  * @author Francesco Melegati Maccari
  */
 public class AbortMessage extends ToServerMessage {
-
+    
     public AbortMessage(Message previousMessage) {
-
+        
         super(previousMessage);
     }
 }

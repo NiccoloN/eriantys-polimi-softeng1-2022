@@ -19,23 +19,24 @@ import java.util.ResourceBundle;
 import static it.polimi.ingsw2022.eriantys.client.EriantysClient.ADDRESS_FILE_NAME;
 
 public class EnterServerIp extends SceneController implements Initializable {
-
+    
     @FXML
     private TextField ipAddressField;
-
+    
     public EnterServerIp(EriantysGUI gui) {
+        
         super(gui);
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        
         ipAddressField.setText(EriantysClient.getInstance().loadSavedServerIp());
-
+        
         ipAddressField.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
-
+            
             if(keyEvent.getCode() == KeyCode.ENTER) {
-
+                
                 try {
                     saveServerIp();
                 }
@@ -45,17 +46,17 @@ public class EnterServerIp extends SceneController implements Initializable {
             }
         });
     }
-
+    
     public void saveServerIp() throws IOException {
-
+        
         String serverIpAddress = ipAddressField.getText().trim();
-
+        
         File file = new File(ADDRESS_FILE_NAME);
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
         outputStreamWriter.write(serverIpAddress);
         outputStreamWriter.close();
-
+        
         getGui().setScene("WelcomeScreen.fxml", new Start(getGui()));
     }
 }

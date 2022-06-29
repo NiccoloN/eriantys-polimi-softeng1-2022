@@ -14,21 +14,21 @@ import java.util.List;
  * and the initial update containing every information from the model useful to display on the view.
  */
 public class StartingGameMessage extends ToClientMessage {
-
+    
     private final List<Player> players;
     private final GameMode gameMode;
     private final Update update;
-
+    
     public StartingGameMessage(List<Player> players, GameMode gameMode, Update update) {
-
-        this.players = players;
+        
+        this.players  = players;
         this.gameMode = gameMode;
-        this.update = update;
+        this.update   = update;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient client = EriantysClient.getInstance();
         client.startGame(players, gameMode);
         client.applyUpdate(update);

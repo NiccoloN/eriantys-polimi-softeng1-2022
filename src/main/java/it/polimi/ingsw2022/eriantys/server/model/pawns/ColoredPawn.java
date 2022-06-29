@@ -7,11 +7,11 @@ import java.io.Serializable;
  * @author Emanuele Musto
  */
 public class ColoredPawn implements Serializable {
-
+    
     public final PawnColor color;
-
+    
     public ColoredPawn(PawnColor color) {
-
+        
         this.color = color;
     }
 }

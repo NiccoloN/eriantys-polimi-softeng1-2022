@@ -2,27 +2,24 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
-import it.polimi.ingsw2022.eriantys.server.model.board.IslandTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IslandTileTest {
-
+    
     private IslandTile tile;
-
+    
     @BeforeEach
     void setUp() {
-
+        
         tile = new IslandTile();
     }
-
+    
     @Test
     void countStudents() {
-
+        
         assertEquals(0, tile.countStudents());
         assertEquals(0, tile.countStudents(PawnColor.RED));
         tile.addStudent(new ColoredPawn(PawnColor.RED));
@@ -37,19 +34,19 @@ class IslandTileTest {
         assertEquals(1, tile.countStudents(PawnColor.YELLOW));
         assertEquals(1, tile.countStudents(PawnColor.BLUE));
     }
-
+    
     @Test
     void containsStudent() {
-
+        
         ColoredPawn student = new ColoredPawn(PawnColor.RED);
         assertFalse(tile.containsStudent(student));
         tile.addStudent(student);
         assertTrue(tile.containsStudent(student));
     }
-
+    
     @Test
     void addStudent() {
-
+        
         ColoredPawn student = new ColoredPawn(PawnColor.RED);
         assertEquals(0, tile.countStudents());
         assertFalse(tile.containsStudent(student));

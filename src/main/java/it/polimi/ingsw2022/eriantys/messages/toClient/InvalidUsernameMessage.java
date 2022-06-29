@@ -15,29 +15,29 @@ import java.io.IOException;
  * @author Emanuele Musto
  */
 public class InvalidUsernameMessage extends InvalidResponseMessage {
-
+    
     static {
-
+        
         validResponses.add(UsernameChoiceMessage.class);
         validResponses.add(AbortMessage.class);
     }
-
+    
     public final boolean invalidFormat;
     public final boolean alreadyTaken;
-
+    
     public InvalidUsernameMessage(Message response, Message request, boolean invalidFormat, boolean alreadyTaken) {
-
+        
         super(response, request);
         this.invalidFormat = invalidFormat;
-        this.alreadyTaken = alreadyTaken;
+        this.alreadyTaken  = alreadyTaken;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         String logMessage = "Invalid username provided: ";
         if(invalidFormat) logMessage += "invalid format";
-        else if (alreadyTaken) logMessage += "already taken";
+        else if(alreadyTaken) logMessage += "already taken";
         EriantysClient.getInstance().log(logMessage);
         request.manageAndReply();
     }

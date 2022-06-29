@@ -18,33 +18,33 @@ import java.util.List;
  * but are unplayable due to the fact that some other player has chosen the same card in this round.
  */
 public class ChooseHelperCardRequest extends MoveRequest {
-
+    
     private final List<Integer> unplayableIndices;
-
+    
     public ChooseHelperCardRequest(List<Integer> unplayableIndices, boolean canPlayCharacter) {
-
+        
         super("Choose an helper card");
         this.unplayableIndices = unplayableIndices;
         setCanPlayCharacter(canPlayCharacter);
     }
-
+    
     @Override
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
-
+        
         super.manage(cli, scene, requestMessage);
         scene.setState(new HelperSelection(cli, scene, requestMessage, unplayableIndices));
     }
-
+    
     @Override
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
-
+        
         super.manage(controller, requestMessage);
-
+        
         Platform.runLater(() -> {
-
+            
             controller.getHelpersGUIComponent().listenToInput(requestMessage, unplayableIndices);
-
-            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter())
+            
+            if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter())
                 for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) character.listenToInput(requestMessage);
         });
     }
