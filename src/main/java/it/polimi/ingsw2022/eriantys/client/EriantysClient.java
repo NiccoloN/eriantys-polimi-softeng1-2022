@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
+import it.polimi.ingsw2022.eriantys.messages.PingMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.ToClientMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings;
@@ -19,13 +20,12 @@ import javafx.application.Platform;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class represents the client of the game. The client runs the view in its main thread and communicates with the server through
@@ -41,13 +41,20 @@ public class EriantysClient {
     
     public static final String ADDRESS_FILE_NAME = "server address.txt";
     private static EriantysClient instance;
+    
     private final boolean showLog;
     private final StringWriter log;
+    
     private Socket server;
     private ObjectOutputStream serverOutputStream;
     private ObjectInputStream serverInputStream;
+    private final Map<Integer, AtomicBoolean> messageLocks;
+    
     private String username;
+    private Timer pingTimer;
+    private int nextLockId;
     private boolean running;
+    
     private View view;
     private GameSettings gameSettings;
     
@@ -55,6 +62,7 @@ public class EriantysClient {
         
         this.showLog = showLog;
         log          = new StringWriter();
+        messageLocks = new HashMap<>();
         
         //create server address file if missing
         File file = new File(ADDRESS_FILE_NAME);
@@ -174,7 +182,7 @@ public class EriantysClient {
                 //update loop
                 while(running) {
                     
-                    Optional<ToClientMessage> message = readMessage();
+                    Optional<Message> message = readMessage();
                     if(message.isPresent()) {
                         
                         log("Message received: " + message.get().getClass().getSimpleName());
@@ -187,8 +195,8 @@ public class EriantysClient {
                 System.out.println("Could not listen to a closed socket: " + server);
                 
                 try {
-                    
-                    exit(false);
+    
+                    if(running) exit(false);
                 }
                 catch(IOException ex) {
                     
@@ -208,17 +216,71 @@ public class EriantysClient {
      * @throws IOException            if an I/O exception occurs
      * @throws ClassNotFoundException if the received object was not a message
      */
-    private Optional<ToClientMessage> readMessage() throws IOException, ClassNotFoundException {
+    private Optional<Message> readMessage() throws IOException, ClassNotFoundException {
         
         try {
             
-            ToClientMessage message = (ToClientMessage) serverInputStream.readObject();
+            Message message = (Message) serverInputStream.readObject();
             return Optional.of(message);
         }
         catch(EOFException e) {
             
             return Optional.empty();
         }
+    }
+    
+    /**
+     * Starts a series of ping messages (one every 15 seconds) to check for server disconnections.
+     */
+    private void startPing() {
+        
+        if(pingTimer != null) throw new RuntimeException("Couldn't start ping because pings were already started");
+        pingTimer = new Timer();
+        pingTimer.schedule(new TimerTask() {
+            
+            @Override
+            public void run() {
+                
+                try {
+                    
+                    PingMessage sent = new PingMessage(username);
+                    sendToServer(sent);
+                    sent.waitForValidResponse();
+                }
+                catch(IOException | InterruptedException e) {
+                    
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 15000);
+    }
+    
+    /**
+     * Gets (or creates if not present) a lockId used for synchronization by the applicant.
+     * @param lockId the requested lockId.
+     * @return the lock associated with the lockId.
+     */
+    public AtomicBoolean getMessageLock(int lockId) {
+        
+        return messageLocks.computeIfAbsent(lockId, k -> new AtomicBoolean());
+    }
+    
+    /**
+     * @return the next available lock id.
+     */
+    public int getNextMessageLockId() {
+        
+        nextLockId += 1;
+        return nextLockId;
+    }
+    
+    /**
+     * Removes a lock when the user doesn't need it anymore.
+     * @param lockId the lock id to remove.
+     */
+    public void removeMessageLock(int lockId) {
+        
+        messageLocks.remove(lockId);
     }
     
     /**
@@ -231,21 +293,25 @@ public class EriantysClient {
     }
     
     /**
-     * Asks the view to provide game settings and send them to the server
+     * Starts ping messages from client (because this client has surely been registered to the server at this point)
+     * and asks the view to provide game settings and send them to the server
      * @param requestMessage the message requesting game settings
      */
     public void askGameSettings(Message requestMessage) throws IOException {
         
+        if(pingTimer == null) startPing();
         view.askGameSettings(requestMessage);
     }
     
     /**
-     * Asks the view to show the lobby waiting room, with the updated info
+     * Starts ping messages from client (because this client has surely been registered to the server at this point)
+     * and asks the view to show the lobby waiting room, with the updated info
      * @param playerUsernames the usernames of the players currently connected to the lobby
      * @param gameSettings    the game settings of the lobby
      */
     public void showUpdatedLobby(String[] playerUsernames, GameSettings gameSettings) throws IOException {
-        
+    
+        if(pingTimer == null) startPing();
         this.gameSettings = gameSettings;
         view.showUpdatedLobby(playerUsernames, gameSettings);
     }
@@ -354,11 +420,17 @@ public class EriantysClient {
     
     public void exit(boolean connectionAlive) throws IOException {
         
-        running = false;
-        if(connectionAlive) disconnect();
-        
-        if(view instanceof EriantysCLI) ((EriantysCLI) view).stop();
-        else Platform.exit();
+        if(running) {
+            
+            running = false;
+            
+            pingTimer.cancel();
+            pingTimer.purge();
+            if(connectionAlive) disconnect();
+    
+            if(view instanceof EriantysCLI) ((EriantysCLI) view).stop();
+            else Platform.exit();
+        }
     }
     
     /**
@@ -370,8 +442,6 @@ public class EriantysClient {
         if(server != null) {
             
             sendToServer(new DisconnectMessage());
-            serverOutputStream.close();
-            serverInputStream.close();
             server.close();
             log("Disconnected from the server");
         }
@@ -382,17 +452,22 @@ public class EriantysClient {
      * @param message the message to send
      * @throws IOException if an I/O exception occurs
      */
-    public void sendToServer(ToServerMessage message) throws IOException {
+    public void sendToServer(Message message) throws IOException {
         
-        try {
+        synchronized(serverOutputStream) {
             
-            serverOutputStream.writeObject(message);
-            log("Message sent: " + message.getClass().getSimpleName());
-        }
-        catch(SocketException e) {
-    
-            System.out.println("Server socket closed: couldn't send " + message.getClass().getSimpleName());
-            exit(false);
+            try {
+        
+                serverOutputStream.writeObject(message);
+                log("Message sent: " + message.getClass().getSimpleName());
+            }
+            catch(SocketException e) {
+        
+                System.out.println("Server socket closed: couldn't send " + message.getClass().getSimpleName());
+                if(running) exit(false);
+            }
+            
+            serverOutputStream.notifyAll();
         }
     }
 }

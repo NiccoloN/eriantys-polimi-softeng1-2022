@@ -1,8 +1,4 @@
-package it.polimi.ingsw2022.eriantys.messages.toServer;
-
-import it.polimi.ingsw2022.eriantys.messages.Message;
-import it.polimi.ingsw2022.eriantys.messages.toClient.PingMessage;
-import it.polimi.ingsw2022.eriantys.messages.toClient.TimedMessage;
+package it.polimi.ingsw2022.eriantys.messages;
 
 import java.io.IOException;
 
@@ -13,22 +9,24 @@ import java.io.IOException;
  * @author Niccolò Nicolosi
  * @see PingMessage
  */
-public class PongMessage extends ToServerMessage {
+public class PongMessage extends Message {
+    
+    private final PingMessage previousMessage;
     
     static {
         
         validResponses.add(PingMessage.class);
     }
     
-    public PongMessage(Message previousMessage) {
+    public PongMessage(PingMessage previousMessage) {
         
-        super(previousMessage);
+        super();
+        this.previousMessage = previousMessage;
     }
     
     @Override
     public void manageAndReply() throws IOException {
         
-        super.manageAndReply();
-        ((TimedMessage) getPreviousMessage()).acceptResponse();
+        previousMessage.acceptResponse();
     }
 }

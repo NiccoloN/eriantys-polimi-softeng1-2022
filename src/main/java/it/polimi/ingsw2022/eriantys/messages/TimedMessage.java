@@ -1,5 +1,6 @@
-package it.polimi.ingsw2022.eriantys.messages.toClient;
+package it.polimi.ingsw2022.eriantys.messages;
 
+import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -11,13 +12,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Emanuele Musto
  * @author Niccolò Nicolosi
  */
-public abstract class TimedMessage extends ToClientMessage {
+public abstract class TimedMessage extends Message {
     
+    private final boolean fromClient;
     private final int lockId;
     
     public TimedMessage() {
         
+        fromClient = false;
         lockId = EriantysServer.getInstance().getNextMessageLockId();
+    }
+    
+    public TimedMessage(boolean fromClient) {
+    
+        this.fromClient = fromClient;
+        lockId = EriantysClient.getInstance().getNextMessageLockId();
     }
     
     /**
@@ -37,14 +46,29 @@ public abstract class TimedMessage extends ToClientMessage {
      */
     protected void waitForValidResponse(int timeout, Runnable timeoutTask) throws InterruptedException {
         
-        EriantysServer server = EriantysServer.getInstance();
-        AtomicBoolean lock = server.getMessageLock(lockId);
+        EriantysServer server = null;
+        EriantysClient client = null;
+        AtomicBoolean lock;
+    
+        if(fromClient) {
+            
+            client = EriantysClient.getInstance();
+            lock = client.getMessageLock(lockId);
+        }
+        else {
+            
+            server = EriantysServer.getInstance();
+            lock = server.getMessageLock(lockId);
+        }
         
         synchronized(lock) {
             
             lock.wait(timeout * 1000L);
             if(!lock.get()) timeoutTask.run();
-            server.removeMessageLock(lockId);
+            
+            if(fromClient) client.removeMessageLock(lockId);
+            else server.removeMessageLock(lockId);
+            
             lock.notifyAll();
         }
     }
@@ -56,7 +80,10 @@ public abstract class TimedMessage extends ToClientMessage {
      */
     public void acceptResponse() {
         
-        AtomicBoolean lock = EriantysServer.getInstance().getMessageLock(lockId);
+        AtomicBoolean lock;
+    
+        if(fromClient) lock = EriantysClient.getInstance().getMessageLock(lockId);
+        else lock = EriantysServer.getInstance().getMessageLock(lockId);
         
         synchronized(lock) {
             

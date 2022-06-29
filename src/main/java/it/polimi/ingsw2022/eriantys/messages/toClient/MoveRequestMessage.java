@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.messages.TimedMessage;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
@@ -36,17 +37,10 @@ public class MoveRequestMessage extends TimedMessage {
     public void waitForValidResponse() throws InterruptedException {
         
         waitForValidResponse(300, () -> {
-            
-            try {
-                
-                System.out.println("Move response timeout");
-                EriantysServer.getInstance().shutdown(true);
-                //TODO mossa casuale
-            }
-            
-            catch(IOException e) {
-                e.printStackTrace();
-            }
+    
+            System.out.println("Move response timeout");
+            EriantysServer.getInstance().shutdown(true);
+            //TODO mossa casuale
         });
     }
 }

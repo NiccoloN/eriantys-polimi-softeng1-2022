@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.messages.TimedMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
@@ -35,16 +36,9 @@ public class ChooseGameSettingsMessage extends TimedMessage {
     public void waitForValidResponse() throws InterruptedException {
         
         waitForValidResponse(300, () -> {
-            
-            try {
-                
-                System.out.println("Game settings response timeout");
-                EriantysServer.getInstance().shutdown(true);
-            }
-            catch(IOException e) {
-                
-                e.printStackTrace();
-            }
+    
+            System.out.println("Game settings response timeout");
+            EriantysServer.getInstance().shutdown(true);
         });
     }
 }

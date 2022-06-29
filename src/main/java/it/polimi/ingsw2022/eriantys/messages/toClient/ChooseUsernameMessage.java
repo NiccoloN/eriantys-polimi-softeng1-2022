@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.messages.TimedMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.AbortMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
@@ -40,14 +41,9 @@ public class ChooseUsernameMessage extends TimedMessage {
     public void waitForValidResponse() throws InterruptedException {
         
         waitForValidResponse(300, () -> {
-            try {
-                System.out.println("Username response timeout");
-                EriantysServer.getInstance().shutdown(true);
-            }
             
-            catch(IOException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Username response timeout");
+            EriantysServer.getInstance().shutdown(true);
         });
     }
 }
