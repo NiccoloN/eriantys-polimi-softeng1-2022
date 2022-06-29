@@ -13,29 +13,29 @@ import javafx.application.Platform;
  * @author Emanuele Musto
  */
 public class ChooseIslandRequest extends MoveRequest {
-
+    
     public final int characterCardIndex;
-
+    
     public ChooseIslandRequest(int characterCardIndex, String promptSentence) {
-
+        
         super(promptSentence);
         this.characterCardIndex = characterCardIndex;
     }
-
+    
     @Override
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
-
+        
         super.manage(cli, scene, requestMessage);
         scene.setState(new IslandSelection(cli, scene, requestMessage, null, characterCardIndex));
     }
-
+    
     @Override
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
-
+        
         super.manage(controller, requestMessage);
-
+        
         Platform.runLater(() -> {
-
+            
             controller.stopListeners();
             for(IslandGUIComponent island : controller.getIslandGUIComponents()) island.listenToInput(requestMessage, characterCardIndex);
         });

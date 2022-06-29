@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author Emanuele Musto
  */
 public class AckMessage extends ToClientMessage {
-
+    
     @Override
     public void manageAndReply() throws IOException {}
 }

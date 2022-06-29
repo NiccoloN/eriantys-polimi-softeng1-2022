@@ -15,66 +15,65 @@ import java.util.List;
  * @author Emanuele Musto
  */
 public class ChooseHelperCard extends Move {
-
+    
     private final int helperCardIndex;
-
+    
     public ChooseHelperCard(int helperCardIndex) {
-
+        
         this.helperCardIndex = helperCardIndex;
     }
-
+    
     @Override
     public boolean isValid(Game game, MoveRequest request) {
-
+        
         if(!(request instanceof ChooseHelperCardRequest)) {
-
+            
             errorMessage = "Move not requested";
             return false;
         }
-
+        
         Player player = game.getCurrentPlayer();
-
+        
         List<Integer> unplayableIndices = new ArrayList<>(3);
         for(Player other : game.getPlayers())
-            if(other != player && other.getCurrentHelper() != null)
-                unplayableIndices.add(other.getCurrentHelper().index);
-
+            if(other != player && other.getCurrentHelper() != null) unplayableIndices.add(other.getCurrentHelper().index);
+        
         if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
-
+        
         if(unplayableIndices.contains(helperCardIndex)) {
-
+            
             errorMessage = "Cannot play this helper";
             return false;
         }
-
+        
         if(!player.hasHelper(helperCardIndex)) {
-
+            
             errorMessage = "No card of the given index found in hand";
             return false;
         }
-
+        
         return true;
     }
-
+    
     @Override
     public void apply(Game game) {
-
+        
         game.getCurrentPlayer().playHelperCard(helperCardIndex);
     }
-
+    
     @Override
     public Update getUpdate(Game game) {
-
+        
         Update update = new Update();
-
+        
         Player player = game.getCurrentPlayer();
-
+        
         HelperCardsChange change = new HelperCardsChange(player.getUsername());
         change.addHelperCards(player.getHelperCards());
         change.setPlayedHelperCard(player.getPrevHelper());
-
+        
         update.addChange(change);
-
+        
         return update;
     }
 }

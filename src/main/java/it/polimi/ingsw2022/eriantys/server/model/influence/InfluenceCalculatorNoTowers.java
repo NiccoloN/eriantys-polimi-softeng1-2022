@@ -9,6 +9,7 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
  * @author Emanuele Musto
  */
 public class InfluenceCalculatorNoTowers extends InfluenceCalculatorBasic {
+    
     /**
      * Doesn't consider the towers' influence
      * @param player one of the players
@@ -16,5 +17,6 @@ public class InfluenceCalculatorNoTowers extends InfluenceCalculatorBasic {
      */
     @Override
     protected void towerInfluence(Player player, CompoundIslandTile island) {
+    
     }
 }

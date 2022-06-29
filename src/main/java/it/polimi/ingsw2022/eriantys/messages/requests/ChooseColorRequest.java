@@ -14,38 +14,38 @@ import java.util.List;
  * This class represents the request of choosing a color amongst the ones available, saved in the attribute availableColors.
  * It's mainly used due to the effect of a character card.
  * The attribute fromWhere indicates where the chosen color is going to be taken from.
- * @see ColoredPawnOriginDestination
  * @author Emanuele Musto
+ * @see ColoredPawnOriginDestination
  */
 public class ChooseColorRequest extends MoveRequest {
-
+    
     public final ColoredPawnOriginDestination fromWhere;
-    private final List<PawnColor> availableColors;
     public final int characterIndex;
-
+    private final List<PawnColor> availableColors;
+    
     public ChooseColorRequest(int characterIndex, List<PawnColor> availableColors, ColoredPawnOriginDestination fromWhere, String promptSentence) {
-
+        
         super(promptSentence);
         this.characterIndex  = characterIndex;
         this.availableColors = availableColors;
         this.fromWhere       = fromWhere;
     }
-
+    
     @Override
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
-
+        
         super.manage(cli, scene, requestMessage);
         scene.setColors(availableColors);
         scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
     }
-
+    
     @Override
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
-
+        
         super.manage(controller, requestMessage);
-
+        
         Platform.runLater(() -> {
-
+            
             controller.stopListeners();
             controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
         });

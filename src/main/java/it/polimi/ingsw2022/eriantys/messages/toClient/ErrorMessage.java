@@ -9,17 +9,17 @@ import java.io.IOException;
  * (voluntarily or involuntarily). The message is sent to every connected player to let them know that the server is shutting down.
  */
 public class ErrorMessage extends ToClientMessage {
-
+    
     private final String errorDescription;
-
+    
     public ErrorMessage(String errorDescription) {
-
+        
         this.errorDescription = errorDescription;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient.getInstance().log(errorDescription);
         EriantysClient.getInstance().exit(false);
     }

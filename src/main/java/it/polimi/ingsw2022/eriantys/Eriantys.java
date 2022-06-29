@@ -11,9 +11,9 @@ import java.util.concurrent.TimeoutException;
  * @author Niccolò Nicolosi
  */
 public class Eriantys {
-
+    
     public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
-
+        
         if(args.length > 0 && args[0].equals("-server")) EriantysServer.launch(args);
         else EriantysClient.launch(args);
     }

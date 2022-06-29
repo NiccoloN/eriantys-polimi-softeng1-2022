@@ -9,20 +9,20 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
  * @author Niccolò Nicolosi
  */
 public abstract class MenuSceneState extends CLISceneState {
-
+    
     /**
      * Constructs a menu scene state
-     * @param cli the cli associated to this state
+     * @param cli   the cli associated to this state
      * @param scene the menu scene associated to this state
      */
     public MenuSceneState(EriantysCLI cli, MenuScene scene) {
-
+        
         super(cli, scene);
     }
-
+    
     @Override
     public MenuScene getScene() {
-
+        
         return (MenuScene) super.getScene();
     }
 }

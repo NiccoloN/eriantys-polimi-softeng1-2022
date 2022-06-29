@@ -20,51 +20,51 @@ import java.util.List;
  * @see ColoredPawnOriginDestination
  */
 public class MoveStudentRequest extends MoveRequest {
-
-    private final List<PawnColor> availableColors;
+    
     public final int characterIndex;
     public final List<ColoredPawnOriginDestination> toWhere;
-
+    private final List<PawnColor> availableColors;
+    
     public MoveStudentRequest(List<PawnColor> availableColors, List<ColoredPawnOriginDestination> toWhere, boolean canPlayCharacter) {
-
+        
         super("Move a student from your school's entrance to either an island or your dining room");
         this.availableColors = availableColors;
-        characterIndex = 0;
-        this.toWhere = toWhere;
+        characterIndex       = 0;
+        this.toWhere         = toWhere;
         setCanPlayCharacter(canPlayCharacter);
     }
-
+    
     public MoveStudentRequest(int characterIndex, List<PawnColor> availableColors, List<ColoredPawnOriginDestination> toWhere, String promptSentence) {
-
+        
         super(promptSentence);
         this.availableColors = availableColors;
-        this.characterIndex = characterIndex;
-        this.toWhere = toWhere;
+        this.characterIndex  = characterIndex;
+        this.toWhere         = toWhere;
     }
-
+    
     @Override
     public void manage(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
-
+        
         super.manage(cli, scene, requestMessage);
         scene.setColors(availableColors);
-
-        if (characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
+        
+        if(characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
         else scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
     }
-
+    
     @Override
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
-
+        
         super.manage(controller, requestMessage);
-
+        
         Platform.runLater(() -> {
-
-            if (characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
+            
+            if(characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
             else controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
-
-            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
-
-                for (CharacterGUIComponent character : controller.getCharacterGUIComponents())
+            
+            if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
+                
+                for(CharacterGUIComponent character : controller.getCharacterGUIComponents())
                     character.listenToInput(requestMessage);
             }
         });

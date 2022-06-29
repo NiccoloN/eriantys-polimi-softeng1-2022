@@ -12,15 +12,17 @@ import java.io.IOException;
  * @see it.polimi.ingsw2022.eriantys.messages.changes.Change
  */
 public class UpdateMessage extends ToClientMessage {
-
+    
     private final Update update;
-
+    
     public UpdateMessage(Update update) {
+        
         this.update = update;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
+        
         EriantysClient client = EriantysClient.getInstance();
         client.applyUpdate(update);
     }

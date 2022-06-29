@@ -1,8 +1,9 @@
 .text-field {
     -fx-background-color: -fx-background, -fx-text-box-border;
-    -fx-background-insets: 0, 0 0 1 0 ;
-    -fx-background-radius: 0 ;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 0;
 }
+
 .text-field:focused {
     -fx-background-color: -fx-background, -fx-text-box-border;
 }
@@ -12,5 +13,5 @@
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color: rgba(68, 10, 10, 0.6);
-    -fx-effect: dropshadow( three-pass-box , rgba(47, 45, 45, 0.6), 5, 0.5 , 1, 0.5);
+    -fx-effect: dropshadow(three-pass-box, rgba(47, 45, 45, 0.6), 5, 0.5, 1, 0.5);
 }

@@ -12,15 +12,15 @@ import java.io.IOException;
  * @author Emanuele Musto
  */
 public class InvalidGameSettingsMessage extends InvalidResponseMessage {
-
+    
     public InvalidGameSettingsMessage(Message response, Message request) {
-
+        
         super(response, request);
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient.getInstance().log("Invalid game settings provided");
         request.manageAndReply();
     }

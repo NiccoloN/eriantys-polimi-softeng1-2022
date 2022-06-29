@@ -8,15 +8,15 @@ import java.io.IOException;
  * This class represents a message sent just before the client disconnects from the server.
  */
 public class DisconnectMessage extends ToServerMessage {
-
+    
     public DisconnectMessage() {
-
+        
         super(null);
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         super.manageAndReply();
         EriantysServer.getInstance().shutdown(true);
     }

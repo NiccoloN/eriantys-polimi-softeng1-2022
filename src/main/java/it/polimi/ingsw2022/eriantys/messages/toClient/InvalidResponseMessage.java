@@ -12,22 +12,21 @@ import java.io.IOException;
  * @author Emanuele Musto
  */
 public class InvalidResponseMessage extends ToClientMessage {
-
+    
     protected final Message response, request;
-
+    
     public InvalidResponseMessage(Message response, Message request) {
-
+        
         this.response = response;
-        this.request = request;
+        this.request  = request;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         if(response != null && request != null) {
-
-            EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() +
-                    ") was invalid for the request (" + request.getClass().getSimpleName() + ")");
+            
+            EriantysClient.getInstance().log("The given response (" + response.getClass().getSimpleName() + ") was invalid for the request (" + request.getClass().getSimpleName() + ")");
         }
     }
 }

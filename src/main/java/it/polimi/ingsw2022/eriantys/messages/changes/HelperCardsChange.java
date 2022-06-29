@@ -15,55 +15,53 @@ import java.util.List;
  * This class represents a change of the helper cards. Whenever they change, the clients will be updated with this change.
  */
 public class HelperCardsChange implements Change, Serializable {
-
+    
     private final String playerUsername;
     private HelperCard playedHelperCard;
     private List<HelperCard> helperCards;
-
+    
     public HelperCardsChange(String playerUsername) {
-
+        
         this.playerUsername = playerUsername;
-        this.helperCards = new ArrayList<>();
+        this.helperCards    = new ArrayList<>();
     }
-
+    
     public void setPlayedHelperCard(HelperCard playedHelperCard) {
-
+        
         this.playedHelperCard = playedHelperCard;
     }
-
+    
     /**
      * Adds a helper card to this change.
      * @param helperCard the changed helper card.
      */
     public void addHelperCard(HelperCard helperCard) {
+        
         this.helperCards.add(helperCard);
     }
-
+    
     /**
      * Adds a list of helper cards to this change.
      * @param helperCards the list of changed helper cards.
      */
     public void addHelperCards(List<HelperCard> helperCards) {
+        
         this.helperCards = new ArrayList<>(helperCards);
     }
-
+    
     @Override
     public void apply(GameScene scene) {
-
+        
         if(EriantysClient.getInstance().getUsername().equals(playerUsername)) scene.setHelpers(helperCards);
-
-        if(playedHelperCard != null)
-            scene.getPlayer(playerUsername).setLastHelperCLIComponent(
-                    new HelperCardCLIComponent(playedHelperCard.index, playedHelperCard.priority, playedHelperCard.movement));
+        
+        if(playedHelperCard != null) scene.getPlayer(playerUsername).setLastHelperCLIComponent(new HelperCardCLIComponent(playedHelperCard.index, playedHelperCard.priority, playedHelperCard.movement));
     }
-
+    
     @Override
     public void apply(GameController controller) {
-
-        if(EriantysClient.getInstance().getUsername().equals(playerUsername))
-            Platform.runLater(() -> controller.getHelpersGUIComponent().setRemainingHelpers(helperCards));
-
-        if(playedHelperCard != null)
-            Platform.runLater(() -> controller.getPlayerGUIComponent(playerUsername).setLastHelper(playedHelperCard.index));
+        
+        if(EriantysClient.getInstance().getUsername().equals(playerUsername)) Platform.runLater(() -> controller.getHelpersGUIComponent().setRemainingHelpers(helperCards));
+        
+        if(playedHelperCard != null) Platform.runLater(() -> controller.getPlayerGUIComponent(playerUsername).setLastHelper(playedHelperCard.index));
     }
 }

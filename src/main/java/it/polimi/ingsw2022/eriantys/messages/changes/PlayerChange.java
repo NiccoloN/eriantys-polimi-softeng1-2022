@@ -13,35 +13,35 @@ import java.io.Serializable;
  * the clients will be updated with this change.
  */
 public class PlayerChange implements Change, Serializable {
-
+    
     private final Player player;
-
+    
     public PlayerChange(Player player) {
-
+        
         this.player = player;
     }
-
+    
     public String getUsername() {
-
+        
         return player.getUsername();
     }
-
+    
     public int getCoins() {
-
+        
         return player.getCoins();
     }
-
+    
     @Override
     public void apply(GameScene scene) {
-
+        
         PlayerStatusCLIComponent cliPlayer = scene.getPlayer(player.getUsername());
-
+        
         cliPlayer.setCoins(player.getCoins());
     }
-
+    
     @Override
     public void apply(GameController controller) {
-
+        
         Platform.runLater(() -> controller.getPlayerGUIComponent(player.getUsername()).setCoins(player.getCoins()));
     }
 }

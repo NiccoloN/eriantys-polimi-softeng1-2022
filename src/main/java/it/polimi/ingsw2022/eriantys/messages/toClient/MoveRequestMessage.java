@@ -9,40 +9,41 @@ import java.io.IOException;
 
 /**
  * This class represent a request message for a move sent from the server to the client, containing a move request.
- * @see MoveRequest
  * @author Emanuele Musto
+ * @see MoveRequest
  */
 public class MoveRequestMessage extends TimedMessage {
-
-    public final MoveRequest moveRequest;
-
+    
     static {
-
+        
         validResponses.add(PerformedMoveMessage.class);
     }
-
+    
+    public final MoveRequest moveRequest;
+    
     public MoveRequestMessage(MoveRequest moveRequest) {
+        
         this.moveRequest = moveRequest;
     }
-
+    
     @Override
     public void manageAndReply() throws IOException {
-
+        
         EriantysClient.getInstance().requestMove(this);
     }
-
+    
     @Override
     public void waitForValidResponse() throws InterruptedException {
-
+        
         waitForValidResponse(300, () -> {
-
+            
             try {
-
+                
                 System.out.println("Move response timeout");
                 EriantysServer.getInstance().shutdown(true);
                 //TODO mossa casuale
             }
-
+            
             catch(IOException e) {
                 e.printStackTrace();
             }

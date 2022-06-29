@@ -15,33 +15,32 @@ import java.util.Arrays;
  * @author Niccolò Nicolosi
  */
 public class GameSettings implements Serializable {
-
+    
     public final boolean loadGame;
     public final int numberOfPlayers;
     public final GameMode gameMode;
-
+    
     public GameSettings() {
-
-        loadGame = true;
+        
+        loadGame        = true;
         numberOfPlayers = 0;
-        gameMode = null;
+        gameMode        = null;
     }
-
+    
     public GameSettings(int numberOfPlayers, GameMode gameMode) {
-
-        loadGame = false;
+        
+        loadGame             = false;
         this.numberOfPlayers = numberOfPlayers;
-        this.gameMode = gameMode;
+        this.gameMode        = gameMode;
     }
-
+    
     public boolean isValid() {
-
+        
         File saveFile = new File(EriantysServer.SAVE_FILE_PATH);
-        if (loadGame && saveFile.exists()) return true;
-
-        boolean valid = true;
-        if (numberOfPlayers < Game.MIN_NUMBER_OF_PLAYERS || numberOfPlayers > Game.MAX_NUMBER_OF_PLAYERS) valid = false;
-        if (Arrays.stream(GameMode.values()).noneMatch((mode) -> mode == gameMode)) valid = false;
+        if(loadGame && saveFile.exists()) return true;
+        
+        boolean valid = numberOfPlayers >= Game.MIN_NUMBER_OF_PLAYERS && numberOfPlayers <= Game.MAX_NUMBER_OF_PLAYERS;
+        if(Arrays.stream(GameMode.values()).noneMatch((mode) -> mode == gameMode)) valid = false;
         return valid;
     }
 }
