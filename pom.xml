@@ -23,13 +23,13 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-
+        <!-- Gson to read and write json files -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.9.0</version>
         </dependency>
-
+        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -41,35 +41,7 @@
             <artifactId>javafx-fxml</artifactId>
             <version>18.0.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>18.0.1</version>
-            <classifier>win</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>18.0.1</version>
-            <classifier>mac</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>18.0.1</version>
-            <classifier>mac-aarch64</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>18.0.1</version>
-            <classifier>linux</classifier>
-        </dependency>
-
+        <!-- Jline needed to interact with the platform terminal -->
         <dependency>
             <groupId>org.jline</groupId>
             <artifactId>jline</artifactId>
@@ -108,29 +80,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.1</version>
-            </plugin>
-            <!-- Shade plugin, packages a uber jar that runs on every platform -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <id>main-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation=
-                                                     "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>it.polimi.ingsw2022.eriantys.Eriantys</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
