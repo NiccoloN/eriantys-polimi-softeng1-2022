@@ -16,7 +16,7 @@ class TeamTest {
     void setUp() {
         
         blackTeam = new Team(AnsiCodes.BLACK_BRIGHT, "black");
-        redTeam   = new Team(AnsiCodes.RED, "red");
+        redTeam = new Team(AnsiCodes.RED, "red");
     }
     
     @Test

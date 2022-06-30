@@ -12,6 +12,7 @@ import java.util.Optional;
 
 /**
  * This class represents an island. Every island is composed of different island tiles (at least one).
+ *
  * @author Niccolò Nicolosi
  * @see IslandTile
  */
@@ -47,6 +48,7 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Merges this island with the given one, making it bigger.
+     *
      * @param island the island to merge with
      * @throws RuntimeException if the given island contains any tile that is already part of this island
      */
@@ -54,15 +56,15 @@ public class CompoundIslandTile implements Serializable {
         
         int denyTiles = 0;
         ArrayList<ColoredPawn> students = new ArrayList<>();
-        for(IslandTile tile : tiles) {
+        for (IslandTile tile : tiles) {
             
             students.addAll(tile.removeAllStudents());
             denyTiles += tile.getNumberOfDenyTiles();
             tile.setNumberOfDenyTiles(0);
         }
-        for(IslandTile tile : island.tiles) {
+        for (IslandTile tile : island.tiles) {
             
-            if(tiles.contains(tile)) throw new RuntimeException("No duplicates allowed");
+            if (tiles.contains(tile)) throw new RuntimeException("No duplicates allowed");
             students.addAll(tile.removeAllStudents());
             denyTiles += tile.getNumberOfDenyTiles();
             tile.setNumberOfDenyTiles(0);
@@ -91,13 +93,14 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Places a colored pawn onto this island. Only pawns that represent students should be placed on an island
+     *
      * @param student the student to place
      * @throws RuntimeException if the given student is already on this island
      */
     public void addStudent(ColoredPawn student) {
         
         IslandTile tile = tiles.get(0);
-        if(tile.containsStudent(student)) throw new RuntimeException("No duplicates allowed");
+        if (tile.containsStudent(student)) throw new RuntimeException("No duplicates allowed");
         tile.addStudent(student);
     }
     
@@ -111,17 +114,19 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Sets the given team as the controller of this island
+     *
      * @param team the new team that controls this island
      * @throws RuntimeException          if this island is denied
      * @throws InvalidParameterException if team is null
      */
     public void setTeam(Team team) {
         
-        if(getNumberOfDenyTiles() > 0) throw new RuntimeException("Cannot set a new controller team on a denied island");
-        if(team == null) throw new InvalidParameterException("Team cannot be null");
+        if (getNumberOfDenyTiles() > 0)
+            throw new RuntimeException("Cannot set a new controller team on a denied island");
+        if (team == null) throw new InvalidParameterException("Team cannot be null");
         
         this.team = team;
-        for(IslandTile tile : tiles) tile.setTeam(team);
+        for (IslandTile tile : tiles) tile.setTeam(team);
     }
     
     public int getNumberOfDenyTiles() {
@@ -138,34 +143,26 @@ public class CompoundIslandTile implements Serializable {
     }
     
     /**
-     * Sets whether mother nature is currently on this island and places/removes it on/from the first tile of this island
-     * @param motherNature true to place mother nature on this island, false to remove it
-     */
-    void setMotherNature(boolean motherNature) {
-        
-        if(motherNature) tiles.get(0).setMotherNature(true);
-        else for(IslandTile tile : tiles) tile.setMotherNature(false);
-    }
-    
-    /**
      * Adds deny tile to the island. A denied island cannot change its controller team.
+     *
      * @throws RuntimeException if someone tries to put more than four deny tiles on the island.
      */
     public void incrementNumberOfDenyTiles() {
         
         IslandTile tile = tiles.get(0);
-        if(tile.getNumberOfDenyTiles() >= 4) throw new RuntimeException("Cannot increment deny tiles");
+        if (tile.getNumberOfDenyTiles() >= 4) throw new RuntimeException("Cannot increment deny tiles");
         tile.setNumberOfDenyTiles(tile.getNumberOfDenyTiles() + 1);
     }
     
     /**
      * Removes deny tile to the island.
+     *
      * @throws RuntimeException if someone tries to remove deny tile when there are none on the island.
      */
     public void decrementNumberOfDenyTiles() {
         
         IslandTile tile = tiles.get(0);
-        if(tile.getNumberOfDenyTiles() <= 0) throw new RuntimeException("Cannot decrement deny tiles");
+        if (tile.getNumberOfDenyTiles() <= 0) throw new RuntimeException("Cannot decrement deny tiles");
         tile.setNumberOfDenyTiles(tile.getNumberOfDenyTiles() - 1);
     }
     
@@ -185,6 +182,17 @@ public class CompoundIslandTile implements Serializable {
     public void setIndex(int index) {
         
         this.index = index;
-        for(IslandTile tile : tiles) tile.setIndex(index);
+        for (IslandTile tile : tiles) tile.setIndex(index);
+    }
+    
+    /**
+     * Sets whether mother nature is currently on this island and places/removes it on/from the first tile of this island
+     *
+     * @param motherNature true to place mother nature on this island, false to remove it
+     */
+    void setMotherNature(boolean motherNature) {
+        
+        if (motherNature) tiles.get(0).setMotherNature(true);
+        else for (IslandTile tile : tiles) tile.setMotherNature(false);
     }
 }

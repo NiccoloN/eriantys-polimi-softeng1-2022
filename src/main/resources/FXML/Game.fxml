@@ -6,7 +6,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0"
+            xmlns="http://javafx.com/javafx/18">
     <children>
         <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -56,7 +57,8 @@
                                 <RowConstraints maxHeight="101.5" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <GridPane fx:id="professors1" layoutX="253.0" layoutY="13.0" prefHeight="131.0" prefWidth="18.0">
+                        <GridPane fx:id="professors1" layoutX="253.0" layoutY="13.0" prefHeight="131.0"
+                                  prefWidth="18.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="26.0" minWidth="0.0" prefWidth="18.5"/>
                             </columnConstraints>
@@ -123,7 +125,8 @@
                                 <RowConstraints maxHeight="101.5" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <GridPane fx:id="professors2" layoutX="253.0" layoutY="13.0" prefHeight="131.0" prefWidth="18.0">
+                        <GridPane fx:id="professors2" layoutX="253.0" layoutY="13.0" prefHeight="131.0"
+                                  prefWidth="18.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="26.0" minWidth="0.0" prefWidth="18.5"/>
                             </columnConstraints>
@@ -190,7 +193,8 @@
                                 <RowConstraints maxHeight="101.5" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <GridPane fx:id="professors3" layoutX="253.0" layoutY="13.0" prefHeight="131.0" prefWidth="18.0">
+                        <GridPane fx:id="professors3" layoutX="253.0" layoutY="13.0" prefHeight="131.0"
+                                  prefWidth="18.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="26.0" minWidth="0.0" prefWidth="18.5"/>
                             </columnConstraints>
@@ -257,7 +261,8 @@
                                 <RowConstraints maxHeight="101.5" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <GridPane fx:id="professors4" layoutX="253.0" layoutY="13.0" prefHeight="131.0" prefWidth="18.0">
+                        <GridPane fx:id="professors4" layoutX="253.0" layoutY="13.0" prefHeight="131.0"
+                                  prefWidth="18.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="26.0" minWidth="0.0" prefWidth="18.5"/>
                             </columnConstraints>
@@ -294,7 +299,8 @@
                                 <Image url="@../Images/Game/Board/island%20(2).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island0" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island0" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -309,7 +315,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -320,7 +327,8 @@
                                 <Image url="@../Images/Game/Board/island%20(3).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island1" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island1" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -335,7 +343,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -346,7 +355,8 @@
                                 <Image url="@../Images/Game/Board/island%20(3).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island2" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island2" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -361,7 +371,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -372,7 +383,8 @@
                                 <Image url="@../Images/Game/Board/island%20(2).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island3" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island3" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -387,7 +399,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -398,7 +411,8 @@
                                 <Image url="@../Images/Game/Board/island%20(3).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island4" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island4" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -413,7 +427,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -424,7 +439,8 @@
                                 <Image url="@../Images/Game/Board/island%20(2).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island5" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island5" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -439,7 +455,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -450,7 +467,8 @@
                                 <Image url="@../Images/Game/Board/island%20(1).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island6" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island6" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -465,7 +483,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -476,7 +495,8 @@
                                 <Image url="@../Images/Game/Board/island%20(3).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island7" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island7" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -491,7 +511,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -502,7 +523,8 @@
                                 <Image url="@../Images/Game/Board/island%20(1).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island8" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island8" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -517,7 +539,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -528,7 +551,8 @@
                                 <Image url="@../Images/Game/Board/island%20(1).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island9" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0"
+                        <GridPane fx:id="island9" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" prefHeight="80.0"
                                   prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -543,7 +567,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -554,7 +579,8 @@
                                 <Image url="@../Images/Game/Board/island%20(2).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island10" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                        <GridPane fx:id="island10" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity"
                                   prefHeight="80.0" prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -569,7 +595,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -580,7 +607,8 @@
                                 <Image url="@../Images/Game/Board/island%20(1).png"/>
                             </image>
                         </ImageView>
-                        <GridPane fx:id="island11" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                        <GridPane fx:id="island11" layoutX="26.0" layoutY="28.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity"
                                   prefHeight="80.0" prefWidth="100.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="27.5" minWidth="4.0" prefWidth="13.0"/>
@@ -595,15 +623,18 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="105.0"
+                        <Button layoutX="24.0" layoutY="20.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="105.0"
                                 prefWidth="105.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
             </children>
         </Group>
-        <TextArea fx:id="effectsTextArea" editable="false" layoutX="20.0" layoutY="212.0" prefHeight="200.0" prefWidth="220.0"
+        <TextArea fx:id="effectsTextArea" editable="false" layoutX="20.0" layoutY="212.0" prefHeight="200.0"
+                  prefWidth="220.0"
                   stylesheets="@../CSS/TextAreaStyle.css"/>
-        <TextArea fx:id="hintsTextArea" editable="false" layoutX="1040.0" layoutY="212.0" prefHeight="200.0" prefWidth="220.0"
+        <TextArea fx:id="hintsTextArea" editable="false" layoutX="1040.0" layoutY="212.0" prefHeight="200.0"
+                  prefWidth="220.0"
                   stylesheets="@../CSS/TextAreaStyle.css"/>
         <TextArea fx:id="winner" editable="false" layoutX="460.0" layoutY="212.0" prefHeight="200.0" prefWidth="363.0"
                   stylesheets="@../CSS/TextAreaStyle.css" visible="false"/>
@@ -611,28 +642,33 @@
             <children>
                 <Group>
                     <children>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="-70.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="-70.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Mages/mage (1).png"/>
                             </image>
                         </ImageView>
-                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css"
+                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label"
+                               stylesheets="@../CSS/LabelStyles.css"
                                text="Nicooooooooooooooooo">
                             <font>
                                 <Font size="15.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutY="35.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Characters/coin.png"/>
                             </image>
                         </ImageView>
-                        <Label layoutX="30.0" layoutY="35.0" styleClass="coin-label" stylesheets="@../CSS/LabelStyles.css" text="x99">
+                        <Label layoutX="30.0" layoutY="35.0" styleClass="coin-label"
+                               stylesheets="@../CSS/LabelStyles.css" text="x99">
                             <font>
                                 <Font size="20.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="307.0" layoutY="-145.0" pickOnBounds="true"
+                        <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="307.0" layoutY="-145.0"
+                                   pickOnBounds="true"
                                    preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@../Images/Game/Helpers/Helper%20(1).png"/>
@@ -642,28 +678,33 @@
                 </Group>
                 <Group layoutX="940.0">
                     <children>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="200.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Mages/mage (2).png"/>
                             </image>
                         </ImageView>
-                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css"
+                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label"
+                               stylesheets="@../CSS/LabelStyles.css"
                                text="Emaaaaaaaaaaaaaaaaaa">
                             <font>
                                 <Font size="15.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutX="135.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutX="135.0" layoutY="35.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Characters/coin.png"/>
                             </image>
                         </ImageView>
-                        <Label layoutX="165.0" layoutY="35.0" styleClass="coin-label" stylesheets="@../CSS/LabelStyles.css" text="x99">
+                        <Label layoutX="165.0" layoutY="35.0" styleClass="coin-label"
+                               stylesheets="@../CSS/LabelStyles.css" text="x99">
                             <font>
                                 <Font size="20.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-157.0" layoutY="-145.0" pickOnBounds="true"
+                        <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-157.0" layoutY="-145.0"
+                                   pickOnBounds="true"
                                    preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@../Images/Game/Helpers/Helper%20(1).png"/>
@@ -673,24 +714,28 @@
                 </Group>
                 <Group layoutY="455.0">
                     <children>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="-70.0" layoutY="-230.0" pickOnBounds="true"
+                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="-70.0" layoutY="-230.0"
+                                   pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Mages/mage (4).png"/>
                             </image>
                         </ImageView>
-                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css"
+                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label"
+                               stylesheets="@../CSS/LabelStyles.css"
                                text="Fraaaaaaaaaaaaaaaaaaaa">
                             <font>
                                 <Font size="15.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutY="35.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Characters/coin.png"/>
                             </image>
                         </ImageView>
-                        <Label layoutX="30.0" layoutY="35.0" styleClass="coin-label" stylesheets="@../CSS/LabelStyles.css" text="x99">
+                        <Label layoutX="30.0" layoutY="35.0" styleClass="coin-label"
+                               stylesheets="@../CSS/LabelStyles.css" text="x99">
                             <font>
                                 <Font size="20.0"/>
                             </font>
@@ -705,29 +750,34 @@
                 </Group>
                 <Group layoutX="940.0" layoutY="455.0">
                     <children>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="200.0" layoutY="-230.0" pickOnBounds="true"
+                        <ImageView fitHeight="100.0" fitWidth="70.0" layoutX="200.0" layoutY="-230.0"
+                                   pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Mages/mage (3).png"/>
                             </image>
                         </ImageView>
-                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label" stylesheets="@../CSS/LabelStyles.css"
+                        <Label prefHeight="31.0" prefWidth="200.0" styleClass="player-label"
+                               stylesheets="@../CSS/LabelStyles.css"
                                text="MMMMMMMMMMMMMMMMMMMM">
                             <font>
                                 <Font size="15.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutX="135.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="74.0" fitWidth="25.0" layoutX="135.0" layoutY="35.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../Images/Game/Characters/coin.png"/>
                             </image>
                         </ImageView>
-                        <Label layoutX="165.0" layoutY="35.0" styleClass="coin-label" stylesheets="@../CSS/LabelStyles.css" text="x99">
+                        <Label layoutX="165.0" layoutY="35.0" styleClass="coin-label"
+                               stylesheets="@../CSS/LabelStyles.css" text="x99">
                             <font>
                                 <Font size="20.0"/>
                             </font>
                         </Label>
-                        <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-157.0" layoutY="-62.0" pickOnBounds="true"
+                        <ImageView fitHeight="100.0" fitWidth="50.0" layoutX="-157.0" layoutY="-62.0"
+                                   pickOnBounds="true"
                                    preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@../Images/Game/Helpers/Helper%20(1).png"/>
@@ -848,7 +898,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0"
+                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="75.0"
                                 prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -871,7 +922,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0"
+                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="75.0"
                                 prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -894,7 +946,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0"
+                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="75.0"
                                 prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>
@@ -917,7 +970,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false" prefHeight="75.0"
+                        <Button layoutX="3.0" layoutY="3.0" mnemonicParsing="false" opacity="0.0" pickOnBounds="false"
+                                prefHeight="75.0"
                                 prefWidth="75.0" style="-fx-background-radius: 10em;" text="Button"/>
                     </children>
                 </Group>

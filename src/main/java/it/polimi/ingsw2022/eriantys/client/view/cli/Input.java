@@ -7,6 +7,7 @@ import java.util.Optional;
  * This class represents a keyboard input (the press of a single key) read by the terminal. Every input consists of either 1 char, if it
  * corresponds to the press of simple character key, or 3 chars, if it corresponds to the press of a special key that prints an ansi sequence
  * on the terminal (like arrow keys). Different inputs are associated to the specific actions they trigger
+ *
  * @author Niccolò Nicolosi
  * @see Action
  */
@@ -16,6 +17,7 @@ public class Input {
     
     /**
      * Constructs an input consisting of a single char
+     *
      * @param c1 the single char of the input
      */
     public Input(char c1) {
@@ -25,6 +27,7 @@ public class Input {
     
     /**
      * Constructs an input consisting of 3 chars
+     *
      * @param c1 the first char of the input
      * @param c2 the second char of the input
      * @param c3 the third char of the input
@@ -51,7 +54,7 @@ public class Input {
      */
     public boolean triggersAction(Action action) {
         
-        for(Input input : action.getTriggerInputs()) if(this.equals(input)) return true;
+        for (Input input : action.getTriggerInputs()) if (this.equals(input)) return true;
         return false;
     }
     
@@ -61,7 +64,7 @@ public class Input {
      */
     public Optional<Character> getChar() {
         
-        if(inputChars[0] != '\0' && inputChars[1] == '\0' && inputChars[2] == '\0') return Optional.of(inputChars[0]);
+        if (inputChars[0] != '\0' && inputChars[1] == '\0' && inputChars[2] == '\0') return Optional.of(inputChars[0]);
         return Optional.empty();
     }
     
@@ -74,8 +77,8 @@ public class Input {
     @Override
     public boolean equals(Object o) {
         
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Input input = (Input) o;
         return Arrays.equals(inputChars, input.inputChars);
     }
@@ -84,7 +87,7 @@ public class Input {
     public String toString() {
         
         int[] charCodes = new int[inputChars.length];
-        for(int n = 0; n < inputChars.length; n++) charCodes[n] = inputChars[n];
+        for (int n = 0; n < inputChars.length; n++) charCodes[n] = inputChars[n];
         return "Input: " + Arrays.toString(charCodes);
     }
 }

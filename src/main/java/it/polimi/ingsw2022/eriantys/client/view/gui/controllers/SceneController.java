@@ -6,7 +6,10 @@ public abstract class SceneController {
     
     private final EriantysGUI gui;
     
-    public SceneController(EriantysGUI gui) {this.gui = gui;}
+    public SceneController(EriantysGUI gui) {
+        
+        this.gui = gui;
+    }
     
     public EriantysGUI getGui() {
         

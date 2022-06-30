@@ -13,6 +13,7 @@ import java.util.Optional;
 /**
  * This class represents an island tile: the smallest piece that forms an island.
  * Island tiles can be aggregated to form a bigger island.
+ *
  * @author Niccolò Nicolosi
  * @see CompoundIslandTile
  */
@@ -27,12 +28,12 @@ public class IslandTile implements Serializable {
     
     IslandTile() {
         
-        students          = new ArrayList<>();
-        motherNature      = false;
+        students = new ArrayList<>();
+        motherNature = false;
         numberOfDenyTiles = 0;
-        tower             = false;
-        team              = null;
-        index             = 0;
+        tower = false;
+        team = null;
+        index = 0;
     }
     
     /**
@@ -62,52 +63,11 @@ public class IslandTile implements Serializable {
     }
     
     /**
-     * Places the given colored pawns onto this tile. Only pawns that represent students should be placed on an island tile
-     * @param students the list of students to place
-     * @throws RuntimeException if any of the given students is already placed on this tile
-     */
-    void addStudents(Collection<ColoredPawn> students) {
-        
-        for(ColoredPawn student : students) addStudent(student);
-    }
-    
-    /**
-     * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
-     * @param student the student to place
-     * @throws RuntimeException if the given student is already placed on this tile
-     */
-    void addStudent(ColoredPawn student) {
-        
-        if(students.contains(student)) throw new RuntimeException("No duplicates allowed");
-        students.add(student);
-    }
-    
-    /**
-     * Removes all the students from this tile
-     * @return a list containing the removed students
-     */
-    List<ColoredPawn> removeAllStudents() {
-        
-        List<ColoredPawn> removed = new ArrayList<>(students);
-        students.clear();
-        return removed;
-    }
-    
-    /**
      * @return whether mother nature is currently on this specific tile of an island
      */
     public boolean hasMotherNature() {
         
         return motherNature;
-    }
-    
-    /**
-     * Sets whether mother nature is currently on this specific tile of an island
-     * @param motherNature true to place mother nature on this tile, false to remove it
-     */
-    void setMotherNature(boolean motherNature) {
-        
-        this.motherNature = motherNature;
     }
     
     /**
@@ -120,14 +80,14 @@ public class IslandTile implements Serializable {
     
     public Optional<Team> getTeam() {
         
-        if(team != null) return Optional.of(team);
+        if (team != null) return Optional.of(team);
         return Optional.empty();
     }
     
     public void setTeam(Team team) {
         
         this.team = team;
-        tower     = true;
+        tower = true;
     }
     
     public int getIndex() {
@@ -148,5 +108,50 @@ public class IslandTile implements Serializable {
     public void setNumberOfDenyTiles(int numberOfDenyTiles) {
         
         this.numberOfDenyTiles = numberOfDenyTiles;
+    }
+    
+    /**
+     * Places the given colored pawns onto this tile. Only pawns that represent students should be placed on an island tile
+     *
+     * @param students the list of students to place
+     * @throws RuntimeException if any of the given students is already placed on this tile
+     */
+    void addStudents(Collection<ColoredPawn> students) {
+        
+        for (ColoredPawn student : students) addStudent(student);
+    }
+    
+    /**
+     * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
+     *
+     * @param student the student to place
+     * @throws RuntimeException if the given student is already placed on this tile
+     */
+    void addStudent(ColoredPawn student) {
+        
+        if (students.contains(student)) throw new RuntimeException("No duplicates allowed");
+        students.add(student);
+    }
+    
+    /**
+     * Removes all the students from this tile
+     *
+     * @return a list containing the removed students
+     */
+    List<ColoredPawn> removeAllStudents() {
+        
+        List<ColoredPawn> removed = new ArrayList<>(students);
+        students.clear();
+        return removed;
+    }
+    
+    /**
+     * Sets whether mother nature is currently on this specific tile of an island
+     *
+     * @param motherNature true to place mother nature on this tile, false to remove it
+     */
+    void setMotherNature(boolean motherNature) {
+        
+        this.motherNature = motherNature;
     }
 }

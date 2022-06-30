@@ -20,6 +20,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents a game scene state in which the user is asked to select a helper card
+ *
  * @author Niccolò Nicolosi
  */
 public class HelperSelection extends GameSceneState {
@@ -30,8 +31,11 @@ public class HelperSelection extends GameSceneState {
     
     /**
      * Constructs a helper selection state
-     * @param cli   the cli to associate to this state
-     * @param scene the game scene to associate to this state
+     *
+     * @param cli               the cli to associate to this state
+     * @param scene             the game scene to associate to this state
+     * @param requestMessage    the message that requested this state or the previous one
+     * @param unplayableIndices the indices of the helper cards not playable in this state
      */
     public HelperSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, List<Integer> unplayableIndices) {
         
@@ -44,13 +48,13 @@ public class HelperSelection extends GameSceneState {
         
         super.enter();
         currentSelectedIndex = 0;
-        for(int n = 0; n < getScene().getNumberOfHelpers(); n++) {
+        for (int n = 0; n < getScene().getNumberOfHelpers(); n++) {
             
             HelperCardCLIComponent helper = getScene().getHelper(n);
-            if(unplayableIndices.contains(helper.getIndex())) {
+            if (unplayableIndices.contains(helper.getIndex())) {
                 
                 helper.setPlayable(false);
-                if(n == currentSelectedIndex) currentSelectedIndex++;
+                if (n == currentSelectedIndex) currentSelectedIndex++;
             }
         }
         
@@ -61,27 +65,19 @@ public class HelperSelection extends GameSceneState {
     public void exit() {
         
         super.exit();
-        for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setPlayable(true);
-    }
-    
-    private void updateCLI() {
-        
-        if(currentSelected != null) currentSelected.setColor(RESET);
-        currentSelected = getScene().getHelper(currentSelectedIndex);
-        currentSelected.setColor(GREEN);
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
+        for (int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setPlayable(true);
     }
     
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.UP) && getScene().gameMode == GameMode.EXPERT) {
+        if (input.triggersAction(Action.UP) && getScene().gameMode == GameMode.EXPERT) {
             
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;
         }
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseHelperCard(currentSelected.getIndex())));
             
@@ -89,25 +85,33 @@ public class HelperSelection extends GameSceneState {
             return;
         }
         
-        if(input.triggersAction(Action.RIGHT)) {
+        if (input.triggersAction(Action.RIGHT)) {
             
             do {
                 
                 currentSelectedIndex++;
-                if(currentSelectedIndex > getScene().getNumberOfHelpers() - 1) currentSelectedIndex = 0;
+                if (currentSelectedIndex > getScene().getNumberOfHelpers() - 1) currentSelectedIndex = 0;
             }
-            while(!getScene().getHelper(currentSelectedIndex).isPlayable());
+            while (!getScene().getHelper(currentSelectedIndex).isPlayable());
         }
-        else if(input.triggersAction(Action.LEFT)) {
+        else if (input.triggersAction(Action.LEFT)) {
             
             do {
                 
                 currentSelectedIndex--;
-                if(currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfHelpers() - 1;
+                if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfHelpers() - 1;
             }
-            while(!getScene().getHelper(currentSelectedIndex).isPlayable());
+            while (!getScene().getHelper(currentSelectedIndex).isPlayable());
         }
         
         updateCLI();
+    }
+    
+    private void updateCLI() {
+        
+        if (currentSelected != null) currentSelected.setColor(RESET);
+        currentSelected = getScene().getHelper(currentSelectedIndex);
+        currentSelected.setColor(GREEN);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }
 }

@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of a Character by a player
+ *
  * @author Emanuele Musto
  */
 public class ChooseCharacterCard extends Move {
@@ -33,25 +34,25 @@ public class ChooseCharacterCard extends Move {
             
             characterCard = game.getCharacterOfIndex(characterCardIndex);
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             
             errorMessage = "Invalid character index";
             return false;
         }
         
-        if(game.getCurrentPlayer().getCoins() < characterCard.getCost()) {
+        if (game.getCurrentPlayer().getCoins() < characterCard.getCost()) {
             
             errorMessage = "Not enough coins";
             return false;
         }
         
-        if(game.getCurrentPlayer().hasPlayedCharacter()) {
+        if (game.getCurrentPlayer().hasPlayedCharacter()) {
             
             errorMessage = "You already used a character in this turn";
             return false;
         }
         
-        if(characterCardIndex == 10 && game.getCurrentPlayer().getSchool().getAvailableTableColors().isEmpty()) {
+        if (characterCardIndex == 10 && game.getCurrentPlayer().getSchool().getAvailableTableColors().isEmpty()) {
             
             errorMessage = "Not enough students in your school's tables";
             return false;
@@ -78,11 +79,11 @@ public class ChooseCharacterCard extends Move {
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
         PlayerChange playerChange = new PlayerChange(game.getCurrentPlayer());
         
-        if(characterCardIndex == 2) {
-            for(Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
+        if (characterCardIndex == 2) {
+            for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
         }
         
-        for(int i = 0; i < game.getNumberOfCharacters(); i++) {
+        for (int i = 0; i < game.getNumberOfCharacters(); i++) {
             characterCardsChange.addCharacterCard(game.getCharacter(i));
         }
         

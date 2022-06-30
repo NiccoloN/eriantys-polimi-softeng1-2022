@@ -20,6 +20,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents a game scene state in which the user is asked to select a color
+ *
  * @author Niccolò Nicolosi
  */
 public class ColorSelection extends GameSceneState {
@@ -29,9 +30,11 @@ public class ColorSelection extends GameSceneState {
     private ColorCLIComponent currentSelected;
     
     /**
-     * Constructs a color selection state
-     * @param cli   the cli to associate to this state
-     * @param scene the game scene to associate to this state
+     * Constructs a default color selection state
+     *
+     * @param cli            the cli to associate to this state
+     * @param scene          the game scene to associate to this state
+     * @param requestMessage the message that requested this state or the previous one
      */
     public ColorSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
         
@@ -39,6 +42,14 @@ public class ColorSelection extends GameSceneState {
         characterIndex = 0;
     }
     
+    /**
+     * Constructs a particular color selection state requested by the play of a character card with the given index
+     *
+     * @param cli            the cli to associate to this state
+     * @param scene          the game scene to associate to this state
+     * @param requestMessage the message that requested this state or the previous one
+     * @param characterIndex the index of the character card that requested this state
+     */
     public ColorSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, int characterIndex) {
         
         super(cli, scene, requestMessage);
@@ -50,8 +61,8 @@ public class ColorSelection extends GameSceneState {
         
         super.enter();
         currentSelectedIndex = 0;
-        for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
-        for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
+        for (int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
+        for (int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
         updateCLI();
     }
     
@@ -60,16 +71,8 @@ public class ColorSelection extends GameSceneState {
         
         super.exit();
         currentSelected.setColor(RESET);
-        for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
-        for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
-    }
-    
-    private void updateCLI() {
-        
-        if(currentSelected != null) currentSelected.setColor(RESET);
-        currentSelected = getScene().getColor(currentSelectedIndex);
-        currentSelected.setColor(GREEN);
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 2);
+        for (int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
+        for (int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
     }
     
     @Override
@@ -77,22 +80,24 @@ public class ColorSelection extends GameSceneState {
         
         EriantysClient client = EriantysClient.getInstance();
         
-        if((characterIndex == 7 || characterIndex == 10) && input.triggersAction(Action.ESC)) {
+        if ((characterIndex == 7 || characterIndex == 10) && input.triggersAction(Action.ESC)) {
             
             client.sendToServer(new PerformedMoveMessage(requestMessage, new Abort()));
             return;
         }
         
-        if(input.triggersAction(Action.UP) && getScene().gameMode == GameMode.EXPERT) {
+        if (input.triggersAction(Action.UP) && getScene().gameMode == GameMode.EXPERT) {
             
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.DOWN));
             return;
         }
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
-            if(characterIndex <= 0) getScene().setState(new IslandSelection(getCli(), getScene(), requestMessage, currentSelected.pawnColor));
-            else if(characterIndex == 1) getScene().setState(new IslandSelection(getCli(), getScene(), requestMessage, currentSelected.pawnColor, characterIndex));
+            if (characterIndex <= 0)
+                getScene().setState(new IslandSelection(getCli(), getScene(), requestMessage, currentSelected.pawnColor));
+            else if (characterIndex == 1)
+                getScene().setState(new IslandSelection(getCli(), getScene(), requestMessage, currentSelected.pawnColor, characterIndex));
             else {
                 ChooseColorRequest colorRequest = (ChooseColorRequest) requestMessage.moveRequest;
                 client.sendToServer(new PerformedMoveMessage(requestMessage, new ChooseColor(currentSelected.pawnColor, characterIndex, colorRequest.fromWhere)));
@@ -100,12 +105,20 @@ public class ColorSelection extends GameSceneState {
             return;
         }
         
-        if(input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if(input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
         
-        if(currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfColors() - 1;
-        else if(currentSelectedIndex > getScene().getNumberOfColors() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfColors() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfColors() - 1) currentSelectedIndex = 0;
         
         updateCLI();
+    }
+    
+    private void updateCLI() {
+        
+        if (currentSelected != null) currentSelected.setColor(RESET);
+        currentSelected = getScene().getColor(currentSelectedIndex);
+        currentSelected.setColor(GREEN);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 2);
     }
 }

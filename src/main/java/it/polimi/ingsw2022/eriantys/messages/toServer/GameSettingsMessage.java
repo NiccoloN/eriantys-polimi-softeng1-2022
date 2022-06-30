@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  * This class represents a message that answers to the game settings request.
  * It is sent by the client when he has to choose the game mode of the game.
+ *
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  * @see GameSettings
@@ -36,7 +37,7 @@ public class GameSettingsMessage extends ToServerMessage {
         super.manageAndReply();
         
         EriantysServer server = EriantysServer.getInstance();
-        if(gameSettings.isValid()) {
+        if (gameSettings.isValid()) {
             
             ((TimedMessage) getPreviousMessage()).acceptResponse();
             server.addGameSettings(this.gameSettings);

@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.cli;
 
 /**
  * This class provides different ansi codes and ansi-related utility methods
+ *
  * @author Niccolò Nicolosi
  */
 public class AnsiCodes {
@@ -65,11 +66,11 @@ public class AnsiCodes {
         
         boolean inAnsi = false;
         
-        for(char character : chars) {
+        for (char character : chars) {
             
-            if(character == 27) inAnsi = true;
-            if(!inAnsi) return false;
-            if(character == 'm') inAnsi = false;
+            if (character == 27) inAnsi = true;
+            if (!inAnsi) return false;
+            if (character == 'm') inAnsi = false;
         }
         return true;
     }
@@ -85,11 +86,11 @@ public class AnsiCodes {
         StringBuilder stringBuilder = new StringBuilder();
         boolean toConsider = true;
         
-        for(char character : chars) {
+        for (char character : chars) {
             
-            if(character == 27) toConsider = false;
-            if(toConsider) stringBuilder.append(character);
-            if(character == 'm') toConsider = true;
+            if (character == 27) toConsider = false;
+            if (toConsider) stringBuilder.append(character);
+            if (character == 'm') toConsider = true;
         }
         
         return stringBuilder.toString();
@@ -111,18 +112,18 @@ public class AnsiCodes {
         boolean toConsider = true;
         boolean finished = false;
         
-        if(textLength > 0) {
+        if (textLength > 0) {
             
-            for(int n = 0; n < chars.length && !finished; n++) {
+            for (int n = 0; n < chars.length && !finished; n++) {
                 
                 stringBuilder.append(chars[n]);
                 
-                if(chars[n] == 27) toConsider = false;
-                if(toConsider) length++;
-                if(chars[n] == 'm') toConsider = true;
+                if (chars[n] == 27) toConsider = false;
+                if (toConsider) length++;
+                if (chars[n] == 'm') toConsider = true;
                 
-                if(length == textLength) finished = true;
-                if(n + 1 < chars.length && (!toConsider || chars[n + 1] == 27)) finished = false;
+                if (length == textLength) finished = true;
+                if (n + 1 < chars.length && (!toConsider || chars[n + 1] == 27)) finished = false;
             }
         }
         

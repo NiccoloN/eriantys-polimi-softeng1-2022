@@ -35,34 +35,34 @@ public class ImageFactory {
     static {
         
         studentsImages = new HashMap<>(5);
-        for(PawnColor color : PawnColor.values()) studentsImages.put(color, ImageFactory.loadStudentImage(color));
+        for (PawnColor color : PawnColor.values()) studentsImages.put(color, ImageFactory.loadStudentImage(color));
         
         professorsImages = new HashMap<>(5);
-        for(PawnColor color : PawnColor.values()) professorsImages.put(color, ImageFactory.loadProfessorImage(color));
+        for (PawnColor color : PawnColor.values()) professorsImages.put(color, ImageFactory.loadProfessorImage(color));
         
         colorsImages = new HashMap<>(5);
-        for(PawnColor color : PawnColor.values()) colorsImages.put(color, ImageFactory.loadColorImage(color));
+        for (PawnColor color : PawnColor.values()) colorsImages.put(color, ImageFactory.loadColorImage(color));
         
         helpersImages = new HashMap<>(10);
-        for(int n = 1; n <= 10; n++) helpersImages.put(n, ImageFactory.loadHelperImage(n));
+        for (int n = 1; n <= 10; n++) helpersImages.put(n, ImageFactory.loadHelperImage(n));
         
         charactersImages = new HashMap<>(12);
-        for(int i = 1; i <= 12; i++) charactersImages.put(i, ImageFactory.loadCharacterImage(i));
+        for (int i = 1; i <= 12; i++) charactersImages.put(i, ImageFactory.loadCharacterImage(i));
         
         islandsImages = new HashMap<>(3);
-        for(int n = 1; n <= 3; n++) islandsImages.put(n, ImageFactory.loadIslandImage(n));
+        for (int n = 1; n <= 3; n++) islandsImages.put(n, ImageFactory.loadIslandImage(n));
         
         magesImages = new HashMap<>(4);
-        for(int n = 1; n <= 4; n++) magesImages.put(n, ImageFactory.loadMageImage(n));
+        for (int n = 1; n <= 4; n++) magesImages.put(n, ImageFactory.loadMageImage(n));
         
-        whiteTowerImage   = ImageFactory.loadWhiteTowerImage();
-        blackTowerImage   = ImageFactory.loadBlackTowerImage();
-        greyTowerImage    = ImageFactory.loadGreyTowerImage();
+        whiteTowerImage = ImageFactory.loadWhiteTowerImage();
+        blackTowerImage = ImageFactory.loadBlackTowerImage();
+        greyTowerImage = ImageFactory.loadGreyTowerImage();
         motherNatureImage = ImageFactory.loadMotherNatureImage();
-        coinImage         = ImageFactory.loadCoinImage();
-        denyTileImage     = loadDenyTileImage();
-        schoolImage       = loadSchoolImage();
-        cloudImage        = loadCloudImage();
+        coinImage = ImageFactory.loadCoinImage();
+        denyTileImage = loadDenyTileImage();
+        schoolImage = loadSchoolImage();
+        cloudImage = loadCloudImage();
     }
     
     private static Image loadStudentImage(PawnColor color) {

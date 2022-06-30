@@ -26,6 +26,7 @@ import java.util.Optional;
 
 /**
  * This class represents the expert mode of the game, it includes coins and characters.
+ *
  * @author Emanuele Musto
  */
 public class ExpertGameController extends BasicGameController {
@@ -35,6 +36,7 @@ public class ExpertGameController extends BasicGameController {
     
     /**
      * Initializes the controller in expert mode, using the basic and adding the initialization of characters.
+     *
      * @param game       the model and all the game's data.
      * @param initialize if true the game is initialized. It's false only when a game is loaded from a save.
      */
@@ -42,27 +44,29 @@ public class ExpertGameController extends BasicGameController {
         
         super(game);
         
-        if(initialize) {
+        if (initialize) {
             
             currentCharacterMoveRequestMessage = null;
-            motherNatureAdditionalSteps        = 0;
+            motherNatureAdditionalSteps = 0;
             game.resetCharacterUses();
             
-            for(int i = 0; i < game.getNumberOfCharacters(); i++) {
+            for (int i = 0; i < game.getNumberOfCharacters(); i++) {
                 
                 CharacterCard currentCharacter = game.getCharacter(i);
                 
-                switch(currentCharacter.index) {
+                switch (currentCharacter.index) {
                     
                     case 1:
                     case 11:
-                        for(int k = 0; k < 4; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
+                        for (int k = 0; k < 4; k++)
+                            currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
                         break;
                     case 5:
-                        for(int k = 0; k < 5; k++) currentCharacter.incrementDenyTiles();
+                        for (int k = 0; k < 5; k++) currentCharacter.incrementDenyTiles();
                         break;
                     case 7:
-                        for(int k = 0; k < 6; k++) currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
+                        for (int k = 0; k < 6; k++)
+                            currentCharacter.addStudent(game.getStudentsBag().extractRandomStudent());
                         break;
                     default:
                         break;
@@ -77,8 +81,9 @@ public class ExpertGameController extends BasicGameController {
         Update[] initialUpdates = super.createInitialUpdates();
         
         CharacterCardsChange characterCardsChange = new CharacterCardsChange();
-        for(int n = 0; n < game.getNumberOfCharacters(); n++) characterCardsChange.addCharacterCard(game.getCharacter(n));
-        for(Update update : initialUpdates) update.addChange(characterCardsChange);
+        for (int n = 0; n < game.getNumberOfCharacters(); n++)
+            characterCardsChange.addCharacterCard(game.getCharacter(n));
+        for (Update update : initialUpdates) update.addChange(characterCardsChange);
         
         return (initialUpdates);
     }
@@ -88,7 +93,7 @@ public class ExpertGameController extends BasicGameController {
         
         MoveRequestMessage previousMessage = performedMoveMessage.getPreviousMessage();
         
-        if(performedMoveMessage.move instanceof ChooseCharacterCard && currentCharacterMoveRequestMessage == null) {
+        if (performedMoveMessage.move instanceof ChooseCharacterCard && currentCharacterMoveRequestMessage == null) {
             
             ChooseCharacterCard move = (ChooseCharacterCard) performedMoveMessage.move;
             
@@ -97,7 +102,7 @@ public class ExpertGameController extends BasicGameController {
                     
                     String playerUsername = game.getCurrentPlayer().getUsername();
                     
-                    if(move.isValid(game, currentMoveRequestMessage.moveRequest)) {
+                    if (move.isValid(game, currentMoveRequestMessage.moveRequest)) {
                         
                         performedMoveMessage.move.apply(game);
                         currentMoveRequestMessage.moveRequest.setCanPlayCharacter(false);
@@ -106,7 +111,6 @@ public class ExpertGameController extends BasicGameController {
                         
                         server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
                     }
-                    
                     else server.sendToClient(new InvalidMoveMessage(move.getErrorMessage()), playerUsername);
                     
                     MoveRequestMessage newRequestMessage = new MoveRequestMessage(currentMoveRequestMessage.moveRequest);
@@ -115,27 +119,26 @@ public class ExpertGameController extends BasicGameController {
                     
                     currentMoveRequestMessage.acceptResponse();
                 }
-                catch(IOException | InterruptedException e) {
+                catch (IOException | InterruptedException e) {
                     
                     e.printStackTrace();
                 }
             }).start();
         }
-        
-        else if(performedMoveMessage.move instanceof Abort) {
+        else if (performedMoveMessage.move instanceof Abort) {
             
             new Thread(() -> {
                 
-                if(performedMoveMessage.move.isValid(game, currentCharacterMoveRequestMessage.moveRequest)) performedMoveMessage.move.apply(game);
+                if (performedMoveMessage.move.isValid(game, currentCharacterMoveRequestMessage.moveRequest))
+                    performedMoveMessage.move.apply(game);
                 previousMessage.acceptResponse();
             }).start();
         }
-        
-        else if(currentCharacterMoveRequestMessage != null) {
+        else if (currentCharacterMoveRequestMessage != null) {
             
             Move move = performedMoveMessage.move;
             
-            if(move.isValid(game, currentCharacterMoveRequestMessage.moveRequest)) {
+            if (move.isValid(game, currentCharacterMoveRequestMessage.moveRequest)) {
                 
                 move.apply(game);
                 server.sendToAllClients(new UpdateMessage(move.getUpdate(game)));
@@ -149,14 +152,13 @@ public class ExpertGameController extends BasicGameController {
                 server.sendToClient(currentCharacterMoveRequestMessage, playerUsername);
             }
         }
-        
         else super.managePerformedMoveMessage(performedMoveMessage);
     }
     
     @Override
     public void playRound() throws IOException, InterruptedException {
         
-        if(currentGamePhase == GamePhase.STARTING_ROUND) game.resetCharacterUses();
+        if (currentGamePhase == GamePhase.STARTING_ROUND) game.resetCharacterUses();
         super.playRound();
     }
     
@@ -165,9 +167,10 @@ public class ExpertGameController extends BasicGameController {
         
         super.playTurn(player, playerIndex);
         
-        if(currentGamePhase == GamePhase.MOVING_STUDENTS || currentGamePhase == GamePhase.STARTING_ROUND) {
+        if (currentGamePhase == GamePhase.MOVING_STUDENTS || currentGamePhase == GamePhase.STARTING_ROUND) {
             
-            if(!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic)) game.setInfluenceCalculator(new InfluenceCalculatorBasic());
+            if (!(game.getInfluenceCalculator() instanceof InfluenceCalculatorBasic))
+                game.setInfluenceCalculator(new InfluenceCalculatorBasic());
             
             motherNatureAdditionalSteps = 0;
             server.saveGame();
@@ -185,7 +188,7 @@ public class ExpertGameController extends BasicGameController {
         
         CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
         
-        if(motherNatureIsland.getNumberOfDenyTiles() > 0) {
+        if (motherNatureIsland.getNumberOfDenyTiles() > 0) {
             
             motherNatureIsland.decrementNumberOfDenyTiles();
             game.getCharacterOfIndex(5).incrementDenyTiles();
@@ -193,7 +196,8 @@ public class ExpertGameController extends BasicGameController {
             Update update = new Update();
             update.addChange(new IslandChange(game.getBoard().getIslands(), game.getBoard().getIslandTiles()));
             CharacterCardsChange characterCardsChange = new CharacterCardsChange();
-            for(int i = 0; i < game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
+            for (int i = 0; i < game.getNumberOfCharacters(); i++)
+                characterCardsChange.addCharacterCard(game.getCharacter(i));
             server.sendToAllClients(new UpdateMessage(update));
         }
         else super.checkIslandInfluence();
@@ -202,6 +206,7 @@ public class ExpertGameController extends BasicGameController {
     /**
      * This method is called when the client sends a character card move. Based on the index, the right requests and
      * character effects will take place.
+     *
      * @param cardIndex the index of the character card used by the player.
      * @throws IOException          when output stream throws an exception (while sending a message to client).
      * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
@@ -209,7 +214,7 @@ public class ExpertGameController extends BasicGameController {
     private void playCharacter(int cardIndex) throws IOException, InterruptedException {
         
         CharacterCard characterCard = game.getCharacterOfIndex(cardIndex);
-        switch(cardIndex) {
+        switch (cardIndex) {
             
             case 1:
                 requestCharacterMove(new MoveStudentRequest(characterCard.index, characterCard.getStudentsColors(), List.of(ColoredPawnOriginDestination.ISLAND), "Move a student from the character card to an island"), game.getCurrentPlayer().getUsername());
@@ -217,18 +222,20 @@ public class ExpertGameController extends BasicGameController {
                 characterCard.addStudent(game.getStudentsBag().extractRandomStudent());
                 break;
             case 2:
-                for(PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, true);
+                for (PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, true);
                 break;
             case 3:
                 requestCharacterMove(new ChooseIslandRequest(cardIndex, "Select the island on which influence will be calculated"), game.getCurrentPlayer().getUsername());
                 
                 Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence(game.getPlayers(), game.getBoard().getIsland(game.getCharacterIsland()), game.getCurrentPlayer());
                 
-                if(dominantTeam.isPresent()) updateTowers(dominantTeam.get(), game.getBoard().getIsland(game.getCharacterIsland()));
+                if (dominantTeam.isPresent())
+                    updateTowers(dominantTeam.get(), game.getBoard().getIsland(game.getCharacterIsland()));
                 break;
             case 4:
                 MoveRequest currentRequest = currentMoveRequestMessage.moveRequest;
-                if(currentRequest instanceof MoveMotherNatureRequest) ((MoveMotherNatureRequest) currentRequest).setMotherNatureMaxSteps(((MoveMotherNatureRequest) currentRequest).getMotherNatureMaxSteps() + 2);
+                if (currentRequest instanceof MoveMotherNatureRequest)
+                    ((MoveMotherNatureRequest) currentRequest).setMotherNatureMaxSteps(((MoveMotherNatureRequest) currentRequest).getMotherNatureMaxSteps() + 2);
                 else motherNatureAdditionalSteps = 2;
                 break;
             case 5:
@@ -238,12 +245,12 @@ public class ExpertGameController extends BasicGameController {
                 game.setInfluenceCalculator(new InfluenceCalculatorNoTowers());
                 break;
             case 7:
-                for(int i = 0; i < 3; i++) {
+                for (int i = 0; i < 3; i++) {
                     
-                    if(!game.getAbortMessageReceived()) {
+                    if (!game.getAbortMessageReceived()) {
                         requestCharacterMove(new ChooseColorRequest(cardIndex, characterCard.getStudentsColors(), ColoredPawnOriginDestination.CHARACTER, "Select a student from the character card, or press ESC to stop the effect"), game.getCurrentPlayer().getUsername());
                         
-                        if(!game.getAbortMessageReceived()) {
+                        if (!game.getAbortMessageReceived()) {
                             requestCharacterMove(new ChooseColorRequest(cardIndex, game.getCurrentPlayer().getSchool().getAvailableEntranceColors(), ColoredPawnOriginDestination.ENTRANCE, "Select now a student from your school entrance"), game.getCurrentPlayer().getUsername());
                             
                             game.getCharacterOfIndex(cardIndex).addStudent(game.getCurrentPlayer().getSchool().removeFromEntrance(game.getExchange(ColoredPawnOriginDestination.ENTRANCE)));
@@ -269,13 +276,13 @@ public class ExpertGameController extends BasicGameController {
                 requestCharacterMove(new ChooseColorRequest(cardIndex, List.of(PawnColor.values()), null, "Select a color that will not be considered during this turn's influence calculation"), game.getCurrentPlayer().getUsername());
                 break;
             case 10:
-                for(int i = 0; i < 2; i++) {
+                for (int i = 0; i < 2; i++) {
                     
-                    if(!game.getAbortMessageReceived()) {
+                    if (!game.getAbortMessageReceived()) {
                         
                         requestCharacterMove(new ChooseColorRequest(cardIndex, game.getCurrentPlayer().getSchool().getAvailableTableColors(), ColoredPawnOriginDestination.TABLE, "Select a student from the student tables of your school, or press ESC to stop the effect"), game.getCurrentPlayer().getUsername());
                         
-                        if(!game.getAbortMessageReceived()) {
+                        if (!game.getAbortMessageReceived()) {
                             
                             MoveRequest colorRequest = new ChooseColorRequest(cardIndex, game.getCurrentPlayer().getSchool().getAvailableEntranceColors(), ColoredPawnOriginDestination.ENTRANCE, "Select now a student from your school entrance");
                             
@@ -285,7 +292,7 @@ public class ExpertGameController extends BasicGameController {
                                 
                                 game.getCurrentPlayer().getSchool().addToTable(game.getCurrentPlayer().getSchool().removeFromEntrance(game.getExchange(ColoredPawnOriginDestination.ENTRANCE)));
                             }
-                            catch(RuntimeException e) {
+                            catch (RuntimeException e) {
                                 
                                 String playerUsername = game.getCurrentPlayer().getUsername();
                                 
@@ -297,7 +304,7 @@ public class ExpertGameController extends BasicGameController {
                             
                             game.getCurrentPlayer().getSchool().addToEntrance(game.getCurrentPlayer().getSchool().removeFromTable(game.getExchange(ColoredPawnOriginDestination.TABLE)));
                             
-                            for(PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, false);
+                            for (PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, false);
                             
                             ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
                             
@@ -317,7 +324,7 @@ public class ExpertGameController extends BasicGameController {
                 tempCharacter.removeStudent(temp);
                 game.getCurrentPlayer().getSchool().addToTable(temp);
                 
-                for(PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, false);
+                for (PawnColor color : PawnColor.values()) game.checkAndUpdateProfessor(color, false);
                 
                 ChooseColor chooseColorUpdate = new ChooseColor(null, cardIndex, null);
                 server.sendToAllClients(new UpdateMessage(chooseColorUpdate.getUpdate(game)));
@@ -337,7 +344,7 @@ public class ExpertGameController extends BasicGameController {
     
     private void requestCharacterMove(MoveRequest request, String playerUsername) throws IOException, InterruptedException {
         
-        if(!endGameNow) {
+        if (!endGameNow) {
             
             currentCharacterMoveRequestMessage = new MoveRequestMessage(request);
             server.sendToClient(currentCharacterMoveRequestMessage, playerUsername);

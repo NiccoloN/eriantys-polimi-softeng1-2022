@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * This class represents an update sent from the server to the client or clients.
  * The update consists of many changes, one for every part of the model that changed during the game.
+ *
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
@@ -26,6 +27,7 @@ public class Update implements Serializable {
     
     /**
      * Adds a change to this update.
+     *
      * @param change the change to add to the update.
      */
     public void addChange(Change change) {
@@ -35,15 +37,16 @@ public class Update implements Serializable {
     
     /**
      * Applies the single changes one by one, using their specific methods to modify the view.
+     *
      * @param scene the scene to update.
      */
     public void applyChanges(GameScene scene) {
         
-        for(Change change : changes) change.apply(scene);
+        for (Change change : changes) change.apply(scene);
     }
     
     public void applyChanges(GameController controller) {
         
-        for(Change change : changes) change.apply(controller);
+        for (Change change : changes) change.apply(controller);
     }
 }

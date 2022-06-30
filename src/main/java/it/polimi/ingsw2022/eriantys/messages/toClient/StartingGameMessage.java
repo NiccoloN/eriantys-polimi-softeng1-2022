@@ -21,9 +21,9 @@ public class StartingGameMessage extends ToClientMessage {
     
     public StartingGameMessage(List<Player> players, GameMode gameMode, Update update) {
         
-        this.players  = players;
+        this.players = players;
         this.gameMode = gameMode;
-        this.update   = update;
+        this.update = update;
     }
     
     @Override

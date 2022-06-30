@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 /**
  * This class is used to easily build Card instances, reading data from files
+ *
  * @author Niccolò Nicolosi
  * @see Card
  * @see HelperCard
@@ -31,23 +32,12 @@ public class CardFactory {
      */
     public static HelperCard createHelperCard(int index, Mage mage) throws IOException {
         
-        if(helperCardSamples == null) readHelpersFile();
-        if(index < 1 || index > helperCardSamples.length)
+        if (helperCardSamples == null) readHelpersFile();
+        if (index < 1 || index > helperCardSamples.length)
             throw new RuntimeException("Invalid index: helper cards' indices go from 1 to " + helperCardSamples.length);
         
         HelperCard sample = helperCardSamples[index - 1];
         return new HelperCard(sample.index, sample.priority, sample.movement, mage);
-    }
-    
-    /**
-     * Reads the json file containing helpers' data and stores card samples
-     * @throws IOException if the specified path is not valid or the file could not be opened
-     */
-    private static void readHelpersFile() throws IOException {
-        
-        Scanner scanner = new Scanner(Objects.requireNonNull(CardFactory.class.getClassLoader().getResource(HELPERS_FILE_NAME)).openStream());
-        String json = scanner.useDelimiter("\\Z").next();
-        helperCardSamples = gson.fromJson(json, HelperCard[].class);
     }
     
     /**
@@ -58,8 +48,8 @@ public class CardFactory {
      */
     public static CharacterCard createCharacterCard(int index) throws IOException {
         
-        if(characterCardSamples == null) readCharacterFile();
-        if(index < 1 || index > characterCardSamples.length)
+        if (characterCardSamples == null) readCharacterFile();
+        if (index < 1 || index > characterCardSamples.length)
             throw new RuntimeException("Invalid index: helper cards' indices go from 1 to " + characterCardSamples.length);
         
         CharacterCard sample = characterCardSamples[index - 1];
@@ -67,7 +57,20 @@ public class CardFactory {
     }
     
     /**
+     * Reads the json file containing helpers' data and stores card samples
+     *
+     * @throws IOException if the specified path is not valid or the file could not be opened
+     */
+    private static void readHelpersFile() throws IOException {
+        
+        Scanner scanner = new Scanner(Objects.requireNonNull(CardFactory.class.getClassLoader().getResource(HELPERS_FILE_NAME)).openStream());
+        String json = scanner.useDelimiter("\\Z").next();
+        helperCardSamples = gson.fromJson(json, HelperCard[].class);
+    }
+    
+    /**
      * Reads the json file containing characters' data and stores card samples
+     *
      * @throws IOException if the specified path is not valid or the file could not be opened
      */
     private static void readCharacterFile() throws IOException {

@@ -13,7 +13,10 @@ public class Abort extends Move {
     }
     
     @Override
-    public void apply(Game game) {game.setAbortMessageReceived(true);}
+    public void apply(Game game) {
+        
+        game.setAbortMessageReceived(true);
+    }
     
     @Override
     public Update getUpdate(Game game) {

@@ -22,28 +22,33 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 /**
  * This class represents a game scene state in which the user is asked to select his dining room or go back
  * to the previous state by triggering a specific action
+ *
  * @author Niccolò Nicolosi
  */
 public class DiningRoomSelection extends GameSceneState {
     
     private final GameSceneState prevState;
     private final Action goBackAction;
-    
     private final PawnColor studentColor;
     
     /**
      * Constructs a dining room selection state
-     * @param cli   the cli to associate to this state
-     * @param scene the game scene to associate to this state
+     *
+     * @param cli            the cli to associate to this state
+     * @param scene          the game scene to associate to this state
+     * @param requestMessage the message that requested this state or the previous one
+     * @param studentColor   the student color selected in the previous states
+     * @param prevState      the previous state from which this state was set
+     * @param goBackAction   the action that makes the game scene go back to the previous state if triggered
      */
     public DiningRoomSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, PawnColor studentColor, GameSceneState prevState, Action goBackAction) {
         
         super(cli, scene, requestMessage);
         this.studentColor = studentColor;
         
-        if(goBackAction == Action.SELECT)
+        if (goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be SELECT, " + "because it is already associated to a different behaviour in this state");
-        this.prevState    = prevState;
+        this.prevState = prevState;
         this.goBackAction = goBackAction;
     }
     
@@ -62,13 +67,13 @@ public class DiningRoomSelection extends GameSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(goBackAction)) {
+        if (input.triggersAction(goBackAction)) {
             
             getScene().setState(prevState);
             return;
         }
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.TABLE, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, -1, studentColor)));
             

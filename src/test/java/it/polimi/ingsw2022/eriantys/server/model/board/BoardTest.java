@@ -28,7 +28,7 @@ class BoardTest {
         Team whiteTeam = new Team(AnsiCodes.WHITE_BRIGHT, "white");
         players.add(new Player("player1", blackTeam, Mage.MAGE_1));
         players.add(new Player("player2", whiteTeam, Mage.MAGE_2));
-        this.players   = players;
+        this.players = players;
         this.blackTeam = blackTeam;
         this.whiteTeam = whiteTeam;
     }

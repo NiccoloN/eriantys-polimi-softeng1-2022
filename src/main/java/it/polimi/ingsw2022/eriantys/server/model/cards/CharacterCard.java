@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Special card with an associated Skill
+ *
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
@@ -25,10 +26,10 @@ public class CharacterCard extends Card {
         
         super(index);
         this.effect = effect;
-        this.cost   = cost;
+        this.cost = cost;
         initialCost = cost;
         
-        students        = new ArrayList<>(4);
+        students = new ArrayList<>(4);
         denyTilesNumber = -1;
     }
     
@@ -42,9 +43,9 @@ public class CharacterCard extends Card {
      */
     public void incrementCost() {
         
-        if(initialCost == cost) {
+        if (initialCost == cost) {
             
-            this.cost       = this.cost + 1;
+            this.cost = this.cost + 1;
             costIncremented = true;
         }
     }
@@ -61,6 +62,7 @@ public class CharacterCard extends Card {
     
     /**
      * Adds a student to the character card.
+     *
      * @param student the student to add.
      */
     public void addStudent(ColoredPawn student) {
@@ -70,6 +72,7 @@ public class CharacterCard extends Card {
     
     /**
      * Removes a student from the character card.
+     *
      * @param student the student to remove from the character card.
      */
     public void removeStudent(ColoredPawn student) {
@@ -92,8 +95,8 @@ public class CharacterCard extends Card {
     public List<PawnColor> getStudentsColors() {
         
         ArrayList<PawnColor> availableColors = new ArrayList<>();
-        for(PawnColor color : PawnColor.values())
-            if(students.stream().anyMatch((x) -> x.color == color)) availableColors.add(color);
+        for (PawnColor color : PawnColor.values())
+            if (students.stream().anyMatch((x) -> x.color == color)) availableColors.add(color);
         
         return availableColors;
     }
@@ -109,7 +112,7 @@ public class CharacterCard extends Card {
      */
     public void decrementDenyTiles() {
         
-        if(denyTilesNumber == 0) throw new RuntimeException("Number of deny tiles can't be negative");
+        if (denyTilesNumber == 0) throw new RuntimeException("Number of deny tiles can't be negative");
         this.denyTilesNumber--;
     }
     
@@ -119,7 +122,7 @@ public class CharacterCard extends Card {
      */
     public void incrementDenyTiles() {
         
-        if(denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");
+        if (denyTilesNumber == 4) throw new RuntimeException("Number of deny tiles can't be greater than 4");
         this.denyTilesNumber++;
     }
     

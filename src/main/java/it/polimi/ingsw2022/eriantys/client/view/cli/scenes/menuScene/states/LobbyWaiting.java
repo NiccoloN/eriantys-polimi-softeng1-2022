@@ -10,6 +10,7 @@ import java.io.IOException;
 
 /**
  * This class represents a menu scene state in which the user must wait for players to join the game
+ *
  * @author Niccolò Nicolosi
  */
 public class LobbyWaiting extends MenuSceneState {
@@ -19,14 +20,17 @@ public class LobbyWaiting extends MenuSceneState {
     
     /**
      * Constructs a lobby waiting state
-     * @param cli   the cli associated to this state
-     * @param scene the menu scene associated to this state
+     *
+     * @param cli             the cli associated to this state
+     * @param scene           the menu scene associated to this state
+     * @param playerUsernames the usernames of the players currently in lobby
+     * @param gameSettings    the game settings of the lobby
      */
     public LobbyWaiting(EriantysCLI cli, MenuScene scene, String[] playerUsernames, GameSettings gameSettings) {
         
         super(cli, scene);
         this.playerUsernames = playerUsernames;
-        this.gameSettings    = gameSettings;
+        this.gameSettings = gameSettings;
     }
     
     @Override
@@ -36,13 +40,13 @@ public class LobbyWaiting extends MenuSceneState {
         
         assert gameSettings.gameMode != null;
         String gameMode = gameSettings.gameMode.toString();
-        getScene().setChosenGameMode(new BasicCLIComponent(22 + gameMode.length(), new String[] {"Game mode: " + gameMode + " Players: " + gameSettings.numberOfPlayers}));
+        getScene().setChosenGameMode(new BasicCLIComponent(22 + gameMode.length(), new String[]{"Game mode: " + gameMode + " Players: " + gameSettings.numberOfPlayers}));
         
         BasicCLIComponent[] players = new BasicCLIComponent[2 + playerUsernames.length];
-        players[0] = new BasicCLIComponent(17, new String[] {"Players in lobby:"});
-        for(int n = 0; n < playerUsernames.length; n++)
-            players[n + 1] = new BasicCLIComponent(playerUsernames[n].length(), new String[] {playerUsernames[n]});
-        players[players.length - 1] = new BasicCLIComponent(29, new String[] {"Waiting for " + (gameSettings.numberOfPlayers - playerUsernames.length) + " more players..."});
+        players[0] = new BasicCLIComponent(17, new String[]{"Players in lobby:"});
+        for (int n = 0; n < playerUsernames.length; n++)
+            players[n + 1] = new BasicCLIComponent(playerUsernames[n].length(), new String[]{playerUsernames[n]});
+        players[players.length - 1] = new BasicCLIComponent(29, new String[]{"Waiting for " + (gameSettings.numberOfPlayers - playerUsernames.length) + " more players..."});
         getScene().setPlayerUsernames(players);
     }
     
@@ -55,5 +59,7 @@ public class LobbyWaiting extends MenuSceneState {
     }
     
     @Override
-    public void manageInput(Input input) throws IOException {}
+    public void manageInput(Input input) throws IOException {
+    
+    }
 }

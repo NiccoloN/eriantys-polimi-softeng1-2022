@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * This class represents a state of a cli scene
+ *
  * @author Niccolò Nicolosi
  * @see CLIScene
  */
@@ -18,12 +19,13 @@ public abstract class CLISceneState {
     
     /**
      * Constructs a scene state
+     *
      * @param cli   the cli this state is associated to
      * @param scene the scene this state is associated to
      */
     public CLISceneState(EriantysCLI cli, CLIScene scene) {
         
-        this.cli   = cli;
+        this.cli = cli;
         this.scene = scene;
     }
     
@@ -39,6 +41,7 @@ public abstract class CLISceneState {
     
     /**
      * Makes the associated scene react to the given input (if the given input is client-side) and notifies the server of the resulting events if needed
+     *
      * @param input the received input
      */
     public abstract void manageInput(Input input) throws IOException;

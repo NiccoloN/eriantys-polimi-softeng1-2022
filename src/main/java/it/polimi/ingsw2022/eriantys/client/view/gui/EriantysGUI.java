@@ -35,16 +35,6 @@ public class EriantysGUI extends Application implements View {
     public static final double DEFAULT_SCENE_WIDTH = 1280;
     public static final double DEFAULT_SCENE_HEIGHT = 720;
     private static EriantysGUI instance;
-    private final boolean running;
-    private Stage mainStage;
-    private Scene currentScene;
-    private GameController gameController;
-    
-    public EriantysGUI() {
-        
-        instance = this;
-        running  = true;
-    }
     
     public static EriantysGUI launch(boolean showLog) throws InterruptedException {
         
@@ -54,7 +44,7 @@ public class EriantysGUI extends Application implements View {
                 
                 EriantysClient.getInstance().exit(true);
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 
                 ex.printStackTrace();
             }
@@ -63,9 +53,20 @@ public class EriantysGUI extends Application implements View {
         });
         
         new Thread(() -> Application.launch(EriantysGUI.class)).start();
-        while(instance == null) Thread.sleep(100);
+        while (instance == null) Thread.sleep(100);
         
         return instance;
+    }
+    
+    private final boolean running;
+    private Stage mainStage;
+    private Scene currentScene;
+    private GameController gameController;
+    
+    public EriantysGUI() {
+        
+        instance = this;
+        running = true;
     }
     
     @Override
@@ -88,7 +89,7 @@ public class EriantysGUI extends Application implements View {
         
         Scene previousScene = currentScene;
         
-        if(previousScene != null) {
+        if (previousScene != null) {
             
             currentScene = new Scene(root, previousScene.getWidth(), previousScene.getHeight());
             resizeScene();
@@ -108,31 +109,19 @@ public class EriantysGUI extends Application implements View {
             
             currentScene.setOnKeyPressed((keyEvent -> {
                 
-                if(keyEvent.getCode() == KeyCode.F11) mainStage.setFullScreen(!mainStage.isFullScreen());
+                if (keyEvent.getCode() == KeyCode.F11) mainStage.setFullScreen(!mainStage.isFullScreen());
             }));
         });
-    }
-    
-    private void resizeScene() {
-        
-        double scaleFactor = currentScene.getWidth() / DEFAULT_SCENE_WIDTH;
-        
-        Scale scale = new Scale(scaleFactor, scaleFactor);
-        scale.setPivotX(0);
-        scale.setPivotY(0);
-        currentScene.getRoot().getTransforms().setAll(scale);
-        
-        currentScene.getRoot().setTranslateY((currentScene.getHeight() - DEFAULT_SCENE_HEIGHT * scaleFactor) / 2);
     }
     
     @Override
     public void stop() throws Exception {
         
-        if(running) {
+        if (running) {
             
             super.stop();
             EriantysClient client = EriantysClient.getInstance();
-            if(client.isRunning()) client.exit(true);
+            if (client.isRunning()) client.exit(true);
         }
     }
     
@@ -164,7 +153,7 @@ public class EriantysGUI extends Application implements View {
     @Override
     public void applyUpdate(Update update) {
         
-        if(gameController != null) update.applyChanges(gameController);
+        if (gameController != null) update.applyChanges(gameController);
     }
     
     @Override
@@ -177,5 +166,17 @@ public class EriantysGUI extends Application implements View {
     public void endGame(Team team) {
         
         gameController.endGame(team);
+    }
+    
+    private void resizeScene() {
+        
+        double scaleFactor = currentScene.getWidth() / DEFAULT_SCENE_WIDTH;
+        
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        scale.setPivotX(0);
+        scale.setPivotY(0);
+        currentScene.getRoot().getTransforms().setAll(scale);
+        
+        currentScene.getRoot().setTranslateY((currentScene.getHeight() - DEFAULT_SCENE_HEIGHT * scaleFactor) / 2);
     }
 }

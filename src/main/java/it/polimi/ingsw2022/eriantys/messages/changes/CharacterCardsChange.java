@@ -23,6 +23,7 @@ public class CharacterCardsChange implements Change, Serializable {
     
     /**
      * Adds the character card to the change. The added character cards will be updated in the view.
+     *
      * @param card the card to update.
      */
     public void addCharacterCard(CharacterCard card) {

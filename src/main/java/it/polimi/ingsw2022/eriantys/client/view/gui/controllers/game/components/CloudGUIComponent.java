@@ -35,14 +35,14 @@ public class CloudGUIComponent {
     public CloudGUIComponent(Group cloud, int cloudIndex, GameController gameController) {
         
         this.gameController = gameController;
-        this.cloudIndex     = cloudIndex;
-        empty               = true;
+        this.cloudIndex = cloudIndex;
+        empty = true;
         
         ((ImageView) cloud.getChildren().get(0)).setImage(ImageFactory.cloudImage);
         
         cloudGroup = cloud;
-        cloudGrid  = (GridPane) cloud.getChildren().get(1);
-        button     = (Button) cloud.getChildren().get(2);
+        cloudGrid = (GridPane) cloud.getChildren().get(1);
+        button = (Button) cloud.getChildren().get(2);
         
         initializeStudentImageViews();
         
@@ -51,10 +51,59 @@ public class CloudGUIComponent {
             try {
                 manageInput(mouseEvent);
             }
-            catch(IOException e) {
+            catch (IOException e) {
                 e.printStackTrace();
             }
         };
+    }
+    
+    public void manageInput(MouseEvent mouseEvent) throws IOException {
+        
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(cloudIndex)));
+            stopListeningToInput();
+        }
+    }
+    
+    public void stopListeningToInput() {
+        
+        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        cloudGroup.setEffect(null);
+    }
+    
+    public void listenToInput(MoveRequestMessage requestMessage) {
+        
+        this.requestMessage = requestMessage;
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        cloudGroup.setEffect(gameController.getBorderGlowEffect());
+    }
+    
+    public void setStudents(PawnColor color, int numberOfStudents) {
+        
+        for (int i = 0; i < numberOfStudents; i++) {
+            
+            for (ColoredPawnImageView image : students) {
+                
+                if (image.getColor() == null) {
+                    
+                    image.setStudentOfColor(color);
+                    empty = false;
+                    break;
+                }
+            }
+        }
+    }
+    
+    public void clearStudents() {
+        
+        for (ColoredPawnImageView image : students) image.clearColor();
+        empty = true;
+    }
+    
+    public boolean isEmpty() {
+        
+        return empty;
     }
     
     private void initializeStudentImageViews() {
@@ -73,7 +122,7 @@ public class CloudGUIComponent {
         students.add(secondStudentImage);
         students.add(thirdStudentImage);
         
-        switch(EriantysClient.getInstance().getGameSettings().numberOfPlayers) {
+        switch (EriantysClient.getInstance().getGameSettings().numberOfPlayers) {
             
             case 2:
             case 4:
@@ -115,54 +164,5 @@ public class CloudGUIComponent {
             default:
                 throw new RuntimeException("Number of player needs to be between 2 and 4");
         }
-    }
-    
-    public void manageInput(MouseEvent mouseEvent) throws IOException {
-        
-        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-            
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(cloudIndex)));
-            stopListeningToInput();
-        }
-    }
-    
-    public void stopListeningToInput() {
-        
-        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
-        cloudGroup.setEffect(null);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage) {
-        
-        this.requestMessage = requestMessage;
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
-        cloudGroup.setEffect(gameController.getBorderGlowEffect());
-    }
-    
-    public void setStudents(PawnColor color, int numberOfStudents) {
-        
-        for(int i = 0; i < numberOfStudents; i++) {
-            
-            for(ColoredPawnImageView image : students) {
-                
-                if(image.getColor() == null) {
-                    
-                    image.setStudentOfColor(color);
-                    empty = false;
-                    break;
-                }
-            }
-        }
-    }
-    
-    public void clearStudents() {
-        
-        for(ColoredPawnImageView image : students) image.clearColor();
-        empty = true;
-    }
-    
-    public boolean isEmpty() {
-        
-        return empty;
     }
 }

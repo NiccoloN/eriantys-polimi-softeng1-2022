@@ -35,12 +35,12 @@ public class EnterServerIp extends SceneController implements Initializable {
         
         ipAddressField.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             
-            if(keyEvent.getCode() == KeyCode.ENTER) {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
                 
                 try {
                     saveServerIp();
                 }
-                catch(IOException e) {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             }

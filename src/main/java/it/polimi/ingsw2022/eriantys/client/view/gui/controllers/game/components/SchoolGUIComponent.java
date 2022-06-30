@@ -47,21 +47,21 @@ public class SchoolGUIComponent {
         
         this.gameController = gameController;
         
-        schoolGroup   = school;
-        entrancePane  = (GridPane) school.getChildren().get(1);
-        tablePane     = (GridPane) school.getChildren().get(2);
+        schoolGroup = school;
+        entrancePane = (GridPane) school.getChildren().get(1);
+        tablePane = (GridPane) school.getChildren().get(2);
         professorPane = (GridPane) school.getChildren().get(3);
-        towersPane    = (GridPane) school.getChildren().get(4);
+        towersPane = (GridPane) school.getChildren().get(4);
         
         ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
         
         PawnColor[] pawnColors = PawnColor.values();
         
         tableStudents = new HashMap<>(5);
-        for(PawnColor color : pawnColors) tableStudents.put(color, 0);
+        for (PawnColor color : pawnColors) tableStudents.put(color, 0);
         
         int colorRow = 0;
-        for(PawnColor color : pawnColors) {
+        for (PawnColor color : pawnColors) {
             
             // Setting up professors pane
             ColoredPawnImageView professorsImageView = new ColoredPawnImageView(ImageFactory.PROFESSOR_SIZE);
@@ -71,17 +71,18 @@ public class SchoolGUIComponent {
             
             // Setting up table pane
             int TABLE_COLS = 10;
-            for(int col = 0; col < TABLE_COLS; col++) {
+            for (int col = 0; col < TABLE_COLS; col++) {
                 
                 SizedImageView coinImageView = null;
-                if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && col % 3 == 2) coinImageView = new SizedImageView(ImageFactory.COIN_SIZE, ImageFactory.coinImage);
+                if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && col % 3 == 2)
+                    coinImageView = new SizedImageView(ImageFactory.COIN_SIZE, ImageFactory.coinImage);
                 
                 ColoredPawnImageView studentImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
                 studentImageView.setStudentOfColor(color);
                 studentImageView.setVisible(false);
                 
                 Group tableSeatGroup;
-                if(coinImageView != null) tableSeatGroup = new Group(coinImageView, studentImageView);
+                if (coinImageView != null) tableSeatGroup = new Group(coinImageView, studentImageView);
                 else tableSeatGroup = new Group(studentImageView);
                 
                 tablePane.add(tableSeatGroup, col, colorRow);
@@ -92,11 +93,11 @@ public class SchoolGUIComponent {
         // Setting up entrance pane
         int ENTRANCE_ROWS = 5;
         int ENTRANCE_COLS = 2;
-        for(int row = 0; row < ENTRANCE_ROWS; row++) {
+        for (int row = 0; row < ENTRANCE_ROWS; row++) {
             
-            for(int col = 0; col < ENTRANCE_COLS; col++) {
+            for (int col = 0; col < ENTRANCE_COLS; col++) {
                 
-                if(row == 0 && col == 0) continue;
+                if (row == 0 && col == 0) continue;
                 ColoredPawnImageView studentImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
                 studentImageView.setVisible(false);
                 entrancePane.add(studentImageView, col, row);
@@ -106,12 +107,12 @@ public class SchoolGUIComponent {
         // Setting up towers pane
         int TOWERS_ROWS = 4;
         int TOWERS_COLS = 2;
-        for(int row = 0; row < TOWERS_ROWS; row++) {
+        for (int row = 0; row < TOWERS_ROWS; row++) {
             
-            for(int col = 0; col < TOWERS_COLS; col++) {
+            for (int col = 0; col < TOWERS_COLS; col++) {
                 
                 Image towerImage;
-                switch(team.getTeamName()) {
+                switch (team.getTeamName()) {
                     case "BLACK":
                         towerImage = ImageFactory.blackTowerImage;
                         break;
@@ -136,7 +137,7 @@ public class SchoolGUIComponent {
             try {
                 manageInput(mouseEvent);
             }
-            catch(IOException e) {
+            catch (IOException e) {
                 e.printStackTrace();
             }
         };
@@ -144,12 +145,12 @@ public class SchoolGUIComponent {
     
     public void manageInput(MouseEvent mouseEvent) throws IOException {
         
-        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.TABLE, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, -1, chosenColor)));
             
             stopListeningToInput();
-            for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+            for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
         }
     }
     
@@ -161,58 +162,57 @@ public class SchoolGUIComponent {
     
     public void setEntranceStudents(List<PawnColor> students) {
         
-        for(int n = 0; n < entrancePane.getChildren().size(); n++) {
+        for (int n = 0; n < entrancePane.getChildren().size(); n++) {
             
             ColoredPawnImageView student = (ColoredPawnImageView) entrancePane.getChildren().get(n);
             
-            if(n < students.size()) student.setStudentOfColor(students.get(n));
+            if (n < students.size()) student.setStudentOfColor(students.get(n));
             else student.setVisible(false);
         }
     }
     
     public void setTableStudents(int students, PawnColor color) {
         
-        if(students < 0 || students > 10) throw new InvalidParameterException("Students must be >= 0 and <= 10");
+        if (students < 0 || students > 10) throw new InvalidParameterException("Students must be >= 0 and <= 10");
         
         int currentStudents = tableStudents.get(color);
         
-        if(currentStudents < students) {
+        if (currentStudents < students) {
             
-            for(int i = 0; i < tablePane.getChildren().size() && currentStudents != students; i++) {
+            for (int i = 0; i < tablePane.getChildren().size() && currentStudents != students; i++) {
                 
                 Group tableSeatGroup = (Group) tablePane.getChildren().get(i);
                 ColoredPawnImageView student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
                 
-                while(color != student.getColor()) {
+                while (color != student.getColor()) {
                     
                     i += 10;
                     tableSeatGroup = (Group) tablePane.getChildren().get(i);
-                    student        = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
+                    student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
                 }
                 
-                if(!student.isVisible()) {
+                if (!student.isVisible()) {
                     
                     student.setVisible(true);
                     currentStudents++;
                 }
             }
         }
-        
-        else if(currentStudents > students) {
+        else if (currentStudents > students) {
             
-            for(int i = tablePane.getChildren().size() - 1; i > 0 && currentStudents != students; i--) {
+            for (int i = tablePane.getChildren().size() - 1; i > 0 && currentStudents != students; i--) {
                 
                 Group tableSeatGroup = (Group) tablePane.getChildren().get(i);
                 ColoredPawnImageView student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
                 
-                while(color != student.getColor()) {
+                while (color != student.getColor()) {
                     
                     i -= 10;
                     tableSeatGroup = (Group) tablePane.getChildren().get(i);
-                    student        = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
+                    student = (ColoredPawnImageView) tableSeatGroup.getChildren().get(tableSeatGroup.getChildren().size() > 1 ? 1 : 0);
                 }
                 
-                if(student.isVisible()) {
+                if (student.isVisible()) {
                     
                     student.setVisible(false);
                     currentStudents--;
@@ -225,11 +225,11 @@ public class SchoolGUIComponent {
     
     public void setProfessors(PawnColor color, boolean isPresent) {
         
-        for(Node child : professorPane.getChildren()) {
+        for (Node child : professorPane.getChildren()) {
             
             ColoredPawnImageView professor = (ColoredPawnImageView) child;
             
-            if(professor.getColor() == color) {
+            if (professor.getColor() == color) {
                 
                 professor.setVisible(isPresent);
                 return;
@@ -239,9 +239,9 @@ public class SchoolGUIComponent {
     
     public void setTowers(int towers) {
         
-        for(Node tower : towersPane.getChildren()) {
+        for (Node tower : towersPane.getChildren()) {
             
-            if(towers > 0) {
+            if (towers > 0) {
                 
                 tower.setVisible(true);
                 towers--;
@@ -253,7 +253,7 @@ public class SchoolGUIComponent {
     public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
         
         this.requestMessage = requestMessage;
-        this.chosenColor    = chosenColor;
+        this.chosenColor = chosenColor;
         schoolGroup.addEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
         
         schoolGroup.setEffect(gameController.getBorderGlowEffect());

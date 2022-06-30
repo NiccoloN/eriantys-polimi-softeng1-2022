@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * This class represents the choice of a helper card by a player.
+ *
  * @author Emanuele Musto
  */
 public class ChooseHelperCard extends Move {
@@ -26,7 +27,7 @@ public class ChooseHelperCard extends Move {
     @Override
     public boolean isValid(Game game, MoveRequest request) {
         
-        if(!(request instanceof ChooseHelperCardRequest)) {
+        if (!(request instanceof ChooseHelperCardRequest)) {
             
             errorMessage = "Move not requested";
             return false;
@@ -35,18 +36,19 @@ public class ChooseHelperCard extends Move {
         Player player = game.getCurrentPlayer();
         
         List<Integer> unplayableIndices = new ArrayList<>(3);
-        for(Player other : game.getPlayers())
-            if(other != player && other.getCurrentHelper() != null) unplayableIndices.add(other.getCurrentHelper().index);
+        for (Player other : game.getPlayers())
+            if (other != player && other.getCurrentHelper() != null)
+                unplayableIndices.add(other.getCurrentHelper().index);
         
-        if(unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
+        if (unplayableIndices.size() >= player.getNumberOfHelpers()) unplayableIndices.clear();
         
-        if(unplayableIndices.contains(helperCardIndex)) {
+        if (unplayableIndices.contains(helperCardIndex)) {
             
             errorMessage = "Cannot play this helper";
             return false;
         }
         
-        if(!player.hasHelper(helperCardIndex)) {
+        if (!player.hasHelper(helperCardIndex)) {
             
             errorMessage = "No card of the given index found in hand";
             return false;

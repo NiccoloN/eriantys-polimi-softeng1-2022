@@ -17,6 +17,7 @@ import java.util.List;
  * This class represents the request of moving a student. The attribute availableColors indicates which color of the
  * pawns that the player can move. The attribute toWhere indicates the possible destinations of the pawn.
  * It's also used when a character card is in play.
+ *
  * @see ColoredPawnOriginDestination
  */
 public class MoveStudentRequest extends MoveRequest {
@@ -29,8 +30,8 @@ public class MoveStudentRequest extends MoveRequest {
         
         super("Move a student from your school's entrance to either an island or your dining room");
         this.availableColors = availableColors;
-        characterIndex       = 0;
-        this.toWhere         = toWhere;
+        characterIndex = 0;
+        this.toWhere = toWhere;
         setCanPlayCharacter(canPlayCharacter);
     }
     
@@ -38,8 +39,8 @@ public class MoveStudentRequest extends MoveRequest {
         
         super(promptSentence);
         this.availableColors = availableColors;
-        this.characterIndex  = characterIndex;
-        this.toWhere         = toWhere;
+        this.characterIndex = characterIndex;
+        this.toWhere = toWhere;
     }
     
     @Override
@@ -48,7 +49,7 @@ public class MoveStudentRequest extends MoveRequest {
         super.manage(cli, scene, requestMessage);
         scene.setColors(availableColors);
         
-        if(characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
+        if (characterIndex < 1) scene.setState(new ColorSelection(cli, scene, requestMessage));
         else scene.setState(new ColorSelection(cli, scene, requestMessage, characterIndex));
     }
     
@@ -59,12 +60,12 @@ public class MoveStudentRequest extends MoveRequest {
         
         Platform.runLater(() -> {
             
-            if(characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
+            if (characterIndex < 1) controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors);
             else controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
             
-            if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
+            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
                 
-                for(CharacterGUIComponent character : controller.getCharacterGUIComponents())
+                for (CharacterGUIComponent character : controller.getCharacterGUIComponents())
                     character.listenToInput(requestMessage);
             }
         });

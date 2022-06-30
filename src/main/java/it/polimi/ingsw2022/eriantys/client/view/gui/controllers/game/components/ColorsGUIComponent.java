@@ -32,49 +32,24 @@ public class ColorsGUIComponent {
     
     public ColorsGUIComponent(GridPane colorButtons, GameController controller) {
         
-        this.colorButtons   = colorButtons;
+        this.colorButtons = colorButtons;
         this.gameController = controller;
         
-        buttonColors        = new HashMap<>(5);
+        buttonColors = new HashMap<>(5);
         colorClickListeners = new HashMap<>(5);
         
         PawnColor[] pawnColors = PawnColor.values();
-        for(PawnColor color : pawnColors) {
+        for (PawnColor color : pawnColors) {
             
             colorClickListeners.put(color, mouseEvent -> {
                 
                 try {
                     manageInput(mouseEvent, color);
                 }
-                catch(IOException e) {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             });
-        }
-    }
-    
-    private void manageInput(MouseEvent mouseEvent, PawnColor color) throws IOException {
-        
-        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-            
-            if(characterIndex <= 0) {
-                
-                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.listenToInput(requestMessage, color);
-                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).listenToInput(requestMessage, color);
-            }
-            
-            else if(characterIndex == 1) {
-                
-                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.listenToInput(requestMessage, color, characterIndex);
-            }
-            
-            else {
-                
-                ChooseColorRequest colorRequest = (ChooseColorRequest) requestMessage.moveRequest;
-                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseColor(color, characterIndex, colorRequest.fromWhere)));
-            }
-            
-            stopListeningToInput();
         }
     }
     
@@ -84,11 +59,11 @@ public class ColorsGUIComponent {
         requestMessage = null;
         characterIndex = 0;
         
-        for(int n = 0; n < colorButtons.getChildren().size(); n++) {
+        for (int n = 0; n < colorButtons.getChildren().size(); n++) {
             
             Button colorButton = (Button) ((Group) colorButtons.getChildren().get(n)).getChildren().get(0);
             PawnColor color = buttonColors.get(colorButton);
-            if(color != null) colorButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
+            if (color != null) colorButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
         }
     }
     
@@ -106,23 +81,23 @@ public class ColorsGUIComponent {
         
         colorButtons.setVisible(true);
         this.requestMessage = requestMessage;
-        characterIndex      = 0;
+        characterIndex = 0;
         
-        for(int n = 0; n < colorButtons.getChildren().size(); n++) {
+        for (int n = 0; n < colorButtons.getChildren().size(); n++) {
             
             Button colorButton = (Button) ((Group) colorButtons.getChildren().get(n)).getChildren().get(0);
             PawnColor color = buttonColors.get(colorButton);
-            if(color != null) colorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
+            if (color != null) colorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
         }
     }
     
     public void setAvailableColors(List<PawnColor> colors) {
         
-        for(int n = 0; n < colorButtons.getChildren().size(); n++) {
+        for (int n = 0; n < colorButtons.getChildren().size(); n++) {
             
             Button colorButton = (Button) ((Group) colorButtons.getChildren().get(n)).getChildren().get(0);
             
-            if(n < colors.size()) {
+            if (n < colors.size()) {
                 
                 PawnColor color = colors.get(n);
                 
@@ -131,7 +106,6 @@ public class ColorsGUIComponent {
                 colorButton.getStyleClass().add(color.name().toLowerCase() + "-button");
                 colorButton.setVisible(true);
             }
-            
             else {
                 
                 buttonColors.put(colorButton, null);
@@ -140,5 +114,30 @@ public class ColorsGUIComponent {
         }
         
         colorButtons.setTranslateX((colorButtons.getChildren().get(0).getLayoutBounds().getWidth() + 5) / 2 * (colorButtons.getColumnCount() - colors.size()));
+    }
+    
+    private void manageInput(MouseEvent mouseEvent, PawnColor color) throws IOException {
+        
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            
+            if (characterIndex <= 0) {
+                
+                for (IslandGUIComponent island : gameController.getIslandGUIComponents())
+                    island.listenToInput(requestMessage, color);
+                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).listenToInput(requestMessage, color);
+            }
+            else if (characterIndex == 1) {
+                
+                for (IslandGUIComponent island : gameController.getIslandGUIComponents())
+                    island.listenToInput(requestMessage, color, characterIndex);
+            }
+            else {
+                
+                ChooseColorRequest colorRequest = (ChooseColorRequest) requestMessage.moveRequest;
+                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseColor(color, characterIndex, colorRequest.fromWhere)));
+            }
+            
+            stopListeningToInput();
+        }
     }
 }

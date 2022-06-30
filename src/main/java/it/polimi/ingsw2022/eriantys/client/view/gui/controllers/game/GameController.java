@@ -43,9 +43,9 @@ public class GameController extends SceneController implements Initializable {
         
         super(gui);
         islandGUIComponents = new ArrayList<>(12);
-        cloudGUIComponents  = new ArrayList<>(2);
+        cloudGUIComponents = new ArrayList<>(2);
         dashboardComponents = new HashMap<>();
-        playerComponents    = new HashMap<>();
+        playerComponents = new HashMap<>();
         
         playersList = players;
     }
@@ -53,37 +53,40 @@ public class GameController extends SceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         
-        for(int n = 0; n < 4; n++) {
+        for (int n = 0; n < 4; n++) {
             
-            if(n < playersList.size()) playerComponents.put(playersList.get(n).getUsername(), new PlayerGUIComponent((Group) players.getChildren().get(n), playersList.get(n).getUsername(), n));
+            if (n < playersList.size())
+                playerComponents.put(playersList.get(n).getUsername(), new PlayerGUIComponent((Group) players.getChildren().get(n), playersList.get(n).getUsername(), n));
             
             else players.getChildren().get(n).setVisible(false);
         }
         
-        for(int n = 0; n < 4; n++) {
+        for (int n = 0; n < 4; n++) {
             
-            if(n < playersList.size()) dashboardComponents.put(playersList.get(n).getUsername(), new SchoolGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
+            if (n < playersList.size())
+                dashboardComponents.put(playersList.get(n).getUsername(), new SchoolGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
             
             else schools.getChildren().get(n).setVisible(false);
         }
         
-        for(int n = 0; n < 12; n++)
+        for (int n = 0; n < 12; n++)
             islandGUIComponents.add(new IslandGUIComponent((Group) islands.getChildren().get(n), this));
         
         helpersGUIComponent = new HelpersGUIComponent(helpers, this);
         
-        for(int n = 0; n < clouds.getColumnCount(); n++) {
+        for (int n = 0; n < clouds.getColumnCount(); n++) {
             
-            if(n < playersList.size()) cloudGUIComponents.add(new CloudGUIComponent((Group) clouds.getChildren().get(n), n, this));
+            if (n < playersList.size())
+                cloudGUIComponents.add(new CloudGUIComponent((Group) clouds.getChildren().get(n), n, this));
             else clouds.getChildren().get(n).setVisible(false);
         }
         
         clouds.setTranslateX((clouds.getChildren().get(0).getLayoutBounds().getWidth() + 10) / 2 * (clouds.getColumnCount() - playersList.size()));
         
-        if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT) {
+        if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT) {
             
             characterGUIComponents = new ArrayList<>(3);
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
                 characterGUIComponents.add(new CharacterGUIComponent((Group) characters.getChildren().get(i), effectsTextArea, this));
         }
         
@@ -152,7 +155,7 @@ public class GameController extends SceneController implements Initializable {
     
     public void setCharacters(List<CharacterCard> characters) {
         
-        for(int i = 0; i < 3; i++) characterGUIComponents.get(i).setCharacter(characters.get(i));
+        for (int i = 0; i < 3; i++) characterGUIComponents.get(i).setCharacter(characters.get(i));
     }
     
     public void setHintsText(String text) {
@@ -168,7 +171,7 @@ public class GameController extends SceneController implements Initializable {
         winner.setPadding(new Insets(30, 0, 0, 0));
         
         String winner2 = "";
-        if(team.getSize() > 1) winner2 = team.getPlayers().get(1).getUsername();
+        if (team.getSize() > 1) winner2 = team.getPlayers().get(1).getUsername();
         
         winner.setStyle("-fx-font-size: 22px");
         winner.setText("THE WINNER IS TEAM:\n" + team.getTeamName() + "\n\n" + team.getLeader().getUsername() + "\n" + winner2);
@@ -178,10 +181,10 @@ public class GameController extends SceneController implements Initializable {
     
     public void stopListeners() {
         
-        for(IslandGUIComponent island : islandGUIComponents) island.stopListeningToInput();
-        for(CloudGUIComponent cloud : cloudGUIComponents) cloud.stopListeningToInput();
-        if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT)
-            for(CharacterGUIComponent character : characterGUIComponents) character.stopListeningToInput();
+        for (IslandGUIComponent island : islandGUIComponents) island.stopListeningToInput();
+        for (CloudGUIComponent cloud : cloudGUIComponents) cloud.stopListeningToInput();
+        if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT)
+            for (CharacterGUIComponent character : characterGUIComponents) character.stopListeningToInput();
         helpersGUIComponent.stopListeningToInput();
         colorsGUIComponent.stopListeningToInput();
     }

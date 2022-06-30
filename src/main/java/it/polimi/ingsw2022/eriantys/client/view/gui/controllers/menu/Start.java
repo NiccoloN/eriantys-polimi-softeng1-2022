@@ -28,7 +28,7 @@ public class Start extends SceneController {
         
         new Thread(() -> {
             
-            if(!client.connectToServer(serverIP)) connectingTextField.setVisible(false);
+            if (!client.connectToServer(serverIP)) connectingTextField.setVisible(false);
         }).start();
     }
     

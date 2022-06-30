@@ -15,10 +15,21 @@ import java.util.Optional;
 
 import static it.polimi.ingsw2022.eriantys.client.EriantysClient.ADDRESS_FILE_NAME;
 
+/**
+ * This class represents a menu scene state in which the user can enter the ip of the server he wants to connect to
+ *
+ * @author Niccolò Nicolosi
+ */
 public class EnterServerIp extends MenuSceneState {
     
     private String serverIP;
     
+    /**
+     * Constructs an enter-server-ip state
+     *
+     * @param cli   the cli associated to this state
+     * @param scene the menu scene associated to this state
+     */
     public EnterServerIp(EriantysCLI cli, MenuScene scene) {
         
         super(cli, scene);
@@ -44,9 +55,9 @@ public class EnterServerIp extends MenuSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
-            if(serverIP.length() > 0) {
+            if (serverIP.length() > 0) {
                 
                 File file = new File(ADDRESS_FILE_NAME);
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -60,18 +71,19 @@ public class EnterServerIp extends MenuSceneState {
         }
         
         Optional<Character> character = input.getChar();
-        if(character.isPresent()) {
+        if (character.isPresent()) {
             
             char c = character.get();
             
             TextAreaCLIComponent textArea = getScene().getTextArea();
             
-            if(c == 8 || c == 127) {
+            if (c == 8 || c == 127) {
                 
                 String prevText = textArea.getText();
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
-            else if((c == '.' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) && serverIP.length() < 21) textArea.appendText(String.valueOf(c));
+            else if ((c == '.' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) && serverIP.length() < 21)
+                textArea.appendText(String.valueOf(c));
             
             serverIP = textArea.getText();
         }

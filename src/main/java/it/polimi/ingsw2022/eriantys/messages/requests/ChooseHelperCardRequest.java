@@ -44,8 +44,9 @@ public class ChooseHelperCardRequest extends MoveRequest {
             
             controller.getHelpersGUIComponent().listenToInput(requestMessage, unplayableIndices);
             
-            if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter())
-                for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) character.listenToInput(requestMessage);
+            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter())
+                for (CharacterGUIComponent character : controller.getCharacterGUIComponents())
+                    character.listenToInput(requestMessage);
         });
     }
 }

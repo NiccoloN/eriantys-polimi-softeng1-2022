@@ -21,14 +21,14 @@ public class CloudChange implements Change, Serializable {
     public CloudChange(Integer cloudIndex, CloudTile cloud) {
         
         this.cloudIndex = cloudIndex;
-        this.cloud      = cloud;
+        this.cloud = cloud;
     }
     
     @Override
     public void apply(GameScene scene) {
         
         CloudCLIComponent cliCloud = scene.getCloud(cloudIndex);
-        for(PawnColor color : PawnColor.values()) cliCloud.setStudents(color, cloud.countStudents(color));
+        for (PawnColor color : PawnColor.values()) cliCloud.setStudents(color, cloud.countStudents(color));
     }
     
     @Override
@@ -38,8 +38,8 @@ public class CloudChange implements Change, Serializable {
             
             CloudGUIComponent guiCloud = controller.getCloudGUIComponent(cloudIndex);
             
-            if(cloud.isEmpty()) guiCloud.clearStudents();
-            else for(PawnColor color : PawnColor.values()) guiCloud.setStudents(color, cloud.countStudents(color));
+            if (cloud.isEmpty()) guiCloud.clearStudents();
+            else for (PawnColor color : PawnColor.values()) guiCloud.setStudents(color, cloud.countStudents(color));
         });
     }
 }

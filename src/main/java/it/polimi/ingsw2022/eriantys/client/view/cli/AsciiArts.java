@@ -4,27 +4,20 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * This class provides access to various asciiArts in the form of strings
+ */
 public class AsciiArts {
     
     private static String titleString, cloud1String, cloud2String, cloud3String, cloud4String;
     
     public static void loadFromFiles() throws IOException {
         
-        titleString  = loadString("ascii arts/title.txt");
+        titleString = loadString("ascii arts/title.txt");
         cloud1String = loadString("ascii arts/cloud1.txt");
         cloud2String = loadString("ascii arts/cloud2.txt");
         cloud3String = loadString("ascii arts/cloud3.txt");
         cloud4String = loadString("ascii arts/cloud4.txt");
-    }
-    
-    private static String loadString(String resourcePath) throws IOException {
-        
-        Scanner scanner = new Scanner(Objects.requireNonNull(AsciiArts.class.getClassLoader().getResource(resourcePath)).openStream());
-        scanner.useDelimiter("\\Z");
-        String string = scanner.next();
-        scanner.close();
-        
-        return string;
     }
     
     public static String getTitleString() {
@@ -50,5 +43,15 @@ public class AsciiArts {
     public static String getCloud4String() {
         
         return cloud4String;
+    }
+    
+    private static String loadString(String resourcePath) throws IOException {
+        
+        Scanner scanner = new Scanner(Objects.requireNonNull(AsciiArts.class.getClassLoader().getResource(resourcePath)).openStream());
+        scanner.useDelimiter("\\Z");
+        String string = scanner.next();
+        scanner.close();
+        
+        return string;
     }
 }

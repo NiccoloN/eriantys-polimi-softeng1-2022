@@ -15,6 +15,7 @@ import java.util.Optional;
 
 /**
  * This class represents a menu scene state in which the user is asked to provide a username
+ *
  * @author Niccolò Nicolosi
  */
 public class EnterUsername extends MenuSceneState {
@@ -24,15 +25,17 @@ public class EnterUsername extends MenuSceneState {
     
     /**
      * Constructs an enter-username state
-     * @param cli   the cli associated to this state
-     * @param scene the menu scene associated to this state
+     *
+     * @param cli            the cli associated to this state
+     * @param scene          the menu scene associated to this state
+     * @param requestMessage the message that requested this state
      */
     public EnterUsername(EriantysCLI cli, MenuScene scene, Message requestMessage) {
         
         super(cli, scene);
         
         this.requestMessage = requestMessage;
-        username            = "";
+        username = "";
     }
     
     @Override
@@ -52,7 +55,7 @@ public class EnterUsername extends MenuSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             EriantysClient client = EriantysClient.getInstance();
             client.setUsername(username);
@@ -62,18 +65,18 @@ public class EnterUsername extends MenuSceneState {
         }
         
         Optional<Character> character = input.getChar();
-        if(character.isPresent()) {
+        if (character.isPresent()) {
             
             char c = character.get();
             
             TextAreaCLIComponent textArea = getScene().getTextArea();
             
-            if(c == 8 || c == 127) {
+            if (c == 8 || c == 127) {
                 
                 String prevText = textArea.getText();
                 textArea.setText(prevText.substring(0, Math.max(0, prevText.length() - 1)));
             }
-            else if(username.length() < EriantysServer.MAX_USERNAME_LENGTH) textArea.appendText(String.valueOf(c));
+            else if (username.length() < EriantysServer.MAX_USERNAME_LENGTH) textArea.appendText(String.valueOf(c));
             
             username = textArea.getText();
         }

@@ -22,12 +22,12 @@ public class PlayerGUIComponent {
         ImageView coinImage = ((ImageView) player.getChildren().get(2));
         coinImage.setImage(ImageFactory.coinImage);
         
-        nameLabel  = (Label) player.getChildren().get(1);
-        coinLabel  = (Label) player.getChildren().get(3);
+        nameLabel = (Label) player.getChildren().get(1);
+        coinLabel = (Label) player.getChildren().get(3);
         lastHelper = (ImageView) player.getChildren().get(4);
         setName(username);
         
-        if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.BASIC) {
+        if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.BASIC) {
             coinImage.setVisible(false);
             coinLabel.setVisible(false);
         }
@@ -35,13 +35,13 @@ public class PlayerGUIComponent {
     
     public void setName(String name) {
         
-        if(name.length() > EriantysServer.MAX_USERNAME_LENGTH) throw new InvalidParameterException("Name too long");
+        if (name.length() > EriantysServer.MAX_USERNAME_LENGTH) throw new InvalidParameterException("Name too long");
         nameLabel.setText(name);
     }
     
     public void setCoins(int coins) {
         
-        if(coins < 0 || coins > 99) throw new InvalidParameterException("Coins must be between 0 and 99");
+        if (coins < 0 || coins > 99) throw new InvalidParameterException("Coins must be between 0 and 99");
         coinLabel.setText("x" + coins);
     }
     

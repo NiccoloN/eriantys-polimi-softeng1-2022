@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 /**
  * This class represents the movement of a student. It can be to the dining table or to an island.
  * If it's towards an island it specifies that island index.
+ *
  * @author Emanuele Musto
  */
 public class MoveStudent extends Move {
@@ -32,6 +33,7 @@ public class MoveStudent extends Move {
     
     /**
      * Constructor used when the move is caused by a character card, of which the index is saved.
+     *
      * @param destination    where the player moved the student.
      * @param toWhere        list of possible places where the student can be placed for the specific move.
      * @param islandIndex    the island index if the student is placed on an island, -1 if not.
@@ -53,16 +55,16 @@ public class MoveStudent extends Move {
     public MoveStudent(ColoredPawnOriginDestination destination, List<ColoredPawnOriginDestination> toWhere, int islandIndex, PawnColor studentColor) {
         
         this.characterIndex = 0;
-        this.destination    = destination;
-        this.toWhere        = toWhere;
-        this.islandIndex    = islandIndex;
-        this.studentColor   = studentColor;
+        this.destination = destination;
+        this.toWhere = toWhere;
+        this.islandIndex = islandIndex;
+        this.studentColor = studentColor;
     }
     
     @Override
     public boolean isValid(Game game, MoveRequest request) {
         
-        if(!(request instanceof MoveStudentRequest)) {
+        if (!(request instanceof MoveStudentRequest)) {
             
             errorMessage = "Move not requested";
             return false;
@@ -70,31 +72,30 @@ public class MoveStudent extends Move {
         
         SchoolDashboard school = game.getCurrentPlayer().getSchool();
         
-        if(characterIndex > 0) {
+        if (characterIndex > 0) {
             
             try {
                 game.getCharacterOfIndex(characterIndex);
             }
-            catch(NoSuchElementException e) {
+            catch (NoSuchElementException e) {
                 
                 errorMessage = "There's no character of the given index on board";
                 return false;
             }
         }
-        
-        else if(school.countEntranceStudents(studentColor) <= 0) {
+        else if (school.countEntranceStudents(studentColor) <= 0) {
             
             errorMessage = "There's no student of the selected color in your school entrance";
             return false;
         }
         
-        if(destination == ColoredPawnOriginDestination.TABLE && school.countTableStudents(studentColor) >= 10) {
+        if (destination == ColoredPawnOriginDestination.TABLE && school.countTableStudents(studentColor) >= 10) {
             
             errorMessage = "The table of the selected color is already full";
             return false;
         }
         
-        if(!toWhere.contains(destination)) {
+        if (!toWhere.contains(destination)) {
             
             errorMessage = "The chosen destination is not valid for the current move";
             return false;
@@ -108,19 +109,18 @@ public class MoveStudent extends Move {
         
         ColoredPawn studentToMove;
         
-        if(characterIndex > 0) {
+        if (characterIndex > 0) {
             studentToMove = game.getCharacterOfIndex(characterIndex).getStudent(studentColor);
             game.getCharacterOfIndex(characterIndex).removeStudent(studentToMove);
         }
         else studentToMove = game.getCurrentPlayer().getSchool().removeFromEntrance(studentColor);
         
-        if(destination == ColoredPawnOriginDestination.TABLE) {
+        if (destination == ColoredPawnOriginDestination.TABLE) {
             
             SchoolDashboard school = game.getCurrentPlayer().getSchool();
             school.addToTable(studentToMove);
             game.checkAndUpdateProfessor(studentColor, false);
         }
-        
         else game.getBoard().getIsland(islandIndex).addStudent(studentToMove);
     }
     
@@ -130,13 +130,13 @@ public class MoveStudent extends Move {
         Board board = game.getBoard();
         Update update = new Update();
         
-        if(destination != ColoredPawnOriginDestination.TABLE) {
+        if (destination != ColoredPawnOriginDestination.TABLE) {
             
             IslandChange islandChange = new IslandChange(board.getIslands(), board.getIslandTiles());
             update.addChange(islandChange);
         }
         
-        for(Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
+        for (Player player : game.getPlayers()) update.addChange(new SchoolChange(player.getSchool()));
         update.addChange(new PlayerChange(game.getCurrentPlayer()));
         
         return (update);

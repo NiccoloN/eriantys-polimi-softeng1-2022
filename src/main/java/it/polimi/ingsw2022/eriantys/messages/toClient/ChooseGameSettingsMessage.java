@@ -12,6 +12,7 @@ import java.io.IOException;
  * This class represents a message to request the settings of the game to the first client that connects.
  * It accepts as a response a GameSettingsMessage containing the settings, or AbortMessage if the player
  * does not want to continue starting the game.
+ *
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto

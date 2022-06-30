@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * This class represents a generic message sent by the client to the server. It stores the username of the client that
  * sent it, and the previous message that caused the client to send this message.
+ *
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
  * @see Message
@@ -21,7 +22,7 @@ public abstract class ToServerMessage extends Message {
     
     public ToServerMessage(Message previousMessage) {
         
-        clientUsername       = EriantysClient.getInstance().getUsername();
+        clientUsername = EriantysClient.getInstance().getUsername();
         this.previousMessage = previousMessage;
     }
     
@@ -33,7 +34,8 @@ public abstract class ToServerMessage extends Message {
         
         EriantysServer server = EriantysServer.getInstance();
         
-        if(previousMessage != null && !previousMessage.isValidResponse(this)) server.sendToClient(new InvalidResponseMessage(this, previousMessage), clientUsername);
+        if (previousMessage != null && !previousMessage.isValidResponse(this))
+            server.sendToClient(new InvalidResponseMessage(this, previousMessage), clientUsername);
     }
     
     /**

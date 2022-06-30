@@ -23,7 +23,7 @@ public class HelperCardsChange implements Change, Serializable {
     public HelperCardsChange(String playerUsername) {
         
         this.playerUsername = playerUsername;
-        this.helperCards    = new ArrayList<>();
+        this.helperCards = new ArrayList<>();
     }
     
     public void setPlayedHelperCard(HelperCard playedHelperCard) {
@@ -33,6 +33,7 @@ public class HelperCardsChange implements Change, Serializable {
     
     /**
      * Adds a helper card to this change.
+     *
      * @param helperCard the changed helper card.
      */
     public void addHelperCard(HelperCard helperCard) {
@@ -42,6 +43,7 @@ public class HelperCardsChange implements Change, Serializable {
     
     /**
      * Adds a list of helper cards to this change.
+     *
      * @param helperCards the list of changed helper cards.
      */
     public void addHelperCards(List<HelperCard> helperCards) {
@@ -52,16 +54,19 @@ public class HelperCardsChange implements Change, Serializable {
     @Override
     public void apply(GameScene scene) {
         
-        if(EriantysClient.getInstance().getUsername().equals(playerUsername)) scene.setHelpers(helperCards);
+        if (EriantysClient.getInstance().getUsername().equals(playerUsername)) scene.setHelpers(helperCards);
         
-        if(playedHelperCard != null) scene.getPlayer(playerUsername).setLastHelperCLIComponent(new HelperCardCLIComponent(playedHelperCard.index, playedHelperCard.priority, playedHelperCard.movement));
+        if (playedHelperCard != null)
+            scene.getPlayer(playerUsername).setLastHelperCLIComponent(new HelperCardCLIComponent(playedHelperCard.index, playedHelperCard.priority, playedHelperCard.movement));
     }
     
     @Override
     public void apply(GameController controller) {
         
-        if(EriantysClient.getInstance().getUsername().equals(playerUsername)) Platform.runLater(() -> controller.getHelpersGUIComponent().setRemainingHelpers(helperCards));
+        if (EriantysClient.getInstance().getUsername().equals(playerUsername))
+            Platform.runLater(() -> controller.getHelpersGUIComponent().setRemainingHelpers(helperCards));
         
-        if(playedHelperCard != null) Platform.runLater(() -> controller.getPlayerGUIComponent(playerUsername).setLastHelper(playedHelperCard.index));
+        if (playedHelperCard != null)
+            Platform.runLater(() -> controller.getPlayerGUIComponent(playerUsername).setLastHelper(playedHelperCard.index));
     }
 }

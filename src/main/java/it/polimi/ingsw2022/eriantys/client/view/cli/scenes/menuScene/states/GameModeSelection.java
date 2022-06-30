@@ -18,6 +18,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a menu scene state in which the user is asked to select a game mode
+ *
  * @author Niccolò Nicolosi
  */
 public class GameModeSelection extends MenuSceneState {
@@ -30,20 +31,23 @@ public class GameModeSelection extends MenuSceneState {
     
     /**
      * Constructs a game mode selection state
-     * @param cli   the cli associated to this state
-     * @param scene the menu scene associated to this state
+     *
+     * @param cli                     the cli associated to this state
+     * @param scene                   the menu scene associated to this state
+     * @param selectedNumberOfPlayers the number of players selected in the previous state
+     * @param requestMessage          the message that requested this state
      */
     protected GameModeSelection(EriantysCLI cli, MenuScene scene, int selectedNumberOfPlayers, Message requestMessage) {
         
         super(cli, scene);
         this.selectedNumberOfPlayers = selectedNumberOfPlayers;
-        this.requestMessage          = requestMessage;
+        this.requestMessage = requestMessage;
     }
     
     @Override
     public void enter() {
         
-        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {">"});
+        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[]{">"});
         prompt.setFirstColor(GREEN_BRIGHT);
         prompt.setSecondColor(GREEN);
         
@@ -51,7 +55,7 @@ public class GameModeSelection extends MenuSceneState {
         
         getScene().getPanel().setHidden(false);
         getScene().getSelectGameModePrompt().setHidden(false);
-        for(int n = 0; n < getScene().getNumberOfGameModes(); n++) getScene().getGameMode(n).setHidden(false);
+        for (int n = 0; n < getScene().getNumberOfGameModes(); n++) getScene().getGameMode(n).setHidden(false);
         
         currentSelectedIndex = 0;
         updateCLI();
@@ -64,31 +68,31 @@ public class GameModeSelection extends MenuSceneState {
         
         getScene().getPanel().setHidden(true);
         getScene().getSelectGameModePrompt().setHidden(true);
-        for(int n = 0; n < getScene().getNumberOfGameModes(); n++) getScene().getGameMode(n).setHidden(true);
+        for (int n = 0; n < getScene().getNumberOfGameModes(); n++) getScene().getGameMode(n).setHidden(true);
     }
     
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage, new GameSettings(selectedNumberOfPlayers, GameMode.values()[currentSelectedIndex])));
             
             //TODO abort message
         }
         
-        if(input.triggersAction(Action.UP)) currentSelectedIndex--;
-        else if(input.triggersAction(Action.DOWN)) currentSelectedIndex++;
+        if (input.triggersAction(Action.UP)) currentSelectedIndex--;
+        else if (input.triggersAction(Action.DOWN)) currentSelectedIndex++;
         
-        if(currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfGameModes() - 1;
-        else if(currentSelectedIndex > getScene().getNumberOfGameModes() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfGameModes() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfGameModes() - 1) currentSelectedIndex = 0;
         
         updateCLI();
     }
     
     private void updateCLI() {
         
-        if(currentSelected != null) currentSelected.setColor(RESET);
+        if (currentSelected != null) currentSelected.setColor(RESET);
         currentSelected = getScene().getGameMode(currentSelectedIndex);
         currentSelected.setColor(GREEN);
         

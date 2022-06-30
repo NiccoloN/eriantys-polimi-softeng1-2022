@@ -6,7 +6,8 @@ import java.util.Arrays;
 /**
  * This class represents a frame of the cli. A frame is a bi-dimensional array of ascii characters, each of which can have ansi properties.
  * Therefore, a char is represented by an ansi string. A frame can be converted to a string to be printed to the terminal window.
- * To correctly visualize a frame in the terminal, the terminal window must be of the same size of the frame
+ * To correctly visualize a frame in the terminal, the terminal window must be of a size greater or equal than the size of the frame
+ *
  * @author Niccolò Nicolosi
  */
 public class Frame {
@@ -15,6 +16,7 @@ public class Frame {
     
     /**
      * Constructs a frame of the given size
+     *
      * @param width  the width of the frame
      * @param height the height of the frame
      */
@@ -25,6 +27,7 @@ public class Frame {
     
     /**
      * Sets the character of this frame at position (x, y) to the given character (y-axis points downwards)
+     *
      * @param x         the x position of the character to set
      * @param y         the y position of the character to set
      * @param character the new character (can have ansi properties)
@@ -33,8 +36,8 @@ public class Frame {
     public void setChar(int x, int y, String character) {
         
         int noAnsiLength = AnsiCodes.noAnsiString(character).length();
-        if(noAnsiLength < 1) throw new InvalidParameterException("Character only contains ansi sequences");
-        if(noAnsiLength > 1) throw new InvalidParameterException("Character contains more than 1 character");
+        if (noAnsiLength < 1) throw new InvalidParameterException("Character only contains ansi sequences");
+        if (noAnsiLength > 1) throw new InvalidParameterException("Character contains more than 1 character");
         chars[y][x] = character;
     }
     
@@ -47,7 +50,7 @@ public class Frame {
      */
     public String getAnsiString(int terminalWidth, int terminalHeight) {
         
-        if(terminalWidth < getWidth() || terminalHeight < getHeight())
+        if (terminalWidth < getWidth() || terminalHeight < getHeight())
             throw new InvalidParameterException("Cannot build a string from this frame that matches the given terminal size");
         
         int paddingTop = (int) Math.floor((terminalHeight - getHeight()) / 2f);
@@ -57,20 +60,20 @@ public class Frame {
         
         StringBuilder stringBuilder = new StringBuilder(terminalWidth * terminalHeight);
         
-        for(int n = 0; n < paddingTop; n++) stringBuilder.append(" ".repeat(terminalWidth)).append("\n");
+        for (int n = 0; n < paddingTop; n++) stringBuilder.append(" ".repeat(terminalWidth)).append("\n");
         
-        for(int i = 0; i < getHeight(); i++) {
+        for (int i = 0; i < getHeight(); i++) {
             
             stringBuilder.append(" ".repeat(paddingLeft));
-            for(int j = 0; j < getWidth(); j++) stringBuilder.append(chars[i][j]);
+            for (int j = 0; j < getWidth(); j++) stringBuilder.append(chars[i][j]);
             stringBuilder.append(" ".repeat(paddingRight));
-            if(paddingTop + i != terminalHeight - 1) stringBuilder.append("\n");
+            if (paddingTop + i != terminalHeight - 1) stringBuilder.append("\n");
         }
         
-        for(int n = 0; n < paddingBottom; n++) {
+        for (int n = 0; n < paddingBottom; n++) {
             
             stringBuilder.append(" ".repeat(terminalWidth));
-            if(paddingTop + getHeight() + n != terminalHeight - 1) stringBuilder.append("\n");
+            if (paddingTop + getHeight() + n != terminalHeight - 1) stringBuilder.append("\n");
         }
         
         return stringBuilder.toString();
@@ -91,6 +94,6 @@ public class Frame {
      */
     public void clear() {
         
-        for(String[] row : chars) Arrays.fill(row, " ");
+        for (String[] row : chars) Arrays.fill(row, " ");
     }
 }

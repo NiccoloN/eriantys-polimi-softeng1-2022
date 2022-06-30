@@ -6,6 +6,7 @@ import java.io.IOException;
 
 /**
  * This class represents a generic message sent to the client by the server.
+ *
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
  * @see Message

@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * This class represents the choice of one cloud by a player
+ *
  * @author Emanuele Musto
  */
 public class ChooseCloud extends Move {
@@ -27,13 +28,13 @@ public class ChooseCloud extends Move {
     @Override
     public boolean isValid(Game game, MoveRequest request) {
         
-        if(!(request instanceof ChooseCloudRequest)) {
+        if (!(request instanceof ChooseCloudRequest)) {
             
             errorMessage = "Move not requested";
             return false;
         }
         
-        if(game.getBoard().getCloud(cloudIndex).isEmpty()) {
+        if (game.getBoard().getCloud(cloudIndex).isEmpty()) {
             
             errorMessage = "Cannot choose an empty cloud";
             return false;
@@ -47,7 +48,7 @@ public class ChooseCloud extends Move {
         
         SchoolDashboard school = game.getCurrentPlayer().getSchool();
         List<ColoredPawn> students = game.getBoard().getCloud(cloudIndex).withdrawStudents();
-        for(ColoredPawn student : students) school.addToEntrance(student);
+        for (ColoredPawn student : students) school.addToEntrance(student);
     }
     
     @Override

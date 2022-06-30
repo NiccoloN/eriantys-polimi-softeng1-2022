@@ -6,6 +6,7 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene;
 
 /**
  * This class represents a "view only" state of a scene. In this state inputs are ignored
+ *
  * @author Niccolò Nicolosi
  */
 public class ViewOnly extends CLISceneState {
@@ -16,11 +17,17 @@ public class ViewOnly extends CLISceneState {
     }
     
     @Override
-    public void enter() {}
+    public void enter() {
+    
+    }
     
     @Override
-    public void exit() {}
+    public void exit() {
+    
+    }
     
     @Override
-    public void manageInput(Input input) {}
+    public void manageInput(Input input) {
+    
+    }
 }

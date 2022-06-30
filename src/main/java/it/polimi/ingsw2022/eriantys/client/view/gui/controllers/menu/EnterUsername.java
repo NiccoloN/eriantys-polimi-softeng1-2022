@@ -33,18 +33,18 @@ public class EnterUsername extends SceneController implements Initializable {
         
         usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
             
-            if(newValue.length() > 20) usernameField.setText(oldValue);
+            if (newValue.length() > 20) usernameField.setText(oldValue);
         });
         
         usernameField.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             
-            if(keyEvent.getCode() == KeyCode.ENTER) {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
                 
                 try {
                     
                     sendUsername();
                 }
-                catch(IOException e) {
+                catch (IOException e) {
                     
                     e.printStackTrace();
                 }

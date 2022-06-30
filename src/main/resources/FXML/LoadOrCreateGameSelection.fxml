@@ -5,20 +5,23 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0"
+            xmlns="http://javafx.com/javafx/18">
     <children>
         <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../Images/Backgrounds/eriantys_title.png"/>
             </image>
         </ImageView>
-        <Button layoutX="573.0" layoutY="339.0" mnemonicParsing="false" onAction="#newGame" prefHeight="54.0" prefWidth="167.0"
+        <Button layoutX="573.0" layoutY="339.0" mnemonicParsing="false" onAction="#newGame" prefHeight="54.0"
+                prefWidth="167.0"
                 stylesheets="@../CSS/ButtonStyles.css" text="New Game" textFill="#334abc">
             <font>
                 <Font name="SansSerif Regular" size="16.0"/>
             </font>
         </Button>
-        <Button layoutX="573.0" layoutY="449.0" mnemonicParsing="false" onAction="#loadGame" prefHeight="54.0" prefWidth="157.0"
+        <Button layoutX="573.0" layoutY="449.0" mnemonicParsing="false" onAction="#loadGame" prefHeight="54.0"
+                prefWidth="157.0"
                 stylesheets="@../CSS/ButtonStyles.css" text="Load Game"/>
     </children>
 </AnchorPane>

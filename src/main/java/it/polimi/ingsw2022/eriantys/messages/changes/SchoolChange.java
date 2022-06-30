@@ -29,7 +29,7 @@ public class SchoolChange implements Change, Serializable {
         
         PlayerStatusCLIComponent player = scene.getPlayer(schoolDashboard.player.getUsername());
         
-        for(PawnColor color : PawnColor.values()) {
+        for (PawnColor color : PawnColor.values()) {
             
             player.setEntranceStudents(color, schoolDashboard.countEntranceStudents(color));
             player.setTableStudents(color, schoolDashboard.countTableStudents(color));
@@ -47,12 +47,12 @@ public class SchoolChange implements Change, Serializable {
             
             SchoolGUIComponent schoolGUIComponent = controller.getDashboardGUIComponentOfPlayer(schoolDashboard.player.getUsername());
             
-            for(PawnColor color : PawnColor.values()) {
+            for (PawnColor color : PawnColor.values()) {
                 
                 schoolGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
                 schoolGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
                 
-                for(int n = 0; n < schoolDashboard.countEntranceStudents(color); n++) entranceStudents.add(color);
+                for (int n = 0; n < schoolDashboard.countEntranceStudents(color); n++) entranceStudents.add(color);
             }
             
             schoolGUIComponent.setEntranceStudents(entranceStudents);

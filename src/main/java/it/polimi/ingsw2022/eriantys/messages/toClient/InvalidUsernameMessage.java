@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * This class represents a message sent by the server when the username chosen by the player is not valid
  * (already taken or invalid format).
+ *
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
@@ -29,15 +30,15 @@ public class InvalidUsernameMessage extends InvalidResponseMessage {
         
         super(response, request);
         this.invalidFormat = invalidFormat;
-        this.alreadyTaken  = alreadyTaken;
+        this.alreadyTaken = alreadyTaken;
     }
     
     @Override
     public void manageAndReply() throws IOException {
         
         String logMessage = "Invalid username provided: ";
-        if(invalidFormat) logMessage += "invalid format";
-        else if(alreadyTaken) logMessage += "already taken";
+        if (invalidFormat) logMessage += "invalid format";
+        else if (alreadyTaken) logMessage += "already taken";
         EriantysClient.getInstance().log(logMessage);
         request.manageAndReply();
     }

@@ -12,6 +12,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.BLUE_BACKGR
 
 /**
  * This class represents a menu scene state in which the user is notified that the client is trying to connect to the server
+ *
  * @author Niccolò Nicolosi
  */
 public class Connecting extends MenuSceneState {
@@ -21,6 +22,7 @@ public class Connecting extends MenuSceneState {
     
     /**
      * Constructs a connecting state
+     *
      * @param cli   the cli associated to this state
      * @param scene the menu scene associated to this state
      */
@@ -30,7 +32,7 @@ public class Connecting extends MenuSceneState {
         
         serverIP = EriantysClient.getInstance().loadSavedServerIp();
         
-        connectingLabel = new BasicCLIComponent(17 + serverIP.length(), new String[] {"Connecting to " + serverIP + "..."});
+        connectingLabel = new BasicCLIComponent(17 + serverIP.length(), new String[]{"Connecting to " + serverIP + "..."});
         connectingLabel.setColor(BLACK + BLUE_BACKGROUND_BRIGHT);
     }
     
@@ -42,14 +44,14 @@ public class Connecting extends MenuSceneState {
         new Thread(() -> {
             
             EriantysClient client = EriantysClient.getInstance();
-            if(!client.connectToServer(serverIP)) {
+            if (!client.connectToServer(serverIP)) {
                 
                 //add a little delay to actually see the connecting label in case the connection gets refused instantly
                 try {
                     
                     Thread.sleep(500);
                 }
-                catch(InterruptedException e) {
+                catch (InterruptedException e) {
                     
                     e.printStackTrace();
                 }
@@ -65,5 +67,7 @@ public class Connecting extends MenuSceneState {
     }
     
     @Override
-    public void manageInput(Input input) {}
+    public void manageInput(Input input) {
+    
+    }
 }

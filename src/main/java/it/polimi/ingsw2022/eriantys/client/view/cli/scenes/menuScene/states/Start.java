@@ -9,12 +9,14 @@ import java.io.IOException;
 
 /**
  * This class represents the first menu scene state
+ *
  * @author Niccolò Nicolosi
  */
 public class Start extends MenuSceneState {
     
     /**
      * Constructs a start state
+     *
      * @param cli   the cli associated to this state
      * @param scene the menu scene associated to this state
      */
@@ -40,13 +42,13 @@ public class Start extends MenuSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             getScene().setState(new Connecting(getCli(), getScene()));
             return;
         }
         
-        if(input.triggersAction(Action.ESC)) {
+        if (input.triggersAction(Action.ESC)) {
             
             getScene().setState(new EnterServerIp(getCli(), getScene()));
         }

@@ -15,6 +15,11 @@ import java.io.IOException;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
+/**
+ * This class represents a menu scene state in which the user is asked to select to load an existing game or create a new one
+ *
+ * @author Niccolò Nicolosi
+ */
 public class LoadOrCreateGame extends MenuSceneState {
     
     private final Message requestMessage;
@@ -23,8 +28,10 @@ public class LoadOrCreateGame extends MenuSceneState {
     
     /**
      * Constructs a load-or-create menu scene state
-     * @param cli   the cli associated to this state
-     * @param scene the menu scene associated to this state
+     *
+     * @param cli            the cli associated to this state
+     * @param scene          the menu scene associated to this state
+     * @param requestMessage the message that requested this state
      */
     public LoadOrCreateGame(EriantysCLI cli, MenuScene scene, Message requestMessage) {
         
@@ -35,7 +42,7 @@ public class LoadOrCreateGame extends MenuSceneState {
     @Override
     public void enter() {
         
-        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {">"});
+        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[]{">"});
         prompt.setFirstColor(GREEN_BRIGHT);
         prompt.setSecondColor(GREEN);
         
@@ -61,20 +68,21 @@ public class LoadOrCreateGame extends MenuSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
-            if(currentSelected == getScene().getLoadGameOption()) EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage, new GameSettings()));
+            if (currentSelected == getScene().getLoadGameOption())
+                EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage, new GameSettings()));
             
             else getScene().setState(new NumberOfPlayersSelection(getCli(), getScene(), requestMessage));
             //TODO abort message
         }
         
-        if(input.triggersAction(Action.UP) || input.triggersAction(Action.DOWN)) switchSelected();
+        if (input.triggersAction(Action.UP) || input.triggersAction(Action.DOWN)) switchSelected();
     }
     
     private void switchSelected() {
         
-        if(currentSelected != null) currentSelected.setColor(RESET);
+        if (currentSelected != null) currentSelected.setColor(RESET);
         currentSelected = currentSelected == getScene().getLoadGameOption() ? getScene().getNewGameOption() : getScene().getLoadGameOption();
         currentSelected.setColor(GREEN);
         

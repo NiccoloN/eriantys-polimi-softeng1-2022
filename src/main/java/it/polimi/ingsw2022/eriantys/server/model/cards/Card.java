@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Generic card, with index as id
+ *
  * @author Francesco Melegati Maccari
  */
 public class Card implements Serializable {

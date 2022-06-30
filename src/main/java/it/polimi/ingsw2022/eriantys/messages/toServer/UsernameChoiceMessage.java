@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  * This class represents a message sent as a response to the request of choosing a username.
  * It contains the username of the player, and also the checks for the validity of the username.
+ *
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
@@ -30,19 +31,18 @@ public class UsernameChoiceMessage extends ToServerMessage {
         
         EriantysServer server = EriantysServer.getInstance();
         
-        if(clientUsername.length() < 1 || clientUsername.length() > EriantysServer.MAX_USERNAME_LENGTH) {
+        if (clientUsername.length() < 1 || clientUsername.length() > EriantysServer.MAX_USERNAME_LENGTH) {
             
             server.sendToClient(new InvalidUsernameMessage(this, getPreviousMessage(), true, false), server.getCurrentlyConnectingClient());
         }
-        
-        else if(server.isAvailableUsername(clientUsername)) {
+        else if (server.isAvailableUsername(clientUsername)) {
             
             TimedMessage request = (TimedMessage) getPreviousMessage();
             request.acceptResponse();
             server.addClient(server.getCurrentlyConnectingClient(), clientUsername);
             server.sendToClient(new AckMessage(), clientUsername);
         }
-        
-        else server.sendToClient(new InvalidUsernameMessage(this, getPreviousMessage(), false, true), server.getCurrentlyConnectingClient());
+        else
+            server.sendToClient(new InvalidUsernameMessage(this, getPreviousMessage(), false, true), server.getCurrentlyConnectingClient());
     }
 }

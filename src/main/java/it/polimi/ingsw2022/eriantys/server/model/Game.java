@@ -20,6 +20,7 @@ import java.util.*;
 
 /**
  * This class represents the game instance, and contains all the data of the game.
+ *
  * @author Francesco Melegati
  */
 public class Game implements Serializable {
@@ -52,18 +53,18 @@ public class Game implements Serializable {
         teams.put("BLACK", new Team(AnsiCodes.BLACK_BRIGHT, "BLACK"));
         teams.put("CYAN", new Team(AnsiCodes.CYAN, "CYAN"));
         
-        players           = generatePlayers(playerUsernames);
+        players = generatePlayers(playerUsernames);
         playersStartOrder = new ArrayList<>(players);
         
-        board       = new Board(players);
-        students    = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
-        professors  = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
+        board = new Board(players);
+        students = generatePawns(NUMBER_OF_STUDENTS_PER_COLOR);
+        professors = generatePawns(NUMBER_OF_PROFESSORS_PER_COLOR);
         studentsBag = new StudentsBag();
-        characters  = new ArrayList<>(3);
+        characters = new ArrayList<>(3);
         
         exchangesCausedByCharacters = new HashMap<>(3);
-        abortMessageReceived        = false;
-        gameEnding                  = false;
+        abortMessageReceived = false;
+        gameEnding = false;
         
         placeFirstStudents();
         fillStudentsBag();
@@ -72,152 +73,10 @@ public class Game implements Serializable {
         assignHelpers();
     }
     
-    /**
-     * Generates a list of players containing the given number of players, dividing them in teams
-     * @param playerUsernames the usernames of the players to be generated
-     * @return the generated list
-     */
-    private List<Player> generatePlayers(String[] playerUsernames) {
-        
-        final String errorMsg = String.format("Invalid number of players: must be >= %s and <= %s", MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS);
-        
-        final int numberOfPlayers = playerUsernames.length;
-        
-        if(numberOfPlayers > MAX_NUMBER_OF_PLAYERS || numberOfPlayers < MIN_NUMBER_OF_PLAYERS) {
-            
-            throw new RuntimeException(errorMsg);
-        }
-        
-        List<Player> players = new ArrayList<>();
-        Mage[] mageNames = Mage.values();
-        Team team;
-        for(int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
-            
-            if(numberOfPlayers == 2 || numberOfPlayers == 4) {
-                
-                team = playerNumber % 2 == 0 ? getTeam("WHITE") : getTeam("BLACK");
-            }
-            else {
-                
-                switch(playerNumber) {
-                    
-                    case 0:
-                        team = getTeam("WHITE");
-                        break;
-                    case 1:
-                        team = getTeam("BLACK");
-                        break;
-                    case 2:
-                        team = getTeam("CYAN");
-                        break;
-                    default:
-                        throw new RuntimeException(errorMsg);
-                }
-            }
-            players.add(new Player(playerUsernames[playerNumber], team, mageNames[playerNumber]));
-        }
-        return players;
-    }
-    
-    /**
-     * Generates a list of pawns containing the given number of pawns per color
-     * @param numberPerColor the number of pawns per color to be generated
-     * @return the generated list of pawns
-     */
-    private List<ColoredPawn> generatePawns(int numberPerColor) {
-        
-        if(numberPerColor <= 0) throw new RuntimeException("Invalid number of pawns");
-        
-        List<ColoredPawn> studentsList = new ArrayList<>();
-        for(PawnColor color : PawnColor.values()) {
-            
-            for(int numberOfPawns = 0; numberOfPawns < numberPerColor; numberOfPawns++) {
-                
-                studentsList.add(new ColoredPawn(color));
-            }
-        }
-        return studentsList;
-    }
-    
-    /**
-     * When the game start, this method is called to place a student for every island
-     * except the one with mother nature and the one opposite to it.
-     */
-    private void placeFirstStudents() {
-        
-        int colorCounter;
-        for(PawnColor color : PawnColor.values()) {
-            
-            colorCounter = 0;
-            Iterator<ColoredPawn> iterator = students.iterator();
-            while(iterator.hasNext()) {
-                
-                ColoredPawn student = iterator.next();
-                if(student.color == color) {
-                    
-                    iterator.remove();
-                    studentsBag.addStudent(student);
-                    colorCounter++;
-                    if(colorCounter >= 2) break;
-                }
-            }
-        }
-        for(int n = 1; n < board.getNumberOfIslands(); n++)
-            if(n != board.getNumberOfIslands() / 2) board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
-    }
-    
-    /**
-     * Adds every student pawn to the student bag.
-     * @see StudentsBag
-     */
-    private void fillStudentsBag() {
-        
-        for(ColoredPawn student : students) studentsBag.addStudent(student);
-        students.clear();
-    }
-    
-    /**
-     * Adds seven student pawns to the entrance of every player's school.
-     */
-    private void fillSchools() {
-        
-        int studentsPerSchool = players.size() == 3 ? 9 : 7;
-        
-        for(Player player : players) {
-            
-            SchoolDashboard school = player.getSchool();
-            for(int n = 0; n < studentsPerSchool; n++) school.addToEntrance(studentsBag.extractRandomStudent());
-        }
-    }
-    
-    /**
-     * Chooses randomly three of the possible twelve characters of the game.
-     * @throws IOException when the path to the json file containing information regarding characters is wrong
-     *                     or can't be accessed.
-     */
-    private void chooseCharacters() throws IOException {
-        
-        List<CharacterCard> characterCards = new ArrayList<>(12);
-        for(int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
-        for(int n = 0; n < 3; n++) characters.add(characterCards.remove((int) (Math.random() * characterCards.size())));
-    }
-    
-    /**
-     * Gives to every player ten helper cards to use during the game.
-     * @throws IOException when the path to the json file containing information regarding helpers is wrong
-     *                     or can't be accessed.
-     */
-    private void assignHelpers() throws IOException {
-        
-        for(Player player : players)
-            for(int n = 1; n <= 10; n++)
-                player.addHelperCard(CardFactory.createHelperCard(n, player.mage));
-    }
-    
     public Team getTeam(String teamName) {
         
         Team team = teams.get(teamName);
-        if(team == null) throw new NoSuchElementException();
+        if (team == null) throw new NoSuchElementException();
         return team;
     }
     
@@ -234,6 +93,7 @@ public class Game implements Serializable {
      * For every color, the player with the most students on the school dashboard gets the professor of that color.
      * Therefore, this method is used to check whether the movement of a student causes a movement of the professor of
      * the same color, and if true, moves the professor from one place to another.
+     *
      * @param color           the color of the student moved.
      * @param greaterAndEqual if true it's enough to reach the same number of student of the player with the professor
      *                        in order to get the professor (effect caused by a character), if false the number of student
@@ -243,36 +103,36 @@ public class Game implements Serializable {
         
         SchoolDashboard winnerSchool = null;
         
-        for(Player player : getPlayers()) {
+        for (Player player : getPlayers()) {
             
             SchoolDashboard school = player.getSchool();
-            if(school.containsProfessor(color)) {
+            if (school.containsProfessor(color)) {
                 
                 winnerSchool = school;
                 break;
             }
         }
         
-        if(winnerSchool == null) {
+        if (winnerSchool == null) {
             
-            for(Player player : players) {
+            for (Player player : players) {
                 
                 SchoolDashboard school = player.getSchool();
-                if(school.countTableStudents(color) > 0) {
+                if (school.countTableStudents(color) > 0) {
                     
                     school.addProfessor(getProfessor(color));
                     winnerSchool = player.getSchool();
                 }
             }
-            if(winnerSchool == null) return;
+            if (winnerSchool == null) return;
         }
         
-        if(!greaterAndEqual) {
+        if (!greaterAndEqual) {
             
-            for(Player player : getPlayers()) {
+            for (Player player : getPlayers()) {
                 
                 SchoolDashboard school = player.getSchool();
-                if(school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
+                if (school != winnerSchool && school.countTableStudents(color) > winnerSchool.countTableStudents(color)) {
                     
                     ColoredPawn professor;
                     professor = winnerSchool.removeProfessor(color);
@@ -285,7 +145,7 @@ public class Game implements Serializable {
         else {
             
             SchoolDashboard currentPlayerSchool = currentPlayer.getSchool();
-            if(!currentPlayerSchool.equals(winnerSchool) && currentPlayerSchool.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
+            if (!currentPlayerSchool.equals(winnerSchool) && currentPlayerSchool.countTableStudents(color) >= winnerSchool.countTableStudents(color)) {
                 
                 ColoredPawn professor = winnerSchool.removeProfessor(color);
                 currentPlayerSchool.addProfessor(professor);
@@ -366,7 +226,7 @@ public class Game implements Serializable {
      */
     public void resetCharacterUses() {
         
-        for(Player player : players) player.setCharacterUsed(false);
+        for (Player player : players) player.setCharacterUsed(false);
     }
     
     public void resetExchanges() {
@@ -417,6 +277,7 @@ public class Game implements Serializable {
     /**
      * Check who is the winner team when the game ends.
      * The winner team is the team with the higher number of placed towers in the islands.
+     *
      * @return the winner team.
      */
     public Team checkWinner() {
@@ -424,21 +285,22 @@ public class Game implements Serializable {
         Team winnerTeam = null;
         int winnerTeamTowers = -1;
         
-        for(Player player : getPlayers()) {
+        for (Player player : getPlayers()) {
             
             int playerTowers = player.getSchool().getTowers();
             
-            if(winnerTeam == null && player.isTeamLeader) {
+            if (winnerTeam == null && player.isTeamLeader) {
                 
-                winnerTeam       = player.team;
+                winnerTeam = player.team;
                 winnerTeamTowers = playerTowers;
             }
             
-            if(player.isTeamLeader && playerTowers <= winnerTeamTowers) {
+            if (player.isTeamLeader && playerTowers <= winnerTeamTowers) {
                 
-                if(playerTowers == winnerTeamTowers) {
+                if (playerTowers == winnerTeamTowers) {
                     
-                    if(player.getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors()) winnerTeam = player.team;
+                    if (player.getSchool().countProfessors() > winnerTeam.getLeader().getSchool().countProfessors())
+                        winnerTeam = player.team;
                 }
                 else winnerTeam = player.team;
                 
@@ -446,5 +308,153 @@ public class Game implements Serializable {
             }
         }
         return winnerTeam;
+    }
+    
+    /**
+     * Generates a list of players containing the given number of players, dividing them in teams
+     *
+     * @param playerUsernames the usernames of the players to be generated
+     * @return the generated list
+     */
+    private List<Player> generatePlayers(String[] playerUsernames) {
+        
+        final String errorMsg = String.format("Invalid number of players: must be >= %s and <= %s", MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS);
+        
+        final int numberOfPlayers = playerUsernames.length;
+        
+        if (numberOfPlayers > MAX_NUMBER_OF_PLAYERS || numberOfPlayers < MIN_NUMBER_OF_PLAYERS) {
+            
+            throw new RuntimeException(errorMsg);
+        }
+        
+        List<Player> players = new ArrayList<>();
+        Mage[] mageNames = Mage.values();
+        Team team;
+        for (int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
+            
+            if (numberOfPlayers == 2 || numberOfPlayers == 4) {
+                
+                team = playerNumber % 2 == 0 ? getTeam("WHITE") : getTeam("BLACK");
+            }
+            else {
+                
+                switch (playerNumber) {
+                    
+                    case 0:
+                        team = getTeam("WHITE");
+                        break;
+                    case 1:
+                        team = getTeam("BLACK");
+                        break;
+                    case 2:
+                        team = getTeam("CYAN");
+                        break;
+                    default:
+                        throw new RuntimeException(errorMsg);
+                }
+            }
+            players.add(new Player(playerUsernames[playerNumber], team, mageNames[playerNumber]));
+        }
+        return players;
+    }
+    
+    /**
+     * Generates a list of pawns containing the given number of pawns per color
+     *
+     * @param numberPerColor the number of pawns per color to be generated
+     * @return the generated list of pawns
+     */
+    private List<ColoredPawn> generatePawns(int numberPerColor) {
+        
+        if (numberPerColor <= 0) throw new RuntimeException("Invalid number of pawns");
+        
+        List<ColoredPawn> studentsList = new ArrayList<>();
+        for (PawnColor color : PawnColor.values()) {
+            
+            for (int numberOfPawns = 0; numberOfPawns < numberPerColor; numberOfPawns++) {
+                
+                studentsList.add(new ColoredPawn(color));
+            }
+        }
+        return studentsList;
+    }
+    
+    /**
+     * When the game start, this method is called to place a student for every island
+     * except the one with mother nature and the one opposite to it.
+     */
+    private void placeFirstStudents() {
+        
+        int colorCounter;
+        for (PawnColor color : PawnColor.values()) {
+            
+            colorCounter = 0;
+            Iterator<ColoredPawn> iterator = students.iterator();
+            while (iterator.hasNext()) {
+                
+                ColoredPawn student = iterator.next();
+                if (student.color == color) {
+                    
+                    iterator.remove();
+                    studentsBag.addStudent(student);
+                    colorCounter++;
+                    if (colorCounter >= 2) break;
+                }
+            }
+        }
+        for (int n = 1; n < board.getNumberOfIslands(); n++)
+            if (n != board.getNumberOfIslands() / 2) board.getIsland(n).addStudent(studentsBag.extractRandomStudent());
+    }
+    
+    /**
+     * Adds every student pawn to the student bag.
+     *
+     * @see StudentsBag
+     */
+    private void fillStudentsBag() {
+        
+        for (ColoredPawn student : students) studentsBag.addStudent(student);
+        students.clear();
+    }
+    
+    /**
+     * Adds seven student pawns to the entrance of every player's school.
+     */
+    private void fillSchools() {
+        
+        int studentsPerSchool = players.size() == 3 ? 9 : 7;
+        
+        for (Player player : players) {
+            
+            SchoolDashboard school = player.getSchool();
+            for (int n = 0; n < studentsPerSchool; n++) school.addToEntrance(studentsBag.extractRandomStudent());
+        }
+    }
+    
+    /**
+     * Chooses randomly three of the possible twelve characters of the game.
+     *
+     * @throws IOException when the path to the json file containing information regarding characters is wrong
+     *                     or can't be accessed.
+     */
+    private void chooseCharacters() throws IOException {
+        
+        List<CharacterCard> characterCards = new ArrayList<>(12);
+        for (int n = 1; n <= 12; n++) characterCards.add(CardFactory.createCharacterCard(n));
+        for (int n = 0; n < 3; n++)
+            characters.add(characterCards.remove((int) (Math.random() * characterCards.size())));
+    }
+    
+    /**
+     * Gives to every player ten helper cards to use during the game.
+     *
+     * @throws IOException when the path to the json file containing information regarding helpers is wrong
+     *                     or can't be accessed.
+     */
+    private void assignHelpers() throws IOException {
+        
+        for (Player player : players)
+            for (int n = 1; n <= 10; n++)
+                player.addHelperCard(CardFactory.createHelperCard(n, player.mage));
     }
 }

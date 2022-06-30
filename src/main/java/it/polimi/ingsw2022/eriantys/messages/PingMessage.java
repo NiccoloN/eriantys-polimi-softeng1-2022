@@ -9,6 +9,7 @@ import java.io.IOException;
  * This class represents a ping message sent in order to establish that the connection is still alive between
  * client and server. It's a timed message, so the client has 10 seconds in order to respond with a pong message,
  * otherwise the connection is considered cut and the server shutdowns.
+ *
  * @author Emanuele Musto
  * @author Niccolò Nicolosi
  * @see PongMessage
@@ -38,7 +39,7 @@ public class PingMessage extends TimedMessage {
     public void manageAndReply() throws IOException {
         
         //client-side
-        if(clientUsername != null) EriantysServer.getInstance().sendToClient(new PongMessage(this), clientUsername);
+        if (clientUsername != null) EriantysServer.getInstance().sendToClient(new PongMessage(this), clientUsername);
             //server-side
         else EriantysClient.getInstance().sendToServer(new PongMessage(this));
     }
@@ -50,10 +51,10 @@ public class PingMessage extends TimedMessage {
             try {
                 
                 System.out.println("Ping response timeout");
-                if(clientUsername != null) EriantysClient.getInstance().exit(false);
+                if (clientUsername != null) EriantysClient.getInstance().exit(false);
                 else EriantysServer.getInstance().shutdown(true);
             }
-            catch(IOException e) {
+            catch (IOException e) {
                 
                 e.printStackTrace();
             }

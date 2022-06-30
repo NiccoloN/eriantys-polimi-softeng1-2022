@@ -82,26 +82,186 @@ public class IslandGUIComponent {
                 
                 manageInput(mouseEvent);
             }
-            catch(IOException e) {
+            catch (IOException e) {
                 
                 e.printStackTrace();
             }
         };
     }
     
+    public void manageInput(MouseEvent mouseEvent) throws IOException {
+        
+        MoveRequest request = requestMessage.moveRequest;
+        
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            
+            if (characterIndex > 0) manageCharacters();
+            
+            else if (request instanceof MoveStudentRequest) {
+                
+                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) request).toWhere, Integer.parseInt(indexLabel.getText()), chosenColor)));
+                for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
+            }
+            else if (request instanceof MoveMotherNatureRequest) {
+                
+                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveMotherNature(Integer.parseInt(indexLabel.getText()), ((MoveMotherNatureRequest) request).getMotherNatureMaxSteps())));
+                for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+            }
+        }
+    }
+    
+    public void manageCharacters() throws IOException {
+        
+        if (chosenColor != null) {
+            
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, Integer.parseInt(indexLabel.getText()), chosenColor, characterIndex)));
+            for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+        }
+        else {
+            
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseIsland(Integer.parseInt(indexLabel.getText()), characterIndex)));
+            for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+        }
+    }
+    
+    public void stopListeningToInput() {
+        
+        chosenColor = null;
+        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        islandImageView.setEffect(null);
+    }
+    
+    public void listenToInput(MoveRequestMessage requestMessage) {
+        
+        listenToInput(requestMessage, null);
+    }
+    
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
+        
+        this.requestMessage = requestMessage;
+        this.chosenColor = chosenColor;
+        characterIndex = 0;
+        
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        
+        islandImageView.setEffect(gameController.getBorderGlowEffect());
+    }
+    
+    public void listenToInput(MoveRequestMessage requestMessage, int characterIndex) {
+        
+        listenToInput(requestMessage, null, characterIndex);
+    }
+    
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
+        
+        listenToInput(requestMessage, chosenColor);
+        this.characterIndex = characterIndex;
+    }
+    
+    public void setGuiIslandIndex(Integer guiIslandIndex) {
+        
+        indexLabel.setText(guiIslandIndex.toString());
+        
+        if (guiIslandIndex < 10) indexLabel.setTranslateX(6);
+        else indexLabel.setTranslateX(2);
+    }
+    
+    public void setStudents(PawnColor color, Integer value) {
+        
+        if (value < 0) throw new RuntimeException("Number of students can't be negative");
+        
+        switch (color) {
+            case RED:
+                redStudentImage.setVisible(value > 0);
+                redStudentLabel.setText(value.toString());
+                redStudentLabel.setVisible(value > 1);
+                break;
+            case GREEN:
+                greenStudentImage.setVisible(value > 0);
+                greenStudentLabel.setText(value.toString());
+                greenStudentLabel.setVisible(value > 1);
+                break;
+            case YELLOW:
+                yellowStudentImage.setVisible(value > 0);
+                yellowStudentLabel.setText(value.toString());
+                yellowStudentLabel.setVisible(value > 1);
+                break;
+            case BLUE:
+                blueStudentImage.setVisible(value > 0);
+                blueStudentLabel.setText(value.toString());
+                blueStudentLabel.setVisible(value > 1);
+                break;
+            case PINK:
+                pinkStudentImage.setVisible(value > 0);
+                pinkStudentLabel.setText(value.toString());
+                pinkStudentLabel.setVisible(value > 1);
+                break;
+            default:
+                throw new RuntimeException("Chosen color does not exists");
+        }
+    }
+    
+    public void setMotherNature(boolean visible) {
+        
+        hasMotherNature = visible;
+        motherNatureImage.setVisible(visible);
+    }
+    
+    public boolean hasMotherNature() {
+        
+        return hasMotherNature;
+    }
+    
+    public void setTower(boolean visible, Team team) {
+        
+        switch (team.getTeamName()) {
+            
+            case "WHITE":
+                whiteTowerImage.setVisible(visible);
+                blackTowerImage.setVisible(false);
+                grayTowerImage.setVisible(false);
+                break;
+            case "BLACK":
+                whiteTowerImage.setVisible(false);
+                blackTowerImage.setVisible(visible);
+                grayTowerImage.setVisible(false);
+                break;
+            case "CYAN":
+                whiteTowerImage.setVisible(false);
+                blackTowerImage.setVisible(false);
+                grayTowerImage.setVisible(visible);
+                break;
+            default:
+                throw new RuntimeException("There are no towers of this color");
+        }
+    }
+    
+    public void setDenyTiles(int numberOfDenyTiles) {
+        
+        for (int i = 0; i < numberOfDenyTiles; i++) {
+            denyTilesImages.get(i).setVisible(true);
+        }
+    }
+    
+    public int getCompoundIslandIndex() {
+        
+        return Integer.parseInt(indexLabel.getText());
+    }
+    
     private void initializeStudentImageViews() {
         
-        redStudentImage    = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.RED));
-        greenStudentImage  = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.GREEN));
+        redStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.RED));
+        greenStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.GREEN));
         yellowStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.YELLOW));
-        blueStudentImage   = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.BLUE));
-        pinkStudentImage   = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.PINK));
+        blueStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.BLUE));
+        pinkStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.PINK));
         
-        redStudentLabel    = new StudentLabel(PawnColor.RED);
-        greenStudentLabel  = new StudentLabel(PawnColor.GREEN);
+        redStudentLabel = new StudentLabel(PawnColor.RED);
+        greenStudentLabel = new StudentLabel(PawnColor.GREEN);
         yellowStudentLabel = new StudentLabel(PawnColor.YELLOW);
-        blueStudentLabel   = new StudentLabel(PawnColor.BLUE);
-        pinkStudentLabel   = new StudentLabel(PawnColor.PINK);
+        blueStudentLabel = new StudentLabel(PawnColor.BLUE);
+        pinkStudentLabel = new StudentLabel(PawnColor.PINK);
     }
     
     private void initializeStudentAndLabel(ImageView image, Label label, PawnColor color, int positionX, int positionY) {
@@ -110,7 +270,7 @@ public class IslandGUIComponent {
         
         label.setText("0");
         label.getStyleClass().add("students-label");
-        if(color == PawnColor.YELLOW) label.setTranslateY(-55);
+        if (color == PawnColor.YELLOW) label.setTranslateY(-55);
         else label.setTranslateY(-27);
         label.setTranslateX(3);
         
@@ -120,7 +280,7 @@ public class IslandGUIComponent {
     private void initializeTowers() {
         
         whiteTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.whiteTowerImage);
-        grayTowerImage  = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.greyTowerImage);
+        grayTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.greyTowerImage);
         blackTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.blackTowerImage);
         
         whiteTowerImage.setTranslateY(-4);
@@ -168,172 +328,10 @@ public class IslandGUIComponent {
         denyTile3.setTranslateX(-4);
         denyTile4.setTranslateX(-12);
         
-        for(ImageView image : denyTilesImages) {
+        for (ImageView image : denyTilesImages) {
             
             image.setTranslateY(indexTraslateY);
             image.setVisible(false);
         }
-    }
-    
-    public void manageInput(MouseEvent mouseEvent) throws IOException {
-        
-        MoveRequest request = requestMessage.moveRequest;
-        
-        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-            
-            if(characterIndex > 0) manageCharacters();
-            
-            else if(request instanceof MoveStudentRequest) {
-                
-                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) request).toWhere, Integer.parseInt(indexLabel.getText()), chosenColor)));
-                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
-                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
-            }
-            
-            else if(request instanceof MoveMotherNatureRequest) {
-                
-                EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveMotherNature(Integer.parseInt(indexLabel.getText()), ((MoveMotherNatureRequest) request).getMotherNatureMaxSteps())));
-                for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
-            }
-        }
-    }
-    
-    public void manageCharacters() throws IOException {
-        
-        if(chosenColor != null) {
-            
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, Integer.parseInt(indexLabel.getText()), chosenColor, characterIndex)));
-            for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
-        }
-        
-        else {
-            
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseIsland(Integer.parseInt(indexLabel.getText()), characterIndex)));
-            for(IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
-        }
-    }
-    
-    public void stopListeningToInput() {
-        
-        chosenColor = null;
-        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
-        islandImageView.setEffect(null);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage) {
-        
-        listenToInput(requestMessage, null);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
-        
-        this.requestMessage = requestMessage;
-        this.chosenColor    = chosenColor;
-        characterIndex      = 0;
-        
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
-        
-        islandImageView.setEffect(gameController.getBorderGlowEffect());
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage, int characterIndex) {
-        
-        listenToInput(requestMessage, null, characterIndex);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
-        
-        listenToInput(requestMessage, chosenColor);
-        this.characterIndex = characterIndex;
-    }
-    
-    public void setGuiIslandIndex(Integer guiIslandIndex) {
-        
-        indexLabel.setText(guiIslandIndex.toString());
-        
-        if(guiIslandIndex < 10) indexLabel.setTranslateX(6);
-        else indexLabel.setTranslateX(2);
-    }
-    
-    public void setStudents(PawnColor color, Integer value) {
-        
-        if(value < 0) throw new RuntimeException("Number of students can't be negative");
-        
-        switch(color) {
-            case RED:
-                redStudentImage.setVisible(value > 0);
-                redStudentLabel.setText(value.toString());
-                redStudentLabel.setVisible(value > 1);
-                break;
-            case GREEN:
-                greenStudentImage.setVisible(value > 0);
-                greenStudentLabel.setText(value.toString());
-                greenStudentLabel.setVisible(value > 1);
-                break;
-            case YELLOW:
-                yellowStudentImage.setVisible(value > 0);
-                yellowStudentLabel.setText(value.toString());
-                yellowStudentLabel.setVisible(value > 1);
-                break;
-            case BLUE:
-                blueStudentImage.setVisible(value > 0);
-                blueStudentLabel.setText(value.toString());
-                blueStudentLabel.setVisible(value > 1);
-                break;
-            case PINK:
-                pinkStudentImage.setVisible(value > 0);
-                pinkStudentLabel.setText(value.toString());
-                pinkStudentLabel.setVisible(value > 1);
-                break;
-            default:
-                throw new RuntimeException("Chosen color does not exists");
-        }
-    }
-    
-    public void setMotherNature(boolean visible) {
-        
-        hasMotherNature = visible;
-        motherNatureImage.setVisible(visible);
-    }
-    
-    public boolean hasMotherNature() {
-        
-        return hasMotherNature;
-    }
-    
-    public void setTower(boolean visible, Team team) {
-        
-        switch(team.getTeamName()) {
-            
-            case "WHITE":
-                whiteTowerImage.setVisible(visible);
-                blackTowerImage.setVisible(false);
-                grayTowerImage.setVisible(false);
-                break;
-            case "BLACK":
-                whiteTowerImage.setVisible(false);
-                blackTowerImage.setVisible(visible);
-                grayTowerImage.setVisible(false);
-                break;
-            case "CYAN":
-                whiteTowerImage.setVisible(false);
-                blackTowerImage.setVisible(false);
-                grayTowerImage.setVisible(visible);
-                break;
-            default:
-                throw new RuntimeException("There are no towers of this color");
-        }
-    }
-    
-    public void setDenyTiles(int numberOfDenyTiles) {
-        
-        for(int i = 0; i < numberOfDenyTiles; i++) {
-            denyTilesImages.get(i).setVisible(true);
-        }
-    }
-    
-    public int getCompoundIslandIndex() {
-        
-        return Integer.parseInt(indexLabel.getText());
     }
 }

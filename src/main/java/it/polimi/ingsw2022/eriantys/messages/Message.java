@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * This class represents a generic message. It has a list of valid responses, if the receiver does not respond with
  * a valid answer, the message is rejected.
+ *
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto

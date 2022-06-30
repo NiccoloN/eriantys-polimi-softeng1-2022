@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of an island by a player. It's mainly used for character cards effects.
+ *
  * @author Emanuele Musto
  */
 public class ChooseIsland extends Move {
@@ -24,19 +25,19 @@ public class ChooseIsland extends Move {
     public ChooseIsland(int compoundIslandIndex, int characterCardIndex) {
         
         this.compoundIslandIndex = compoundIslandIndex;
-        this.characterCardIndex  = characterCardIndex;
+        this.characterCardIndex = characterCardIndex;
     }
     
     @Override
     public boolean isValid(Game game, MoveRequest request) {
         
-        if(!(request instanceof ChooseIslandRequest)) {
+        if (!(request instanceof ChooseIslandRequest)) {
             
             errorMessage = "Move not requested";
             return false;
         }
         
-        if(compoundIslandIndex < 0 || compoundIslandIndex >= game.getBoard().getNumberOfIslands()) {
+        if (compoundIslandIndex < 0 || compoundIslandIndex >= game.getBoard().getNumberOfIslands()) {
             
             errorMessage = "Invalid island index";
             return false;
@@ -48,13 +49,13 @@ public class ChooseIsland extends Move {
             
             characterCard = game.getCharacterOfIndex(characterCardIndex);
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             
             errorMessage = "Invalid character index";
             return false;
         }
         
-        if(characterCardIndex == 5 && characterCard.getDenyTilesNumber() <= 0) {
+        if (characterCardIndex == 5 && characterCard.getDenyTilesNumber() <= 0) {
             
             errorMessage = "Deny Tiles are not available or invalid parameters";
             return false;
@@ -66,7 +67,7 @@ public class ChooseIsland extends Move {
     @Override
     public void apply(Game game) {
         
-        switch(characterCardIndex) {
+        switch (characterCardIndex) {
             
             case 3:
                 game.setCharacterIsland(compoundIslandIndex);
@@ -87,7 +88,7 @@ public class ChooseIsland extends Move {
         IslandChange islandChange;
         Board board = game.getBoard();
         
-        switch(characterCardIndex) {
+        switch (characterCardIndex) {
             
             case 3:
                 
@@ -102,7 +103,8 @@ public class ChooseIsland extends Move {
                 update.addChange(islandChange);
                 
                 CharacterCardsChange characterCardsChange = new CharacterCardsChange();
-                for(int i = 0; i < game.getNumberOfCharacters(); i++) characterCardsChange.addCharacterCard(game.getCharacter(i));
+                for (int i = 0; i < game.getNumberOfCharacters(); i++)
+                    characterCardsChange.addCharacterCard(game.getCharacter(i));
                 update.addChange(characterCardsChange);
                 break;
             default:

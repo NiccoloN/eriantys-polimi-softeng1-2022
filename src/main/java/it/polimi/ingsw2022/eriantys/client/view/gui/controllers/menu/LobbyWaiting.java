@@ -21,7 +21,7 @@ public class LobbyWaiting extends SceneController implements Initializable {
         
         super(gui);
         this.playerUsernames = playerUsernames;
-        this.gameSettings    = gameSettings;
+        this.gameSettings = gameSettings;
     }
     
     @Override
@@ -35,7 +35,7 @@ public class LobbyWaiting extends SceneController implements Initializable {
         info.setText("Gamemode: " + gameSettings.gameMode.name() + "  Players: " + gameSettings.numberOfPlayers + "\n\n");
         info.appendText("Players in lobby:\n");
         
-        for(String playerUsername : playerUsernames) info.appendText(playerUsername + "\n");
+        for (String playerUsername : playerUsernames) info.appendText(playerUsername + "\n");
         
         info.appendText("\nWaiting for " + playersRemaining + " more players...");
         

@@ -18,6 +18,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN;
 
 /**
  * This class represents a game scene state in which the user is asked to select a cloud
+ *
  * @author Niccolò Nicolosi
  */
 public class CloudSelection extends GameSceneState {
@@ -26,9 +27,11 @@ public class CloudSelection extends GameSceneState {
     private CloudCLIComponent currentSelected;
     
     /**
-     * Constructs a  cloud selection state
-     * @param cli   the cli to associate to this state
-     * @param scene the game scene to associate to this state
+     * Constructs a cloud selection state
+     *
+     * @param cli            the cli to associate to this state
+     * @param scene          the game scene to associate to this state
+     * @param requestMessage the message that requested this state or the previous one
      */
     public CloudSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage) {
         
@@ -50,24 +53,16 @@ public class CloudSelection extends GameSceneState {
         currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
     }
     
-    private void updateCLI() {
-        
-        if(currentSelected != null) currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
-        currentSelected = getScene().getCloud(currentSelectedIndex);
-        currentSelected.setColor(GREEN);
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
-    }
-    
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.DOWN) && getScene().gameMode == GameMode.EXPERT) {
+        if (input.triggersAction(Action.DOWN) && getScene().gameMode == GameMode.EXPERT) {
             
             getScene().setState(new CharacterSelection(getCli(), getScene(), requestMessage, this, Action.UP));
             return;
         }
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(currentSelected.getIndex())));
             
@@ -75,12 +70,20 @@ public class CloudSelection extends GameSceneState {
             return;
         }
         
-        if(input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if(input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
         
-        if(currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfClouds() - 1;
-        else if(currentSelectedIndex > getScene().getNumberOfClouds() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfClouds() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfClouds() - 1) currentSelectedIndex = 0;
         
         updateCLI();
+    }
+    
+    private void updateCLI() {
+        
+        if (currentSelected != null) currentSelected.setColor(CloudCLIComponent.DEFAULT_COLOR);
+        currentSelected = getScene().getCloud(currentSelectedIndex);
+        currentSelected.setColor(GREEN);
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }
 }

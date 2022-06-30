@@ -5,6 +5,11 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 
 import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
+/**
+ * This class represents a color cli component
+ *
+ * @author Niccolò Nicolosi
+ */
 public class ColorCLIComponent extends BasicCLIComponent {
     
     public static final int WIDTH = 3, HEIGHT = 1;
@@ -12,17 +17,17 @@ public class ColorCLIComponent extends BasicCLIComponent {
     public final PawnColor pawnColor;
     private String color;
     
+    /**
+     * Constructs a color cli component of the given color
+     *
+     * @param color the color that this component represents
+     */
     public ColorCLIComponent(PawnColor color) {
         
         super(WIDTH, HEIGHT);
         this.color = DEFAULT_COLOR;
-        pawnColor  = color;
+        pawnColor = color;
         buildRows();
-    }
-    
-    private void buildRows() {
-        
-        setRow(0, color + "|" + pawnColor.ansiBackgroundColor + " " + RESET + color + "|" + RESET);
     }
     
     @Override
@@ -30,5 +35,10 @@ public class ColorCLIComponent extends BasicCLIComponent {
         
         this.color = color;
         buildRows();
+    }
+    
+    private void buildRows() {
+        
+        setRow(0, color + "|" + pawnColor.ansiBackgroundColor + " " + RESET + color + "|" + RESET);
     }
 }

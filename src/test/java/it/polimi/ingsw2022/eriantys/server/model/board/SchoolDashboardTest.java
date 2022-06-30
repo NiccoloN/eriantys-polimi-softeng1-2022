@@ -35,7 +35,7 @@ class SchoolDashboardTest {
         schoolDashboard.addToEntrance(student);
         assertThrows(RuntimeException.class, () -> schoolDashboard.addToEntrance(student));
         
-        for(int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
             schoolDashboard.addToEntrance(new ColoredPawn(PawnColor.BLUE));
         }
         
@@ -63,7 +63,7 @@ class SchoolDashboardTest {
         final ColoredPawn student = new ColoredPawn(PawnColor.BLUE);
         schoolDashboard.addToTable(student);
         assertThrows(RuntimeException.class, () -> schoolDashboard.addToTable(student));
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE));
         }
         assertThrows(RuntimeException.class, () -> schoolDashboard.addToTable(new ColoredPawn(PawnColor.BLUE)));

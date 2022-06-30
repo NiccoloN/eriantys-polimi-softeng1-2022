@@ -17,6 +17,7 @@ import java.util.List;
  * This class represents the request of moving mother nature. The controller sets the attribute motherNatureMaxSteps
  * that is used by the client to display how much can mother nature move. The attribute additionalSteps is used
  * to increase by two the steps of mother nature due to the effect of a character card.
+ *
  * @author Emanuele Musto
  */
 public class MoveMotherNatureRequest extends MoveRequest {
@@ -58,9 +59,9 @@ public class MoveMotherNatureRequest extends MoveRequest {
             int motherNatureCompoundIndex = 0;
             
             List<IslandGUIComponent> guiIslands = controller.getIslandGUIComponents();
-            for(IslandGUIComponent guiIsland : guiIslands) {
+            for (IslandGUIComponent guiIsland : guiIslands) {
                 
-                if(guiIsland.hasMotherNature()) {
+                if (guiIsland.hasMotherNature()) {
                     
                     motherNatureCompoundIndex = guiIsland.getCompoundIslandIndex();
                     break;
@@ -68,21 +69,21 @@ public class MoveMotherNatureRequest extends MoveRequest {
             }
             
             int currentCompoundIndex = motherNatureCompoundIndex;
-            for(int n = 0; n < motherNatureMaxSteps; n++) {
+            for (int n = 0; n < motherNatureMaxSteps; n++) {
                 
                 currentCompoundIndex++;
                 currentCompoundIndex %= compoundIslands;
-                if(currentCompoundIndex == motherNatureCompoundIndex) break;
+                if (currentCompoundIndex == motherNatureCompoundIndex) break;
                 
-                for(IslandGUIComponent island : controller.getIslandGUIComponentsOfIndex(currentCompoundIndex)) {
+                for (IslandGUIComponent island : controller.getIslandGUIComponentsOfIndex(currentCompoundIndex)) {
                     
                     island.listenToInput(requestMessage);
                 }
             }
             
-            if(EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
+            if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && canPlayCharacter()) {
                 
-                for(CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
+                for (CharacterGUIComponent character : controller.getCharacterGUIComponents()) {
                     
                     character.stopListeningToInput();
                     character.listenToInput(requestMessage);

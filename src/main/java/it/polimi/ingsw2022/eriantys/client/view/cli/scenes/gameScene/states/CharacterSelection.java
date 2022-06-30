@@ -19,6 +19,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * This class represents a game scene state in which the user is asked to select a character card. A character selection state
  * is an optional state of the game scene that will only be set by another and can get back to the previous state if a specific
  * action is triggered
+ *
  * @author Niccolò Nicolosi
  */
 public class CharacterSelection extends GameSceneState {
@@ -30,19 +31,20 @@ public class CharacterSelection extends GameSceneState {
     
     /**
      * Constructs a character selection state
-     * @param cli          the cli this state is associated to
-     * @param scene        the scene this state is associated to
-     * @param prevState    the previous state from which this state was set
-     * @param goBackAction the action that makes the game scene go back to the previous state if triggered
+     *
+     * @param cli            the cli this state is associated to
+     * @param scene          the scene this state is associated to
+     * @param requestMessage the message that requested this state or the previous one
+     * @param prevState      the previous state from which this state was set
+     * @param goBackAction   the action that makes the game scene go back to the previous state if triggered
      */
-    
     public CharacterSelection(EriantysCLI cli, GameScene scene, MoveRequestMessage requestMessage, GameSceneState prevState, Action goBackAction) {
         
         super(cli, scene, requestMessage);
         
-        if(goBackAction == Action.RIGHT || goBackAction == Action.LEFT || goBackAction == Action.SELECT)
+        if (goBackAction == Action.RIGHT || goBackAction == Action.LEFT || goBackAction == Action.SELECT)
             throw new InvalidParameterException("GoBackAction must not be RIGHT, LEFT or SELECT, " + "because they are already associated to a different behaviour in this state");
-        this.prevState    = prevState;
+        this.prevState = prevState;
         this.goBackAction = goBackAction;
     }
     
@@ -51,11 +53,11 @@ public class CharacterSelection extends GameSceneState {
         
         super.enter();
         currentSelectedIndex = 0;
-        prevSelected         = null;
-        if(prevState instanceof ColorSelection) {
+        prevSelected = null;
+        if (prevState instanceof ColorSelection) {
             
-            for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
-            for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
+            for (int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(true);
+            for (int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(false);
         }
         updateCLI();
     }
@@ -66,47 +68,48 @@ public class CharacterSelection extends GameSceneState {
         super.exit();
         currentSelected.setColor(RESET);
         getScene().getEffectTextArea().setText("");
-        if(prevState instanceof ColorSelection) {
+        if (prevState instanceof ColorSelection) {
             
-            for(int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
-            for(int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
+            for (int n = 0; n < getScene().getNumberOfHelpers(); n++) getScene().getHelper(n).setHidden(false);
+            for (int n = 0; n < getScene().getNumberOfColors(); n++) getScene().getColor(n).setHidden(true);
         }
-    }
-    
-    private void updateCLI() {
-        
-        if(currentSelected != null) currentSelected.setColor(RESET);
-        currentSelected = getScene().getCharacter(currentSelectedIndex);
-        currentSelected.setColor(GREEN);
-        
-        if(currentSelected != prevSelected) getScene().getEffectTextArea().setText(currentSelected.getEffect() + "\n\n" + YELLOW + "Cost" + BLACK + ": " + currentSelected.getCost());
-        prevSelected = currentSelected;
-        
-        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }
     
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(goBackAction)) {
+        if (input.triggersAction(goBackAction)) {
             
             getScene().setState(prevState);
             return;
         }
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCharacterCard(currentSelected.getIndex())));
             
             return;
         }
         
-        if(input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if(input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
         
-        if(currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfCharacters() - 1;
-        else if(currentSelectedIndex > getScene().getNumberOfCharacters() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfCharacters() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfCharacters() - 1) currentSelectedIndex = 0;
         
         updateCLI();
+    }
+    
+    private void updateCLI() {
+        
+        if (currentSelected != null) currentSelected.setColor(RESET);
+        currentSelected = getScene().getCharacter(currentSelectedIndex);
+        currentSelected.setColor(GREEN);
+        
+        if (currentSelected != prevSelected)
+            getScene().getEffectTextArea().setText(currentSelected.getEffect() + "\n\n" + YELLOW + "Cost" + BLACK + ": " + currentSelected.getCost());
+        prevSelected = currentSelected;
+        
+        prompt.setPosition(currentSelected.getFrameX() + currentSelected.getWidth() / 2f, currentSelected.getFrameY() - 1);
     }
 }

@@ -14,6 +14,7 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a menu scene state in which the user is asked to select the number of players of the game
+ *
  * @author Niccolò Nicolosi
  */
 public class NumberOfPlayersSelection extends MenuSceneState {
@@ -24,8 +25,10 @@ public class NumberOfPlayersSelection extends MenuSceneState {
     
     /**
      * Constructs a number of players selection state
-     * @param cli   the cli associated to this state
-     * @param scene the menu scene associated to this state
+     *
+     * @param cli            the cli associated to this state
+     * @param scene          the menu scene associated to this state
+     * @param requestMessage the message that requested this state
      */
     public NumberOfPlayersSelection(EriantysCLI cli, MenuScene scene, Message requestMessage) {
         
@@ -36,7 +39,7 @@ public class NumberOfPlayersSelection extends MenuSceneState {
     @Override
     public void enter() {
         
-        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[] {"V"});
+        BlinkingCLIComponent prompt = new BlinkingCLIComponent(1, new String[]{"V"});
         prompt.setFirstColor(GREEN_BRIGHT);
         prompt.setSecondColor(GREEN);
         
@@ -44,7 +47,7 @@ public class NumberOfPlayersSelection extends MenuSceneState {
         
         getScene().getPanel().setHidden(false);
         getScene().getSelectNumberOfPlayersPrompt().setHidden(false);
-        for(int n = 0; n < getScene().getNumberOfPlayerNumbers(); n++) getScene().getPlayerNumber(n).setHidden(false);
+        for (int n = 0; n < getScene().getNumberOfPlayerNumbers(); n++) getScene().getPlayerNumber(n).setHidden(false);
         
         currentSelectedIndex = 0;
         updateCLI();
@@ -57,30 +60,30 @@ public class NumberOfPlayersSelection extends MenuSceneState {
         
         getScene().getPanel().setHidden(true);
         getScene().getSelectNumberOfPlayersPrompt().setHidden(true);
-        for(int n = 0; n < getScene().getNumberOfPlayerNumbers(); n++) getScene().getPlayerNumber(n).setHidden(true);
+        for (int n = 0; n < getScene().getNumberOfPlayerNumbers(); n++) getScene().getPlayerNumber(n).setHidden(true);
     }
     
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if(input.triggersAction(Action.SELECT)) {
+        if (input.triggersAction(Action.SELECT)) {
             
             getScene().setState(new GameModeSelection(getCli(), getScene(), currentSelectedIndex + 2, requestMessage));
             return;
         }
         
-        if(input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
-        else if(input.triggersAction(Action.LEFT)) currentSelectedIndex--;
+        if (input.triggersAction(Action.RIGHT)) currentSelectedIndex++;
+        else if (input.triggersAction(Action.LEFT)) currentSelectedIndex--;
         
-        if(currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfPlayerNumbers() - 1;
-        else if(currentSelectedIndex > getScene().getNumberOfPlayerNumbers() - 1) currentSelectedIndex = 0;
+        if (currentSelectedIndex < 0) currentSelectedIndex = getScene().getNumberOfPlayerNumbers() - 1;
+        else if (currentSelectedIndex > getScene().getNumberOfPlayerNumbers() - 1) currentSelectedIndex = 0;
         
         updateCLI();
     }
     
     private void updateCLI() {
         
-        if(currentSelected != null) currentSelected.setColor(RESET);
+        if (currentSelected != null) currentSelected.setColor(RESET);
         currentSelected = getScene().getPlayerNumber(currentSelectedIndex);
         currentSelected.setColor(GREEN);
         

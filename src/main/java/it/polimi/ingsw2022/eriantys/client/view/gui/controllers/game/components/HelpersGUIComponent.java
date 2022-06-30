@@ -31,12 +31,12 @@ public class HelpersGUIComponent {
     public HelpersGUIComponent(GridPane helpers, GameController gameController) {
         
         this.gameController = gameController;
-        this.helpers        = helpers;
+        this.helpers = helpers;
         
         helpersIndices = new HashMap<>(10);
         
         cardClickListeners = new HashMap<>(10);
-        for(int n = 1; n <= 10; n++) {
+        for (int n = 1; n <= 10; n++) {
             
             int cardIndex = n;
             cardClickListeners.put(n, mouseEvent -> {
@@ -45,20 +45,11 @@ public class HelpersGUIComponent {
                     
                     manageInput(mouseEvent, cardIndex);
                 }
-                catch(IOException e) {
+                catch (IOException e) {
                     
                     e.printStackTrace();
                 }
             });
-        }
-    }
-    
-    private void manageInput(MouseEvent mouseEvent, int cardIndex) throws IOException {
-        
-        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-            
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseHelperCard(cardIndex)));
-            stopListeningToInput();
         }
     }
     
@@ -67,24 +58,25 @@ public class HelpersGUIComponent {
         helpers.setVisible(false);
         requestMessage = null;
         
-        for(int n = 0; n < helpers.getChildren().size(); n++) {
+        for (int n = 0; n < helpers.getChildren().size(); n++) {
             
             Group helper = (Group) helpers.getChildren().get(n);
             ImageView helperImageView = (ImageView) helper.getChildren().get(0);
             
             int cardIndex = helpersIndices.get(helper);
             
-            if(cardIndex > 0) helperImageView.removeEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
+            if (cardIndex > 0)
+                helperImageView.removeEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
         }
     }
     
     public void setRemainingHelpers(List<HelperCard> helperCards) {
         
-        for(int n = 0; n < helpers.getChildren().size(); n++) {
+        for (int n = 0; n < helpers.getChildren().size(); n++) {
             
             Group helper = (Group) helpers.getChildren().get(n);
             
-            if(n < helperCards.size()) {
+            if (n < helperCards.size()) {
                 
                 HelperCard helperCard = helperCards.get(n);
                 
@@ -94,7 +86,6 @@ public class HelpersGUIComponent {
                 helpersIndices.put(helper, helperCard.index);
                 helper.setVisible(true);
             }
-            
             else {
                 
                 helpersIndices.put(helper, 0);
@@ -110,22 +101,21 @@ public class HelpersGUIComponent {
         helpers.setVisible(true);
         this.requestMessage = requestMessage;
         
-        for(int n = 0; n < helpers.getChildren().size(); n++) {
+        for (int n = 0; n < helpers.getChildren().size(); n++) {
             
             Group helper = (Group) helpers.getChildren().get(n);
             
             int cardIndex = helpersIndices.get(helper);
             
-            if(cardIndex > 0) {
+            if (cardIndex > 0) {
                 
-                if(!unplayableIndices.contains(cardIndex)) {
+                if (!unplayableIndices.contains(cardIndex)) {
                     
                     ImageView helperImageView = (ImageView) helper.getChildren().get(0);
                     
                     helperImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, cardClickListeners.get(cardIndex));
                     helper.setEffect(gameController.getBorderGlowEffect());
                 }
-                
                 else {
                     
                     ColorAdjust colorAdjust = new ColorAdjust();
@@ -133,6 +123,15 @@ public class HelpersGUIComponent {
                     helper.setEffect(colorAdjust);
                 }
             }
+        }
+    }
+    
+    private void manageInput(MouseEvent mouseEvent, int cardIndex) throws IOException {
+        
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseHelperCard(cardIndex)));
+            stopListeningToInput();
         }
     }
 }
