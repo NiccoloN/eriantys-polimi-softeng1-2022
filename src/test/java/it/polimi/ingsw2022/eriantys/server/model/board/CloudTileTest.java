@@ -27,6 +27,7 @@ class CloudTileTest {
         assertThrows(RuntimeException.class, () -> tile.addStudent(student));
         tile.addStudent(new ColoredPawn(PawnColor.BLUE));
         tile.addStudent(new ColoredPawn(PawnColor.GREEN));
+        tile.addStudent(new ColoredPawn(PawnColor.GREEN));
         assertThrows(RuntimeException.class, () -> tile.addStudent(new ColoredPawn(PawnColor.BLUE)));
     }
     
