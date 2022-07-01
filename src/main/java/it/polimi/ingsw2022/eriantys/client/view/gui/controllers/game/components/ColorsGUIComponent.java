@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
+import it.polimi.ingsw2022.eriantys.messages.moves.Abort;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor;
 import it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -10,6 +11,8 @@ import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -33,6 +36,7 @@ public class ColorsGUIComponent {
     
     private final Map<Button, PawnColor> buttonColors;
     private final Map<PawnColor, EventHandler<MouseEvent>> colorClickListeners;
+    private final EventHandler<KeyEvent> abortEventHandler;
     
     private MoveRequestMessage requestMessage;
     private int characterIndex;
@@ -53,16 +57,34 @@ public class ColorsGUIComponent {
         PawnColor[] pawnColors = PawnColor.values();
         for (PawnColor color : pawnColors) {
             
-            colorClickListeners.put(color, mouseEvent -> {
+            colorClickListeners.put(color, (mouseEvent) -> {
                 
                 try {
+                    
                     manageInput(mouseEvent, color);
                 }
                 catch (IOException e) {
+                    
                     e.printStackTrace();
                 }
             });
         }
+        
+        abortEventHandler = (keyEvent) -> {
+    
+            if (keyEvent.getCode() == KeyCode.ESCAPE) {
+        
+                try {
+            
+                    EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new Abort()));
+                    stopListeningToInput();
+                }
+                catch (IOException e) {
+            
+                    e.printStackTrace();
+                }
+            }
+        };
     }
     
     /**
@@ -80,6 +102,8 @@ public class ColorsGUIComponent {
             PawnColor color = buttonColors.get(colorButton);
             if (color != null) colorButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, colorClickListeners.get(color));
         }
+    
+        gameController.getGui().getCurrentScene().removeEventHandler(KeyEvent.KEY_PRESSED, abortEventHandler);
     }
     
     /**
@@ -92,6 +116,9 @@ public class ColorsGUIComponent {
         
         listenToInput(requestMessage, availableColors);
         this.characterIndex = characterIndex;
+        
+        if(characterIndex == 7 || characterIndex == 10)
+            gameController.getGui().getCurrentScene().addEventHandler(KeyEvent.KEY_PRESSED, abortEventHandler);
     }
     
     /**

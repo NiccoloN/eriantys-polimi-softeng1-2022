@@ -196,4 +196,9 @@ public class EriantysGUI extends Application implements View {
         
         currentScene.getRoot().setTranslateY((currentScene.getHeight() - DEFAULT_SCENE_HEIGHT * scaleFactor) / 2);
     }
+    
+    public Scene getCurrentScene() {
+        
+        return currentScene;
+    }
 }

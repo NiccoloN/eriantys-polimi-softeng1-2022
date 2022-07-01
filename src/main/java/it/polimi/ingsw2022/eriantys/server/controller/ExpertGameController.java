@@ -123,12 +123,13 @@ public class ExpertGameController extends BasicGameController {
                 }
             }).start();
         }
-        else if (performedMoveMessage.move instanceof Abort) {
+        else if (performedMoveMessage.move instanceof Abort && currentCharacterMoveRequestMessage != null) {
             
             new Thread(() -> {
                 
                 if (performedMoveMessage.move.isValid(game, currentCharacterMoveRequestMessage.moveRequest))
                     abortMessageReceived = true;
+                
                 currentCharacterMoveRequestMessage.acceptResponse();
             }).start();
         }
@@ -241,28 +242,29 @@ public class ExpertGameController extends BasicGameController {
                 game.setInfluenceCalculator(new InfluenceCalculatorNoTowers());
                 break;
             case 7:
-                for (int i = 0; i < 3; i++) {
-                    
+                for (int i = 0; i < 3 && !abortMessageReceived; i++) {
+    
+                    requestCharacterMove(new ChooseColorRequest(cardIndex, characterCard.getStudentsColors(), ColoredPawnOriginDestination.CHARACTER, "Select a student from the character card, or press ESC to stop the effect"), game.getCurrentPlayer().getUsername());
+    
                     if (!abortMessageReceived) {
-                        
-                        requestCharacterMove(new ChooseColorRequest(cardIndex, characterCard.getStudentsColors(), ColoredPawnOriginDestination.CHARACTER, "Select a student from the character card, or press ESC to stop the effect"), game.getCurrentPlayer().getUsername());
-                        
+        
+                        requestCharacterMove(new ChooseColorRequest(cardIndex, game.getCurrentPlayer().getSchool().getAvailableEntranceColors(), ColoredPawnOriginDestination.ENTRANCE, "Select now a student from your school entrance"), game.getCurrentPlayer().getUsername());
+        
                         if (!abortMessageReceived) {
-                            
-                            requestCharacterMove(new ChooseColorRequest(cardIndex, game.getCurrentPlayer().getSchool().getAvailableEntranceColors(), ColoredPawnOriginDestination.ENTRANCE, "Select now a student from your school entrance"), game.getCurrentPlayer().getUsername());
-                            
+            
                             game.getCharacterOfIndex(cardIndex).addStudent(game.getCurrentPlayer().getSchool().removeFromEntrance(game.getExchange(ColoredPawnOriginDestination.ENTRANCE)));
-                            
+            
                             ColoredPawn temp = game.getCharacterOfIndex(cardIndex).getStudent(game.getExchange(ColoredPawnOriginDestination.CHARACTER));
                             game.getCharacterOfIndex(cardIndex).removeStudent(temp);
                             game.getCurrentPlayer().getSchool().addToEntrance(temp);
-                            
+            
                             ChooseColor makeUpdate = new ChooseColor(null, cardIndex, null);
-                            
+            
                             server.sendToAllClients(new UpdateMessage(makeUpdate.getUpdate(game)));
-                            game.resetExchanges();
                         }
                     }
+                    
+                    game.resetExchanges();
                 }
                 
                 abortMessageReceived = false;
