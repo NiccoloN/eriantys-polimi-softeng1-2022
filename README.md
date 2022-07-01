@@ -19,6 +19,8 @@ You can find the full game [here](https://www.craniocreations.it/prodotto/eriant
 The final version includes:
 * initial UML diagram;
 * final UML diagram, generated from the code by automated tools;
+* protocol documentation;
+* every peer review, received and sent;
 * working game implementation, which has to be rules compliant;
 * source code of the implementation.
 
@@ -54,6 +56,8 @@ space of the command line. To prevent this, please decrease the font size of the
 *Note 2: files .bat, .command, .sh can be also found in deliverables, and can be downloaded and used
 in the same way as described later on.*
 
+*Note 3: It is recommended to have installed one of the latest JDK versions*
+
 ### Windows
 
 Download file jar from path `deliverables/jar/Eriantys.jar` ,
@@ -73,11 +77,28 @@ To start the GUI, launch the jar file.
 
 ### Mac
 
-Same procedure as windows, except for using a .command file instead of a .bat file.
+Same procedure as for windows, except for using a .command file instead of a .bat file,
+and the lines for the .command file are:
 
-*Note: Mac with aarch64 architecture (M1 processor) needs a different jar,
-named EriantysM1 in `deliverables/jar/M1`*
+`#!/bin/bash`  
+`cd "$(dirname "$BASH_SOURCE")"`  
+`java -jar Eriantys.jar -server`
+
+and
+
+`#!/bin/bash`  
+`cd "$(dirname "$BASH_SOURCE")"`  
+`java -jar Eriantys.jar -nogui`
+
+*Note: Mac with aarch64 architecture (M1 processor) needs a different jar, 
+that can be found in `deliverables/jar/M1`*
 
 ### Linux
 
-Same procedure as windows, except for using a .sh file instead of a .bat file.
+Download file jar from path `deliverables/jar/Eriantys.jar`.
+Open the terminal in the directory of the downloaded file,
+and write
+
+`java -jar Eriantys.jar -server` to start the server, or
+`java -jar Eriantys.jar -nogui` to start the CLI.
+
