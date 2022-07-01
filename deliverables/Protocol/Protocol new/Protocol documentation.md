@@ -299,7 +299,8 @@ The Server fills the clouds with new students and notifies every client of the c
 select a helper card by performing a move in a certain amount of time. If the submitted move is invalid and the time
 has not expired yet, the client can submit a new one. Once the time is up, the move is chosen randomly if invalid or 
 not received by the Server. After the move has been chosen, the Server updates the game and notifies all the clients.
-After that, every other client is asked to select a helper the same way (not reported in the diagram for brevity)
+After that, every other client is asked to select a helper the same way (not reported in the diagram for brevity).
+Whenever a Client is not playing its turn, it is requested to wait for turn of others to complete.
 
 ### Action phase: moving students
 
@@ -307,7 +308,7 @@ After that, every other client is asked to select a helper the same way (not rep
 
 Client1 is asked to position 3 of the students in its school entrance either on an island or in its school by performing
 3 different moves, each in a certain amount of time. If any of the submitted moves is invalid and the time has not expired
-yet, the client can submit a new one. Once the time is up, the move is chosen randomly if invalid or not received by the 
+yet, the client can submit a new one. Once the time is up, the Server shuts down if the move is invalid or not received by the 
 Server. After the move has been chosen, the Server updates the game and notifies all the clients. 
 
 ### Action phase: moving mother nature
@@ -315,7 +316,7 @@ Server. After the move has been chosen, the Server updates the game and notifies
 ![Action_phase_2](Action_phase_2.png)
 
 Client1 is asked to move mother nature by performing a move in a certain amount of time. If the submitted move is invalid 
-and the time has not expired yet, the client can submit a new one. Once the time is up, the move is chosen randomly if 
+and the time has not expired yet, the client can submit a new one. Once the time is up, the Server shuts down if the move is 
 invalid or not received by the Server. After the move has been chosen, the Server updates the game and notifies all the 
 clients. 
 
@@ -324,9 +325,9 @@ clients.
 ![Action_phase_3](Action_phase_3.png)
 
 Client1 is asked to choose a cloud by performing a move in a certain amount of time. If the submitted move is invalid
-and the time has not expired yet, the client can submit a new one. Once the time is up, the move is chosen randomly if
+and the time has not expired yet, the client can submit a new one. Once the time is up, the Server shuts down if the move is
 invalid or not received by the Server. After the move has been chosen, the Server updates the game and notifies all the
-clients. 
+clients. After that, the client is requested to wait for the turn of other players to complete until it has to play again.
 
 ### Game ending
 
