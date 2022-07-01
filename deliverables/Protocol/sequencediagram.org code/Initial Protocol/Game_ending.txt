@@ -1,0 +1,13 @@
+title End of the game
+
+participant Client1
+participant Server
+participant Client2
+
+Server->Server: Game state update
+Server->>Client1: UpdateGameMessage(Update)
+Server->>Client2: UpdateGameMessage(Update)
+space
+Server->>Client1: GameEndedMessage(WinnerTeam)
+Server->>Client2: GameEndedMessage(WinnerTeam)
+

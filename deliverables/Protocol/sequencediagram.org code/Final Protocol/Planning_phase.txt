@@ -1,0 +1,54 @@
+title Planning phase (2 players)
+participant Client1
+participant Server
+
+note over Client1, Client2: Clouds update 
+Server->Client1: UpdateMessage([CloudChange])
+Server->Client2: UpdateMessage([CloudChange])
+
+note over Client1, Client2: Helper choice
+Server->Client1: MoveRequestMessage(WaitRequest)
+Server->Client2: MoveRequestMessage(WaitRequest)
+
+Server->Client1: MoveRequestMessage(ChooseHelperCardRequest)
+
+loop do while the move is invalid and time has not expired
+	Client1->Server: PerformedMoveMessage(ChooseHelperCard)
+    alt Invalid move
+    Server-->Client1: InvalidMoveMessage(Cause)
+    else Valid move
+    Server-->Client1: AckMessage()
+  end
+end
+opt if time has expired
+	Server->Server: Choose random move \nfor client
+end
+
+Server->Client1: MoveRequestMessage(WaitRequest)
+
+Server->Client1: UpdateMessage([HelperCardsChange])
+Server->Client2: UpdateMessage([HelperCardsChange])
+
+
+
+
+Server->Client2: MoveRequestMessage(ChooseHelperCardRequest)
+
+loop do while the move is invalid and time has not expired
+	Client2->Server: PerformedMoveMessage(ChooseHelperCard)
+    alt Invalid move
+    Server-->Client2: InvalidMoveMessage(Cause)
+    else Valid move
+    Server-->Client2: AckMessage()
+  end
+end
+opt if time has expired
+	Server->Server: Choose random move \nfor client
+end
+
+Server->Client2: MoveRequestMessage(WaitRequest)
+
+Server->Client1: UpdateMessage([HelperCardsChange])
+Server->Client2: UpdateMessage([HelperCardsChange])
+
+
