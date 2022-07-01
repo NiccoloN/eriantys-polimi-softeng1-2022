@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>D:/Poli/05 - Ingegneria del software/Eriantys (progetto e documentazione)/Eriantys/src/main/java/it/polimi/ingsw2022/eriantys</OriginalElement>
+  <nodes>
+    <node x="0.0" y="4681.0">it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard</node>
+    <node x="352.0" y="3036.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController</node>
+    <node x="536.4999999999999" y="953.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent</node>
+    <node x="1071.0" y="4054.5">it.polimi.ingsw2022.eriantys.messages.toClient.AckMessage</node>
+    <node x="1947.5" y="931.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent</node>
+    <node x="3557.0" y="2558.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterServerIp</node>
+    <node x="772.0" y="3322.5">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.Start</node>
+    <node x="5179.5" y="0.0">it.polimi.ingsw2022.eriantys.server.EriantysServer</node>
+    <node x="2441.0" y="2907.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.CharacterGUIComponent</node>
+    <node x="5496.0" y="2514.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.GameModeSelection</node>
+    <node x="3017.5" y="317.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene</node>
+    <node x="0.0" y="1414.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent</node>
+    <node x="4737.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.controller.GameMode</node>
+    <node x="3752.0" y="4927.0">it.polimi.ingsw2022.eriantys.server.model.board.IslandTile</node>
+    <node x="5884.0" y="2547.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername</node>
+    <node x="3739.5" y="238.0">it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI</node>
+    <node x="4087.0" y="5088.5">it.polimi.ingsw2022.eriantys.messages.changes.CloudChange</node>
+    <node x="2205.5" y="898.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.SchoolTablesCLIComponent</node>
+    <node x="3237.25" y="0.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene</node>
+    <node x="2641.0" y="4788.5">it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBonus</node>
+    <node x="2084.0" y="4681.0">it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud</node>
+    <node x="1859.0" y="2525.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.HelperSelection</node>
+    <node x="0.0" y="5179.0">it.polimi.ingsw2022.eriantys.messages.requests.ChooseIslandRequest</node>
+    <node x="2820.5" y="4536.0">it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic</node>
+    <node x="262.9999999999999" y="1414.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.WinnerMessageCLIComponent</node>
+    <node x="4685.5" y="3825.0">it.polimi.ingsw2022.eriantys.server.model.players.Player</node>
+    <node x="5443.0" y="5381.0">it.polimi.ingsw2022.eriantys.Eriantys</node>
+    <node x="2935.0" y="5381.0">it.polimi.ingsw2022.eriantys.messages.requests.ColoredPawnOriginDestination</node>
+    <node x="785.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.cards.CardFactory</node>
+    <node x="2015.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.players.Team</node>
+    <node x="2349.0" y="2536.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.DiningRoomSelection</node>
+    <node x="529.0" y="2404.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.IslandSelection</node>
+    <node x="526.0" y="5509.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView</node>
+    <node x="2820.5" y="4430.0">it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator</node>
+    <node x="2913.0" y="4788.5">it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoTowers</node>
+    <node x="929.0000000000001" y="4670.0">it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland</node>
+    <node x="1059.5" y="898.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CharacterCardCLIComponent</node>
+    <node x="2162.0" y="3278.5">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.GameMode</node>
+    <node x="4818.0" y="2230.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState</node>
+    <node x="537.9999999999999" y="1293.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent</node>
+    <node x="2463.0" y="4261.0">it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage</node>
+    <node x="4758.25" y="4927.0">it.polimi.ingsw2022.eriantys.messages.changes.Change</node>
+    <node x="29.0" y="1776.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent.BlinkState</node>
+    <node x="4998.0" y="2547.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Connecting</node>
+    <node x="1501.0" y="4043.0">it.polimi.ingsw2022.eriantys.messages.toClient.NewPlayerJoinedMessage</node>
+    <node x="264.4999999999999" y="931.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.AnimatedCLIComponent</node>
+    <node x="396.0" y="5157.0">it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest</node>
+    <node x="2959.5" y="4249.5">it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage</node>
+    <node x="1022.0" y="2536.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CloudSelection</node>
+    <node x="4352.25" y="3825.0">it.polimi.ingsw2022.eriantys.server.model.cards.Card</node>
+    <node x="4418.5" y="195.0">it.polimi.ingsw2022.eriantys.server.controller.BasicGameController</node>
+    <node x="3408.0" y="4054.5">it.polimi.ingsw2022.eriantys.messages.toClient.ConnectedMessage</node>
+    <node x="4977.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn</node>
+    <node x="4418.5" y="722.0">it.polimi.ingsw2022.eriantys.server.controller.ExpertGameController</node>
+    <node x="3243.0" y="4777.0">it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor</node>
+    <node x="1151.25" y="4430.0">it.polimi.ingsw2022.eriantys.messages.moves.Move</node>
+    <node x="5266.0" y="2569.5">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Start</node>
+    <node x="945.6421568627452" y="4261.5">it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage</node>
+    <node x="672.0" y="4043.0">it.polimi.ingsw2022.eriantys.messages.toClient.ErrorMessage</node>
+    <node x="541.0" y="4239.0">it.polimi.ingsw2022.eriantys.messages.PingMessage</node>
+    <node x="532.0000000000001" y="4659.0">it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor</node>
+    <node x="811.4999999999999" y="964.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.ColorCLIComponent</node>
+    <node x="1757.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.cli.Input</node>
+    <node x="5209.0" y="5099.5">it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange</node>
+    <node x="3651.0" y="4430.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.SchoolGUIComponent</node>
+    <node x="1756.0" y="4032.0">it.polimi.ingsw2022.eriantys.messages.toClient.InvalidResponseMessage</node>
+    <node x="4608.0" y="5077.0">it.polimi.ingsw2022.eriantys.messages.changes.PlayerChange</node>
+    <node x="2441.0" y="4032.0">it.polimi.ingsw2022.eriantys.messages.toClient.GameJoinedMessage</node>
+    <node x="2473.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.cli.AsciiArts</node>
+    <node x="266.0" y="4659.0">it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature</node>
+    <node x="869.0" y="4043.0">it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage</node>
+    <node x="0.0" y="4261.5">it.polimi.ingsw2022.eriantys.messages.toClient.ChooseGameSettingsMessage</node>
+    <node x="1904.0" y="3322.5">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.EnterServerIp</node>
+    <node x="3903.0" y="0.0">it.polimi.ingsw2022.eriantys.client.view.View</node>
+    <node x="2750.0" y="4043.0">it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage</node>
+    <node x="3191.0" y="4031.5">it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage</node>
+    <node x="2993.0" y="2503.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CharacterSelection</node>
+    <node x="1330.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.HelpersGUIComponent</node>
+    <node x="1372.5" y="909.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatsCLIComponent</node>
+    <node x="3325.5" y="4272.5">it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage</node>
+    <node x="4832.0" y="1967.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState</node>
+    <node x="2972.0" y="4043.0">it.polimi.ingsw2022.eriantys.messages.toClient.GameEndedMessage</node>
+    <node x="998.0" y="3311.5">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.EnterUsername</node>
+    <node x="3815.5" y="3825.0">it.polimi.ingsw2022.eriantys.server.model.board.SchoolDashboard</node>
+    <node x="1306.0" y="2907.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController</node>
+    <node x="2559.5" y="0.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.IslandGUIComponent</node>
+    <node x="4066.5" y="392.0">it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI</node>
+    <node x="0.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.board.Board</node>
+    <node x="1430.25" y="0.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent</node>
+    <node x="1195.0" y="4626.0">it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent</node>
+    <node x="271.0" y="4250.0">it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage</node>
+    <node x="0.0" y="1967.0">it.polimi.ingsw2022.eriantys.server.model.Game</node>
+    <node x="384.0" y="3999.0">it.polimi.ingsw2022.eriantys.messages.TimedMessage</node>
+    <node x="5466.0" y="5055.0">it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange</node>
+    <node x="0.0" y="2907.0">it.polimi.ingsw2022.eriantys.client.EriantysClient</node>
+    <node x="1452.0" y="5190.5">it.polimi.ingsw2022.eriantys.messages.requests.WaitRequest</node>
+    <node x="1506.0" y="4250.0">it.polimi.ingsw2022.eriantys.messages.toClient.InvalidUsernameMessage</node>
+    <node x="1452.0" y="4927.0">it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest</node>
+    <node x="1250.0" y="393.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent</node>
+    <node x="4598.0" y="2525.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection</node>
+    <node x="4190.0" y="5381.0">it.polimi.ingsw2022.eriantys.messages.toServer.GameSettings</node>
+    <node x="5112.0" y="2208.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly</node>
+    <node x="1088.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor</node>
+    <node x="2244.0" y="5179.0">it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest</node>
+    <node x="2227.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.controller.GamePhase</node>
+    <node x="1497.0" y="305.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent</node>
+    <node x="5620.5" y="0.0">it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes</node>
+    <node x="4853.5" y="0.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.Images</node>
+    <node x="3424.0" y="4927.0">it.polimi.ingsw2022.eriantys.server.model.board.CompoundIslandTile</node>
+    <node x="4418.5" y="0.0">it.polimi.ingsw2022.eriantys.server.controller.GameController</node>
+    <node x="534.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView</node>
+    <node x="1566.0" y="3311.5">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.LobbyWaiting</node>
+    <node x="1270.0" y="3322.5">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.LoadOrCreateGame</node>
+    <node x="4824.0" y="5066.5">it.polimi.ingsw2022.eriantys.messages.changes.IslandChange</node>
+    <node x="2640.0" y="5190.5">it.polimi.ingsw2022.eriantys.messages.requests.ChooseCloudRequest</node>
+    <node x="4333.0" y="5088.5">it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange</node>
+    <node x="2350.0" y="4681.0">it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard</node>
+    <node x="3582.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag</node>
+    <node x="5773.0" y="4927.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.ColorsGUIComponent</node>
+    <node x="1848.0" y="5179.0">it.polimi.ingsw2022.eriantys.messages.requests.ChooseHelperCardRequest</node>
+    <node x="2065.0" y="4021.0">it.polimi.ingsw2022.eriantys.messages.toClient.StartingGameMessage</node>
+    <node x="1818.0" y="4692.5">it.polimi.ingsw2022.eriantys.messages.moves.Abort</node>
+    <node x="906.0" y="5146.0">it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest</node>
+    <node x="3277.0" y="5381.0">it.polimi.ingsw2022.eriantys.server.model.board.CloudTile</node>
+    <node x="3334.5" y="240.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene</node>
+    <node x="1747.0" y="3825.0">it.polimi.ingsw2022.eriantys.messages.Message</node>
+    <node x="3832.0" y="2547.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting</node>
+    <node x="2694.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.cli.Frame</node>
+    <node x="4450.0" y="5381.0">it.polimi.ingsw2022.eriantys.messages.changes.Update</node>
+    <node x="1665.75" y="2185.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState</node>
+    <node x="4199.5" y="4087.0">it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard</node>
+    <node x="1916.0" y="4272.5">it.polimi.ingsw2022.eriantys.messages.toClient.InvalidGameSettingsMessage</node>
+    <node x="1689.5" y="876.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent</node>
+    <node x="4393.5" y="3954.0">it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard</node>
+    <node x="3587.5" y="4272.5">it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage</node>
+    <node x="313.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.cli.Action</node>
+    <node x="4236.0" y="2536.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LoadOrCreateGame</node>
+    <node x="1432.0" y="2514.0">it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.ColorSelection</node>
+    <node x="3880.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.PlayerGUIComponent</node>
+    <node x="1268.0" y="4043.0">it.polimi.ingsw2022.eriantys.messages.PongMessage</node>
+    <node x="5211.0" y="5381.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.StudentLabel</node>
+    <node x="3061.0" y="4927.0">it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.CloudGUIComponent</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.InvalidMoveMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="2851.0" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.ChooseGameSettingsMessage" target="it.polimi.ingsw2022.eriantys.messages.TimedMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.5" />
+      <point x="125.5" y="4214.0" />
+      <point x="518.0" y="4214.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.controller.BasicGameController" target="it.polimi.ingsw2022.eriantys.server.controller.GameController" relationship="REALIZATION">
+      <point x="0.0" y="-238.5" />
+      <point x="0.0" y="72.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.changes.CloudChange" target="it.polimi.ingsw2022.eriantys.messages.changes.Change" relationship="REALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="4200.0" y="5030.0" />
+      <point x="4856.25" y="5030.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterUsername" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.0" />
+      <point x="6043.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.SchoolTablesCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-161.5" />
+      <point x="2360.0" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.ConnectedMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="3498.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.controller.ExpertGameController" target="it.polimi.ingsw2022.eriantys.server.controller.BasicGameController" relationship="GENERALIZATION">
+      <point x="0.0" y="-150.0" />
+      <point x="0.0" y="238.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.EnterServerIp" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="3684.5" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-172.5" />
+      <point x="1363.5" y="280.0" />
+      <point x="1527.75" y="280.0" />
+      <point x="0.0" y="127.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.MoveMotherNature" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="389.0" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.PingMessage" target="it.polimi.ingsw2022.eriantys.messages.TimedMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="640.0" y="4214.0" />
+      <point x="518.0" y="4214.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.5" />
+      <point x="1864.75" y="2160.0" />
+      <point x="4955.0" y="2160.0" />
+      <point x="0.0" y="84.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.InvalidResponseMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.AnimatedCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-128.5" />
+      <point x="390.4999999999999" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.EnterServerIp" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="2023.0" y="3011.0" />
+      <point x="1408.0" y="3011.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.PongMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="1374.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.WinnerMessageCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.AnimatedCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.5" />
+      <point x="0.0" y="128.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.changes.IslandChange" target="it.polimi.ingsw2022.eriantys.messages.changes.Change" relationship="REALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="5006.5" y="5030.0" />
+      <point x="4856.25" y="5030.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="123.0" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.GameJoinedMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="2585.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toServer.GameSettingsMessage" target="it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="2615.0" y="4214.0" />
+      <point x="3289.5" y="4214.0" />
+      <point x="0.0" y="62.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-348.5" />
+      <point x="552.0" y="3011.0" />
+      <point x="1408.0" y="3011.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene" relationship="GENERALIZATION">
+      <point x="0.0" y="-392.5" />
+      <point x="3514.5" y="215.0" />
+      <point x="3340.25" y="215.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage" target="it.polimi.ingsw2022.eriantys.messages.TimedMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="396.0" y="4214.0" />
+      <point x="518.0" y="4214.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.changes.CharacterCardsChange" target="it.polimi.ingsw2022.eriantys.messages.changes.Change" relationship="REALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="4460.5" y="5030.0" />
+      <point x="4856.25" y="5030.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CharacterSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-128.0" />
+      <point x="3265.0" y="2379.0" />
+      <point x="1864.75" y="2379.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CharacterCardCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-161.5" />
+      <point x="1206.0" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.CloudCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-128.5" />
+      <point x="2066.5" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.ChooseColor" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="720.5000000000001" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage" target="it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.5" />
+      <point x="3132.5" y="4214.0" />
+      <point x="3289.5" y="4214.0" />
+      <point x="0.0" y="62.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.AckMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="1159.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.NewPlayerJoinedMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="1618.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.changes.SchoolChange" target="it.polimi.ingsw2022.eriantys.messages.changes.Change" relationship="REALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="5327.5" y="5030.0" />
+      <point x="4856.25" y="5030.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.LobbyWaiting" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="1725.0" y="3011.0" />
+      <point x="1408.0" y="3011.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.LoadOrCreateGame" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.HelperCardCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-106.5" />
+      <point x="663.9999999999999" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Start" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.5" />
+      <point x="5371.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.GameEndedMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="3071.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBonus" target="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="2767.0" y="4752.0" />
+      <point x="3068.0" y="4752.0" />
+      <point x="0.0" y="95.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.ColorSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-117.0" />
+      <point x="1635.5" y="2379.0" />
+      <point x="1864.75" y="2379.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.changes.PlayerChange" target="it.polimi.ingsw2022.eriantys.messages.changes.Change" relationship="REALIZATION">
+      <point x="0.0" y="-84.5" />
+      <point x="4706.0" y="5030.0" />
+      <point x="4856.25" y="5030.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.MenuScene" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.CLIScene" relationship="GENERALIZATION">
+      <point x="0.0" y="-315.5" />
+      <point x="3166.0" y="215.0" />
+      <point x="3340.25" y="215.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent.BlinkState" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent" relationship="INNER_CLASS">
+      <point x="0.0" y="-73.0" />
+      <point x="0.0" y="95.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toServer.DisconnectMessage" target="it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="3679.0" y="4214.0" />
+      <point x="3289.5" y="4214.0" />
+      <point x="0.0" y="62.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LobbyWaiting" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.0" />
+      <point x="4024.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.Abort" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.5" />
+      <point x="1941.0" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.WaitRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.5" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.TimedMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="518.0" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoColor" target="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="3424.5" y="4752.0" />
+      <point x="3068.0" y="4752.0" />
+      <point x="0.0" y="95.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.ChooseHelperCardRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="2036.0" y="5121.0" />
+      <point x="1640.0" y="5121.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.0" />
+      <point x="1052.0" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.MoveMotherNatureRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="2432.0" y="5121.0" />
+      <point x="1640.0" y="5121.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.CloudSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="1217.0" y="2379.0" />
+      <point x="1864.75" y="2379.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.TextAreaCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.AnimatedCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-216.5" />
+      <point x="666.9999999999999" y="1268.0" />
+      <point x="390.4999999999999" y="1268.0" />
+      <point x="0.0" y="128.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.HelperSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-106.0" />
+      <point x="2094.0" y="2379.0" />
+      <point x="1864.75" y="2379.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.ChooseIslandRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="188.0" y="5121.0" />
+      <point x="1640.0" y="5121.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.Connecting" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.0" />
+      <point x="5122.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.InvalidUsernameMessage" target="it.polimi.ingsw2022.eriantys.messages.toClient.InvalidResponseMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="1701.0" y="4214.0" />
+      <point x="1900.5" y="4214.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.ChooseCloudRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.5" />
+      <point x="2828.0" y="5121.0" />
+      <point x="1640.0" y="5121.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard" target="it.polimi.ingsw2022.eriantys.server.model.cards.Card" relationship="GENERALIZATION">
+      <point x="0.0" y="-183.5" />
+      <point x="4517.0" y="3929.0" />
+      <point x="4401.75" y="3929.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.model.cards.HelperCard" target="it.polimi.ingsw2022.eriantys.server.model.cards.Card" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.5" />
+      <point x="4286.5" y="3929.0" />
+      <point x="4401.75" y="3929.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.ChooseColorRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.0" />
+      <point x="641.0" y="5121.0" />
+      <point x="1640.0" y="5121.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.ViewOnly" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.5" />
+      <point x="5223.0" y="2160.0" />
+      <point x="4955.0" y="2160.0" />
+      <point x="0.0" y="84.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.EnterUsername" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="1124.0" y="3011.0" />
+      <point x="1408.0" y="3011.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="2207.0" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toServer.UsernameChoiceMessage" target="it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="3446.5" y="4214.0" />
+      <point x="3289.5" y="4214.0" />
+      <point x="0.0" y="62.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.LoadOrCreateGame" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="4407.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.GameMode" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-106.0" />
+      <point x="2279.0" y="3011.0" />
+      <point x="1408.0" y="3011.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.EriantysCLI" target="it.polimi.ingsw2022.eriantys.client.view.View" relationship="REALIZATION">
+      <point x="0.0" y="-392.5" />
+      <point x="3893.0" y="213.0" />
+      <point x="4056.5" y="213.0" />
+      <point x="0.0" y="94.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatusCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.CLIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-260.5" />
+      <point x="1692.0" y="280.0" />
+      <point x="1527.75" y="280.0" />
+      <point x="0.0" y="127.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic" target="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator" relationship="REALIZATION">
+      <point x="0.0" y="-95.5" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.ErrorMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="760.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.requests.MoveStudentRequest" target="it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="1169.0" y="5121.0" />
+      <point x="1640.0" y="5121.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.StartingGameMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="2243.0" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.player.PlayerStatsCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-150.5" />
+      <point x="1521.0" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.NumberOfPlayersSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-106.0" />
+      <point x="4788.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage" target="it.polimi.ingsw2022.eriantys.messages.TimedMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.5" />
+      <point x="1058.1421568627452" y="4214.0" />
+      <point x="518.0" y="4214.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-128.0" />
+      <point x="1496.5" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.changes.HelperCardsChange" target="it.polimi.ingsw2022.eriantys.messages.changes.Change" relationship="REALIZATION">
+      <point x="0.0" y="-106.5" />
+      <point x="5597.0" y="5030.0" />
+      <point x="4856.25" y="5030.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.menu.Start" target="it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.0" />
+      <point x="875.0" y="3011.0" />
+      <point x="1408.0" y="3011.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BlinkingCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.AnimatedCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.5" />
+      <point x="121.5" y="1268.0" />
+      <point x="390.4999999999999" y="1268.0" />
+      <point x="0.0" y="128.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toServer.ToServerMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.5" />
+      <point x="3289.5" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorNoTowers" target="it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculatorBasic" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="0.0" y="95.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.ColorCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.5" />
+      <point x="925.4999999999999" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.GameModeSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-117.0" />
+      <point x="5680.0" y="2379.0" />
+      <point x="4955.0" y="2379.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI" target="it.polimi.ingsw2022.eriantys.client.view.View" relationship="REALIZATION">
+      <point x="0.0" y="-238.5" />
+      <point x="4220.0" y="213.0" />
+      <point x="4056.5" y="213.0" />
+      <point x="0.0" y="94.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard" target="it.polimi.ingsw2022.eriantys.messages.moves.Move" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="2473.0" y="4601.0" />
+      <point x="1274.25" y="4601.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.menuScene.states.MenuSceneState" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="0.0" y="84.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.InvalidGameSettingsMessage" target="it.polimi.ingsw2022.eriantys.messages.toClient.InvalidResponseMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="2072.0" y="4214.0" />
+      <point x="1900.5" y="4214.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.IslandSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-227.0" />
+      <point x="765.5" y="2379.0" />
+      <point x="1864.75" y="2379.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.messages.toClient.UpdateMessage" target="it.polimi.ingsw2022.eriantys.messages.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="960.0" y="3974.0" />
+      <point x="1900.5" y="3974.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.components.IslandCLIComponent" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.components.BasicCLIComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-183.5" />
+      <point x="1808.5" y="851.0" />
+      <point x="1363.5" y="851.0" />
+      <point x="0.0" y="172.5" />
+    </edge>
+    <edge source="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.DiningRoomSelection" target="it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.states.GameSceneState" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="2661.0" y="2379.0" />
+      <point x="1864.75" y="2379.0" />
+      <point x="0.0" y="84.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.15380568221676605" showDependencies="false" x="3101.0" y="2841.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
