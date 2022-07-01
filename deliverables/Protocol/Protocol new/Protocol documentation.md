@@ -6,6 +6,30 @@ Group 9
 
 ## Messages
 
+### PingMessage
+
+Sent between server and clients to ensure the connection is alive
+
+#### Arguments
+
+- No arguments
+
+#### Possible responses
+
+- PongMessage
+
+### PongMessage
+
+Sent between server and clients in response to a ping message
+
+#### Arguments
+
+- No arguments
+
+#### Possible responses
+
+- No response
+
 ### AckMessage
 
 Sent from server to client to confirm a generic message has been acknowledged
@@ -27,18 +51,6 @@ in the possible responses of the message it is responding to, therefore it will 
 
 - Request: the request message needing a response
 - Response: the invalid response received
-
-#### Possible responses
-
-- No responses
-
-### AbortMessage
-
-Sent from client to server to abort the current operation
-
-#### Arguments
-
-- No arguments
 
 #### Possible responses
 
@@ -174,13 +186,13 @@ Sent from client to server if the client wants to disconnect
 
 - No response
 
-### PlayerDisconnectedMessage
+### ErrorMessage
 
-Sent from server to all clients if any of the clients disconnected
+Sent from server to all clients if any of the clients disconnected or an internal server error occurred
 
 #### Arguments
 
-- No arguments
+- Error description: the description of the error
 
 #### Possible responses
 
@@ -199,7 +211,7 @@ Sent from server to all clients whenever the requested amount of player is reach
 
 - No response
 
-### UpdateGameMessage
+### UpdateMessage
 
 Sent from server to all clients whenever the game state is updated
 
@@ -265,7 +277,7 @@ Sent from server to all clients when the game ends
 
 ### Joining game
 
-![Joining_game](sequencediagram.org%20code/Initial%20Protocol/Joining_game.png)
+![Joining_game](Joining_game.png)
 
 Client1 is the first client that connects to the Server. The Server notifies Client1 of the successful connection
 and asks to provide a username. Client1 provides a username that can be either valid or invalid. Client1 continues
@@ -281,7 +293,7 @@ reported in the diagram for clarity)
 
 ### Planning phase
 
-![Planning_phase](sequencediagram.org%20code/Initial%20Protocol/Planning_phase.png)
+![Planning_phase](Planning_phase.png)
 
 The Server fills the clouds with new students and notifies every client of the change. Then, Client1 is asked to 
 select a helper card by performing a move in a certain amount of time. If the submitted move is invalid and the time
@@ -291,7 +303,7 @@ After that, every other client is asked to select a helper the same way (not rep
 
 ### Action phase: moving students
 
-![Action_phase_1](sequencediagram.org%20code/Initial%20Protocol/Action_phase_1.png)
+![Action_phase_1](Action_phase_1.png)
 
 Client1 is asked to position 3 of the students in its school entrance either on an island or in its school by performing
 3 different moves, each in a certain amount of time. If any of the submitted moves is invalid and the time has not expired
@@ -300,7 +312,7 @@ Server. After the move has been chosen, the Server updates the game and notifies
 
 ### Action phase: moving mother nature
 
-![Action_phase_2](sequencediagram.org%20code/Initial%20Protocol/Action_phase_2.png)
+![Action_phase_2](Action_phase_2.png)
 
 Client1 is asked to move mother nature by performing a move in a certain amount of time. If the submitted move is invalid 
 and the time has not expired yet, the client can submit a new one. Once the time is up, the move is chosen randomly if 
@@ -309,7 +321,7 @@ clients.
 
 ### Action phase: choosing clouds
 
-![Action_phase_3](sequencediagram.org%20code/Initial%20Protocol/Action_phase_3.png)
+![Action_phase_3](Action_phase_3.png)
 
 Client1 is asked to choose a cloud by performing a move in a certain amount of time. If the submitted move is invalid
 and the time has not expired yet, the client can submit a new one. Once the time is up, the move is chosen randomly if
@@ -318,7 +330,7 @@ clients.
 
 ### Game ending
 
-![Game_ending](sequencediagram.org%20code/Initial%20Protocol/Game_ending.png)
+![Game_ending](Game_ending.png)
 
 Whenever the Server updates the game and acknowledges the game ending, the last update is sent to every client and subsequently
 every client is notified of the game ending.

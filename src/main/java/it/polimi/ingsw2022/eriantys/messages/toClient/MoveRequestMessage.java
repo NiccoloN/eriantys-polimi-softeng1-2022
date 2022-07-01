@@ -40,7 +40,6 @@ public class MoveRequestMessage extends TimedMessage {
             
             System.out.println("Move response timeout");
             EriantysServer.getInstance().shutdown(true);
-            //TODO mossa casuale
         });
     }
 }

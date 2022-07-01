@@ -72,12 +72,9 @@ public class GameModeSelection extends MenuSceneState {
     @Override
     public void manageInput(Input input) throws IOException {
         
-        if (input.triggersAction(Action.SELECT)) {
-            
+        if (input.triggersAction(Action.SELECT))
             EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage, new GameSettings(selectedNumberOfPlayers, GameMode.values()[currentSelectedIndex])));
-            
-            //TODO abort message
-        }
+        
         
         if (input.triggersAction(Action.UP)) currentSelectedIndex--;
         else if (input.triggersAction(Action.DOWN)) currentSelectedIndex++;

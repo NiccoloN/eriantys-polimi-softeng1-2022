@@ -72,7 +72,6 @@ public class LoadOrCreateGame extends MenuSceneState {
                 EriantysClient.getInstance().sendToServer(new GameSettingsMessage(requestMessage, new GameSettings()));
             
             else getScene().setState(new NumberOfPlayersSelection(getCli(), getScene(), requestMessage));
-            //TODO abort message
         }
         
         if (input.triggersAction(Action.UP) || input.triggersAction(Action.DOWN)) switchSelected();
