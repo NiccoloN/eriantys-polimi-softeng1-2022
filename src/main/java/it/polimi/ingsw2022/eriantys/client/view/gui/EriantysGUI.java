@@ -71,7 +71,7 @@ public class EriantysGUI extends Application implements View {
     private Scene currentScene;
     private GameController gameController;
     
-    private EriantysGUI() {
+    public EriantysGUI() {
         
         instance = this;
         running = true;
