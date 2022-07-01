@@ -14,7 +14,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 
 /**
  * This class represents the player's choice of a color. It's mainly used for the character cards effects.
- *
  * @author Emanuele Musto
  */
 public class ChooseColor extends Move {

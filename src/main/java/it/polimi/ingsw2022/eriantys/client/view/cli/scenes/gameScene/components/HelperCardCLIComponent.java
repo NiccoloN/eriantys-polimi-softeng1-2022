@@ -9,7 +9,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents a helper card cli component
- *
  * @author Niccolò Nicolosi
  */
 public class HelperCardCLIComponent extends BasicCLIComponent {
@@ -22,7 +21,6 @@ public class HelperCardCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs a helper card cli component with the given index, priority value and movement value
-     *
      * @param index    the index of the helper card associated to this component
      * @param priority the priority value of the helper card associated to this component
      * @param movement the movement value of the helper card associated to this component

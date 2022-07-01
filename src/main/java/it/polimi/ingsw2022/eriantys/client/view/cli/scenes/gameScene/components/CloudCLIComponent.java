@@ -13,7 +13,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents a cloud cli component
- *
  * @author Niccolò Nicolosi
  */
 public class CloudCLIComponent extends BasicCLIComponent {
@@ -26,7 +25,6 @@ public class CloudCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs a cloud cli component with the given index
-     *
      * @param index the index of this cloud
      * @throws InvalidParameterException if index is < 0 or > 9
      */
@@ -68,7 +66,6 @@ public class CloudCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the students of the given color to visualize on this cloud component
-     *
      * @param color    the color of the students
      * @param students the students of students to visualize
      * @throws InvalidParameterException if students is not between 0 and 9

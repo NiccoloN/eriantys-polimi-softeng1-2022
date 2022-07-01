@@ -20,7 +20,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents a game scene state in which the user is asked to select a color
- *
  * @author Niccolò Nicolosi
  */
 public class ColorSelection extends GameSceneState {
@@ -31,7 +30,6 @@ public class ColorSelection extends GameSceneState {
     
     /**
      * Constructs a default color selection state
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one
@@ -44,7 +42,6 @@ public class ColorSelection extends GameSceneState {
     
     /**
      * Constructs a particular color selection state requested by the play of a character card with the given index
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one

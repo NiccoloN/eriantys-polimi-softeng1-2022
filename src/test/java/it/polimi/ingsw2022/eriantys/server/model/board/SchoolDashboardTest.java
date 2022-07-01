@@ -3,7 +3,6 @@ package it.polimi.ingsw2022.eriantys.server.model.board;
 import it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
-import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ class SchoolDashboardTest {
         
         int numberOfTowers = 8;
         Team blackTeam = new Team(AnsiCodes.BLACK_BRIGHT, "black");
-        Player player = new Player("player1", blackTeam, Mage.MAGE_1);
+        Player player = new Player("player1", blackTeam);
         assertThrows(RuntimeException.class, () -> new SchoolDashboard(player, 5));
         new SchoolDashboard(player, 6);
         this.schoolDashboard = new SchoolDashboard(player, numberOfTowers);

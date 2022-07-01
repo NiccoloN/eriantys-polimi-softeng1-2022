@@ -38,7 +38,6 @@ public class WinnerMessageCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Set the winner team to visualize on this component
-     *
      * @param winnerTeam the winner team to visualize
      */
     public void setWinnerTeam(Team winnerTeam) {

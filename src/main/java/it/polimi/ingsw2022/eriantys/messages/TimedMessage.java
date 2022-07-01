@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class represents a message sento to the client that has a timer, if the timer runs out a runnable task starts.
  * Every timed message has a lockId, given and retrievable from the server, in order to identify and accept the message
  * once it's received by the client.
- *
  * @author Emanuele Musto
  * @author Niccolò Nicolosi
  */
@@ -60,7 +59,6 @@ public abstract class TimedMessage extends Message {
      * by getting an id from the server to synchronize on, and waits for the amount of time specified by the parameter
      * timeout. At the end of the wait, if the lock (a boolean) is still set to falso, the timeout task will run.
      * Otherwise, everyone waiting on the lock is notified, and the lock is set free for others to use.
-     *
      * @param timeout     the amount of time for the wait
      * @param timeoutTask the task to run when the timeout expires.
      * @throws InterruptedException if the thread waiting is interrupted.

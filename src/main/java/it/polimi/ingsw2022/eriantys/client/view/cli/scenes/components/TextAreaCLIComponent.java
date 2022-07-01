@@ -8,7 +8,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a cli component that contains text. Text can be animated to write at a certain speed (and it is by default)
- *
  * @author Niccolò Nicolosi
  */
 public class TextAreaCLIComponent extends AnimatedCLIComponent {
@@ -27,7 +26,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Constructs a text area cli component of the given size with no label
-     *
      * @param width  the width of the component
      * @param height the height of the component
      */
@@ -38,7 +36,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Constructs a text area cli component of the given size and with a given label
-     *
      * @param width  the width of the component
      * @param height the height of the component
      * @param label  the label of the text area
@@ -87,7 +84,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Sets the text to be written in this text area
-     *
      * @param text the text to be written
      */
     public void setText(String text) {
@@ -127,7 +123,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Appends the given text to the text already written in this text area
-     *
      * @param text the text to append
      */
     public void appendText(String text) {
@@ -145,7 +140,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Sets the writing speed of this text area
-     *
      * @param textSpeed the new writing speed
      */
     public void setTextSpeed(float textSpeed) {
@@ -155,7 +149,6 @@ public class TextAreaCLIComponent extends AnimatedCLIComponent {
     
     /**
      * Sets whether the text of this text area should be animated
-     *
      * @param b true for animated text, false otherwise
      */
     public void setAnimated(boolean b) {

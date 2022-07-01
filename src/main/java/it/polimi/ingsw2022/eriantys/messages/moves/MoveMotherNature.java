@@ -9,7 +9,6 @@ import it.polimi.ingsw2022.eriantys.server.model.board.Board;
 
 /**
  * This class represents the movement of mother nature by specifying the destination island's index
- *
  * @author Emanuele Musto
  */
 public class MoveMotherNature extends Move {

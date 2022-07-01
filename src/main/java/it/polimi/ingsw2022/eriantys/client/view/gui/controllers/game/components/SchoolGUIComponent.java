@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.Images;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.messages.moves.MoveStudent;
@@ -28,6 +28,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents a school gui component. A school gui component is associated to a javafx Group that represents a school
+ * and to the team of the school it represents. This component manages various graphic elements to represent the current state
+ * of the school and attaches listeners to them in order to detect inputs and react accordingly
+ * @author Francesco Melegati Maccari
+ * @see Team
+ */
 public class SchoolGUIComponent {
     
     private final Group schoolGroup;
@@ -43,17 +50,23 @@ public class SchoolGUIComponent {
     private MoveRequestMessage requestMessage;
     private PawnColor chosenColor;
     
-    public SchoolGUIComponent(Group school, Team team, GameController gameController) {
+    /**
+     * Constructs a school gui component
+     * @param schoolGroup    the javafx group associated to this component
+     * @param team           the team associated to this component
+     * @param gameController the game controller associated to this component
+     */
+    public SchoolGUIComponent(Group schoolGroup, Team team, GameController gameController) {
         
         this.gameController = gameController;
+        this.schoolGroup = schoolGroup;
         
-        schoolGroup = school;
-        entrancePane = (GridPane) school.getChildren().get(1);
-        tablePane = (GridPane) school.getChildren().get(2);
-        professorPane = (GridPane) school.getChildren().get(3);
-        towersPane = (GridPane) school.getChildren().get(4);
+        entrancePane = (GridPane) schoolGroup.getChildren().get(1);
+        tablePane = (GridPane) schoolGroup.getChildren().get(2);
+        professorPane = (GridPane) schoolGroup.getChildren().get(3);
+        towersPane = (GridPane) schoolGroup.getChildren().get(4);
         
-        ((ImageView) school.getChildren().get(0)).setImage(ImageFactory.schoolImage);
+        ((ImageView) schoolGroup.getChildren().get(0)).setImage(Images.schoolImage);
         
         PawnColor[] pawnColors = PawnColor.values();
         
@@ -64,7 +77,7 @@ public class SchoolGUIComponent {
         for (PawnColor color : pawnColors) {
             
             // Setting up professors pane
-            ColoredPawnImageView professorsImageView = new ColoredPawnImageView(ImageFactory.PROFESSOR_SIZE);
+            ColoredPawnImageView professorsImageView = new ColoredPawnImageView(Images.PROFESSOR_SIZE);
             professorsImageView.setProfessorOfColor(color);
             professorsImageView.setVisible(false);
             professorPane.add(professorsImageView, 0, colorRow);
@@ -75,9 +88,9 @@ public class SchoolGUIComponent {
                 
                 SizedImageView coinImageView = null;
                 if (EriantysClient.getInstance().getGameSettings().gameMode == GameMode.EXPERT && col % 3 == 2)
-                    coinImageView = new SizedImageView(ImageFactory.COIN_SIZE, ImageFactory.coinImage);
+                    coinImageView = new SizedImageView(Images.COIN_SIZE, Images.coinImage);
                 
-                ColoredPawnImageView studentImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+                ColoredPawnImageView studentImageView = new ColoredPawnImageView(Images.STUDENT_SIZE);
                 studentImageView.setStudentOfColor(color);
                 studentImageView.setVisible(false);
                 
@@ -98,7 +111,7 @@ public class SchoolGUIComponent {
             for (int col = 0; col < ENTRANCE_COLS; col++) {
                 
                 if (row == 0 && col == 0) continue;
-                ColoredPawnImageView studentImageView = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+                ColoredPawnImageView studentImageView = new ColoredPawnImageView(Images.STUDENT_SIZE);
                 studentImageView.setVisible(false);
                 entrancePane.add(studentImageView, col, row);
             }
@@ -114,19 +127,19 @@ public class SchoolGUIComponent {
                 Image towerImage;
                 switch (team.getTeamName()) {
                     case "BLACK":
-                        towerImage = ImageFactory.blackTowerImage;
+                        towerImage = Images.blackTowerImage;
                         break;
                     case "WHITE":
-                        towerImage = ImageFactory.whiteTowerImage;
+                        towerImage = Images.whiteTowerImage;
                         break;
                     case "CYAN":
-                        towerImage = ImageFactory.greyTowerImage;
+                        towerImage = Images.greyTowerImage;
                         break;
                     default:
                         throw new InvalidParameterException("Invalid team");
                 }
                 
-                SizedImageView coloredImageView = new SizedImageView(ImageFactory.TOWER_SIZE, towerImage);
+                SizedImageView coloredImageView = new SizedImageView(Images.TOWER_SIZE, towerImage);
                 coloredImageView.setVisible(false);
                 towersPane.add(coloredImageView, col, row);
             }
@@ -143,23 +156,19 @@ public class SchoolGUIComponent {
         };
     }
     
-    public void manageInput(MouseEvent mouseEvent) throws IOException {
-        
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.TABLE, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, -1, chosenColor)));
-            
-            stopListeningToInput();
-            for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
-        }
-    }
-    
+    /**
+     * Makes this component stop listening to click inputs
+     */
     public void stopListeningToInput() {
         
         schoolGroup.removeEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
         schoolGroup.setEffect(null);
     }
     
+    /**
+     * Sets the students to visualize at the entrance of this school component
+     * @param students the list of student to visualize
+     */
     public void setEntranceStudents(List<PawnColor> students) {
         
         for (int n = 0; n < entrancePane.getChildren().size(); n++) {
@@ -171,6 +180,12 @@ public class SchoolGUIComponent {
         }
     }
     
+    /**
+     * Sets the students to visualize at the table of the given color in this school component
+     * @param students the number of students to visualize
+     * @param color    the color of the students to visualize
+     * @throws InvalidParameterException if students < 0 or > 10
+     */
     public void setTableStudents(int students, PawnColor color) {
         
         if (students < 0 || students > 10) throw new InvalidParameterException("Students must be >= 0 and <= 10");
@@ -198,6 +213,7 @@ public class SchoolGUIComponent {
                 }
             }
         }
+        
         else if (currentStudents > students) {
             
             for (int i = tablePane.getChildren().size() - 1; i > 0 && currentStudents != students; i--) {
@@ -223,7 +239,12 @@ public class SchoolGUIComponent {
         tableStudents.put(color, currentStudents);
     }
     
-    public void setProfessors(PawnColor color, boolean isPresent) {
+    /**
+     * Sets if the professor of the given color is visible on this component
+     * @param color   the color of the professor
+     * @param visible the visibility of the professor
+     */
+    public void setProfessor(PawnColor color, boolean visible) {
         
         for (Node child : professorPane.getChildren()) {
             
@@ -231,12 +252,16 @@ public class SchoolGUIComponent {
             
             if (professor.getColor() == color) {
                 
-                professor.setVisible(isPresent);
+                professor.setVisible(visible);
                 return;
             }
         }
     }
     
+    /**
+     * Sets the number of towers to visualize on this component
+     * @param towers the number of towers to visualize
+     */
     public void setTowers(int towers) {
         
         for (Node tower : towersPane.getChildren()) {
@@ -250,6 +275,11 @@ public class SchoolGUIComponent {
         }
     }
     
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage the message that requested to listen to inputs
+     * @param chosenColor    the student color previously chosen
+     */
     public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
         
         this.requestMessage = requestMessage;
@@ -257,5 +287,16 @@ public class SchoolGUIComponent {
         schoolGroup.addEventHandler(MouseEvent.MOUSE_CLICKED, dashboardClicked);
         
         schoolGroup.setEffect(gameController.getBorderGlowEffect());
+    }
+    
+    private void manageInput(MouseEvent mouseEvent) throws IOException {
+        
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.TABLE, ((MoveStudentRequest) requestMessage.moveRequest).toWhere, -1, chosenColor)));
+            
+            stopListeningToInput();
+            for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
+        }
     }
 }

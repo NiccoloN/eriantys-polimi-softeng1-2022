@@ -20,20 +20,20 @@ class PlayerTest {
     void setUp() {
         
         Team blackTeam = new Team(AnsiCodes.BLACK_BRIGHT, "black");
-        player = new Player("", blackTeam, Mage.MAGE_1);
+        player = new Player("", blackTeam);
     }
     
     @Test
     void addHelperCard() throws IOException {
         
         assertEquals(0, player.getNumberOfHelpers());
-        HelperCard card1 = CardFactory.createHelperCard(1, player.mage);
+        HelperCard card1 = CardFactory.createHelperCard(1);
         player.addHelperCard(card1);
         assertEquals(1, player.getNumberOfHelpers());
         assertEquals(card1, player.getHelperCard(0));
         assertThrows(RuntimeException.class, () -> player.addHelperCard(card1));
-        assertThrows(RuntimeException.class, () -> player.addHelperCard(CardFactory.createHelperCard(1, player.mage)));
-        HelperCard card2 = CardFactory.createHelperCard(2, player.mage);
+        assertThrows(RuntimeException.class, () -> player.addHelperCard(CardFactory.createHelperCard(1)));
+        HelperCard card2 = CardFactory.createHelperCard(2);
         player.addHelperCard(card2);
         assertEquals(2, player.getNumberOfHelpers());
         assertEquals(card2, player.getHelperCard(1));
@@ -43,7 +43,7 @@ class PlayerTest {
     void playHelperCard() throws IOException {
         
         assertNull(player.getCurrentHelper());
-        HelperCard card = CardFactory.createHelperCard(1, player.mage);
+        HelperCard card = CardFactory.createHelperCard(1);
         player.addHelperCard(card);
         player.playHelperCard(1);
         assertEquals(card, player.getCurrentHelper());
@@ -54,8 +54,8 @@ class PlayerTest {
     @Test
     void getHelperCard() throws IOException {
         
-        HelperCard card1 = CardFactory.createHelperCard(1, player.mage);
-        HelperCard card2 = CardFactory.createHelperCard(2, player.mage);
+        HelperCard card1 = CardFactory.createHelperCard(1);
+        HelperCard card2 = CardFactory.createHelperCard(2);
         player.addHelperCard(card1);
         player.addHelperCard(card2);
         assertEquals(card1, player.getHelperCard(0));
@@ -68,9 +68,9 @@ class PlayerTest {
     void getNumberOfHelpers() throws IOException {
         
         assertEquals(0, player.getNumberOfHelpers());
-        player.addHelperCard(CardFactory.createHelperCard(2, player.mage));
+        player.addHelperCard(CardFactory.createHelperCard(2));
         assertEquals(1, player.getNumberOfHelpers());
-        player.addHelperCard(CardFactory.createHelperCard(3, player.mage));
+        player.addHelperCard(CardFactory.createHelperCard(3));
         assertEquals(2, player.getNumberOfHelpers());
         player.playHelperCard(2);
         assertEquals(1, player.getNumberOfHelpers());
@@ -80,8 +80,8 @@ class PlayerTest {
     void getCurrentHelper() throws IOException {
         
         assertNull(player.getCurrentHelper());
-        player.addHelperCard(CardFactory.createHelperCard(2, player.mage));
-        HelperCard card = CardFactory.createHelperCard(3, player.mage);
+        player.addHelperCard(CardFactory.createHelperCard(2));
+        HelperCard card = CardFactory.createHelperCard(3);
         player.addHelperCard(card);
         assertNull(player.getCurrentHelper());
         player.playHelperCard(3);

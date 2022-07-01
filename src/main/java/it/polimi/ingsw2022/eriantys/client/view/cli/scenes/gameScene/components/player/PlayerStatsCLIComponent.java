@@ -13,7 +13,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents cli component containing the stats of a player
- *
  * @author Niccolò Nicolosi
  * @see PlayerStatusCLIComponent
  */
@@ -28,7 +27,6 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs a player stats cli component with the given team color
-     *
      * @param teamColor the team color to associate to this component
      */
     PlayerStatsCLIComponent(String teamColor, GameMode gameMode) {
@@ -66,7 +64,6 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the students of the given color visualized on this component
-     *
      * @param color  the color of the students
      * @param number the number of students to visualize
      * @throws InvalidParameterException if number is not between 0 and 9
@@ -79,7 +76,6 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the number of coins visualized on this component
-     *
      * @param coins the number of coins to visualize
      * @throws InvalidParameterException if coins is not between 0 and 99
      */
@@ -91,7 +87,6 @@ class PlayerStatsCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the number of towers visualized on this component
-     *
      * @param towers the number of towers to visualize
      * @throws InvalidParameterException if towers is not between 0 and 9
      */

@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * This class represents the five possible colors of the pawns used in the game and the associated names
- *
  * @author Emanuele Musto
  */
 public enum PawnColor implements Serializable {
@@ -22,7 +21,6 @@ public enum PawnColor implements Serializable {
     
     /**
      * Initializes a color
-     *
      * @param ansiForegroundColor the ansi foreground color corresponding to this color in the cli
      * @param ansiBackgroundColor the ansi background color corresponding to this color in the cli
      */

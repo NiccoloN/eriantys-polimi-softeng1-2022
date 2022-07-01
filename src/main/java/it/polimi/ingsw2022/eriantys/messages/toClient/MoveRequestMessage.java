@@ -10,7 +10,6 @@ import java.io.IOException;
 
 /**
  * This class represent a request message for a move sent from the server to the client, containing a move request.
- *
  * @author Emanuele Musto
  * @see MoveRequest
  */

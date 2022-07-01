@@ -3,6 +3,7 @@ package it.polimi.ingsw2022.eriantys.messages.toServer;
 import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.TimedMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.AckMessage;
+import it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage;
 import it.polimi.ingsw2022.eriantys.messages.toClient.InvalidUsernameMessage;
 import it.polimi.ingsw2022.eriantys.server.EriantysServer;
 
@@ -11,11 +12,10 @@ import java.io.IOException;
 /**
  * This class represents a message sent as a response to the request of choosing a username.
  * It contains the username of the player, and also the checks for the validity of the username.
- *
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
- * @see it.polimi.ingsw2022.eriantys.messages.toClient.ChooseUsernameMessage
+ * @see ChooseUsernameMessage
  */
 public class UsernameChoiceMessage extends ToServerMessage {
     

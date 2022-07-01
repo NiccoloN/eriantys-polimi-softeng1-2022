@@ -7,7 +7,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.ESCAPE_CHAR
 /**
  * This enumeration lists all the possible actions the user can perform to interact with the cli.
  * Every action is triggered by specific inputs
- *
  * @author Niccolò Nicolosi
  * @see Input
  */

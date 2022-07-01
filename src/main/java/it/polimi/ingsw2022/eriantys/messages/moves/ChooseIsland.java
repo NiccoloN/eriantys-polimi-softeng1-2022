@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of an island by a player. It's mainly used for character cards effects.
- *
  * @author Emanuele Musto
  */
 public class ChooseIsland extends Move {

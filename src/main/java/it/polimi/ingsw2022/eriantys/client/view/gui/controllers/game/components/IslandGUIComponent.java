@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.Images;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.StudentLabel;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseIsland;
@@ -29,6 +29,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents an island gui component. An island gui component is associated to a javafx Group that represents an island.
+ * This component manages various graphic elements to represent the current state of the island and attaches listeners to them in order
+ * to detect inputs and react accordingly
+ * @author Emanuele Musto
+ */
 public class IslandGUIComponent {
     
     private final GameController gameController;
@@ -48,12 +54,17 @@ public class IslandGUIComponent {
     private List<ImageView> denyTilesImages;
     private MoveRequestMessage requestMessage;
     
+    /**
+     * Constructs an island gui component
+     * @param islandGroup    the javafx group associated to this component
+     * @param gameController the game controller associated to this component
+     */
     public IslandGUIComponent(Group islandGroup, GameController gameController) {
         
         this.gameController = gameController;
         
         islandImageView = ((ImageView) islandGroup.getChildren().get(0));
-        islandImageView.setImage(ImageFactory.islandsImages.get(((int) (Math.random() * 3) + 1)));
+        islandImageView.setImage(Images.islandsImages.get(((int) (Math.random() * 3) + 1)));
         
         island = (GridPane) islandGroup.getChildren().get(1);
         button = (Button) islandGroup.getChildren().get(2);
@@ -89,7 +100,181 @@ public class IslandGUIComponent {
         };
     }
     
-    public void manageInput(MouseEvent mouseEvent) throws IOException {
+    /**
+     * Makes this component stop listening to click inputs
+     */
+    public void stopListeningToInput() {
+        
+        chosenColor = null;
+        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        islandImageView.setEffect(null);
+    }
+    
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage the message that requested to listen to inputs
+     */
+    public void listenToInput(MoveRequestMessage requestMessage) {
+        
+        listenToInput(requestMessage, null);
+    }
+    
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage the message that requested to listen to inputs
+     * @param chosenColor    the student color previously chosen
+     */
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
+        
+        this.requestMessage = requestMessage;
+        this.chosenColor = chosenColor;
+        characterIndex = 0;
+        
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
+        
+        islandImageView.setEffect(gameController.getBorderGlowEffect());
+    }
+    
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage the message that requested to listen to inputs
+     * @param characterIndex the index of the character card that requested to listen to inputs
+     */
+    public void listenToInput(MoveRequestMessage requestMessage, int characterIndex) {
+        
+        listenToInput(requestMessage, null, characterIndex);
+    }
+    
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage the message that requested to listen to inputs
+     * @param chosenColor    the student color previously chosen
+     * @param characterIndex the index of the character card that requested to listen to inputs
+     */
+    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
+        
+        listenToInput(requestMessage, chosenColor);
+        this.characterIndex = characterIndex;
+    }
+    
+    /**
+     * Sets the students of the given color to visualize on this component
+     * @param color    the color of the students to visualize
+     * @param students the number of students to visualize
+     */
+    public void setStudents(PawnColor color, Integer students) {
+        
+        if (students < 0) throw new RuntimeException("Number of students can't be negative");
+        
+        switch (color) {
+            case RED:
+                redStudentImage.setVisible(students > 0);
+                redStudentLabel.setText(students.toString());
+                redStudentLabel.setVisible(students > 1);
+                break;
+            case GREEN:
+                greenStudentImage.setVisible(students > 0);
+                greenStudentLabel.setText(students.toString());
+                greenStudentLabel.setVisible(students > 1);
+                break;
+            case YELLOW:
+                yellowStudentImage.setVisible(students > 0);
+                yellowStudentLabel.setText(students.toString());
+                yellowStudentLabel.setVisible(students > 1);
+                break;
+            case BLUE:
+                blueStudentImage.setVisible(students > 0);
+                blueStudentLabel.setText(students.toString());
+                blueStudentLabel.setVisible(students > 1);
+                break;
+            case PINK:
+                pinkStudentImage.setVisible(students > 0);
+                pinkStudentLabel.setText(students.toString());
+                pinkStudentLabel.setVisible(students > 1);
+                break;
+            default:
+                throw new RuntimeException("Invalid chosen color");
+        }
+    }
+    
+    /**
+     * Sets if mother nature is visible on this component
+     * @param visible the visibility of mother nature
+     */
+    public void setMotherNature(boolean visible) {
+        
+        hasMotherNature = visible;
+        motherNatureImage.setVisible(visible);
+    }
+    
+    /**
+     * @return whether mother nature is visible on this component
+     */
+    public boolean hasMotherNature() {
+        
+        return hasMotherNature;
+    }
+    
+    /**
+     * Sets the visible tower on this component
+     * @param team the team of the tower to visualize
+     */
+    public void setTower(Team team) {
+        
+        switch (team.getTeamName()) {
+            
+            case "WHITE":
+                whiteTowerImage.setVisible(true);
+                blackTowerImage.setVisible(false);
+                grayTowerImage.setVisible(false);
+                break;
+            case "BLACK":
+                whiteTowerImage.setVisible(false);
+                blackTowerImage.setVisible(true);
+                grayTowerImage.setVisible(false);
+                break;
+            case "CYAN":
+                whiteTowerImage.setVisible(false);
+                blackTowerImage.setVisible(false);
+                grayTowerImage.setVisible(true);
+                break;
+            default:
+                throw new RuntimeException("Invalid team");
+        }
+    }
+    
+    /**
+     * Sets the number of deny tiles to visualize on this component
+     * @param denyTiles the number of deny tiles to visualize
+     */
+    public void setDenyTiles(int denyTiles) {
+        
+        for (int i = 0; i < denyTiles; i++) {
+            denyTilesImages.get(i).setVisible(true);
+        }
+    }
+    
+    /**
+     * @return the compound island index visualized on this component
+     */
+    public int getCompoundIslandIndex() {
+        
+        return Integer.parseInt(indexLabel.getText());
+    }
+    
+    /**
+     * Sets the index of the compound island to visualize on this component
+     * @param compoundIslandIndex the index to visualize
+     */
+    public void setCompoundIslandIndex(Integer compoundIslandIndex) {
+        
+        indexLabel.setText(compoundIslandIndex.toString());
+        
+        if (compoundIslandIndex < 10) indexLabel.setTranslateX(6);
+        else indexLabel.setTranslateX(2);
+    }
+    
+    private void manageInput(MouseEvent mouseEvent) throws IOException {
         
         MoveRequest request = requestMessage.moveRequest;
         
@@ -101,7 +286,7 @@ public class IslandGUIComponent {
                 
                 EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new MoveStudent(ColoredPawnOriginDestination.ISLAND, ((MoveStudentRequest) request).toWhere, Integer.parseInt(indexLabel.getText()), chosenColor)));
                 for (IslandGUIComponent island : gameController.getIslandGUIComponents()) island.stopListeningToInput();
-                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
+                gameController.getSchoolGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).stopListeningToInput();
             }
             else if (request instanceof MoveMotherNatureRequest) {
                 
@@ -111,7 +296,7 @@ public class IslandGUIComponent {
         }
     }
     
-    public void manageCharacters() throws IOException {
+    private void manageCharacters() throws IOException {
         
         if (chosenColor != null) {
             
@@ -125,137 +310,13 @@ public class IslandGUIComponent {
         }
     }
     
-    public void stopListeningToInput() {
-        
-        chosenColor = null;
-        button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
-        islandImageView.setEffect(null);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage) {
-        
-        listenToInput(requestMessage, null);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor) {
-        
-        this.requestMessage = requestMessage;
-        this.chosenColor = chosenColor;
-        characterIndex = 0;
-        
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
-        
-        islandImageView.setEffect(gameController.getBorderGlowEffect());
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage, int characterIndex) {
-        
-        listenToInput(requestMessage, null, characterIndex);
-    }
-    
-    public void listenToInput(MoveRequestMessage requestMessage, PawnColor chosenColor, int characterIndex) {
-        
-        listenToInput(requestMessage, chosenColor);
-        this.characterIndex = characterIndex;
-    }
-    
-    public void setGuiIslandIndex(Integer guiIslandIndex) {
-        
-        indexLabel.setText(guiIslandIndex.toString());
-        
-        if (guiIslandIndex < 10) indexLabel.setTranslateX(6);
-        else indexLabel.setTranslateX(2);
-    }
-    
-    public void setStudents(PawnColor color, Integer value) {
-        
-        if (value < 0) throw new RuntimeException("Number of students can't be negative");
-        
-        switch (color) {
-            case RED:
-                redStudentImage.setVisible(value > 0);
-                redStudentLabel.setText(value.toString());
-                redStudentLabel.setVisible(value > 1);
-                break;
-            case GREEN:
-                greenStudentImage.setVisible(value > 0);
-                greenStudentLabel.setText(value.toString());
-                greenStudentLabel.setVisible(value > 1);
-                break;
-            case YELLOW:
-                yellowStudentImage.setVisible(value > 0);
-                yellowStudentLabel.setText(value.toString());
-                yellowStudentLabel.setVisible(value > 1);
-                break;
-            case BLUE:
-                blueStudentImage.setVisible(value > 0);
-                blueStudentLabel.setText(value.toString());
-                blueStudentLabel.setVisible(value > 1);
-                break;
-            case PINK:
-                pinkStudentImage.setVisible(value > 0);
-                pinkStudentLabel.setText(value.toString());
-                pinkStudentLabel.setVisible(value > 1);
-                break;
-            default:
-                throw new RuntimeException("Chosen color does not exists");
-        }
-    }
-    
-    public void setMotherNature(boolean visible) {
-        
-        hasMotherNature = visible;
-        motherNatureImage.setVisible(visible);
-    }
-    
-    public boolean hasMotherNature() {
-        
-        return hasMotherNature;
-    }
-    
-    public void setTower(boolean visible, Team team) {
-        
-        switch (team.getTeamName()) {
-            
-            case "WHITE":
-                whiteTowerImage.setVisible(visible);
-                blackTowerImage.setVisible(false);
-                grayTowerImage.setVisible(false);
-                break;
-            case "BLACK":
-                whiteTowerImage.setVisible(false);
-                blackTowerImage.setVisible(visible);
-                grayTowerImage.setVisible(false);
-                break;
-            case "CYAN":
-                whiteTowerImage.setVisible(false);
-                blackTowerImage.setVisible(false);
-                grayTowerImage.setVisible(visible);
-                break;
-            default:
-                throw new RuntimeException("There are no towers of this color");
-        }
-    }
-    
-    public void setDenyTiles(int numberOfDenyTiles) {
-        
-        for (int i = 0; i < numberOfDenyTiles; i++) {
-            denyTilesImages.get(i).setVisible(true);
-        }
-    }
-    
-    public int getCompoundIslandIndex() {
-        
-        return Integer.parseInt(indexLabel.getText());
-    }
-    
     private void initializeStudentImageViews() {
         
-        redStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.RED));
-        greenStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.GREEN));
-        yellowStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.YELLOW));
-        blueStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.BLUE));
-        pinkStudentImage = new SizedImageView(ImageFactory.STUDENT_SIZE, ImageFactory.studentsImages.get(PawnColor.PINK));
+        redStudentImage = new SizedImageView(Images.STUDENT_SIZE, Images.studentsImages.get(PawnColor.RED));
+        greenStudentImage = new SizedImageView(Images.STUDENT_SIZE, Images.studentsImages.get(PawnColor.GREEN));
+        yellowStudentImage = new SizedImageView(Images.STUDENT_SIZE, Images.studentsImages.get(PawnColor.YELLOW));
+        blueStudentImage = new SizedImageView(Images.STUDENT_SIZE, Images.studentsImages.get(PawnColor.BLUE));
+        pinkStudentImage = new SizedImageView(Images.STUDENT_SIZE, Images.studentsImages.get(PawnColor.PINK));
         
         redStudentLabel = new StudentLabel(PawnColor.RED);
         greenStudentLabel = new StudentLabel(PawnColor.GREEN);
@@ -279,9 +340,9 @@ public class IslandGUIComponent {
     
     private void initializeTowers() {
         
-        whiteTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.whiteTowerImage);
-        grayTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.greyTowerImage);
-        blackTowerImage = new SizedImageView(ImageFactory.TOWER_SIZE, ImageFactory.blackTowerImage);
+        whiteTowerImage = new SizedImageView(Images.TOWER_SIZE, Images.whiteTowerImage);
+        grayTowerImage = new SizedImageView(Images.TOWER_SIZE, Images.greyTowerImage);
+        blackTowerImage = new SizedImageView(Images.TOWER_SIZE, Images.blackTowerImage);
         
         whiteTowerImage.setTranslateY(-4);
         island.add(whiteTowerImage, 2, 0);
@@ -298,7 +359,7 @@ public class IslandGUIComponent {
     
     private void initializeMotherNature() {
         
-        motherNatureImage = new SizedImageView(ImageFactory.MOTHER_NATURE_SIZE, ImageFactory.motherNatureImage);
+        motherNatureImage = new SizedImageView(Images.MOTHER_NATURE_SIZE, Images.motherNatureImage);
         motherNatureImage.setTranslateY(-2);
         island.add(motherNatureImage, 2, 2);
         motherNatureImage.setVisible(false);
@@ -308,10 +369,10 @@ public class IslandGUIComponent {
         
         denyTilesImages = new ArrayList<>(4);
         
-        ImageView denyTile1 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
-        ImageView denyTile2 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
-        ImageView denyTile3 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
-        ImageView denyTile4 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
+        ImageView denyTile1 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
+        ImageView denyTile2 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
+        ImageView denyTile3 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
+        ImageView denyTile4 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
         
         island.add(denyTile1, 0, 2);
         island.add(denyTile2, 1, 2);

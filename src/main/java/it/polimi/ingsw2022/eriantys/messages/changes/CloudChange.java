@@ -12,6 +12,7 @@ import java.io.Serializable;
 
 /**
  * This class represents a change of the clouds. Whenever they change, the clients will be updated with this change.
+ * @author Emanuele Musto
  */
 public class CloudChange implements Change, Serializable {
     

@@ -17,7 +17,6 @@ import static it.polimi.ingsw2022.eriantys.client.EriantysClient.ADDRESS_FILE_NA
 
 /**
  * This class represents a menu scene state in which the user can enter the ip of the server he wants to connect to
- *
  * @author Niccolò Nicolosi
  */
 public class EnterServerIp extends MenuSceneState {
@@ -26,7 +25,6 @@ public class EnterServerIp extends MenuSceneState {
     
     /**
      * Constructs an enter-server-ip state
-     *
      * @param cli   the cli associated to this state
      * @param scene the menu scene associated to this state
      */

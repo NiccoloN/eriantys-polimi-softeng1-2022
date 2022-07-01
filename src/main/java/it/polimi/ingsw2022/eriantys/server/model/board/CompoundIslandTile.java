@@ -12,7 +12,6 @@ import java.util.Optional;
 
 /**
  * This class represents an island. Every island is composed of different island tiles (at least one).
- *
  * @author Niccolò Nicolosi
  * @see IslandTile
  */
@@ -48,7 +47,6 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Merges this island with the given one, making it bigger.
-     *
      * @param island the island to merge with
      * @throws RuntimeException if the given island contains any tile that is already part of this island
      */
@@ -93,7 +91,6 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Places a colored pawn onto this island. Only pawns that represent students should be placed on an island
-     *
      * @param student the student to place
      * @throws RuntimeException if the given student is already on this island
      */
@@ -114,7 +111,6 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Sets the given team as the controller of this island
-     *
      * @param team the new team that controls this island
      * @throws RuntimeException          if this island is denied
      * @throws InvalidParameterException if team is null
@@ -144,7 +140,6 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Adds deny tile to the island. A denied island cannot change its controller team.
-     *
      * @throws RuntimeException if someone tries to put more than four deny tiles on the island.
      */
     public void incrementNumberOfDenyTiles() {
@@ -156,7 +151,6 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Removes deny tile to the island.
-     *
      * @throws RuntimeException if someone tries to remove deny tile when there are none on the island.
      */
     public void decrementNumberOfDenyTiles() {
@@ -187,7 +181,6 @@ public class CompoundIslandTile implements Serializable {
     
     /**
      * Sets whether mother nature is currently on this island and places/removes it on/from the first tile of this island
-     *
      * @param motherNature true to place mother nature on this island, false to remove it
      */
     void setMotherNature(boolean motherNature) {

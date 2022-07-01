@@ -25,9 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This class represents the basic mode of the game. It's the controller in the MVC pattern, manages rounds, player turns,
- * requests for moves, updates, and controls.
- *
+ * This class represents the controller of the basic mode of the game. It's the controller in the MVC pattern,
+ * manages rounds, player turns, requests for moves, updates, and controls.
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
  * @author Niccolò Nicolosi
@@ -51,7 +50,6 @@ public class BasicGameController implements GameController, Serializable {
     /**
      * This method is called by the server when everything is ready for the game to start the first round, and lasts
      * until the game ending.
-     *
      * @throws IOException          when output stream throws an exception (while sending a message to client).
      * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
      */
@@ -144,7 +142,6 @@ public class BasicGameController implements GameController, Serializable {
      * Represents a round, made of planning phase and action phase.
      * The planning phase consists in filling the clouds with students, and the choice of the helper card by the players.
      * The action phase is represented by a turn.
-     *
      * @throws IOException          when output stream throws an exception (while sending a message to client).
      * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
      */
@@ -185,7 +182,6 @@ public class BasicGameController implements GameController, Serializable {
      * Represents a turn, or the action phase.
      * It consists of the choice of the helper card, the movement of three students from entrance to either island or
      * dashboard, and the choice of a cloud.
-     *
      * @param player      the player playing the turn.
      * @param playerIndex the index representing the order in the turns.
      * @throws IOException          when output stream throws an exception (while sending a message to client).
@@ -234,7 +230,6 @@ public class BasicGameController implements GameController, Serializable {
     
     /**
      * Sends a move request message to a player, and waits for a valid response.
-     *
      * @param request        the move request to send.
      * @param playerUsername the username of the player that will receive the move request.
      * @throws IOException          when output stream throws an exception (while sending a message to client).
@@ -252,7 +247,6 @@ public class BasicGameController implements GameController, Serializable {
     
     /**
      * Request a player to move one student.
-     *
      * @param player the player that will have to move a student.
      * @throws IOException          when output stream throws an exception (while sending a message to client).
      * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
@@ -264,7 +258,6 @@ public class BasicGameController implements GameController, Serializable {
     
     /**
      * Request a player to move mother nature.
-     *
      * @param player the player that will have to move mother nature.
      * @throws IOException          when output stream throws an exception (while sending a message to client).
      * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
@@ -277,29 +270,25 @@ public class BasicGameController implements GameController, Serializable {
     /**
      * Uses the influence calculator to check the island influence, and to get the dominant team.
      * It also sends the update when there is a dominant team.
-     *
-     * @throws IOException when output stream throws an exception (while sending a message to client).
      */
-    protected void checkIslandInfluence() throws IOException {
+    protected void checkIslandInfluence() {
         
         CompoundIslandTile motherNatureIsland = game.getBoard().getMotherNatureIsland();
         
         Optional<Team> dominantTeam = game.getInfluenceCalculator().calculateInfluence(game.getPlayers(), motherNatureIsland, game.getCurrentPlayer());
         
         //If there is a dominant team, find its leader and check the towers
-        if (dominantTeam.isPresent()) updateTowers(dominantTeam.get(), motherNatureIsland);
+        dominantTeam.ifPresent(team -> updateTowers(team, motherNatureIsland));
     }
     
     /**
      * Updates the towers of the island when the influence calculator find a dominant team.
      * If there is a new dominant team, removes the old tower (if present) and adds it to the old team,
      * and place a tower from the dashboard of the dominant team.
-     *
      * @param dominantTeam the team with the most influence on the given island.
      * @param island       the given island where influence was calculated.
-     * @throws IOException when output stream throws an exception (while sending a message to client).
      */
-    protected void updateTowers(Team dominantTeam, CompoundIslandTile island) throws IOException {
+    protected void updateTowers(Team dominantTeam, CompoundIslandTile island) {
         
         Update update = new Update();
         
@@ -349,10 +338,8 @@ public class BasicGameController implements GameController, Serializable {
     
     /**
      * Ends the game, sending to all players the winner team.
-     *
-     * @throws IOException when output stream throws an exception (while sending a message to client).
      */
-    private void endGame() throws IOException {
+    private void endGame() {
         
         Team winnerTeam = game.checkWinner();
         server.sendToAllClients(new GameEndedMessage(winnerTeam));
@@ -360,10 +347,8 @@ public class BasicGameController implements GameController, Serializable {
     
     /**
      * Fills every cloud with students and sends the updates to the clients.
-     *
-     * @throws IOException when output stream throws an exception (while sending a message to client).
      */
-    private void fillClouds() throws IOException {
+    private void fillClouds() {
         
         Update update = new Update();
         
@@ -394,7 +379,6 @@ public class BasicGameController implements GameController, Serializable {
     
     /**
      * Asks every player to choose a helper card, and manages the unplayable ones when already chosen by precedent players.
-     *
      * @throws IOException          when output stream throws an exception (while sending a message to client).
      * @throws InterruptedException when the thread waiting for a response by the client is interrupted.
      */
@@ -430,7 +414,6 @@ public class BasicGameController implements GameController, Serializable {
     /**
      * Checks if the given island will be merged with the adjacent ones.
      * An island is merged with another adjacent if after the influence calculation both of them are owned by the same team.
-     *
      * @param island the island that can possibly be merged with other islands.
      * @return the island change that will be on the update after the merge.
      */

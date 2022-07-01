@@ -11,7 +11,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN_BRIGH
 
 /**
  * This class represents a state of the game scene
- *
  * @author Niccolò Nicolosi
  */
 public abstract class GameSceneState extends CLISceneState {
@@ -21,7 +20,6 @@ public abstract class GameSceneState extends CLISceneState {
     
     /**
      * Constructs a game scene state
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one

@@ -28,7 +28,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents the command line interface (CLI) of the game
- *
  * @author Niccolò Nicolosi
  */
 public class EriantysCLI implements View {
@@ -41,7 +40,6 @@ public class EriantysCLI implements View {
     
     /**
      * Launches a new cli
-     *
      * @param showLog whether the cli should show logs on top of the frame
      * @return the launched cli
      * @throws IOException if the terminal instance could not be built or could not load ascii arts from files
@@ -84,7 +82,6 @@ public class EriantysCLI implements View {
     
     /**
      * Constructs the CLI
-     *
      * @throws IOException if the terminal instance could not be built or could not load ascii arts from files
      */
     private EriantysCLI() throws IOException {
@@ -121,7 +118,6 @@ public class EriantysCLI implements View {
     
     /**
      * Sets whether the log should be visualized or not
-     *
      * @param log true to visualize the log, false otherwise
      */
     public void showLog(boolean log) {
@@ -184,7 +180,6 @@ public class EriantysCLI implements View {
     
     /**
      * Sets the scene to show
-     *
      * @param scene the scene to show
      */
     public void setScene(CLIScene scene) {
@@ -196,7 +191,6 @@ public class EriantysCLI implements View {
     /**
      * Starts the CLI. Once the CLI is started, the current state of the game is visualized in the terminal window and
      * inputs are passed to the controller to evolve the game state
-     *
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
     private void start(boolean showLog) throws TimeoutException {
@@ -292,7 +286,6 @@ public class EriantysCLI implements View {
     
     /**
      * Stops the cli and prints the given exception
-     *
      * @param e the exception to print
      */
     private void printException(Exception e) {
@@ -303,7 +296,6 @@ public class EriantysCLI implements View {
     
     /**
      * Updates the terminal window with the current state of the game
-     *
      * @throws TimeoutException if the terminal window could not be correctly resized
      */
     private void update() throws TimeoutException {

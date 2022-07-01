@@ -5,7 +5,6 @@ import java.io.IOException;
 /**
  * This class represents a message sent by the client as a response to a ping message from the server.
  * It is used to test if the connection between client and server is working.
- *
  * @author Emanuele Musto
  * @author Niccolò Nicolosi
  * @see PingMessage

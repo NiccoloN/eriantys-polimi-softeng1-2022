@@ -18,7 +18,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a menu scene state in which the user is asked to select a game mode
- *
  * @author Niccolò Nicolosi
  */
 public class GameModeSelection extends MenuSceneState {
@@ -31,7 +30,6 @@ public class GameModeSelection extends MenuSceneState {
     
     /**
      * Constructs a game mode selection state
-     *
      * @param cli                     the cli associated to this state
      * @param scene                   the menu scene associated to this state
      * @param selectedNumberOfPlayers the number of players selected in the previous state

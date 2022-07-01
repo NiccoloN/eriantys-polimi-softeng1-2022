@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
 
 /**
  * This class represents the choice of a Character by a player
- *
  * @author Emanuele Musto
  */
 public class ChooseCharacterCard extends Move {

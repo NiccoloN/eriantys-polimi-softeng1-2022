@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.Images;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseHelperCard;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import it.polimi.ingsw2022.eriantys.messages.toServer.PerformedMoveMessage;
@@ -20,6 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents a helpers gui component. A helpers gui component is associated to a javafx GridPane that represents the
+ * helper cards currently in the hand of the player. This component manages various graphic elements to represent the current playable
+ * and not playable helper cards and attaches listeners to them in order to detect inputs and react accordingly
+ * @author Niccolò Nicolosi
+ */
 public class HelpersGUIComponent {
     
     private final GameController gameController;
@@ -28,6 +34,11 @@ public class HelpersGUIComponent {
     private final Map<Integer, EventHandler<MouseEvent>> cardClickListeners;
     private MoveRequestMessage requestMessage;
     
+    /**
+     * Constructs a helpers gui component
+     * @param helpers        the javafx grid pane associated to this component
+     * @param gameController the game controller associated to this component
+     */
     public HelpersGUIComponent(GridPane helpers, GameController gameController) {
         
         this.gameController = gameController;
@@ -53,6 +64,9 @@ public class HelpersGUIComponent {
         }
     }
     
+    /**
+     * Makes this component stop listening to click inputs
+     */
     public void stopListeningToInput() {
         
         helpers.setVisible(false);
@@ -70,7 +84,11 @@ public class HelpersGUIComponent {
         }
     }
     
-    public void setRemainingHelpers(List<HelperCard> helperCards) {
+    /**
+     * Sets the helper cards to represent
+     * @param helperCards the list of helper cards to represent
+     */
+    public void setHelpers(List<HelperCard> helperCards) {
         
         for (int n = 0; n < helpers.getChildren().size(); n++) {
             
@@ -81,7 +99,7 @@ public class HelpersGUIComponent {
                 HelperCard helperCard = helperCards.get(n);
                 
                 ImageView helperImageView = (ImageView) helper.getChildren().get(0);
-                helperImageView.setImage(ImageFactory.helpersImages.get(helperCard.index));
+                helperImageView.setImage(Images.helpersImages.get(helperCard.index));
                 
                 helpersIndices.put(helper, helperCard.index);
                 helper.setVisible(true);
@@ -96,6 +114,11 @@ public class HelpersGUIComponent {
         helpers.setTranslateX((helpers.getChildren().get(0).getLayoutBounds().getWidth() + 4) / 2 * (helpers.getColumnCount() - helperCards.size()));
     }
     
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage    the message that requested to listen to inputs
+     * @param unplayableIndices the list of indices of helper cards that can't currently be played
+     */
     public void listenToInput(MoveRequestMessage requestMessage, List<Integer> unplayableIndices) {
         
         helpers.setVisible(true);

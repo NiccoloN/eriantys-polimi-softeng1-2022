@@ -20,7 +20,6 @@ import java.util.NoSuchElementException;
 /**
  * This class represents the movement of a student. It can be to the dining table or to an island.
  * If it's towards an island it specifies that island index.
- *
  * @author Emanuele Musto
  */
 public class MoveStudent extends Move {
@@ -33,7 +32,6 @@ public class MoveStudent extends Move {
     
     /**
      * Constructor used when the move is caused by a character card, of which the index is saved.
-     *
      * @param destination    where the player moved the student.
      * @param toWhere        list of possible places where the student can be placed for the specific move.
      * @param islandIndex    the island index if the student is placed on an island, -1 if not.

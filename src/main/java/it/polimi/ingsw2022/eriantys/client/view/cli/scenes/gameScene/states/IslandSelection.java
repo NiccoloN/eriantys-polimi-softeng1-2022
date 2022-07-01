@@ -28,7 +28,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN_BRIGH
 
 /**
  * This class represents a game scene state in which the user is asked to select an island
- *
  * @author Niccolò Nicolosi
  */
 public class IslandSelection extends GameSceneState {
@@ -45,7 +44,6 @@ public class IslandSelection extends GameSceneState {
     
     /**
      * Constructs a particular island selection state requested by the play of a character card with the given index
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one
@@ -60,7 +58,6 @@ public class IslandSelection extends GameSceneState {
     
     /**
      * Constructs a particular island selection state requested after the choice of a student color
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one
@@ -75,7 +72,6 @@ public class IslandSelection extends GameSceneState {
     
     /**
      * Constructs a default island selection state
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one
@@ -97,7 +93,6 @@ public class IslandSelection extends GameSceneState {
     
     /**
      * Constructs a particular island selection state in which the user is asked to move mother nature
-     *
      * @param cli                  the cli to associate to this state
      * @param scene                the game scene to associate to this state
      * @param requestMessage       the message that requested this state or the previous one

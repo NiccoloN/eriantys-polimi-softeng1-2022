@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * This class represents a change of the islands. Whenever they change, the clients will be updated with this change.
- *
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
@@ -41,12 +40,11 @@ public class IslandChange implements Change, Serializable {
     public void apply(GameController controller) {
         
         for (int n = 0; n < islandTiles.size(); n++)
-            setGuiIslandTile(controller.getIslandGUIComponents(n), islandTiles.get(n));
+            setGuiIslandTile(controller.getIslandGUIComponent(n), islandTiles.get(n));
     }
     
     /**
      * Utility method to apply the change to the view of the CLI.
-     *
      * @param cliIsland  the CLI island compound to update
      * @param islandTile the CLI single island to update
      */
@@ -66,8 +64,8 @@ public class IslandChange implements Change, Serializable {
             
             for (PawnColor color : PawnColor.values()) guiIsland.setStudents(color, islandTile.countStudents(color));
             guiIsland.setMotherNature(islandTile.hasMotherNature());
-            if (islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.hasTower(), islandTile.getTeam().get());
-            guiIsland.setGuiIslandIndex(islandTile.getIndex());
+            if (islandTile.getTeam().isPresent()) guiIsland.setTower(islandTile.getTeam().get());
+            guiIsland.setCompoundIslandIndex(islandTile.getIndex());
             guiIsland.setDenyTiles(islandTile.getNumberOfDenyTiles());
         });
     }

@@ -4,6 +4,10 @@ import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.messages.requests.MoveRequest;
 import it.polimi.ingsw2022.eriantys.server.model.Game;
 
+/**
+ * This class represents the choice of a player to stop using a character card
+ * @author Emanuele Musto
+ */
 public class Abort extends Move {
     
     @Override
@@ -13,10 +17,7 @@ public class Abort extends Move {
     }
     
     @Override
-    public void apply(Game game) {
-        
-        game.setAbortMessageReceived(true);
-    }
+    public void apply(Game game) {}
     
     @Override
     public Update getUpdate(Game game) {

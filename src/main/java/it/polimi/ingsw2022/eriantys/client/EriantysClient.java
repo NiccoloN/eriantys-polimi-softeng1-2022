@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * This class represents the client of the game. The client runs the view in its main thread and communicates with the server through
  * messages in a secondary thread. The client will manage and modify the view based on the communication with the server.
- *
  * @author Niccolò Nicolosi
  * @author Francesco Melegati Maccari
  * @author Emanuele Musto
@@ -43,7 +42,6 @@ public class EriantysClient {
     
     /**
      * Launches the client with the given arguments
-     *
      * @param args the arguments passed to the client. If args contains "-nogui" the cli version of the view will be launched
      * @throws IOException          if an I/O exception occurs
      * @throws InterruptedException if the thread is interrupted.
@@ -65,7 +63,6 @@ public class EriantysClient {
     
     /**
      * Initializes the singleton instance
-     *
      * @param gui     whether the gui version of the view or the cli one should be launched
      * @param showLog whether view should show logs
      * @throws IOException if could not correctly launch the view
@@ -74,7 +71,7 @@ public class EriantysClient {
         
         instance = new EriantysClient(showLog);
         if (!gui) instance.view = EriantysCLI.launch(showLog);
-        else instance.view = EriantysGUI.launch(showLog);
+        else instance.view = EriantysGUI.launch();
     }
     
     private final boolean showLog;
@@ -112,7 +109,6 @@ public class EriantysClient {
     /**
      * Starts the connection to the server and remains listening in a separate thread. This method blocks for a maximum of 5 seconds.
      * If the client couldn't connect within 5 seconds this method returns false.
-     *
      * @param serverIP the IP address of the server
      * @return whether the connection was successful
      */
@@ -161,7 +157,6 @@ public class EriantysClient {
     
     /**
      * Appends the given logText to the log
-     *
      * @param logText the text to append
      */
     public void log(String logText) {
@@ -172,7 +167,6 @@ public class EriantysClient {
     
     /**
      * Gets (or creates if not present) a lockId used for synchronization by the applicant.
-     *
      * @param lockId the requested lockId.
      * @return the lock associated with the lockId.
      */
@@ -192,7 +186,6 @@ public class EriantysClient {
     
     /**
      * Removes a lock when the user doesn't need it anymore.
-     *
      * @param lockId the lock id to remove.
      */
     public void removeMessageLock(int lockId) {
@@ -202,7 +195,6 @@ public class EriantysClient {
     
     /**
      * Asks the view to provide a username and send it to the server
-     *
      * @param requestMessage the message requesting the username
      */
     public void askUsername(Message requestMessage) throws IOException {
@@ -213,7 +205,6 @@ public class EriantysClient {
     /**
      * Starts ping messages from client (because this client has surely been registered to the server at this point)
      * and asks the view to provide game settings and send them to the server
-     *
      * @param requestMessage the message requesting game settings
      */
     public void askGameSettings(Message requestMessage) throws IOException {
@@ -225,7 +216,6 @@ public class EriantysClient {
     /**
      * Starts ping messages from client (because this client has surely been registered to the server at this point)
      * and asks the view to show the lobby waiting room, with the updated info
-     *
      * @param playerUsernames the usernames of the players currently connected to the lobby
      * @param gameSettings    the game settings of the lobby
      */
@@ -238,7 +228,6 @@ public class EriantysClient {
     
     /**
      * Asks the view to show the lobby waiting room, with the updated info
-     *
      * @param playerUsernames the usernames of the players currently connected to the lobby
      */
     public void showUpdatedLobby(String[] playerUsernames) throws IOException {
@@ -248,7 +237,6 @@ public class EriantysClient {
     
     /**
      * Asks the view to start the game
-     *
      * @param players  the players of the game
      * @param gameMode the mode of the game
      */
@@ -259,7 +247,6 @@ public class EriantysClient {
     
     /**
      * Asks the view to end the game
-     *
      * @param team winning team
      */
     public void endGame(Team team) {
@@ -269,7 +256,6 @@ public class EriantysClient {
     
     /**
      * Asks the view to apply the given update to the game
-     *
      * @param update the update to apply
      */
     public void applyUpdate(Update update) {
@@ -279,7 +265,6 @@ public class EriantysClient {
     
     /**
      * Asks the view to satisfy the given move request
-     *
      * @param moveRequestMessage the received request message
      */
     public void requestMove(MoveRequestMessage moveRequestMessage) {
@@ -361,7 +346,6 @@ public class EriantysClient {
     
     /**
      * Sends a message to the server
-     *
      * @param message the message to send
      * @throws IOException if an I/O exception occurs
      */
@@ -471,7 +455,6 @@ public class EriantysClient {
     
     /**
      * Disconnects from the server
-     *
      * @throws IOException if an I/O exception occurs
      */
     private void disconnect() throws IOException {

@@ -12,7 +12,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents an island cli component
- *
  * @author Niccolò Nicolosi
  */
 public class IslandCLIComponent extends BasicCLIComponent {
@@ -28,7 +27,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs an island cli component with the given index
-     *
      * @param compoundIndex the index of this island
      */
     public IslandCLIComponent(int compoundIndex) {
@@ -73,7 +71,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the compound index of this island component
-     *
      * @param compoundIndex the new index
      */
     public void setCompoundIndex(int compoundIndex) {
@@ -85,7 +82,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the color of the tower of this island component to the given team color
-     *
      * @param teamAnsiColor the new team color
      */
     public void setTeamColor(String teamAnsiColor) {
@@ -95,7 +91,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets if the tower of this island is visible
-     *
      * @param tower the visibility of the tower: visible if true, hidden otherwise
      */
     public void setTower(boolean tower) {
@@ -113,7 +108,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets if mother nature is visible on this island
-     *
      * @param mother the visibility of mother nature: visible if true, hidden otherwise
      */
     public void setMother(boolean mother) {
@@ -123,7 +117,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the number of deny tiles to visualize on this island component
-     *
      * @param denyTiles the number of deny to visualize
      */
     public void setDenyTiles(int denyTiles) {
@@ -134,7 +127,6 @@ public class IslandCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the students of the given color to visualize on this island component
-     *
      * @param color  the color of the students
      * @param number the number of students to visualize
      * @throws InvalidParameterException if number is not between 0 and 99

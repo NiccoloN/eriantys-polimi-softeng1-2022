@@ -10,7 +10,6 @@ import javafx.application.Platform;
 
 /**
  * This class represents the request of choosing an island. It's mainly used due to the effect of a character card.
- *
  * @author Emanuele Musto
  */
 public class ChooseIslandRequest extends MoveRequest {
@@ -37,7 +36,7 @@ public class ChooseIslandRequest extends MoveRequest {
         
         Platform.runLater(() -> {
             
-            controller.stopListeners();
+            controller.stopListeningToInputs();
             for (IslandGUIComponent island : controller.getIslandGUIComponents())
                 island.listenToInput(requestMessage, characterCardIndex);
         });

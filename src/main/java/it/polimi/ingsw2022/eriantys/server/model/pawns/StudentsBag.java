@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a bag of student pawns. It can be used to store, add, and randomly extract students
- *
+ * This class represents a bag of student pawns. It can be used to store and randomly extract students
  * @author Emanuele Musto
  */
 public class StudentsBag implements Serializable {
@@ -23,7 +22,6 @@ public class StudentsBag implements Serializable {
     
     /**
      * Checks whether the bag is empty
-     *
      * @return True if empty, false otherwise
      */
     public boolean isEmpty() {
@@ -33,7 +31,6 @@ public class StudentsBag implements Serializable {
     
     /**
      * Adds a student to the bag
-     *
      * @param student the student to add
      * @throws RuntimeException if the student is already in the bag
      */
@@ -46,7 +43,6 @@ public class StudentsBag implements Serializable {
     
     /**
      * Extracts a random student from the bag
-     *
      * @return the student extracted
      * @throws RuntimeException if the bag is empty
      */

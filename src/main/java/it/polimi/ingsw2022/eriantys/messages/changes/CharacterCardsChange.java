@@ -2,6 +2,7 @@ package it.polimi.ingsw2022.eriantys.messages.changes;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.gameScene.GameScene;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.CharacterGUIComponent;
 import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import javafx.application.Platform;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 /**
  * This class represents a change of the character cards. Whenever they change, the clients will be updated with this change.
+ * @author Francesco Melegati Maccari
  */
 public class CharacterCardsChange implements Change, Serializable {
     
@@ -23,7 +25,6 @@ public class CharacterCardsChange implements Change, Serializable {
     
     /**
      * Adds the character card to the change. The added character cards will be updated in the view.
-     *
      * @param card the card to update.
      */
     public void addCharacterCard(CharacterCard card) {
@@ -40,6 +41,10 @@ public class CharacterCardsChange implements Change, Serializable {
     @Override
     public void apply(GameController controller) {
         
-        Platform.runLater(() -> controller.setCharacters(characterCards));
+        Platform.runLater(() -> {
+            
+            List<CharacterGUIComponent> guiCharacters = controller.getCharacterGUIComponents();
+            for (int n = 0; n < guiCharacters.size(); n++) guiCharacters.get(n).setCharacter(characterCards.get(n));
+        });
     }
 }

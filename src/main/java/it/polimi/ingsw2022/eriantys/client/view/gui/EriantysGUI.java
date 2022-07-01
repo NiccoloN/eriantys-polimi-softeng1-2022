@@ -30,13 +30,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class represents the gui (graphic user interface) of the game
+ */
 public class EriantysGUI extends Application implements View {
     
     public static final double DEFAULT_SCENE_WIDTH = 1280;
     public static final double DEFAULT_SCENE_HEIGHT = 720;
     private static EriantysGUI instance;
     
-    public static EriantysGUI launch(boolean showLog) throws InterruptedException {
+    /**
+     * Launches a new gui
+     * @return the launched gui
+     * @throws InterruptedException if interrupted while waiting for the gui to launch
+     */
+    public static EriantysGUI launch() throws InterruptedException {
         
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             
@@ -63,7 +71,7 @@ public class EriantysGUI extends Application implements View {
     private Scene currentScene;
     private GameController gameController;
     
-    public EriantysGUI() {
+    private EriantysGUI() {
         
         instance = this;
         running = true;
@@ -81,6 +89,12 @@ public class EriantysGUI extends Application implements View {
         setScene("WelcomeScreen.fxml", new Start(this));
     }
     
+    /**
+     * Sets the scene to visualize in the gui
+     * @param FXMLFileName the name of the fxml file that describes the scene
+     * @param controller   the controller to assign to the scene
+     * @throws IOException if an IOException occurs reading the fxml file
+     */
     public void setScene(String FXMLFileName, SceneController controller) throws IOException {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/" + FXMLFileName));
@@ -168,6 +182,9 @@ public class EriantysGUI extends Application implements View {
         gameController.endGame(team);
     }
     
+    /**
+     * Resizes the scene to maintain the correct aspect ratio
+     */
     private void resizeScene() {
         
         double scaleFactor = currentScene.getWidth() / DEFAULT_SCENE_WIDTH;

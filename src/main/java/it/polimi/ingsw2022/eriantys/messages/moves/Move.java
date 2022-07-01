@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 /**
  * This class represents a generic Move done by a player during the game.
- *
  * @author Emanuele Musto
  */
 public abstract class Move implements Serializable {
@@ -16,11 +15,10 @@ public abstract class Move implements Serializable {
     protected String errorMessage;
     
     /**
-     * Checks if this move made by the player is valid and withing the game rules.
-     * It also checks if the move made matches with the request send by the server.
-     *
+     * Checks if this move made by the player is valid and within the game rules.
+     * It also checks if the move made matches with the request sent by the server.
      * @param game    current state of the model
-     * @param request message sent by the server that this move must match with
+     * @param request request sent by the server that this move must match with
      * @return true if this move made by the player is valid, false otherwise.
      */
     public abstract boolean isValid(Game game, MoveRequest request);
@@ -35,14 +33,12 @@ public abstract class Move implements Serializable {
     
     /**
      * Applies this move to the model. This method is used by the controller if this move is valid.
-     *
      * @param game the model.
      */
     public abstract void apply(Game game);
     
     /**
      * Prepares the specific update needed for this move. The controller uses this method after applying this move to the model.
-     *
      * @param game the model to take the changes from.
      * @return the update containing all the needed changes.
      */

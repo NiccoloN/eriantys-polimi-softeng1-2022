@@ -5,7 +5,6 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.EriantysGUI;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.SceneController;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components.*;
 import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
-import it.polimi.ingsw2022.eriantys.server.model.cards.CharacterCard;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import javafx.fxml.FXML;
@@ -21,12 +20,18 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the gui controller of the game scene, that contains all the components that manage various javafx nodes
+ * in order to represent te current state of the game
+ * @author Niccolò Nicolosi
+ * @author Emanuele Musto
+ */
 public class GameController extends SceneController implements Initializable {
     
     private final List<Player> playersList;
     
     private final Map<String, PlayerGUIComponent> playerComponents;
-    private final Map<String, SchoolGUIComponent> dashboardComponents;
+    private final Map<String, SchoolGUIComponent> schoolGUIComponents;
     private final List<IslandGUIComponent> islandGUIComponents;
     private final List<CloudGUIComponent> cloudGUIComponents;
     @FXML
@@ -39,12 +44,17 @@ public class GameController extends SceneController implements Initializable {
     private HelpersGUIComponent helpersGUIComponent;
     private ColorsGUIComponent colorsGUIComponent;
     
+    /**
+     * Constructs the game scene controller
+     * @param gui     the gui associated to this controller
+     * @param players the list of players of the game
+     */
     public GameController(EriantysGUI gui, List<Player> players) {
         
         super(gui);
         islandGUIComponents = new ArrayList<>(12);
         cloudGUIComponents = new ArrayList<>(2);
-        dashboardComponents = new HashMap<>();
+        schoolGUIComponents = new HashMap<>();
         playerComponents = new HashMap<>();
         
         playersList = players;
@@ -64,7 +74,7 @@ public class GameController extends SceneController implements Initializable {
         for (int n = 0; n < 4; n++) {
             
             if (n < playersList.size())
-                dashboardComponents.put(playersList.get(n).getUsername(), new SchoolGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
+                schoolGUIComponents.put(playersList.get(n).getUsername(), new SchoolGUIComponent((Group) schools.getChildren().get(n), playersList.get(n).team, this));
             
             else schools.getChildren().get(n).setVisible(false);
         }
@@ -98,16 +108,28 @@ public class GameController extends SceneController implements Initializable {
         hintsTextArea.setPadding(new Insets(30, 0, 0, 0));
     }
     
+    /**
+     * @param username the username associated to a player gui component
+     * @return the player gui component associated to the given username
+     */
     public PlayerGUIComponent getPlayerGUIComponent(String username) {
         
         return playerComponents.get(username);
     }
     
-    public IslandGUIComponent getIslandGUIComponents(int index) {
+    /**
+     * @param guiIndex the gui index (not the compound one) of an island gui component
+     * @return the island gui component of the given index
+     */
+    public IslandGUIComponent getIslandGUIComponent(int guiIndex) {
         
-        return islandGUIComponents.get(index);
+        return islandGUIComponents.get(guiIndex);
     }
     
+    /**
+     * @param compoundIndex the compound index of an island
+     * @return the list of island gui components with the given compound index
+     */
     public List<IslandGUIComponent> getIslandGUIComponentsOfIndex(int compoundIndex) {
         
         return islandGUIComponents.stream().filter((x) -> x.getCompoundIslandIndex() == compoundIndex).collect(Collectors.toList());
@@ -118,6 +140,9 @@ public class GameController extends SceneController implements Initializable {
         return new ArrayList<>(islandGUIComponents);
     }
     
+    /**
+     * @return the number of compound islands currently in game
+     */
     public int getNumberOfCompoundIslands() {
         
         return islandGUIComponents.get(11).getCompoundIslandIndex() + 1;
@@ -128,9 +153,9 @@ public class GameController extends SceneController implements Initializable {
         return cloudGUIComponents.get(index);
     }
     
-    public SchoolGUIComponent getDashboardGUIComponentOfPlayer(String playerName) {
+    public SchoolGUIComponent getSchoolGUIComponentOfPlayer(String playerName) {
         
-        return dashboardComponents.get(playerName);
+        return schoolGUIComponents.get(playerName);
     }
     
     public List<CloudGUIComponent> getCloudGUIComponents() {
@@ -153,19 +178,22 @@ public class GameController extends SceneController implements Initializable {
         return new ArrayList<>(characterGUIComponents);
     }
     
-    public void setCharacters(List<CharacterCard> characters) {
-        
-        for (int i = 0; i < 3; i++) characterGUIComponents.get(i).setCharacter(characters.get(i));
-    }
-    
+    /**
+     * Sets the text to visualize as hint
+     * @param text the text to visualize
+     */
     public void setHintsText(String text) {
         
         hintsTextArea.setText(text);
     }
     
+    /**
+     * Makes the gui visualize the winner in a dedicated text area
+     * @param team the winner team
+     */
     public void endGame(Team team) {
         
-        stopListeners();
+        stopListeningToInputs();
         
         winner.setWrapText(true);
         winner.setPadding(new Insets(30, 0, 0, 0));
@@ -179,7 +207,10 @@ public class GameController extends SceneController implements Initializable {
         winner.setVisible(true);
     }
     
-    public void stopListeners() {
+    /**
+     * Makes the gui stop listening to click and keyboard inputs
+     */
+    public void stopListeningToInputs() {
         
         for (IslandGUIComponent island : islandGUIComponents) island.stopListeningToInput();
         for (CloudGUIComponent cloud : cloudGUIComponents) cloud.stopListeningToInput();
@@ -189,6 +220,9 @@ public class GameController extends SceneController implements Initializable {
         colorsGUIComponent.stopListeningToInput();
     }
     
+    /**
+     * @return a preset border glow effect applicable to javafx nodes
+     */
     public DropShadow getBorderGlowEffect() {
         
         DropShadow borderGlow = new DropShadow();

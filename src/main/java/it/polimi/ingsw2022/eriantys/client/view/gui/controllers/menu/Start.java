@@ -8,6 +8,10 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+/**
+ * This class represents the gui controller of the welcome-screen scene
+ * @author Emanuele Musto
+ */
 public class Start extends SceneController {
     
     @FXML
@@ -18,6 +22,10 @@ public class Start extends SceneController {
         super(gui);
     }
     
+    /**
+     * Connects to the server
+     * @throws IOException if an IOException occurs while reading the server ip from file
+     */
     public void startGame() throws IOException {
         
         EriantysClient client = EriantysClient.getInstance();
@@ -32,6 +40,10 @@ public class Start extends SceneController {
         }).start();
     }
     
+    /**
+     * Sets the next scene to select the server ip
+     * @throws IOException if an IOException occurs while setting the new scene
+     */
     public void setServerIpScene() throws IOException {
         
         getGui().setScene("ServerSelection.fxml", new EnterServerIp(getGui()));

@@ -2,7 +2,6 @@ package it.polimi.ingsw2022.eriantys.client.view.cli;
 
 /**
  * This class provides different ansi codes and ansi-related utility methods
- *
  * @author Niccolò Nicolosi
  */
 public class AnsiCodes {

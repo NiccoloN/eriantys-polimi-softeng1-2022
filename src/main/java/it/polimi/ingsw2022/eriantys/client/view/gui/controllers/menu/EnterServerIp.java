@@ -18,6 +18,10 @@ import java.util.ResourceBundle;
 
 import static it.polimi.ingsw2022.eriantys.client.EriantysClient.ADDRESS_FILE_NAME;
 
+/**
+ * This class represents the gui controller of the server selection scene
+ * @author Emanuele Musto
+ */
 public class EnterServerIp extends SceneController implements Initializable {
     
     @FXML
@@ -47,6 +51,10 @@ public class EnterServerIp extends SceneController implements Initializable {
         });
     }
     
+    /**
+     * Saves the text in the ip address field to file as the selected server ip address
+     * @throws IOException if an IOException occurs when writing to file
+     */
     public void saveServerIp() throws IOException {
         
         String serverIpAddress = ipAddressField.getText().trim();

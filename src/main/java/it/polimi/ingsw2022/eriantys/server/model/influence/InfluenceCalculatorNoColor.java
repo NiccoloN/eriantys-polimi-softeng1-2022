@@ -7,7 +7,6 @@ import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 /**
  * This class is an influence calculator that calculates the dominance
  * without considering the contribution of students of a specific color
- *
  * @author Emanuele Musto
  */
 public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic {
@@ -16,7 +15,6 @@ public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic {
     
     /**
      * Initializes color as the color to ignore
-     *
      * @param color the color to ignore
      */
     public InfluenceCalculatorNoColor(PawnColor color) {
@@ -27,7 +25,6 @@ public class InfluenceCalculatorNoColor extends InfluenceCalculatorBasic {
     
     /**
      * Calculates the influence without considering the chosen color
-     *
      * @param player one of the players
      * @param island the given compound island
      */

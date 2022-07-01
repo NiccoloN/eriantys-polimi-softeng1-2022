@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.Images;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCloud;
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
@@ -20,6 +20,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a cloud gui component. A cloud gui component is associated to a javafx Group that represents a cloud
+ * and to the index of the cloud it represents. This component manages various graphic elements to represent the current state
+ * of the cloud and attaches listeners to them in order to detect inputs and react accordingly
+ * @author Emanuele Musto
+ */
 public class CloudGUIComponent {
     
     private final GameController gameController;
@@ -32,17 +38,23 @@ public class CloudGUIComponent {
     private boolean empty;
     private MoveRequestMessage requestMessage;
     
-    public CloudGUIComponent(Group cloud, int cloudIndex, GameController gameController) {
+    /**
+     * Constructs a cloud gui component
+     * @param cloudGroup     the javafx group associated to this component
+     * @param cloudIndex     the index of the cloud associated to this component
+     * @param gameController the game controller associated to this component
+     */
+    public CloudGUIComponent(Group cloudGroup, int cloudIndex, GameController gameController) {
         
         this.gameController = gameController;
         this.cloudIndex = cloudIndex;
         empty = true;
         
-        ((ImageView) cloud.getChildren().get(0)).setImage(ImageFactory.cloudImage);
+        ((ImageView) cloudGroup.getChildren().get(0)).setImage(Images.cloudImage);
         
-        cloudGroup = cloud;
-        cloudGrid = (GridPane) cloud.getChildren().get(1);
-        button = (Button) cloud.getChildren().get(2);
+        this.cloudGroup = cloudGroup;
+        cloudGrid = (GridPane) cloudGroup.getChildren().get(1);
+        button = (Button) cloudGroup.getChildren().get(2);
         
         initializeStudentImageViews();
         
@@ -57,21 +69,19 @@ public class CloudGUIComponent {
         };
     }
     
-    public void manageInput(MouseEvent mouseEvent) throws IOException {
-        
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            
-            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(cloudIndex)));
-            stopListeningToInput();
-        }
-    }
-    
+    /**
+     * Makes this component stop listening to click inputs
+     */
     public void stopListeningToInput() {
         
         button.removeEventHandler(MouseEvent.MOUSE_CLICKED, buttonClicked);
         cloudGroup.setEffect(null);
     }
     
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage the message that requested to listen to inputs
+     */
     public void listenToInput(MoveRequestMessage requestMessage) {
         
         this.requestMessage = requestMessage;
@@ -79,11 +89,16 @@ public class CloudGUIComponent {
         cloudGroup.setEffect(gameController.getBorderGlowEffect());
     }
     
-    public void setStudents(PawnColor color, int numberOfStudents) {
+    /**
+     * Sets the students of a given color to visualize onto this could component
+     * @param color    the color of the students to visualize
+     * @param students the number of students to visualize
+     */
+    public void setStudents(PawnColor color, int students) {
         
-        for (int i = 0; i < numberOfStudents; i++) {
+        for (int i = 0; i < students; i++) {
             
-            for (ColoredPawnImageView image : students) {
+            for (ColoredPawnImageView image : this.students) {
                 
                 if (image.getColor() == null) {
                     
@@ -95,24 +110,39 @@ public class CloudGUIComponent {
         }
     }
     
+    /**
+     * Clears the cloud component from every visualized student
+     */
     public void clearStudents() {
         
         for (ColoredPawnImageView image : students) image.clearColor();
         empty = true;
     }
     
+    /**
+     * @return whether this cloud component doesn't visualize any student
+     */
     public boolean isEmpty() {
         
         return empty;
+    }
+    
+    private void manageInput(MouseEvent mouseEvent) throws IOException {
+        
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            
+            EriantysClient.getInstance().sendToServer(new PerformedMoveMessage(requestMessage, new ChooseCloud(cloudIndex)));
+            stopListeningToInput();
+        }
     }
     
     private void initializeStudentImageViews() {
         
         students = new ArrayList<>(3);
         
-        ColoredPawnImageView firstStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-        ColoredPawnImageView secondStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-        ColoredPawnImageView thirdStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+        ColoredPawnImageView firstStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
+        ColoredPawnImageView secondStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
+        ColoredPawnImageView thirdStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
         
         firstStudentImage.setVisible(false);
         secondStudentImage.setVisible(false);
@@ -139,7 +169,7 @@ public class CloudGUIComponent {
                 thirdStudentImage.setTranslateY(-10);
                 break;
             case 3:
-                ColoredPawnImageView fourthStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+                ColoredPawnImageView fourthStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
                 students.add(fourthStudentImage);
                 
                 fourthStudentImage.setVisible(false);

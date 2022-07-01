@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * This class represents the teams of the game. Every team should contain from 0 to 2 players
- *
  * @author Emanuele Musto
  */
 public class Team implements Serializable {
@@ -17,7 +16,6 @@ public class Team implements Serializable {
     
     /**
      * Initializes the list of player with initial capacity equal to 2
-     *
      * @param ansiColor the ansi color of this team to use in the cli
      */
     public Team(String ansiColor, String teamName) {
@@ -34,7 +32,6 @@ public class Team implements Serializable {
     
     /**
      * Adds a player to the team
-     *
      * @param player the player to add to the team
      * @throws RuntimeException if the team already contains 2 players
      * @throws RuntimeException if the player is already part of the team
@@ -56,7 +53,6 @@ public class Team implements Serializable {
     
     /**
      * Get the list of players of the team
-     *
      * @return Array of players
      */
     public List<Player> getPlayers() {

@@ -12,7 +12,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 
 /**
  * This class represents a player status cli component: an aggregate of a school tables cli component and a player stats cli component
- *
  * @author Niccolò Nicolosi
  * @see SchoolTablesCLIComponent
  * @see PlayerStatsCLIComponent
@@ -28,7 +27,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Constructs a player status cli component with the given index, nickname and team color
-     *
      * @param nickname      the nickname to associate to this component
      * @param teamAnsiColor the team color to associate to this component
      * @param helperLeft    whether the last played helper should be placed on the left instead of on the right of this component
@@ -144,7 +142,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Sets the students of the given color to visualize at the entrance
-     *
      * @param color  the color of the students
      * @param number the number of students to visualize
      * @throws InvalidParameterException if number is not between 0 and 9
@@ -156,7 +153,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Sets the students to visualize at the table of the given color
-     *
      * @param color  the color of the students
      * @param number the number of students to visualize
      * @throws InvalidParameterException if number is not between 0 and 10
@@ -168,7 +164,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Sets if the professor of the given color is visible on this component
-     *
      * @param color the color of the professor
      * @param prof  whether the professor is visible or not
      */
@@ -179,7 +174,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Sets the coins to visualize on this component
-     *
      * @param coins the coins to visualize on this component
      * @throws InvalidParameterException if number is not between 0 and 99
      */
@@ -190,7 +184,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Sets the towers to visualize on this component
-     *
      * @param towers the towers to visualize on this component
      * @throws InvalidParameterException if number is not between 0 and 9
      */
@@ -201,7 +194,6 @@ public class PlayerStatusCLIComponent implements CLIComponent {
     
     /**
      * Sets the last played helper to visualize on this component
-     *
      * @param lastHelperCLIComponent the helper component to visualize
      */
     public void setLastHelperCLIComponent(HelperCardCLIComponent lastHelperCLIComponent) {

@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class represents the gui controller of the username selection scene
+ * @author Emanuele Musto
+ */
 public class EnterUsername extends SceneController implements Initializable {
     
     private final Message requestMessage;
@@ -52,6 +56,10 @@ public class EnterUsername extends SceneController implements Initializable {
         });
     }
     
+    /**
+     * Sends the text in the username field to the server as the selected username
+     * @throws IOException if an IOException occurs sending the message to the server
+     */
     public void sendUsername() throws IOException {
         
         EriantysClient client = EriantysClient.getInstance();

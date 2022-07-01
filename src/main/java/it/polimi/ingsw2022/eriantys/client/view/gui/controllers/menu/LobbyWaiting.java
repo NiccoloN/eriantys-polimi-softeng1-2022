@@ -10,6 +10,10 @@ import javafx.scene.control.TextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class represents the gui controller of the lobby scene
+ * @author Emanuele Musto
+ */
 public class LobbyWaiting extends SceneController implements Initializable {
     
     private final String[] playerUsernames;

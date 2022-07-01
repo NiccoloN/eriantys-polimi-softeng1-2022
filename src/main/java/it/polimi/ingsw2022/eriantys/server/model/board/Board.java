@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * This class represents the game board: the set of islands, clouds and schools used to play the game
- *
  * @author Niccolò Nicolosi
  * @see CompoundIslandTile
  * @see CloudTile
@@ -24,7 +23,6 @@ public class Board implements Serializable {
     
     /**
      * Constructs a board for the given players
-     *
      * @param players the list of players in the game
      * @throws RuntimeException if the number of given players is not between 2 and 4
      */
@@ -70,7 +68,6 @@ public class Board implements Serializable {
     
     /**
      * Merges the given islands into a single bigger island. The given islands must be adjacent
-     *
      * @param index1 the index of the first island to merge
      * @param index2 the index of the second island to merge
      * @throws IndexOutOfBoundsException if either index1 or index2 is out of bounds
@@ -111,7 +108,6 @@ public class Board implements Serializable {
     
     /**
      * Moves mother nature of the given steps. Every step corresponds to moving from an island to its adjacent
-     *
      * @param steps the number of steps to perform
      * @return the index of the island where mother nature is located after the move
      */

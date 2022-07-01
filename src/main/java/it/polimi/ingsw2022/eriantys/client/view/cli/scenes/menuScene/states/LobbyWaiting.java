@@ -10,7 +10,6 @@ import java.io.IOException;
 
 /**
  * This class represents a menu scene state in which the user must wait for players to join the game
- *
  * @author Niccolò Nicolosi
  */
 public class LobbyWaiting extends MenuSceneState {
@@ -20,7 +19,6 @@ public class LobbyWaiting extends MenuSceneState {
     
     /**
      * Constructs a lobby waiting state
-     *
      * @param cli             the cli associated to this state
      * @param scene           the menu scene associated to this state
      * @param playerUsernames the usernames of the players currently in lobby

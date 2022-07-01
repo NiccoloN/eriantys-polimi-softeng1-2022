@@ -13,7 +13,6 @@ import java.util.Optional;
 /**
  * This class represents an island tile: the smallest piece that forms an island.
  * Island tiles can be aggregated to form a bigger island.
- *
  * @author Niccolò Nicolosi
  * @see CompoundIslandTile
  */
@@ -112,7 +111,6 @@ public class IslandTile implements Serializable {
     
     /**
      * Places the given colored pawns onto this tile. Only pawns that represent students should be placed on an island tile
-     *
      * @param students the list of students to place
      * @throws RuntimeException if any of the given students is already placed on this tile
      */
@@ -123,7 +121,6 @@ public class IslandTile implements Serializable {
     
     /**
      * Places a colored pawn onto this tile. Only pawns that represent students should be placed on an island tile
-     *
      * @param student the student to place
      * @throws RuntimeException if the given student is already placed on this tile
      */
@@ -135,7 +132,6 @@ public class IslandTile implements Serializable {
     
     /**
      * Removes all the students from this tile
-     *
      * @return a list containing the removed students
      */
     List<ColoredPawn> removeAllStudents() {
@@ -147,7 +143,6 @@ public class IslandTile implements Serializable {
     
     /**
      * Sets whether mother nature is currently on this specific tile of an island
-     *
      * @param motherNature true to place mother nature on this tile, false to remove it
      */
     void setMotherNature(boolean motherNature) {

@@ -6,14 +6,12 @@ import it.polimi.ingsw2022.eriantys.client.view.cli.scenes.states.CLISceneState;
 
 /**
  * This class represents a state of the menu scene
- *
  * @author Niccolò Nicolosi
  */
 public abstract class MenuSceneState extends CLISceneState {
     
     /**
      * Constructs a menu scene state
-     *
      * @param cli   the cli associated to this state
      * @param scene the menu scene associated to this state
      */

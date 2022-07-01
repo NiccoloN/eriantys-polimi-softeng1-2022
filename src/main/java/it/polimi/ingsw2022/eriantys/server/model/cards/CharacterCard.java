@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Special card with an associated Skill
- *
+ * This class represents a character card
  * @author Francesco Melegati Maccari
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
@@ -50,11 +49,6 @@ public class CharacterCard extends Card {
         }
     }
     
-    public ColoredPawn getStudent(int index) {
-        
-        return students.get(index);
-    }
-    
     public ColoredPawn getStudent(PawnColor color) {
         
         return students.stream().filter((x) -> x.color == color).findAny().orElseThrow();
@@ -62,7 +56,6 @@ public class CharacterCard extends Card {
     
     /**
      * Adds a student to the character card.
-     *
      * @param student the student to add.
      */
     public void addStudent(ColoredPawn student) {
@@ -72,7 +65,6 @@ public class CharacterCard extends Card {
     
     /**
      * Removes a student from the character card.
-     *
      * @param student the student to remove from the character card.
      */
     public void removeStudent(ColoredPawn student) {

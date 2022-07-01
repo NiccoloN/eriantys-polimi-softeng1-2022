@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * This class represents a change in the school dashboard. Whenever it changes, the clients will be updated with this change.
+ * @author Francesco Melegati Maccari
  */
 public class SchoolChange implements Change, Serializable {
     
@@ -45,12 +46,12 @@ public class SchoolChange implements Change, Serializable {
         
         Platform.runLater(() -> {
             
-            SchoolGUIComponent schoolGUIComponent = controller.getDashboardGUIComponentOfPlayer(schoolDashboard.player.getUsername());
+            SchoolGUIComponent schoolGUIComponent = controller.getSchoolGUIComponentOfPlayer(schoolDashboard.player.getUsername());
             
             for (PawnColor color : PawnColor.values()) {
                 
                 schoolGUIComponent.setTableStudents(schoolDashboard.countTableStudents(color), color);
-                schoolGUIComponent.setProfessors(color, schoolDashboard.containsProfessor(color));
+                schoolGUIComponent.setProfessor(color, schoolDashboard.containsProfessor(color));
                 
                 for (int n = 0; n < schoolDashboard.countEntranceStudents(color); n++) entranceStudents.add(color);
             }

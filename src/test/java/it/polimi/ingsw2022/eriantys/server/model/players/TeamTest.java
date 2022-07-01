@@ -24,12 +24,12 @@ class TeamTest {
         
         assertEquals(0, blackTeam.getSize());
         assertEquals(0, redTeam.getSize());
-        Player player = new Player("p1", blackTeam, Mage.MAGE_1);
+        Player player = new Player("p1", blackTeam);
         assertEquals(1, blackTeam.getSize());
         assertThrows(RuntimeException.class, () -> blackTeam.addPlayer(player));
-        new Player("p2", redTeam, Mage.MAGE_2);
-        new Player("p3", redTeam, Mage.MAGE_2);
+        new Player("p2", redTeam);
+        new Player("p3", redTeam);
         assertEquals(2, redTeam.getSize());
-        assertThrows(RuntimeException.class, () -> new Player("p4", redTeam, Mage.MAGE_3));
+        assertThrows(RuntimeException.class, () -> new Player("p4", redTeam));
     }
 }

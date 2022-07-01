@@ -11,6 +11,7 @@ import java.io.Serializable;
 /**
  * This class represents a change of the player. Whenever they change (change in coins or username),
  * the clients will be updated with this change.
+ * @author Niccolò Nicolosi
  */
 public class PlayerChange implements Change, Serializable {
     

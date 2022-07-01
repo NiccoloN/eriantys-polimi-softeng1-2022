@@ -22,7 +22,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.RESET;
 /**
  * This class represents a game scene state in which the user is asked to select his dining room or go back
  * to the previous state by triggering a specific action
- *
  * @author Niccolò Nicolosi
  */
 public class DiningRoomSelection extends GameSceneState {
@@ -33,7 +32,6 @@ public class DiningRoomSelection extends GameSceneState {
     
     /**
      * Constructs a dining room selection state
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one

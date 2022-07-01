@@ -7,7 +7,6 @@ import java.util.Optional;
  * This class represents a keyboard input (the press of a single key) read by the terminal. Every input consists of either 1 char, if it
  * corresponds to the press of simple character key, or 3 chars, if it corresponds to the press of a special key that prints an ansi sequence
  * on the terminal (like arrow keys). Different inputs are associated to the specific actions they trigger
- *
  * @author Niccolò Nicolosi
  * @see Action
  */
@@ -17,7 +16,6 @@ public class Input {
     
     /**
      * Constructs an input consisting of a single char
-     *
      * @param c1 the single char of the input
      */
     public Input(char c1) {
@@ -27,7 +25,6 @@ public class Input {
     
     /**
      * Constructs an input consisting of 3 chars
-     *
      * @param c1 the first char of the input
      * @param c2 the second char of the input
      * @param c3 the third char of the input

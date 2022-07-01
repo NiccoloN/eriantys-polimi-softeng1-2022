@@ -9,14 +9,12 @@ import java.io.IOException;
 
 /**
  * This class represents the first menu scene state
- *
  * @author Niccolò Nicolosi
  */
 public class Start extends MenuSceneState {
     
     /**
      * Constructs a start state
-     *
      * @param cli   the cli associated to this state
      * @param scene the menu scene associated to this state
      */

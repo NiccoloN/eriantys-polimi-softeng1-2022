@@ -10,7 +10,6 @@ import java.io.IOException;
 /**
  * This class represents a generic message sent by the client to the server. It stores the username of the client that
  * sent it, and the previous message that caused the client to send this message.
- *
  * @author Niccolò Nicolosi
  * @author Emanuele Musto
  * @see Message

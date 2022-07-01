@@ -13,7 +13,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a character card cli component
- *
  * @author Niccolò Nicolosi
  */
 public class CharacterCardCLIComponent extends BasicCLIComponent {
@@ -29,7 +28,6 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs a character card cli component from the given character card
-     *
      * @param card the character card from which to construct this component
      * @throws InvalidParameterException if the given character card is not valid
      */
@@ -88,7 +86,6 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the cost to visualize on this card component
-     *
      * @param cost the new cost
      */
     public void setCost(int cost) {
@@ -99,7 +96,6 @@ public class CharacterCardCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the students of the given color to visualize on this card
-     *
      * @param color  the color of the students
      * @param number the number of students to visualize
      * @throws InvalidParameterException if number is not between 0 and 9

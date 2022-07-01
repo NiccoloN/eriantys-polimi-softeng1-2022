@@ -10,17 +10,11 @@ import java.util.NoSuchElementException;
 
 /**
  * This class represents a player of the game. Every player is part of a team
- *
  * @author Emanuele Musto
  * @see Team
  */
 
 public class Player implements Serializable {
-    
-    /**
-     * The mage associated to the player
-     */
-    public final Mage mage;
     
     /**
      * The team of the player
@@ -42,19 +36,15 @@ public class Player implements Serializable {
     
     /**
      * Initializes the player adding it to a team and associating it to a mage
-     *
      * @param team the team of the player
-     * @param mage the mage associated with this player
      */
-    public Player(String username, Team team, Mage mage) {
+    public Player(String username, Team team) {
         
         this.username = username;
         
         this.team = team;
         team.addPlayer(this);
         isTeamLeader = team.getSize() == 1;
-        
-        this.mage = mage;
         
         helperCards = new ArrayList<>(10);
         coins = 1;
@@ -72,7 +62,6 @@ public class Player implements Serializable {
     
     /**
      * Adds a helper card to the hand of the player
-     *
      * @param card the card to add
      * @throws RuntimeException if the player already has a card of the same index in his hand
      */
@@ -85,7 +74,6 @@ public class Player implements Serializable {
     
     /**
      * Plays a helper card. The played card will be removed from the hand of the player and stored in currentHelper
-     *
      * @param index the index of the card to play
      * @return played card
      * @throws NoSuchElementException if player's hand does not contain a card of the given index
@@ -153,7 +141,6 @@ public class Player implements Serializable {
     
     /**
      * Updates the amount of coins when the player pays a given fee
-     *
      * @param fee the amount of coins to pay
      * @throws RuntimeException if the player has not enough coins
      */
@@ -173,7 +160,6 @@ public class Player implements Serializable {
     
     /**
      * Sets the school associated to the player
-     *
      * @param school the school to associate to the player
      * @throws RuntimeException if the player is already associated to a school
      */
@@ -198,7 +184,6 @@ public class Player implements Serializable {
     
     /**
      * Compare priority of turn of this player with another player, based on the index of the current helper card.
-     *
      * @param otherPlayer the other player to compare to.
      * @return -1 if priority is lower, +1 if it's higher.
      */

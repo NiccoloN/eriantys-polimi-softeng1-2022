@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * This class represents a colored pawn
- *
  * @author Emanuele Musto
  */
 public class ColoredPawn implements Serializable {

@@ -6,6 +6,9 @@ import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameControl
 import it.polimi.ingsw2022.eriantys.messages.toClient.MoveRequestMessage;
 import javafx.application.Platform;
 
+/**
+ * This class represents the request of waiting for the turn of other players to take place.
+ */
 public class WaitRequest extends MoveRequest {
     
     public WaitRequest() {
@@ -23,6 +26,6 @@ public class WaitRequest extends MoveRequest {
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
         
         super.manage(controller, requestMessage);
-        Platform.runLater(controller::stopListeners);
+        Platform.runLater(controller::stopListeningToInputs);
     }
 }

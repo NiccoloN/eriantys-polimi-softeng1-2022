@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * This class represents the choice of one cloud by a player
- *
  * @author Emanuele Musto
  */
 public class ChooseCloud extends Move {

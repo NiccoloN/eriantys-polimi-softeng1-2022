@@ -19,7 +19,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
  * This class represents a game scene state in which the user is asked to select a character card. A character selection state
  * is an optional state of the game scene that will only be set by another and can get back to the previous state if a specific
  * action is triggered
- *
  * @author Niccolò Nicolosi
  */
 public class CharacterSelection extends GameSceneState {
@@ -31,7 +30,6 @@ public class CharacterSelection extends GameSceneState {
     
     /**
      * Constructs a character selection state
-     *
      * @param cli            the cli this state is associated to
      * @param scene          the scene this state is associated to
      * @param requestMessage the message that requested this state or the previous one

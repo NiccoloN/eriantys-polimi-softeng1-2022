@@ -14,7 +14,6 @@ import java.util.List;
  * This class represents the request of choosing a color amongst the ones available, saved in the attribute availableColors.
  * It's mainly used due to the effect of a character card.
  * The attribute fromWhere indicates where the chosen color is going to be taken from.
- *
  * @author Emanuele Musto
  * @see ColoredPawnOriginDestination
  */
@@ -47,7 +46,7 @@ public class ChooseColorRequest extends MoveRequest {
         
         Platform.runLater(() -> {
             
-            controller.stopListeners();
+            controller.stopListeningToInputs();
             controller.getColorsGUIComponent().listenToInput(requestMessage, availableColors, characterIndex);
         });
     }

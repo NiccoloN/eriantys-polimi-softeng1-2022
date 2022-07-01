@@ -11,6 +11,10 @@ import javafx.scene.control.RadioButton;
 
 import java.io.IOException;
 
+/**
+ * This class represents the gui controller of the game mode selection scene
+ * @author Emanuele Musto
+ */
 public class GameMode extends SceneController {
     
     private final Message requestMessage;
@@ -23,6 +27,10 @@ public class GameMode extends SceneController {
         this.requestMessage = requestMessage;
     }
     
+    /**
+     * Sends the selected settings to the server
+     * @throws IOException if an IOException occurs sending the message to the server
+     */
     public void sendGameSettings() throws IOException {
         
         int numberOfPlayers;

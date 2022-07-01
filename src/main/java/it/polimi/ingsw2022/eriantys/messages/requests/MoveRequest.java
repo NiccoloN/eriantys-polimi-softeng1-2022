@@ -10,9 +10,8 @@ import java.io.Serializable;
 
 /**
  * This class represents a request for a move, sent by the server for a client. The request is encapsulated in a
- * MoveRequestMessage. Every move has a sentence that will be displayed as a hint for the player, so that he knows
- * what to do in every circumstance.
- *
+ * MoveRequestMessage. Every request has a prompt sentence that will be displayed as a hint for the player, so that
+ * he knows what to do in every circumstance.
  * @see MoveRequestMessage
  */
 public abstract class MoveRequest implements Serializable {
@@ -27,10 +26,9 @@ public abstract class MoveRequest implements Serializable {
     }
     
     /**
-     * This method is called by the CLI client when a move request arrives. It prints as a hint the sentence,
+     * This method is called by the CLI client when a move request is received. It prints the prompt sentence as a hint,
      * and modifies the cli and the scene in order to let the player make the requested move.
      * (Generally it sets the right state of a scene)
-     *
      * @param cli            the command line interface of the client.
      * @param scene          the current game scene.
      * @param requestMessage the request message that contains this request.
@@ -40,16 +38,29 @@ public abstract class MoveRequest implements Serializable {
         scene.getHintTextArea().setText(promptSentence);
     }
     
+    /**
+     * This method is called by the CLI client when a move request is received. It prints the prompt sentence as a hint,
+     * and modifies the cli and the scene in order to let the player make the requested move.
+     * (Generally it sets the right state of a scene)
+     * @param controller     the gui controller of the game scene.
+     * @param requestMessage the request message that contains this request.
+     */
     public void manage(GameController controller, MoveRequestMessage requestMessage) {
         
         Platform.runLater(() -> controller.setHintsText(promptSentence));
     }
     
+    /**
+     * @return whether the player can play a character after receiving this request
+     */
     public boolean canPlayCharacter() {
         
         return canPlayCharacter;
     }
     
+    /**
+     * Sets if the player can play a character after receiving this request
+     */
     public void setCanPlayCharacter(boolean canPlayCharacter) {
         
         this.canPlayCharacter = canPlayCharacter;

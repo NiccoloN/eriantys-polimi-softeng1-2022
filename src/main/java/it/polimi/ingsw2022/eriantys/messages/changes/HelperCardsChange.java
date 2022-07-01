@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * This class represents a change of the helper cards. Whenever they change, the clients will be updated with this change.
+ * @author Francesco Melegati Maccari
  */
 public class HelperCardsChange implements Change, Serializable {
     
@@ -33,7 +34,6 @@ public class HelperCardsChange implements Change, Serializable {
     
     /**
      * Adds a helper card to this change.
-     *
      * @param helperCard the changed helper card.
      */
     public void addHelperCard(HelperCard helperCard) {
@@ -43,7 +43,6 @@ public class HelperCardsChange implements Change, Serializable {
     
     /**
      * Adds a list of helper cards to this change.
-     *
      * @param helperCards the list of changed helper cards.
      */
     public void addHelperCards(List<HelperCard> helperCards) {
@@ -64,7 +63,7 @@ public class HelperCardsChange implements Change, Serializable {
     public void apply(GameController controller) {
         
         if (EriantysClient.getInstance().getUsername().equals(playerUsername))
-            Platform.runLater(() -> controller.getHelpersGUIComponent().setRemainingHelpers(helperCards));
+            Platform.runLater(() -> controller.getHelpersGUIComponent().setHelpers(helperCards));
         
         if (playedHelperCard != null)
             Platform.runLater(() -> controller.getPlayerGUIComponent(playerUsername).setLastHelper(playedHelperCard.index));

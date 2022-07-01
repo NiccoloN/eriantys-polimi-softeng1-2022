@@ -17,7 +17,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a menu scene state in which the user is asked to select to load an existing game or create a new one
- *
  * @author Niccolò Nicolosi
  */
 public class LoadOrCreateGame extends MenuSceneState {
@@ -28,7 +27,6 @@ public class LoadOrCreateGame extends MenuSceneState {
     
     /**
      * Constructs a load-or-create menu scene state
-     *
      * @param cli            the cli associated to this state
      * @param scene          the menu scene associated to this state
      * @param requestMessage the message that requested this state

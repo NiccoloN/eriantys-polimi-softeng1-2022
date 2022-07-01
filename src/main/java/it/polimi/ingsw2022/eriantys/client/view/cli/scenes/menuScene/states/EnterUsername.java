@@ -15,7 +15,6 @@ import java.util.Optional;
 
 /**
  * This class represents a menu scene state in which the user is asked to provide a username
- *
  * @author Niccolò Nicolosi
  */
 public class EnterUsername extends MenuSceneState {
@@ -25,7 +24,6 @@ public class EnterUsername extends MenuSceneState {
     
     /**
      * Constructs an enter-username state
-     *
      * @param cli            the cli associated to this state
      * @param scene          the menu scene associated to this state
      * @param requestMessage the message that requested this state

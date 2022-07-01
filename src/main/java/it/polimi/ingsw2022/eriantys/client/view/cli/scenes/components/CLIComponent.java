@@ -6,7 +6,6 @@ import java.security.InvalidParameterException;
 
 /**
  * This class represents a CLI component. A CLI component is a bi-dimensional graphic element that can be printed to a frame at a specific position
- *
  * @author Niccolò Nicolosi
  * @see Frame
  */
@@ -14,7 +13,6 @@ public interface CLIComponent {
     
     /**
      * Prints this component to the given frame at its position, if not hidden
-     *
      * @param frame the frame to print to
      */
     void printToFrame(Frame frame);
@@ -45,7 +43,6 @@ public interface CLIComponent {
     
     /**
      * Sets the color of this component
-     *
      * @param ansiColor the new color
      * @throws InvalidParameterException if the given color is not an ansi sequence
      */
@@ -53,7 +50,6 @@ public interface CLIComponent {
     
     /**
      * Sets whether this component is hidden or not
-     *
      * @param b true to hide the component, false to make it visible
      */
     void setHidden(boolean b);

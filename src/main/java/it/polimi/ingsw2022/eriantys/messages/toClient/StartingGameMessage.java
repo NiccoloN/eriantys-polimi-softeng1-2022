@@ -1,6 +1,7 @@
 package it.polimi.ingsw2022.eriantys.messages.toClient;
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
+import it.polimi.ingsw2022.eriantys.messages.Message;
 import it.polimi.ingsw2022.eriantys.messages.changes.Update;
 import it.polimi.ingsw2022.eriantys.server.controller.GameMode;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
@@ -13,7 +14,7 @@ import java.util.List;
  * and the game is ready to start. The message contains the final list of players, the game mode,
  * and the initial update containing every information from the model useful to display on the view.
  */
-public class StartingGameMessage extends ToClientMessage {
+public class StartingGameMessage extends Message {
     
     private final List<Player> players;
     private final GameMode gameMode;

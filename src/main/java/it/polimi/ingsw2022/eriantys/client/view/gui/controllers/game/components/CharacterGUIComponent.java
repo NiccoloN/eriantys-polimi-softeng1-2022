@@ -2,7 +2,7 @@ package it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.components
 
 import it.polimi.ingsw2022.eriantys.client.EriantysClient;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.GameController;
-import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.ImageFactory;
+import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.Images;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.ColoredPawnImageView;
 import it.polimi.ingsw2022.eriantys.client.view.gui.controllers.game.utilityNodes.SizedImageView;
 import it.polimi.ingsw2022.eriantys.messages.moves.ChooseCharacterCard;
@@ -27,7 +27,6 @@ import java.util.List;
  * This class represents a character gui component. A character gui component is associated to a javafx Group that represents a character
  * card and to a javafx TextArea, used to visualize the effect of the character on screen. This component manages various graphic elements
  * to represent the current state of the card and attaches listeners to them in order to detect inputs and react accordingly
- *
  * @author Emanuele Musto
  */
 public class CharacterGUIComponent {
@@ -49,7 +48,6 @@ public class CharacterGUIComponent {
     
     /**
      * Constructs a character gui component
-     *
      * @param characterGroup  the javafx group associated to this component
      * @param effectsTextArea the javafx text area associated to this component
      * @param gameController  the game controller associated to this component
@@ -89,7 +87,6 @@ public class CharacterGUIComponent {
     
     /**
      * Sets the character card this component should represent
-     *
      * @param card the card to represent
      */
     public void setCharacter(CharacterCard card) {
@@ -97,7 +94,7 @@ public class CharacterGUIComponent {
         if (characterIndex == 0) {
             
             characterIndex = card.index;
-            characterImageView.setImage(ImageFactory.charactersImages.get(characterIndex));
+            characterImageView.setImage(Images.charactersImages.get(characterIndex));
             effect = card.effect;
         }
         
@@ -119,8 +116,7 @@ public class CharacterGUIComponent {
     
     /**
      * Makes this component start listening to click inputs
-     *
-     * @param requestMessage the message that requests to listen to inputs
+     * @param requestMessage the message that requested to listen to inputs
      */
     public void listenToInput(MoveRequestMessage requestMessage) {
         
@@ -143,7 +139,7 @@ public class CharacterGUIComponent {
         
         if (!coinInitialized) {
             
-            SizedImageView coin = new SizedImageView(ImageFactory.COIN_SIZE, ImageFactory.coinImage);
+            SizedImageView coin = new SizedImageView(Images.COIN_SIZE, Images.coinImage);
             
             characterCard.add(coin, 1, 0);
             coin.setTranslateY(-23);
@@ -157,10 +153,10 @@ public class CharacterGUIComponent {
             
             studentsImages = new ArrayList<>(4);
             
-            ColoredPawnImageView firstStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-            ColoredPawnImageView secondStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-            ColoredPawnImageView thirdStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-            ColoredPawnImageView fourthStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+            ColoredPawnImageView firstStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
+            ColoredPawnImageView secondStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
+            ColoredPawnImageView thirdStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
+            ColoredPawnImageView fourthStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
             
             studentsImages.add(firstStudentImage);
             studentsImages.add(secondStudentImage);
@@ -180,8 +176,8 @@ public class CharacterGUIComponent {
                 for (ColoredPawnImageView image : studentsImages) image.setTranslateX(2);
                 break;
             case 7:
-                ColoredPawnImageView fifthStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
-                ColoredPawnImageView sixthStudentImage = new ColoredPawnImageView(ImageFactory.STUDENT_SIZE);
+                ColoredPawnImageView fifthStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
+                ColoredPawnImageView sixthStudentImage = new ColoredPawnImageView(Images.STUDENT_SIZE);
                 
                 studentsImages.add(fifthStudentImage);
                 studentsImages.add(sixthStudentImage);
@@ -206,10 +202,10 @@ public class CharacterGUIComponent {
             
             denyTilesImages = new ArrayList<>(4);
             
-            ImageView denyTile1 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
-            ImageView denyTile2 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
-            ImageView denyTile3 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
-            ImageView denyTile4 = new SizedImageView(ImageFactory.DENY_TILE_SIZE, ImageFactory.denyTileImage);
+            ImageView denyTile1 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
+            ImageView denyTile2 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
+            ImageView denyTile3 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
+            ImageView denyTile4 = new SizedImageView(Images.DENY_TILE_SIZE, Images.denyTileImage);
             
             characterCard.add(denyTile1, 1, 1);
             characterCard.add(denyTile2, 2, 2);

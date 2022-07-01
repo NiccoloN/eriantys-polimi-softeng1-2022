@@ -29,7 +29,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents the game scene
- *
  * @author Niccolò Nicolosi
  */
 public class GameScene extends CLIScene {
@@ -53,7 +52,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Constructs a game scene
-     *
      * @param cli      the cli to associate to this scene
      * @param width    the width of this scene
      * @param height   the height of this scene
@@ -172,7 +170,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Sets the list of compound islands in game
-     *
      * @param compoundIslands the updated list of compound islands
      */
     public void setCompoundIslands(List<CompoundIslandTile> compoundIslands) {
@@ -182,7 +179,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Sets the list of helpers in game (only the helpers in the hand of the player represented by this client)
-     *
      * @param helperCards the updated list of helpers
      */
     public synchronized void setHelpers(List<HelperCard> helperCards) {
@@ -200,7 +196,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Sets the list of characters in game
-     *
      * @param characterCards the updated list of characters
      */
     public synchronized void setCharacters(List<CharacterCard> characterCards) {
@@ -218,7 +213,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Sets the list of currently selectable colors
-     *
      * @param colors the list of selectable colors
      */
     public synchronized void setColors(List<PawnColor> colors) {
@@ -235,7 +229,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Sets the prompt cli component to visualize
-     *
      * @param prompt the new prompt component
      */
     public void setPrompt(CLIComponent prompt) {
@@ -325,7 +318,6 @@ public class GameScene extends CLIScene {
     
     /**
      * Sets the winner of the game, visualizing the winner cli component
-     *
      * @param winnerTeam the winner team
      */
     public void setWinner(Team winnerTeam) {

@@ -11,7 +11,6 @@ import java.io.IOException;
 /**
  * This class represents scene of the cli. A scene contains all the components to visualize on the cli if the scene is set.
  * A scene also takes care of managing inputs based on it's state
- *
  * @author Niccolò Nicolosi
  * @see CLIComponent
  * @see CLISceneState
@@ -25,7 +24,6 @@ public abstract class CLIScene {
     
     /**
      * Constructs a scene associated to the given cli
-     *
      * @param cli    the cli to associate to this scene
      * @param width  the width of this scene
      * @param height the height of this scene
@@ -39,7 +37,6 @@ public abstract class CLIScene {
     
     /**
      * Sets the current state of the scene, exiting the previous and entering the given one
-     *
      * @param state the new state of the scene
      */
     public void setState(CLISceneState state) {
@@ -51,7 +48,6 @@ public abstract class CLIScene {
     
     /**
      * Manages the given input based on the current state
-     *
      * @param input the input to manage
      * @throws IOException if an I/O exception occurs
      */
@@ -62,7 +58,6 @@ public abstract class CLIScene {
     
     /**
      * Prints this scene to the given frame
-     *
      * @param frame the frame to print to
      */
     public abstract void printToFrame(Frame frame);

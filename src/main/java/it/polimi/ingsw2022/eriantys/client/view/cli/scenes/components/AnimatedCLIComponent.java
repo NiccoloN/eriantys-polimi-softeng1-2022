@@ -6,7 +6,6 @@ import java.security.InvalidParameterException;
 
 /**
  * This class represents an animated cli component
- *
  * @author Niccolò Nicolosi
  */
 public class AnimatedCLIComponent extends BasicCLIComponent {
@@ -17,7 +16,6 @@ public class AnimatedCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs an animated cli component from the given rows
-     *
      * @param width the width of the component
      * @param rows  the rows from which to construct the component
      * @throws InvalidParameterException if any of the given rows is not of the given width
@@ -30,7 +28,6 @@ public class AnimatedCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs an empty animated cli component of the given size
-     *
      * @param width  the width of the component
      * @param height the height of the component
      * @throws InvalidParameterException if width or height are < 1
@@ -86,7 +83,6 @@ public class AnimatedCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the movement speed of this component on the x-axis
-     *
      * @param speedX the new movement speed
      */
     public void setSpeedX(float speedX) {
@@ -104,7 +100,6 @@ public class AnimatedCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the movement speed of this component on the y-axis
-     *
      * @param speedY the new movement speed
      */
     public void setSpeedY(float speedY) {

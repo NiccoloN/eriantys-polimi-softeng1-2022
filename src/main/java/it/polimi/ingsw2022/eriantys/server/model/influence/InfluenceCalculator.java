@@ -10,14 +10,12 @@ import java.util.Optional;
 /**
  * This interface represents an influence calculator. The purpose of an influence calculator is to find the player
  * with the greatest influence on a given island, following a specific calculation strategy
- *
  * @author Emanuele Musto
  */
 public interface InfluenceCalculator {
     
     /**
      * Calculates the influence of every given player on the given island
-     *
      * @param players       the players in the game
      * @param island        the given island on which calculations are done
      * @param currentPlayer the player currently playing

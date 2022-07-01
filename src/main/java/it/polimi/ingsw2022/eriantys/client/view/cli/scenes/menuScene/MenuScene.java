@@ -14,7 +14,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a menu scene
- *
  * @author Niccolò Nicolosi
  */
 public class MenuScene extends CLIScene {
@@ -41,7 +40,6 @@ public class MenuScene extends CLIScene {
     
     /**
      * Constructs a menu scene
-     *
      * @param cli    the cli to associate to this scene
      * @param width  the width of this scene
      * @param height the height of this scene
@@ -189,7 +187,6 @@ public class MenuScene extends CLIScene {
     
     /**
      * Sets the prompt cli component of the scene
-     *
      * @param prompt the new prompt component
      */
     public void setPrompt(CLIComponent prompt) {
@@ -280,7 +277,6 @@ public class MenuScene extends CLIScene {
     
     /**
      * Sets the chosen game-mode cli component to visualize in the lobby waiting state
-     *
      * @param chosenGameMode chosen game-mode component to visualize
      */
     public void setChosenGameMode(BasicCLIComponent chosenGameMode) {
@@ -292,7 +288,6 @@ public class MenuScene extends CLIScene {
     
     /**
      * Sets the player usernames to visualize in the lobby waiting state as an array of cli components
-     *
      * @param playerUsernames the array of cli components to visualize
      */
     public void setPlayerUsernames(BasicCLIComponent[] playerUsernames) {

@@ -9,7 +9,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents a basic cli component. A basic cli component is a bi-dimensional graphic element built of ascii characters
- *
  * @author Niccolò Nicolosi
  * @see CLIComponent
  */
@@ -22,7 +21,6 @@ public class BasicCLIComponent implements CLIComponent {
     
     /**
      * Constructs a cli component from the given rows
-     *
      * @param width the width of the component
      * @param rows  the rows from which to construct the component
      * @throws InvalidParameterException if any of the given rows is not of the given width
@@ -35,7 +33,6 @@ public class BasicCLIComponent implements CLIComponent {
     
     /**
      * Constructs an empty cli component of the given size
-     *
      * @param width  the width of the component
      * @param height the height of the component
      * @throws InvalidParameterException if width or height are < 1
@@ -155,7 +152,6 @@ public class BasicCLIComponent implements CLIComponent {
     
     /**
      * Sets the row of the given index
-     *
      * @param index the index of the row to set
      * @param row   the new row ('\0' chars corresponds to transparent chars)
      * @throws InvalidParameterException if the given row is not of the right length

@@ -1,7 +1,6 @@
 package it.polimi.ingsw2022.eriantys.server.model.board;
 
 import it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes;
-import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +25,8 @@ class BoardTest {
         final List<Player> players = new ArrayList<>();
         Team blackTeam = new Team(AnsiCodes.BLACK_BRIGHT, "black");
         Team whiteTeam = new Team(AnsiCodes.WHITE_BRIGHT, "white");
-        players.add(new Player("player1", blackTeam, Mage.MAGE_1));
-        players.add(new Player("player2", whiteTeam, Mage.MAGE_2));
+        players.add(new Player("player1", blackTeam));
+        players.add(new Player("player2", whiteTeam));
         this.players = players;
         this.blackTeam = blackTeam;
         this.whiteTeam = whiteTeam;
@@ -41,9 +40,9 @@ class BoardTest {
         players.remove(toRemovePlayer);
         assertThrows(RuntimeException.class, () -> new Board(players));
         players.add(toRemovePlayer);
-        players.add(new Player("player3", blackTeam, Mage.MAGE_3));
-        players.add(new Player("player4", whiteTeam, Mage.MAGE_4));
-        players.add(new Player("player5", redTeam, Mage.MAGE_1));
+        players.add(new Player("player3", blackTeam));
+        players.add(new Player("player4", whiteTeam));
+        players.add(new Player("player5", redTeam));
         assertThrows(RuntimeException.class, () -> new Board(players));
     }
     

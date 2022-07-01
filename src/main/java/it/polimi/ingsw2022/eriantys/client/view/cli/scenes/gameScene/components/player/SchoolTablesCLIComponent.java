@@ -14,7 +14,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.*;
 
 /**
  * This class represents cli component containing the tables of a school (the dining room)
- *
  * @author Niccolò Nicolosi
  * @see PlayerStatusCLIComponent
  */
@@ -29,7 +28,6 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
     
     /**
      * Constructs a school table cli component with the given username
-     *
      * @param username the username to associate to this component
      * @throws InvalidParameterException if the given username is not valid
      */
@@ -80,7 +78,6 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets the students of the given color to visualize on this component
-     *
      * @param color  the color of the students
      * @param number the number of students to visualize
      * @throws InvalidParameterException if number is not between 0 and 10
@@ -93,7 +90,6 @@ class SchoolTablesCLIComponent extends BasicCLIComponent {
     
     /**
      * Sets if the professor of the given color is visible on this component
-     *
      * @param color the color of the professor
      * @param prof  whether the professor is visible or not
      */

@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * This class represents a cloud
- *
  * @author Niccolò Nicolosi
  */
 public class CloudTile implements Serializable {
@@ -23,7 +22,6 @@ public class CloudTile implements Serializable {
     
     /**
      * Places a colored pawn onto this cloud. Only pawns that represent students should be placed on a cloud
-     *
      * @param student the student to place
      * @throws RuntimeException if this island already contains 4 or more students
      * @throws RuntimeException if the given student is already on this cloud
@@ -38,7 +36,6 @@ public class CloudTile implements Serializable {
     
     /**
      * Removes all the students from this cloud
-     *
      * @return a List containing the removed students
      */
     public List<ColoredPawn> withdrawStudents() {

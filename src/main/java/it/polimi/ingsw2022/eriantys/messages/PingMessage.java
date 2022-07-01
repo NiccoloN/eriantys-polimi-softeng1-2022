@@ -9,7 +9,6 @@ import java.io.IOException;
  * This class represents a ping message sent in order to establish that the connection is still alive between
  * client and server. It's a timed message, so the client has 10 seconds in order to respond with a pong message,
  * otherwise the connection is considered cut and the server shutdowns.
- *
  * @author Emanuele Musto
  * @author Niccolò Nicolosi
  * @see PongMessage

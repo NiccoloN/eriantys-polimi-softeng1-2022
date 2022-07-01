@@ -9,7 +9,6 @@ import java.util.*;
 
 /**
  * This class represents a school. Every school is associated to a player
- *
  * @author Niccolò Nicolosi
  * @see Player
  */
@@ -28,7 +27,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Constructs a school associated to the given player, with a maximum number of towers
-     *
      * @param player the player to associate this school with
      */
     public SchoolDashboard(Player player, int maxTowers) {
@@ -63,7 +61,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Place a colored pawn at the entrance of this school. Only pawns that represent students should be placed at the entrance
-     *
      * @param student the student to place
      * @throws RuntimeException if the entrance of this school already contains 9 or more students
      * @throws RuntimeException if the given student is already at the entrance of this school
@@ -76,6 +73,9 @@ public class SchoolDashboard implements Serializable {
         entranceStudents.add(student);
     }
     
+    /**
+     * @return a list containing the pawn colors of the students at the entrance of this school
+     */
     public List<PawnColor> getAvailableEntranceColors() {
         
         ArrayList<PawnColor> availableColors = new ArrayList<>();
@@ -85,6 +85,9 @@ public class SchoolDashboard implements Serializable {
         return availableColors;
     }
     
+    /**
+     * @return a list containing the pawn colors of the students at the tables of this school
+     */
     public List<PawnColor> getAvailableTableColors() {
         
         ArrayList<PawnColor> availableColors = new ArrayList<>();
@@ -105,7 +108,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Removes the given student from the entrance of this school, if present
-     *
      * @param student the student to remove
      * @throws NoSuchElementException if the given student is not at the entrance of this school
      */
@@ -116,7 +118,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Removes from the school entrance a student pawn of the given color, if present.
-     *
      * @param color the given color.
      * @return the pawn removed from the school entrance.
      */
@@ -129,7 +130,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Places a colored pawn at the table of the corresponding color. Only pawns that represent students should be placed with this method
-     *
      * @param student the student to place
      * @throws RuntimeException if the table of the corresponding color already contains 9 or more students
      * @throws RuntimeException if the given student is already at the table of its color
@@ -147,7 +147,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Removes the last placed student from the table of the given color
-     *
      * @param color the color of the table from which to remove the student
      * @throws RuntimeException if the table of the given color is empty
      */
@@ -175,7 +174,6 @@ public class SchoolDashboard implements Serializable {
     /**
      * Place a colored pawn into this school. Only pawns that represent professors should be place with this method
      * If the professor is present, do nothing
-     *
      * @param professor the professor to place
      */
     public void addProfessor(ColoredPawn professor) {
@@ -186,7 +184,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Removes the professor of the given color from this school
-     *
      * @param color the color of the professor to remove
      * @return Optional of the removed professor
      */
@@ -204,7 +201,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Places a tower in this school
-     *
      * @throws RuntimeException if the number of towers in this school is already at its maximum
      */
     public void addTower() {
@@ -215,7 +211,6 @@ public class SchoolDashboard implements Serializable {
     
     /**
      * Removes a tower from this school
-     *
      * @throws RuntimeException if the number of towers in this school is 0
      */
     public void removeTower() {

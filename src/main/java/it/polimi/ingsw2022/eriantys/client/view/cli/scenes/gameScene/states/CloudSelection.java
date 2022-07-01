@@ -18,7 +18,6 @@ import static it.polimi.ingsw2022.eriantys.client.view.cli.AnsiCodes.GREEN;
 
 /**
  * This class represents a game scene state in which the user is asked to select a cloud
- *
  * @author Niccolò Nicolosi
  */
 public class CloudSelection extends GameSceneState {
@@ -28,7 +27,6 @@ public class CloudSelection extends GameSceneState {
     
     /**
      * Constructs a cloud selection state
-     *
      * @param cli            the cli to associate to this state
      * @param scene          the game scene to associate to this state
      * @param requestMessage the message that requested this state or the previous one

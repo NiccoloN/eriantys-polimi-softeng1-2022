@@ -10,7 +10,6 @@ import it.polimi.ingsw2022.eriantys.server.model.influence.InfluenceCalculator;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.ColoredPawn;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.PawnColor;
 import it.polimi.ingsw2022.eriantys.server.model.pawns.StudentsBag;
-import it.polimi.ingsw2022.eriantys.server.model.players.Mage;
 import it.polimi.ingsw2022.eriantys.server.model.players.Player;
 import it.polimi.ingsw2022.eriantys.server.model.players.Team;
 
@@ -19,9 +18,10 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * This class represents the game instance, and contains all the data of the game.
- *
+ * This class represents the game instance, and contains all the game data.
  * @author Francesco Melegati
+ * @author Emanuele Musto
+ * @author Niccolò Nicolosi
  */
 public class Game implements Serializable {
     
@@ -43,9 +43,13 @@ public class Game implements Serializable {
     private InfluenceCalculator influenceCalculator;
     private Player currentPlayer;
     private int characterIsland;
-    private boolean abortMessageReceived;
     private boolean gameEnding;
     
+    /**
+     * Constructs a new game
+     * @param playerUsernames the usernames of the player in the game
+     * @throws IOException if an IOException occurs while reading from files
+     */
     public Game(String[] playerUsernames) throws IOException {
         
         teams = new HashMap<>(3);
@@ -63,7 +67,6 @@ public class Game implements Serializable {
         characters = new ArrayList<>(3);
         
         exchangesCausedByCharacters = new HashMap<>(3);
-        abortMessageReceived = false;
         gameEnding = false;
         
         placeFirstStudents();
@@ -93,7 +96,6 @@ public class Game implements Serializable {
      * For every color, the player with the most students on the school dashboard gets the professor of that color.
      * Therefore, this method is used to check whether the movement of a student causes a movement of the professor of
      * the same color, and if true, moves the professor from one place to another.
-     *
      * @param color           the color of the student moved.
      * @param greaterAndEqual if true it's enough to reach the same number of student of the player with the professor
      *                        in order to get the professor (effect caused by a character), if false the number of student
@@ -244,16 +246,6 @@ public class Game implements Serializable {
         return exchangesCausedByCharacters.get(origin);
     }
     
-    public boolean getAbortMessageReceived() {
-        
-        return abortMessageReceived;
-    }
-    
-    public void setAbortMessageReceived(boolean value) {
-        
-        abortMessageReceived = value;
-    }
-    
     public int getCharacterIsland() {
         
         return characterIsland;
@@ -275,9 +267,8 @@ public class Game implements Serializable {
     }
     
     /**
-     * Check who is the winner team when the game ends.
+     * Checks which is the winner team when the game ends.
      * The winner team is the team with the higher number of placed towers in the islands.
-     *
      * @return the winner team.
      */
     public Team checkWinner() {
@@ -312,7 +303,6 @@ public class Game implements Serializable {
     
     /**
      * Generates a list of players containing the given number of players, dividing them in teams
-     *
      * @param playerUsernames the usernames of the players to be generated
      * @return the generated list
      */
@@ -328,7 +318,6 @@ public class Game implements Serializable {
         }
         
         List<Player> players = new ArrayList<>();
-        Mage[] mageNames = Mage.values();
         Team team;
         for (int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
             
@@ -353,14 +342,13 @@ public class Game implements Serializable {
                         throw new RuntimeException(errorMsg);
                 }
             }
-            players.add(new Player(playerUsernames[playerNumber], team, mageNames[playerNumber]));
+            players.add(new Player(playerUsernames[playerNumber], team));
         }
         return players;
     }
     
     /**
      * Generates a list of pawns containing the given number of pawns per color
-     *
      * @param numberPerColor the number of pawns per color to be generated
      * @return the generated list of pawns
      */
@@ -408,7 +396,6 @@ public class Game implements Serializable {
     
     /**
      * Adds every student pawn to the student bag.
-     *
      * @see StudentsBag
      */
     private void fillStudentsBag() {
@@ -433,7 +420,6 @@ public class Game implements Serializable {
     
     /**
      * Chooses randomly three of the possible twelve characters of the game.
-     *
      * @throws IOException when the path to the json file containing information regarding characters is wrong
      *                     or can't be accessed.
      */
@@ -447,7 +433,6 @@ public class Game implements Serializable {
     
     /**
      * Gives to every player ten helper cards to use during the game.
-     *
      * @throws IOException when the path to the json file containing information regarding helpers is wrong
      *                     or can't be accessed.
      */
@@ -455,6 +440,6 @@ public class Game implements Serializable {
         
         for (Player player : players)
             for (int n = 1; n <= 10; n++)
-                player.addHelperCard(CardFactory.createHelperCard(n, player.mage));
+                player.addHelperCard(CardFactory.createHelperCard(n));
     }
 }

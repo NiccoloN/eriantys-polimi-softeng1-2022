@@ -19,6 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents a colors gui component. A colors gui component is associated to a javafx GridPane that represents the
+ * selectable student colors. This component manages various graphic elements to represent the current selectable colors and
+ * attaches listeners to them in order to detect inputs and react accordingly
+ * @author Niccolò Nicolosi
+ * @author Emanuele Musto
+ */
 public class ColorsGUIComponent {
     
     private final GameController gameController;
@@ -30,10 +37,15 @@ public class ColorsGUIComponent {
     private MoveRequestMessage requestMessage;
     private int characterIndex;
     
-    public ColorsGUIComponent(GridPane colorButtons, GameController controller) {
+    /**
+     * Constructs a colors gui component
+     * @param colorButtons   the javafx grid pane associated to this component
+     * @param gameController the game controller associated to this component
+     */
+    public ColorsGUIComponent(GridPane colorButtons, GameController gameController) {
         
         this.colorButtons = colorButtons;
-        this.gameController = controller;
+        this.gameController = gameController;
         
         buttonColors = new HashMap<>(5);
         colorClickListeners = new HashMap<>(5);
@@ -53,6 +65,9 @@ public class ColorsGUIComponent {
         }
     }
     
+    /**
+     * Makes this component stop listening to click inputs
+     */
     public void stopListeningToInput() {
         
         colorButtons.setVisible(false);
@@ -67,12 +82,23 @@ public class ColorsGUIComponent {
         }
     }
     
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage  the message that requested to listen to inputs
+     * @param availableColors the selectable colors to represent
+     * @param characterIndex  the index of the character card that requested to listen to inputs
+     */
     public void listenToInput(MoveRequestMessage requestMessage, List<PawnColor> availableColors, int characterIndex) {
         
         listenToInput(requestMessage, availableColors);
         this.characterIndex = characterIndex;
     }
     
+    /**
+     * Makes this component start listening to click inputs
+     * @param requestMessage  the message that requested to listen to inputs
+     * @param availableColors the selectable colors to represent
+     */
     public void listenToInput(MoveRequestMessage requestMessage, List<PawnColor> availableColors) {
         
         gameController.getHelpersGUIComponent().stopListeningToInput();
@@ -91,7 +117,7 @@ public class ColorsGUIComponent {
         }
     }
     
-    public void setAvailableColors(List<PawnColor> colors) {
+    private void setAvailableColors(List<PawnColor> colors) {
         
         for (int n = 0; n < colorButtons.getChildren().size(); n++) {
             
@@ -124,7 +150,7 @@ public class ColorsGUIComponent {
                 
                 for (IslandGUIComponent island : gameController.getIslandGUIComponents())
                     island.listenToInput(requestMessage, color);
-                gameController.getDashboardGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).listenToInput(requestMessage, color);
+                gameController.getSchoolGUIComponentOfPlayer(EriantysClient.getInstance().getUsername()).listenToInput(requestMessage, color);
             }
             else if (characterIndex == 1) {
                 
